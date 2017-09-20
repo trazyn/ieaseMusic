@@ -57,7 +57,7 @@ async function getList(id) {
                 songs = response.data.playlist.tracks.map(e => e.id);
             }
         } catch (ex) {
-            debug('Failed to get playlist %s, %O', likes.id, ex);
+            error('Failed to get playlist %s, %O', likes.id, ex);
         }
 
         return [
@@ -80,7 +80,7 @@ async function getList(id) {
                     return {
                         id: e.id,
                         name: e.name,
-                        duration: e.dt,
+                        duration: e.duration,
                         album: {
                             id: album.id,
                             name: album.name,
