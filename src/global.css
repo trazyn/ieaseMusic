@@ -1,0 +1,82 @@
+
+* {
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: none;
+    overflow: hidden;
+}
+
+body {
+    position: relative;
+    height: 100vh;
+    color: #fff;
+    overflow-y: hidden;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica", "Roboto", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-app-region: drag;
+}
+
+.scroll-horizontal {
+    overflow: initial !important;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: '';
+    clear: both;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    padding: 0 8px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    font-family: 'Roboto';
+    background: #000;
+    color: #fff;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-24px);
+    transition: .2s;
+}
+
+.tooltip:hover::after {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-36px);
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}

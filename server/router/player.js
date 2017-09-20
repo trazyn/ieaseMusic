@@ -90,6 +90,62 @@ async function getAlbumBySong(id) {
     return albums;
 }
 
+router.get('/song/:id', async(req, res) => {
+    debug('Handle request for /player/song');
+
+    var id = req.params.id;
+    var song = {};
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/music/url?id=${id}`);
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+
+        song = data.data[0];
+        song = {
+            id: song.id,
+            src: song.url,
+            md5: song.md5,
+            bitRate: song.br,
+        };
+    } catch (ex) {
+        error('Failed to get song URL: %O', ex);
+    }
+
+    res.send({
+        song,
+    });
+});
+
+router.get('/related/:songid/:artistid', async(req, res) => {
+    debug('Handle request for /player/related');
+
+    var songid = req.params.songid;
+    var artistid = req.params.artistid;
+
+    debug('Params \'songid\': %s', songid);
+    debug('Params \'artistid\': %s', artistid);
+
+    var users = await getRecentUser(songid);
+    var artists = await getSimilarArtist(artistid);
+
+    var playlists = [
+        ...(await getAlbumBySong(songid)),
+        ...(await getSimilarPlaylist(songid))
+    ];
+
+    res.send({
+        users,
+        artists,
+        playlists,
+    });
+});
+
 router.get('/:type/:id', async(req, res) => {
     debug('Handle request for /player');
 
@@ -113,7 +169,7 @@ router.get('/:type/:id', async(req, res) => {
     var songs = [];
 
     if (data.code !== 200) {
-        debug('Failed to get player songs: %O', data);
+        error('Failed to get player songs: %O', data);
     } else {
         songs = (data.songs || data.playlist.tracks).map(e => {
             // eslint-disable-next-line
@@ -173,34 +229,8 @@ router.get('/:type/:id', async(req, res) => {
     }
 
     res.send({
-        id,
-        type,
-        meta,
+        meta: Object.assign({}, meta, { id, type }),
         songs,
-    });
-});
-
-router.get('/related/:songid/:artistid', async(req, res) => {
-    debug('Handle request for /player/related');
-
-    var songid = req.params.songid;
-    var artistid = req.params.artistid;
-
-    debug('Params \'songid\': %s', songid);
-    debug('Params \'artistid\': %s', artistid);
-
-    var users = await getRecentUser(songid);
-    var artists = await getSimilarArtist(artistid);
-
-    var playlists = [
-        ...(await getAlbumBySong(songid)),
-        ...(await getSimilarPlaylist(songid))
-    ];
-
-    res.send({
-        users,
-        artists,
-        playlists,
     });
 });
 

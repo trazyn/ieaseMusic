@@ -240,7 +240,7 @@ app.use('/user/subcount', require('../NeteaseCloudMusicApi/router/user_subcount'
 app.use('/user/record', require('../NeteaseCloudMusicApi/router/user_playrecord'));
 
 app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
-app.use('/player', cache('1 hour', onlyStatus200), require('./router/player'));
+app.use('/player', cache('5 minutes', onlyStatus200), require('./router/player'));
 app.use('/user', cache('1 hour', onlyStatus200), require('./router/user'));
 app.use('/artist', cache('1 hour', onlyStatus200), require('./router/artist'));
 app.use('/top', cache('1 hour', onlyStatus200), require('./router/top'));
