@@ -1,7 +1,7 @@
 # ieaseMusic
 Rock with NetEaseMusic :metal: 
 
-网易云音乐太丑了，所以重做了一个，做了如下部分，还在开发中
+恕我直言网易云音乐是真特么丑，处女座表示不能忍，所以弄了一个，做了如下部分，还在开发中
 
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/home.png)
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/menu.png)
