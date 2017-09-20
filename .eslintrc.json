@@ -1,0 +1,31 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "impliedStrict": true,
+                "jsx": true
+            }
+    },
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "parser": "babel-eslint",
+    "plugins": ["react"],
+    "rules": {
+        "semi": [2, "always"],
+        "new-cap": [0],
+        "indent": [2, 4, { "SwitchCase": 1 }],
+        "comma-dangle": [2, "only-multiline"],
+        "space-before-function-paren": [2, "never"],
+        "operator-linebreak": [2, "before"],
+        "no-floating-decimal": [0],
+        "react/jsx-indent": [2, 4],
+        "react/jsx-indent-props": [2, 4],
+        "react/jsx-boolean-value": [2, "always"],
+        "react/prop-types": [0],
+        "jsx-quotes": [2, "prefer-double"]
+    },
+    "extends": ["standard", "standard-react"]
+}
