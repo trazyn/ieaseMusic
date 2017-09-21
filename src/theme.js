@@ -6,7 +6,6 @@ export default {
         iconHoverColor: colors.pallet.primary,
     },
     home: {
-        coverBackground: 'https://source.unsplash.com/weekly?music',
     },
 
     hoverColor: '#3571fb',

@@ -32,9 +32,12 @@ import Controller from 'components/Controller';
     canitoggle: () => stores.controller.playlist.id === stores.player.meta.id,
     play: (songid) => {
         var { controller, player } = stores;
+        var meta = player.meta;
 
         controller.setup({
-            id: player.meta.id,
+            id: meta.id,
+            link: `/player/${meta.type}/${meta.id}`,
+            name: meta.name,
             songs: player.songs,
         });
         controller.play(songid);

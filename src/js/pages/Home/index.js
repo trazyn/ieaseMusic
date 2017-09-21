@@ -18,6 +18,25 @@ import Controller from 'components/Controller';
     playlist: stores.home.list,
     getPlaylist: stores.home.getList,
     loading: stores.home.loading,
+    play: (playlist) => {
+        var controller = stores.controller;
+
+        controller.setup(playlist);
+        controller.play();
+    },
+    toggle: stores.controller.toggle,
+    isPlaying: (id) => {
+        var controller = stores.controller;
+
+        // Now is playing
+        return controller.playing
+            // And the same song
+            && controller.playlist.id === id.toString();
+    },
+    canitoggle: (id) => {
+        // Should has same id
+        return stores.controller.playlist.id === id.toString();
+    },
 }))
 @observer
 class Home extends Component {
@@ -26,12 +45,14 @@ class Home extends Component {
     }
 
     renderItem(item) {
-        var classes = this.props.classes;
+        var { classes, isPlaying } = this.props;
 
         return (
             <Link
                 to={item.link}
-                className="clearfix">
+                className={clazz('clearfix', {
+                    [classes.playing]: isPlaying(item.id),
+                })}>
                 <img src={item.cover} />
 
                 <div className={classes.info}>
@@ -49,11 +70,13 @@ class Home extends Component {
     }
 
     renderLiked(item) {
-        var classes = this.props.classes;
+        var { classes, isPlaying } = this.props;
 
         return (
             <Link
-                className={clazz('clearfix', classes.liked)}
+                className={clazz('clearfix', classes.liked, {
+                    [classes.playing]: isPlaying(item.id),
+                })}
                 to={item.link}>
                 <div className={classes.cover}>
                     <div>
@@ -78,12 +101,21 @@ class Home extends Component {
     }
 
     renderDaily(item) {
-        var classes = this.props.classes;
+        var { classes, isPlaying, canitoggle, toggle, play } = this.props;
+        var playing = isPlaying(item.id);
 
         return (
-            <div className={clazz('clearfix', classes.daily)}>
+            <div
+                className={clazz('clearfix', classes.daily, {
+                    [classes.playing]: playing,
+                })}
+                onClick={e => canitoggle(item.id) ? toggle() : play(item)}>
                 <div className={classes.mask}>
-                    <i className="ion-ios-play" />
+                    {
+                        playing
+                            ? <i className="ion-ios-pause" />
+                            : <i className="ion-ios-play" />
+                    }
                 </div>
 
                 <div className={classes.info}>
@@ -150,6 +182,7 @@ class Home extends Component {
                                     </pattern>
                                 </defs>
                                 <text class="${classes.welcome}" text-anchor="middle" x="50%" y="0" dy="100px">Welcome</text>
+                                <text class="${classes.description}" text-anchor="middle" x="50%" y="0" dy="130px">ieaseMusic is Made by 💖</text>
                             </svg>
                         `}} />
 
