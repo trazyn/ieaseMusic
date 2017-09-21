@@ -9,7 +9,6 @@ const MODES = [PLAYER_SHUFFLE, PLAYER_REPEAT, PLAYER_LOOP];
 
 class Controller {
     @observable playing = false;
-    @observable progress = 0;
     @observable mode = PLAYER_SHUFFLE;
 
     // A strcut should contains 'id' and 'songs'
@@ -151,10 +150,6 @@ class Controller {
         } else {
             self.mode = PLAYER_SHUFFLE;
         }
-    }
-
-    @action onProgress(currentTime = 0) {
-        self.progress = (currentTime * 1000) / self.song.duration;
     }
 }
 

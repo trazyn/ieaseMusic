@@ -40,13 +40,40 @@ export default theme => {
             position: 'absolute',
             left: 0,
             top: 0,
-            width: '0%',
+            width: '100vw',
             height: 2,
-            background: 'linear-gradient(to right,#62efab 5%,#f2ea7d 15%,#f2ea7d 25%,#ff8797 35%,#ff8797 45%,#e1a4f4 55%,#e1a4f4 65%,#82fff4 75%,#82fff4 85%,#62efab 95%)',
-            backgroundSize: '200%',
-            backgroundPosition: 0,
-            transition: 'all 0.3s ease-out',
-            animation: `${progress} 3s linear infinite`,
+            background: 'transparent',
+            cursor: 'pointer',
+            transition: '.2s',
+
+            '& > div': {
+                position: 'relative',
+                height: 2,
+                width: '0%',
+                background: 'linear-gradient(to right,#62efab 5%,#f2ea7d 15%,#f2ea7d 25%,#ff8797 35%,#ff8797 45%,#e1a4f4 55%,#e1a4f4 65%,#82fff4 75%,#82fff4 85%,#62efab 95%)',
+                backgroundSize: '200%',
+                backgroundPosition: 0,
+                transition: 'all .2s ease-out',
+                animation: `${progress} 3s linear infinite`,
+            },
+
+            '& > div:after': {
+                content: 'attr(data-time)',
+                position: 'absolute',
+                right: 0,
+                bottom: 2,
+                display: 'inline-block',
+                padding: '8px 6px',
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                color: '#fff',
+                background: '#000',
+                whiteSpace: 'nowrap',
+            },
+
+            '&:hover': {
+                background: '#ddd',
+            }
         },
 
         info: {
