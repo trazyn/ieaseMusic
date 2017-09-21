@@ -77,6 +77,14 @@ class Player extends Component {
         }
     }
 
+    componentDidUpdate() {
+        var playing = this.refs.list.querySelector(`.${this.props.classes.active}`);
+
+        if (playing) {
+            playing.scrollIntoViewIfNeeded();
+        }
+    }
+
     renderPeople() {
         var { users, artists } = this.props;
         var content = [];
@@ -277,7 +285,7 @@ class Player extends Component {
                                     Time
                                 </span>
                             </header>
-                            <ul>
+                            <ul ref="list">
                                 {this.renderList()}
                             </ul>
                         </div>
