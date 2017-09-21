@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import axios from 'axios';
 
 import storage from 'utils/storage';
+import player from './player';
 
 class Me {
     @observable initialized = false;
@@ -75,13 +76,48 @@ class Me {
     }
 
     // Like a song
-    like(id) {
-        self.likes.set(id, true);
+    @action async like(song) {
+        if (await self.exeLike(song, true)) {
+            self.likes.set(song.id, true);
+        }
     }
 
     // Unlike a song
-    unlike(id) {
-        self.likes.set(id, false);
+    @action async unlike(song) {
+        self.likes.set(song.id, !(await self.exeLike(song, false)));
+    }
+
+    async exeLike(song, truefalse) {
+        var response = await axios.get('/like', {
+            params: {
+                id: song.id,
+                like: truefalse
+            }
+        });
+
+        // Update the playlist of player screen
+        if (self.likes.get('id') === player.meta.id) {
+            let songs = player.songs;
+            let index = songs.findIndex(e => e.id === song.id);
+
+            if (index === -1) {
+                // You like this song
+                songs = [
+                    song,
+                    ...songs,
+                ];
+            } else {
+                // Remove song from playlist
+                songs = [
+                    ...songs.slice(0, index),
+                    ...songs.slice(index + 1, songs.length),
+                ];
+            }
+
+            player.songs = songs;
+        }
+
+        return response.data.code === 200;
     }
 
     hasLogin() {

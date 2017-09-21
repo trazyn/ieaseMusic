@@ -16,6 +16,8 @@ import classes from './classes';
     playing: stores.controller.playing,
     changeMode: stores.controller.changeMode,
     isLiked: stores.me.isLiked,
+    like: stores.me.like,
+    unlike: stores.me.unlike,
 }))
 @observer
 class Controller extends Component {
@@ -27,7 +29,8 @@ class Controller extends Component {
     }
 
     render() {
-        var { classes, song, mode, prev, next, toggle, isLiked, playing } = this.props;
+        var { classes, song, mode, prev, next, toggle, isLiked, like, unlike, playing } = this.props;
+        var liked = isLiked(song.id);
 
         if (!song.id) {
             return false;
@@ -71,9 +74,11 @@ class Controller extends Component {
                         </div>
 
                         <div className={classes.action}>
-                            <i className={clazz('ion-ios-heart', {
-                                [classes.liked]: isLiked(song.id)
-                            })} />
+                            <i
+                                className={clazz('ion-ios-heart', {
+                                    [classes.liked]: liked,
+                                })}
+                                onClick={e => liked ? unlike(song) : like(song)} />
 
                             <i
                                 className={clazz({
