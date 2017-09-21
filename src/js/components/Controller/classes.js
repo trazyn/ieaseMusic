@@ -39,22 +39,21 @@ export default theme => {
             top: 0,
             width: '100vw',
             height: 2,
-            background: 'transparent',
             cursor: 'pointer',
-            transition: '.2s',
 
-            '& > div': {
+            '& $playing': {
                 position: 'relative',
                 height: 2,
                 width: '100%',
                 background: 'linear-gradient(to right,#62efab 5%,#f2ea7d 15%,#f2ea7d 25%,#ff8797 35%,#ff8797 45%,#e1a4f4 55%,#e1a4f4 65%,#82fff4 75%,#82fff4 85%,#62efab 95%)',
                 backgroundSize: '200%',
                 backgroundPosition: 0,
+                zIndex: 1,
                 transform: 'translate3d(-100%, 0, 0)',
                 transition: 'transform .2s ease-out',
             },
 
-            '& > div:after': {
+            '& $playing:after': {
                 content: 'attr(data-time)',
                 position: 'absolute',
                 right: 0,
@@ -68,10 +67,21 @@ export default theme => {
                 whiteSpace: 'nowrap',
             },
 
-            '&:hover': {
+            '& $buffering': {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: 2,
+                width: '100%',
                 background: '#ddd',
-            }
+                backgroundPosition: 0,
+                transform: 'translate3d(-100%, 0, 0)',
+                transition: 'transform .2s ease-out',
+            },
         },
+
+        playing: {},
+        buffering: {},
 
         info: {
             display: 'flex',
