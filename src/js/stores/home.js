@@ -18,7 +18,7 @@ class Home {
             res = await axios.get(`/home/${me.profile.userId}`);
 
             // Save the songs of red heart
-            me.rocking(res.data.list[0]['songs']);
+            me.rocking(res.data.list[0]);
             // Play the recommend songs
             controller.setup(res.data.list[1]);
             controller.play();

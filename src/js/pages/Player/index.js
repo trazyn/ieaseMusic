@@ -39,6 +39,14 @@ import Controller from 'components/Controller';
         });
         controller.play(songid);
     },
+    canifav: () => {
+        var { player, me } = stores;
+
+        // The type must be a playlist
+        return player.meta.type === 0
+            // And the playlist is not likes
+            && me.likes.get('id') !== player.meta.id;
+    },
 }))
 @observer
 class Player extends Component {
@@ -171,7 +179,7 @@ class Player extends Component {
     }
 
     render() {
-        var { classes, loading, meta, playing, recommend } = this.props;
+        var { classes, loading, meta, playing, recommend, canifav } = this.props;
         var heroBackgroundColor = helper.pureColor(meta.pallet);
         var headerIconColor = meta.pallet[0].join();
 
@@ -180,7 +188,7 @@ class Player extends Component {
                 <Loader show={loading} />
                 <Header
                     color={`rgb(${headerIconColor})`}
-                    showFav={meta.type === 0} />
+                    showFav={canifav()} />
 
                 <section>
                     <div
