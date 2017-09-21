@@ -24,7 +24,7 @@ import Controller from 'components/Controller';
 class Home extends Component {
     componentDidMount() {
         this.props.getPlaylist();
-        wave.show(this.refs.container);
+        // wave.show(this.refs.container);
     }
 
     componentWillUnmount() {

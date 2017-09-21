@@ -25,16 +25,20 @@ export default class AudioPlayer extends Component {
             return false;
         }
 
-        this.ele = document.querySelector('#progress');
         return true;
     }
 
     progress(currentTime) {
-        var ele = document.querySelector('#progress');
-        var percent = (currentTime * 1000) / this.props.song.duration;
+        clearTimeout(this.timer);
 
-        ele.firstElementChild.style.width = `${percent * 100}%`;
-        ele.firstElementChild.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(this.props.song.duration)}`);
+        // Reduce CPU usage
+        this.timer = setTimeout(() => {
+            var ele = document.querySelector('#progress');
+            var percent = (currentTime * 1000) / this.props.song.duration;
+
+            ele.firstElementChild.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
+            ele.firstElementChild.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(this.props.song.duration)}`);
+        }, 450);
     }
 
     render() {
