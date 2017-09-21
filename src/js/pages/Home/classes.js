@@ -45,6 +45,29 @@ export default theme => ({
         `
     },
 
+    description: {
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontWeight: 'lighter',
+        fontSize: 14,
+        fill: 'url(#mask)',
+        letterSpacing: 1,
+        wordSpacing: 3,
+        textShadow: `
+            1px 1px 0 rgba(227, 218, 219, 1),
+            3px 3px 0 rgba(227, 218, 219, 0.9),
+            5px 5px 0 rgba(227, 218, 219, 0.8),
+            7px 7px 0 rgba(227, 218, 219, 0.7),
+            9px 9px 0 rgba(227, 218, 219, 0.6),
+            11px 11px 0 rgba(227, 218, 219, 0.5),
+            13px 13px 0 rgba(227, 218, 219, 0.4),
+            15px 15px 0 rgba(227, 218, 219, 0.3),
+            17px 17px 0 rgba(227, 218, 219, 0.2),
+            19px 19px 0 rgba(227, 218, 219, 0.1),
+            21px 21px 0 rgba(227, 218, 219, 0.08),
+            22px 22px 0 rgba(227, 218, 219, 0.07)
+        `
+    },
+
     item: {
         position: 'relative',
         display: 'inline-block',
@@ -59,7 +82,7 @@ export default theme => ({
             transition: '.4s',
         },
 
-        '&:hover': {
+        '& $playing, &:hover': {
             '& img': {
                 boxShadow: '0 20px 30px 4px rgba(97, 45, 45, .5)',
                 transform: 'translateY(-24px)'
@@ -81,6 +104,8 @@ export default theme => ({
         },
     },
 
+    playing: {},
+
     liked: {
         position: 'relative',
         display: 'flex',
@@ -90,6 +115,16 @@ export default theme => ({
         height: 100,
         color: '#fff',
         transform: 'translateX(30px)',
+
+        '&$playing': {
+            '& $cover': {
+                boxShadow: '0 20px 30px 4px rgba(97, 45, 45, .5)',
+            },
+
+            '& $cover:before': {
+                opacity: 1,
+            }
+        },
     },
 
     mask: {
@@ -109,29 +144,6 @@ export default theme => ({
 
         '& img': {
             opacity: 0,
-        },
-
-        '&:before, &:after': {
-            position: 'absolute',
-            content: '""',
-            left: 0,
-            top: 0,
-            display: 'block',
-            width: '100%',
-            height: '100%',
-            zIndex: -1,
-            opacity: 0,
-            transition: '.4s',
-        },
-
-        '&:before': {
-            background: 'rgba(0, 0, 0, .3)',
-        },
-
-        '&:after': {
-            background: `url(${theme.home.coverBackground})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
         },
     },
 
@@ -158,6 +170,10 @@ export default theme => ({
             backgroundImage: 'linear-gradient(225deg, rgb(255, 103, 0) 0%, rgb(255, 45, 240) 100%)',
             opacity: 0,
             transition: '.4s',
+        },
+
+        '&:hover': {
+            boxShadow: '0 20px 30px 4px rgba(97, 45, 45, .5)',
         },
 
         '&:hover:before': {
