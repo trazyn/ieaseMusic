@@ -18,6 +18,12 @@ import classes from './classes';
     isLiked: stores.me.isLiked,
     like: stores.me.like,
     unlike: stores.me.unlike,
+    getPlayerLink: () => {
+        return stores.controller.playlist.link;
+    },
+    getPlaylistName: () => {
+        return `🎉 ${stores.controller.playlist.name}`;
+    }
 }))
 @observer
 class Controller extends Component {
@@ -29,7 +35,7 @@ class Controller extends Component {
     }
 
     render() {
-        var { classes, song, mode, prev, next, toggle, isLiked, like, unlike, playing } = this.props;
+        var { classes, song, mode, prev, next, toggle, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName } = this.props;
         var liked = isLiked(song.id);
 
         if (!song.id) {
@@ -47,7 +53,11 @@ class Controller extends Component {
                 </div>
 
                 <section>
-                    <Link to={song.album.link}>
+                    {/* Click the cover show the player screen */}
+                    <Link
+                        className="tooltip"
+                        data-text={getPlaylistName()}
+                        to={getPlayerLink()}>
                         <img
                             className={classes.cover}
                             src={song.album.cover} />
@@ -56,12 +66,16 @@ class Controller extends Component {
                     <aside>
                         <div className={classes.info}>
                             <p className={classes.title}>
-                                {song.name}
+                                {/* Click the song name show the album screen */}
+                                <Link to={song.album.link}>
+                                    {song.name}
+                                </Link>
                             </p>
 
                             <p className={classes.author}>
                                 {
                                     song.artists.map((e, index) => {
+                                        // Show the artist
                                         return (
                                             <Link
                                                 key={index}
