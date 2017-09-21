@@ -34,16 +34,17 @@ export default theme => {
         },
 
         bar: {
-            position: 'absolute',
-            left: 0,
-            top: 0,
             width: '100vw',
-            height: 2,
             cursor: 'pointer',
 
-            '& $playing': {
-                position: 'relative',
+            '&, & $playing, & $buffering': {
+                position: 'fixed',
+                left: 0,
+                bottom: 50,
                 height: 2,
+            },
+
+            '& $playing': {
                 width: '100%',
                 background: 'linear-gradient(to right,#62efab 5%,#f2ea7d 15%,#f2ea7d 25%,#ff8797 35%,#ff8797 45%,#e1a4f4 55%,#e1a4f4 65%,#82fff4 75%,#82fff4 85%,#62efab 95%)',
                 backgroundSize: '200%',
@@ -59,7 +60,7 @@ export default theme => {
                 right: 0,
                 bottom: 2,
                 display: 'inline-block',
-                padding: '8px 6px',
+                padding: '11px 6px',
                 fontFamily: 'Roboto',
                 fontSize: 12,
                 color: '#fff',
@@ -68,13 +69,10 @@ export default theme => {
             },
 
             '& $buffering': {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: 2,
                 width: '100%',
-                background: '#ddd',
+                background: colors.randomGradient(),
                 backgroundPosition: 0,
+                opacity: .2,
                 transform: 'translate3d(-100%, 0, 0)',
                 transition: 'transform .2s ease-out',
             },
@@ -87,11 +85,28 @@ export default theme => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+
+            '& a': {
+                display: 'inline-block',
+                paddingBottom: 2,
+                borderBottom: 'thin solid rgba(255, 255, 255, 0)',
+                transition: '.2s',
+
+                '&:hover': {
+                    borderBottomColor: '#000',
+                },
+
+            }
         },
 
         title: {
-            fontSize: 12,
-            color: '#081600',
+            marginBottom: '3px !important',
+
+            '& a': {
+                paddingBottom: 1,
+                fontSize: 14,
+                color: '#081600',
+            }
         },
 
         author: {
@@ -99,15 +114,7 @@ export default theme => {
             fontSize: 11,
 
             '& a': {
-                display: 'inline-block',
-                paddingBottom: 2,
                 color: '#4a4a4a',
-                borderBottom: 'thin solid rgba(255, 255, 255, 0)',
-                transition: '.2s',
-
-                '&:hover': {
-                    borderBottomColor: '#000',
-                },
 
                 '&:after': {
                     content: '"/"',
