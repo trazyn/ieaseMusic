@@ -8,7 +8,6 @@ import moment from 'moment';
 import clazz from 'classname';
 
 import classes from './classes';
-import wave from 'utils/wave';
 import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
@@ -24,12 +23,6 @@ import Controller from 'components/Controller';
 class Home extends Component {
     componentDidMount() {
         this.props.getPlaylist();
-        wave.show(this.refs.container);
-    }
-
-    componentWillUnmount() {
-        wave.hide();
-        this.refs.container.querySelector('canvas').remove();
     }
 
     renderItem(item) {
@@ -146,7 +139,7 @@ class Home extends Component {
                     showBack: false,
                 }} />
 
-                <section>
+                <main>
                     <div
                         className={classes.logo}
                         dangerouslySetInnerHTML={{__html: `
@@ -167,7 +160,7 @@ class Home extends Component {
                             this.renderPlaylist()
                         }
                     </div>
-                </section>
+                </main>
 
                 <Controller />
             </div>
