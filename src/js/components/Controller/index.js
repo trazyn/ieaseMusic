@@ -42,7 +42,8 @@ class Controller extends Component {
                     className={classes.bar}
                     id="progress"
                     onClick={e => this.seek(e)}>
-                    <div />
+                    <div className={classes.playing} />
+                    <div className={classes.buffering} />
                 </div>
 
                 <section>
