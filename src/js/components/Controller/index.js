@@ -14,14 +14,20 @@ import classes from './classes';
     prev: stores.controller.prev,
     toggle: stores.controller.toggle,
     playing: stores.controller.playing,
-    progress: stores.controller.progress,
     changeMode: stores.controller.changeMode,
     isLiked: stores.me.isLiked,
 }))
 @observer
 class Controller extends Component {
+    seek(e) {
+        var percent = e.clientX / window.innerWidth;
+        var time = this.props.song.duration * percent;
+
+        document.querySelector('audio').currentTime = time / 1000;
+    }
+
     render() {
-        var { classes, song, mode, prev, next, toggle, isLiked, playing, progress } = this.props;
+        var { classes, song, mode, prev, next, toggle, isLiked, playing } = this.props;
 
         if (!song.id) {
             return false;
@@ -31,9 +37,10 @@ class Controller extends Component {
             <div className={classes.container}>
                 <div
                     className={classes.bar}
-                    style={{
-                        width: `${progress * 100}%`
-                    }} />
+                    id="progress"
+                    onClick={e => this.seek(e)}>
+                    <div />
+                </div>
 
                 <section>
                     <Link to={song.album.link}>
