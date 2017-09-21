@@ -3,6 +3,7 @@
 import express from 'express';
 import apicache from 'apicache'
 import axios from 'axios';
+/* eslint-enable */
 
 const app = express();
 const cache = apicache.middleware;
@@ -244,7 +245,7 @@ app.use('/player', require('./router/player'));
 app.use('/user', require('./router/user'));
 app.use('/artist', require('./router/artist'));
 app.use('/top', cache('1 hour', onlyStatus200), require('./router/top'));
-app.use('/playlist', cache('1 hour', onlyStatus200), require('./router/playlist'));
+app.use('/playlist', cache('10 minutes', onlyStatus200), require('./router/playlist'));
 app.use('/fm', require('./router/fm'));
 
 if (process.env.AUTORUN) {

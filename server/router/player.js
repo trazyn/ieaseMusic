@@ -1,11 +1,16 @@
 
+/* eslint-disable */
 import express from 'express';
+import apicache from 'apicache'
 import axios from 'axios';
 import _debug from 'debug';
+/* eslint-enable */
 
 const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
+const cache = apicache.middleware;
+const onlyStatus200 = (req, res) => res.statusCode === 200;
 
 async function getRecentUser(id) {
     // Get the recent user that played this song
@@ -90,7 +95,7 @@ async function getAlbumBySong(id) {
     return albums;
 }
 
-router.get('/song/:id', async(req, res) => {
+router.get('/song/:id', cache('5 minutes', onlyStatus200), async(req, res) => {
     debug('Handle request for /player/song');
 
     var id = req.params.id;
@@ -122,7 +127,7 @@ router.get('/song/:id', async(req, res) => {
     });
 });
 
-router.get('/related/:songid/:artistid', async(req, res) => {
+router.get('/related/:songid/:artistid', cache('10 minutes', onlyStatus200), async(req, res) => {
     debug('Handle request for /player/related');
 
     var songid = req.params.songid;
