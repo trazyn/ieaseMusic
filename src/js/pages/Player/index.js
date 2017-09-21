@@ -60,8 +60,12 @@ class Player extends Component {
     }
 
     togglePlayer() {
-        var { canitoggle, toggle, play } = this.props;
-        canitoggle() ? toggle() : play();
+        var { meta, canitoggle, toggle, play } = this.props;
+
+        // Should been a valiable playlist
+        if (meta.id) {
+            canitoggle() ? toggle() : play();
+        }
     }
 
     componentWillMount = () => this.load(this.props);
