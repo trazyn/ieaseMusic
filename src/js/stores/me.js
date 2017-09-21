@@ -59,7 +59,10 @@ class Me {
     @action rocking(likes) {
         var mapping = new Map();
 
-        likes.map(e => {
+        // Keep the liked playlist id
+        mapping.set('id', likes.id.toString());
+
+        likes.songs.map(e => {
             mapping.set(e, true);
         });
 
