@@ -1,10 +1,7 @@
 
-import helper from 'utils/helper';
 import colors from 'utils/colors';
 
 export default theme => {
-    var progress = helper.randomName();
-
     return {
         container: {
             position: 'fixed',
@@ -49,12 +46,12 @@ export default theme => {
             '& > div': {
                 position: 'relative',
                 height: 2,
-                width: '0%',
+                width: '100%',
                 background: 'linear-gradient(to right,#62efab 5%,#f2ea7d 15%,#f2ea7d 25%,#ff8797 35%,#ff8797 45%,#e1a4f4 55%,#e1a4f4 65%,#82fff4 75%,#82fff4 85%,#62efab 95%)',
                 backgroundSize: '200%',
                 backgroundPosition: 0,
-                transition: 'all .2s ease-out',
-                animation: `${progress} 3s linear infinite`,
+                transform: 'translate3d(-100%, 0, 0)',
+                transition: 'transform .2s ease-out',
             },
 
             '& > div:after': {
@@ -159,14 +156,5 @@ export default theme => {
                 color: '#9b9b9b',
             }
         },
-
-        [`@keyframes ${progress}`]: {
-            '0%': {
-                backgroundPosition: '0%',
-            },
-            '100%': {
-                backgroundPosition: '100%',
-            },
-        }
     };
 };
