@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import injectSheet from 'react-jss';
 import { inject, observer } from 'mobx-react';
 
-import Menu from './Menu';
 import Loader from 'ui/Loader';
 import AudioPlayer from 'components/AudioPlayer';
+import Menu from 'components/Menu';
+import Playing from 'components/Playing';
 
 const classes = {
     container: {
@@ -47,6 +48,7 @@ class Layout extends Component {
                 </div>
 
                 <Menu />
+                <Playing />
                 <AudioPlayer />
             </div>
         );

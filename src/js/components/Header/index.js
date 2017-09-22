@@ -5,11 +5,12 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
-import menu from 'stores/menu';
 
 @inject(stores => ({
     subscribed: stores.player.meta.subscribed,
     followed: stores.user.profile.followed,
+    showMenu: () => stores.menu.toggle(true),
+    showPlaying: () => stores.playing.toggle(true),
 }))
 @observer
 class Header extends Component {
@@ -67,12 +68,13 @@ class Header extends Component {
     }
 
     renderPlaylist() {
-        var { showPlaylist, color } = this.props;
+        var { showPlaylist, showPlaying, color } = this.props;
 
         if (showPlaylist) {
             return (
                 <i
                     className="ion-stats-bars"
+                    onClick={() => showPlaying()}
                     style={{
                         color,
                     }} />
@@ -110,7 +112,7 @@ class Header extends Component {
         return (
             <i
                 className="ion-android-more-vertical"
-                onClick={() => menu.toggle(true)}
+                onClick={() => this.props.showMenu()}
                 style={{
                     color: this.props.color,
                 }} />

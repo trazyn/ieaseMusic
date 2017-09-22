@@ -24,7 +24,7 @@ export default theme => ({
         }
     },
 
-    mask: {
+    overlay: {
         position: 'fixed',
         left: 0,
         top: 0,
