@@ -176,6 +176,7 @@ router.get('/:id?', async(req, res) => {
     debug('Handle request for /home');
 
     var list = [];
+    var unique = [];
     var id = req.params.id;
 
     debug('Params \'id\': %s', id);
@@ -195,8 +196,17 @@ router.get('/:id?', async(req, res) => {
         ];
     }
 
+    // Remove the duplicate items
+    list.map(e => {
+        var index = unique.findIndex(item => item.id === e.id);
+
+        if (index === -1) {
+            unique.push(e);
+        }
+    });
+
     res.send({
-        list,
+        list: unique,
     });
 });
 

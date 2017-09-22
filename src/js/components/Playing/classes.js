@@ -4,7 +4,7 @@ export default theme => ({
         position: 'fixed',
         right: 0,
         top: 0,
-        width: '40vw',
+        width: '45vw',
         color: '#4a4a4a',
         background: '#fff',
         boxShadow: '0 30px 80px 0 rgba(97, 45, 45, .25)',
@@ -83,7 +83,7 @@ export default theme => ({
     },
 
     title: {
-        maxWidth: 180,
+        maxWidth: 200,
         color: '#081600',
         fontSize: 14,
         whiteSpace: 'nowrap',
@@ -92,6 +92,10 @@ export default theme => ({
     },
 
     author: {
+        maxWidth: 200,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+
         '& a': {
             display: 'inline-block',
             color: '#4a4a4a',
