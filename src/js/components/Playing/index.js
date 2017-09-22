@@ -30,6 +30,14 @@ class Playing extends Component {
             list = filtered;
         }
 
+        if (list.length === 0) {
+            return (
+                <li className={classes.nothing}>
+                    Nothing ...
+                </li>
+            );
+        }
+
         return list.map((e, index) => {
             return (
                 <li

@@ -147,4 +147,15 @@ export default theme => ({
             background: 'linear-gradient(to left, transparent, rgba(255, 255, 255, 1))',
         },
     },
+
+    nothing: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'calc(100vh - 180px)',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 36,
+        color: '#000',
+        letterSpacing: 1,
+    },
 });

@@ -12,7 +12,7 @@ class Playing {
         self.show = show;
     }
 
-    @action filter(text = '') {
+    @action doFilter(text) {
         var songs = [];
 
         // Convert text to chinese pinyin
@@ -30,6 +30,11 @@ class Playing {
         });
 
         self.filtered = songs;
+    }
+
+    filter(text = '') {
+        clearTimeout(self.timer);
+        self.timer = setTimeout(() => self.doFilter(text), 50);
     }
 }
 
