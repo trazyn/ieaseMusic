@@ -15,6 +15,8 @@ const helper = {
 
     getPallet(image) {
         return new Promise((resolve, reject) => {
+            image = image.replace(/\?.*$/, '') + '?param=20y20';
+
             new window.AlbumColors(image).getColors((colors, err) => {
                 if (err) {
                     resolve([
