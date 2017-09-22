@@ -21,10 +21,16 @@ export default class AudioPlayer extends Component {
         }
     }
 
-    progress(currentTime) {
+    passed = 0;
+
+    progress(currentTime = 0) {
+        // Reduce CPU usage, cancel the duplicate compution
+        if (currentTime * 1000 - this.passed < 1000) {
+            return;
+        }
+
         clearTimeout(this.timer);
 
-        // Reduce CPU usage
         this.timer = setTimeout(() => {
             var ele = document.querySelector('#progress');
 
@@ -36,13 +42,17 @@ export default class AudioPlayer extends Component {
                 ele.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(this.props.song.duration)}`);
             }
         }, 450);
+
+        this.passed = currentTime * 1000;
     }
 
     buffering() {
         var ele = document.querySelector('#progress');
+        var player = this.refs.player;
 
-        if (ele) {
-            let player = this.refs.player;
+        if (ele
+            // Player has started
+            && player.buffered.length) {
             let buffered = player.buffered.end(player.buffered.length - 1);
 
             if (buffered >= 100) {
@@ -56,11 +66,12 @@ export default class AudioPlayer extends Component {
     render() {
         var song = this.props.song.data || {};
 
+        /* eslint-disable */
         return (
             <audio
                 autoPlay={true}
-                onAbort={e => this.progress(0)}
-                onEnded={e => this.props.next()}
+                onAbort={e => this.passed = 0, this.progress}
+                onEnded={e => this.passed = 0, this.props.next}
                 onError={e => console.log(e)}
                 onTimeUpdate={e => this.progress(e.target.currentTime)}
                 onProgress={e => this.buffering(e)}
@@ -70,5 +81,6 @@ export default class AudioPlayer extends Component {
                     display: 'none'
                 }} />
         );
+        /* eslint-enable */
     }
 }
