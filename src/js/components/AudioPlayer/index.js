@@ -70,8 +70,12 @@ export default class AudioPlayer extends Component {
         return (
             <audio
                 autoPlay={true}
-                onAbort={e => this.passed = 0, this.progress}
-                onEnded={e => this.passed = 0, this.props.next}
+                onAbort={e => {
+                    this.passed = 0, this.progress();
+                }}
+                onEnded={e => {
+                    this.passed = 0, this.props.next();
+                }}
                 onError={e => console.log(e)}
                 onTimeUpdate={e => this.progress(e.target.currentTime)}
                 onProgress={e => this.buffering(e)}
