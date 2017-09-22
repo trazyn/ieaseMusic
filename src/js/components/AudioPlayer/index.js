@@ -21,6 +21,10 @@ export default class AudioPlayer extends Component {
         }
     }
 
+    componentDidUpdate() {
+        this.buffering();
+    }
+
     passed = 0;
 
     progress(currentTime = 0) {
