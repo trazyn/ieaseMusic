@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
+import ProgressImage from 'ui/ProgressImage';
 
 @inject(stores => ({
     song: stores.controller.song,
@@ -58,9 +59,11 @@ class Controller extends Component {
                         className="tooltip"
                         data-text={getPlaylistName()}
                         to={getPlayerLink()}>
-                        <img
-                            className={classes.cover}
-                            src={song.album.cover} />
+                        <ProgressImage {...{
+                            height: 50,
+                            width: 50,
+                            src: song.album.cover,
+                        }} />
                     </Link>
 
                     <aside>

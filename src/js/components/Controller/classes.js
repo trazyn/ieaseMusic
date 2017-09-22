@@ -60,7 +60,7 @@ export default theme => {
                 right: 0,
                 bottom: 2,
                 display: 'inline-block',
-                padding: '11px 6px',
+                padding: '10px 6px',
                 fontFamily: 'Roboto',
                 fontSize: 12,
                 color: '#fff',
@@ -126,11 +126,6 @@ export default theme => {
             '& a:last-child:after': {
                 content: 'none',
             }
-        },
-
-        cover: {
-            height: 50,
-            width: 50,
         },
 
         action: {

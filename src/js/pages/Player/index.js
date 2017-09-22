@@ -9,6 +9,7 @@ import classes from './classes';
 import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Header from 'components/Header';
 import Controller from 'components/Controller';
 
@@ -17,9 +18,9 @@ import Controller from 'components/Controller';
     showLoading: () => stores.player.toggleLoading(true),
     hideLoading: () => setTimeout(() => stores.player.toggleLoading(false), 500),
     meta: stores.player.meta,
-    getList: args => {
+    getList: async args => {
         var { id, type } = args;
-        stores.player.getDetail(type, id);
+        await stores.player.getDetail(type, id);
     },
     list: stores.player.songs,
     recommend: stores.player.recommend,
@@ -211,9 +212,11 @@ class Player extends Component {
                         style={{
                             background: heroBackgroundColor,
                         }}>
-                        <FadeImage
-                            className={classes.cover}
-                            src={meta.cover} />
+                        <ProgressImage {...{
+                            height: 260,
+                            width: 260,
+                            src: meta.cover,
+                        }} />
 
                         <aside className={classes.info}>
                             <div className={classes.text}>
@@ -269,7 +272,11 @@ class Player extends Component {
                                             className="clearfix"
                                             key={index}
                                             to={e.link}>
-                                            <FadeImage src={e.cover} />
+                                            <ProgressImage {...{
+                                                height: 60,
+                                                width: 60,
+                                                src: e.cover,
+                                            }} />
                                         </Link>
                                     );
                                 })
