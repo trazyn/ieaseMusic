@@ -69,7 +69,7 @@ class Menu extends Component {
         return (
             <aside className={classes.container}>
                 <div
-                    className={classes.mask}
+                    className={classes.overlay}
                     onClick={this.props.close} />
                 <section className={classes.body}>
                     <img

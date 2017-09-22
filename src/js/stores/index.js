@@ -11,6 +11,7 @@ import artist from './artist';
 import top from './top';
 import playlist from './playlist';
 import fm from './fm';
+import playing from './playing';
 
 const stores = {
     me,
@@ -23,6 +24,7 @@ const stores = {
     top,
     playlist,
     fm,
+    playing,
 };
 
 axios.defaults.baseURL = 'http://localhost:8000';
