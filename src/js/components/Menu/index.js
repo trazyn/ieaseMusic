@@ -135,7 +135,7 @@ class Menu extends Component {
                         <a
                             className={clazz('tooltip', classes.twitter)}
                             data-text="Follow me on Twitter 😘"
-                            href="https://github.com/trazyn"
+                            href="https://twitter.com/var_darling"
                             target="_blank">
                             <i className="ion-social-twitter" />
                         </a>
