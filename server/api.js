@@ -94,7 +94,7 @@ app.use('/login/cellphone', require('../NeteaseCloudMusicApi/router/loginCellpho
 app.use('/login', require('../NeteaseCloudMusicApi/router/login'));
 
 // 登录刷新
-app.use('/login/refresh', require('../NeteaseCloudMusicApi/router/login_refresh'));
+app.use('/login/refresh', cache('1 hour', onlyStatus200), require('../NeteaseCloudMusicApi/router/login_refresh'));
 
 // 不明 api
 app.use('/log/web', require('../NeteaseCloudMusicApi/router/logWeb'));
