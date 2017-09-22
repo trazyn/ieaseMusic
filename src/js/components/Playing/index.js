@@ -11,6 +11,8 @@ import colors from 'utils/colors';
 
 @inject(stores => ({
     show: stores.playing.show,
+    search: stores.playing.filter,
+    filtered: stores.playing.filtered,
     songs: stores.controller.playlist.songs,
     song: stores.controller.song,
     play: stores.controller.play,
@@ -19,9 +21,16 @@ import colors from 'utils/colors';
 @observer
 class Playing extends Component {
     renderList() {
-        var { classes, songs = [], song = {}, play, close } = this.props;
+        var { classes, songs = [], filtered, song = {}, play, close } = this.props;
+        var list = songs;
 
-        return songs.map((e, index) => {
+        // Show the search result
+        if (this.refs.search
+            && this.refs.search.value.trim()) {
+            list = filtered;
+        }
+
+        return list.map((e, index) => {
             return (
                 <li
                     className={clazz(classes.song, {
@@ -63,7 +72,7 @@ class Playing extends Component {
     }
 
     render() {
-        var { classes, show, close } = this.props;
+        var { classes, show, search, close } = this.props;
 
         if (!show) {
             return false;
@@ -79,7 +88,11 @@ class Playing extends Component {
 
                 <section>
                     <header>
-                        <input type="text" placeholder="Search..." ref="search" />
+                        <input
+                            onInput={e => search(e.target.value)}
+                            placeholder="Search..."
+                            ref="search"
+                            type="text" />
 
                         <img
                             alt="Close"
