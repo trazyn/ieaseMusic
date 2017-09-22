@@ -58,7 +58,10 @@ class Home extends Component {
                 <div className={classes.info}>
                     <span className={classes.subtitle}>
                         {
-                            helper.humanNumber(item.played)
+                            item.type === 0
+                                ? `${helper.humanNumber(item.played)} PLAYED`
+                                : `${item.size} TRACKS`
+
                         }
                     </span>
                     <div className={classes.title}>

@@ -240,6 +240,9 @@ app.use('/user/subcount', require('../NeteaseCloudMusicApi/router/user_subcount'
 
 app.use('/user/record', require('../NeteaseCloudMusicApi/router/user_playrecord'));
 
+// New added
+app.use('/hot/album', require('./api/hot_album'));
+
 app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
 app.use('/player', require('./router/player'));
 app.use('/user', require('./router/user'));
