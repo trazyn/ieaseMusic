@@ -21,10 +21,6 @@ export default class AudioPlayer extends Component {
         }
     }
 
-    componentDidUpdate() {
-        this.buffering();
-    }
-
     passed = 0;
 
     progress(currentTime = 0) {
@@ -44,6 +40,8 @@ export default class AudioPlayer extends Component {
                 ele = ele.firstElementChild;
                 ele.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
                 ele.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(this.props.song.duration)}`);
+
+                this.buffering();
             }
         }, 450);
 

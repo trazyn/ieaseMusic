@@ -31,11 +31,15 @@ class ProgressImage extends Component {
     }
 
     handleLoad(e) {
+        var ele = this.refs.container;
         this.refs.thumb.style.paddingBottom = '0%';
 
-        setTimeout(() => {
-            this.refs.container.classList.add(this.props.classes.loaded);
-        }, 50);
+        // Fix bug, sometiems this dom has been destroyed
+        if (ele) {
+            setTimeout(() => {
+                ele.classList.add(this.props.classes.loaded);
+            }, 50);
+        }
     }
 
     render() {
