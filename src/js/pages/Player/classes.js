@@ -101,16 +101,14 @@ export default theme => ({
         bottom: 0,
         height: 60,
 
-        '& img': {
-            width: 60,
-            height: 60,
+        '& img:first-of-type': {
             filter: 'grayscale(100%)',
             transition: '.3s ease-in-out',
         },
 
-        '& img:hover': {
+        '& a:hover img:first-of-type': {
             filter: 'grayscale(0)',
-        }
+        },
     },
 
     body: {

@@ -205,7 +205,7 @@ router.get('/:type/:id', async(req, res) => {
             meta = {
                 name: meta.name,
                 size: meta.trackCount,
-                cover: `${meta.coverImgUrl}?param=300y300`,
+                cover: meta.coverImgUrl,
                 author: [{
                     id: meta.creator.userId,
                     name: meta.creator.nickname,
@@ -221,7 +221,7 @@ router.get('/:type/:id', async(req, res) => {
             meta = {
                 name: meta.name,
                 size: meta.size,
-                cover: `${meta.picUrl}?param=300y300`,
+                cover: meta.picUrl,
                 author: meta.artists.map(e => ({
                     id: e.id,
                     name: e.name,
