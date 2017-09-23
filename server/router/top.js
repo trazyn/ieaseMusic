@@ -10,30 +10,34 @@ const router = express();
 router.get('/:ids', async(req, res) => {
     debug('Handle request for /top');
 
+    var list = [];
     var ids = req.params.ids;
 
     debug('Params \'ids\': %s', ids);
 
     ids = ids.split(',');
 
-    var list = await Promise.all(ids.map(async e => {
-        var response = await axios.get(`/top/list?idx=${e}`);
+    try {
+        list = await Promise.all(ids.map(async e => {
+            let response = await axios.get(`/top/list?idx=${e}`);
+            let data = response.data.result;
 
-        if (response.data.code !== 200) {
-            error('Failed to get top list \'%s\': %O', e, response.data);
-        }
+            if (response.data.code !== 200) {
+                throw data;
+            }
 
-        var data = response.data.result;
-
-        return {
-            name: data.name,
-            played: data.playCount,
-            updateTime: data.updateTime,
-            size: data.trackCount,
-            link: `/player/0/${data.id}`,
-            cover: `${data.tracks[0]['album']['picUrl']}?param=300y300`
-        };
-    }));
+            return {
+                name: data.name,
+                played: data.playCount,
+                updateTime: data.updateTime,
+                size: data.trackCount,
+                link: `/player/0/${data.id}`,
+                cover: data.tracks[0]['album']['picUrl'],
+            };
+        }));
+    } catch (ex) {
+        error('Failed to get top list: %O', ex);
+    }
 
     res.send({
         list,

@@ -8,7 +8,7 @@ import clazz from 'classname';
 import moment from 'moment';
 
 import classes from './classes';
-import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
 import Controller from 'components/Controller';
@@ -30,10 +30,17 @@ class Top extends Component {
         }
 
         var classes = this.props.classes;
+        var height = (window.innerHeight - 50) / 2;
 
         return (
-            <Link className={clazz('clearfix', classes.item)} to={item.link}>
-                <FadeImage src={item.cover} />
+            <Link
+                className={clazz('clearfix', classes.item)}
+                to={item.link}>
+                <ProgressImage {...{
+                    height,
+                    width: height,
+                    src: item.cover,
+                }} />
 
                 <article className={classes.info}>
                     <p>
@@ -78,13 +85,15 @@ class Top extends Component {
     render() {
         var { classes, loading } = this.props;
 
+        if (loading) {
+            return <Loader show={true} />;
+        }
+
         return (
             <div className={classes.container}>
-                <Loader show={loading} />
-
                 <Header {...{
                     showBack: true,
-                    showFav: true,
+                    color: 'white',
                 }} />
 
                 <Scroller>

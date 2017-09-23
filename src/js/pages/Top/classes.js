@@ -19,7 +19,7 @@ export default theme => ({
             fontSize: 24,
         },
 
-        '& img': {
+        '& img:first-of-type': {
             width: '100%',
             height: '100%',
             transition: '.2s ease-in',
@@ -38,7 +38,7 @@ export default theme => ({
             transition: '.2s',
         },
 
-        '&:hover img': {
+        '&:hover img:first-of-type': {
             transform: 'scale(1.1)',
         },
 
