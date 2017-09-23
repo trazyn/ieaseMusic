@@ -104,14 +104,22 @@ export default theme => {
 
             '& a': {
                 paddingBottom: 1,
+                maxWidth: 400,
                 fontSize: 14,
                 color: '#081600',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
             }
         },
 
         author: {
             marginTop: 2,
             fontSize: 11,
+            maxWidth: 400,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
 
             '& a': {
                 color: '#4a4a4a',
