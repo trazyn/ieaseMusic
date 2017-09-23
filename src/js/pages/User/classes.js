@@ -95,16 +95,16 @@ export default theme => ({
             color: '#fff',
         },
 
-        '&:hover': {
+        '&$playing, &:hover': {
             transform: 'translateY(-30px)',
         },
 
-        '&:hover p': {
+        '&$playing p, &:hover p': {
             visibility: 'visible',
             opacity: 1,
         },
 
-        '&:hover $played': {
+        '&$playing $played, &:hover $played': {
             width: '100%',
         },
 
@@ -114,6 +114,8 @@ export default theme => ({
             whiteSpace: 'nowrap',
         }
     },
+
+    playing: {},
 
     meta: {
         position: 'absolute',
