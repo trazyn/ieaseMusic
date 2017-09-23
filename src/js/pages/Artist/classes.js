@@ -228,14 +228,14 @@ export default theme => ({
             alignItems: 'center',
             marginBottom: 20,
 
-            '& img': {
+            '& figure': {
                 height: 48,
                 width: 48,
                 marginRight: 10,
                 transition: '.4s',
             },
 
-            '& img:hover': {
+            '& figure:hover': {
                 boxShadow: '0 0 24px 0 rgba(0, 0, 0, .5)',
             }
         }
@@ -279,15 +279,13 @@ export default theme => ({
             ...perdido.column('1/5'),
             marginBottom: 20,
 
-            '& img': {
-                height: 64,
-                width: 64,
+            '& figure': {
                 borderRadius: 64,
                 transition: '.4s',
             },
         },
 
-        '& img:hover': {
+        '& figure:hover': {
             boxShadow: '0 0 24px 0 rgba(0, 0, 0, .5)',
         }
     },

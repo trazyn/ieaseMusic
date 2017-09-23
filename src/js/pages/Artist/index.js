@@ -10,7 +10,7 @@ import injectSheet from 'react-jss';
 import classes from './classes';
 import helper from 'utils/helper';
 import sine from 'utils/sine';
-import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
 
@@ -27,8 +27,8 @@ class Artist extends Component {
     componentWillMount = () => this.props.getArtist(this.props.params.id);
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.params.id !== nextProps.params.id) {
-            this.props.getArtist(nextProps.params.id);
+        if (nextProps.params.id !== this.props.params.id) {
+            nextProps.getArtist(nextProps.params.id);
         }
     }
 
@@ -60,21 +60,25 @@ class Artist extends Component {
                     songs.map((e, index) => {
                         return (
                             <li
-                                key={index}
                                 className={clazz({
                                     [classes.playing]: index === 2
-                                })}>
+                                })}
+                                key={index}>
                                 <i className="ion-ios-play" />
 
                                 <span data-index>
                                     {index}
                                 </span>
 
-                                <span data-name title={e.name}>
+                                <span
+                                    data-name
+                                    title={e.name}>
                                     {e.name}
                                 </span>
 
-                                <span data-album title={e.al.name}>
+                                <span
+                                    data-album
+                                    title={e.al.name}>
                                     <Link to={`/player/1/${e.al.id}`}>
                                         {e.al.name}
                                     </Link>
@@ -101,12 +105,20 @@ class Artist extends Component {
                 {
                     albums.map((e, index) => {
                         return (
-                            <div key={index} className={classes.album}>
+                            <div
+                                className={classes.album}
+                                key={index}>
                                 <Link to={e.link}>
-                                    <FadeImage src={e.cover} />
+                                    <ProgressImage {...{
+                                        height: 48,
+                                        width: 48,
+                                        src: e.cover,
+                                    }} />
                                 </Link>
                                 <div className={classes.info}>
-                                    <p title={e.name} data-name>
+                                    <p
+                                        data-name
+                                        title={e.name}>
                                         {e.name}
                                     </p>
 
@@ -131,12 +143,18 @@ class Artist extends Component {
                 {
                     similar.map((e, index) => {
                         return (
-                            <div key={index} className={classes.artist}>
+                            <div
+                                className={classes.artist}
+                                key={index}>
                                 <Link
-                                    to={e.link}
+                                    className="tooltip"
                                     data-text={e.name}
-                                    className="tooltip">
-                                    <FadeImage src={e.avatar} />
+                                    to={e.link}>
+                                    <ProgressImage {...{
+                                        height: 64,
+                                        width: 64,
+                                        src: e.avatar,
+                                    }} />
                                 </Link>
                             </div>
                         );
@@ -153,13 +171,19 @@ class Artist extends Component {
         return (
             <div className={classes.container}>
                 <Loader show={loading} />
+
                 <Header {...{
                     showBack: true,
                     showFollow: true,
                     showPlaylist: true,
                 }} />
                 <div className={classes.hero}>
-                    <FadeImage src={profile.background} />
+                    <ProgressImage {...{
+                        width: window.innerWidth,
+                        height: window.innerWidth / (640 / 300),
+                        src: profile.background,
+                        thumb: (profile.background || '').replace(/\?.*$/, '?param=20y10'),
+                    }} />
 
                     <div className={classes.inner}>
                         <div className={classes.play}>
