@@ -31,6 +31,7 @@ export default theme => ({
         width: '100vw',
         height: '100vh',
         background: 'rgba(255, 255, 255, .3)',
+        zIndex: 999,
     },
 
     close: {
