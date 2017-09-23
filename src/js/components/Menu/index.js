@@ -59,6 +59,14 @@ class Menu extends Component {
         );
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.show === true) {
+            setTimeout(() => {
+                this.refs.container.focus();
+            });
+        }
+    }
+
     render() {
         var { classes, show, close } = this.props;
 
@@ -67,7 +75,12 @@ class Menu extends Component {
         }
 
         return (
-            <aside className={classes.container}>
+            <div
+                className={classes.container}
+                // Press ESC close menu
+                onKeyUp={e => e.keyCode === 27 && this.props.close()}
+                ref="container"
+                tabIndex="-1">
                 <div
                     className={classes.overlay}
                     onClick={this.props.close} />
@@ -141,7 +154,7 @@ class Menu extends Component {
                         </a>
                     </div>
                 </section>
-            </aside>
+            </div>
         );
     }
 }

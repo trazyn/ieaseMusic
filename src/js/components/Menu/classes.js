@@ -1,7 +1,7 @@
 
 export default theme => ({
     container: {
-
+        outline: 0,
     },
 
     body: {
