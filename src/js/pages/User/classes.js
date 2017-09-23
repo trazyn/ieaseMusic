@@ -9,13 +9,10 @@ export default theme => ({
         height: 260,
         justifyContent: 'flex-start',
         alignItems: 'center',
-    },
 
-    avatar: {
-        display: 'block',
-        height: 260,
-        width: 260,
-        boxShadow: '0 0 24px 0 #000',
+        '& figure': {
+            boxShadow: '0 0 24px 0 #000',
+        }
     },
 
     username: {
@@ -73,7 +70,7 @@ export default theme => ({
         cursor: 'pointer',
         transition: '.4s',
 
-        '& img': {
+        '& figure': {
             width: 120,
             height: 120,
             margin: '50px 30px',

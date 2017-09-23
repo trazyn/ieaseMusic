@@ -8,7 +8,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import helper from 'utils/helper';
-import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
 
@@ -23,6 +23,12 @@ import Header from 'components/Header';
 class User extends Component {
     componentWillMount = () => this.props.getUser(this.props.params.id);
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.id !== this.props.params.id) {
+            nextProps.getUser(nextProps.params.id);
+        }
+    }
+
     renderList() {
         var { classes, playlists } = this.props;
 
@@ -35,7 +41,11 @@ class User extends Component {
                                 className={clazz('clearfix', classes.item)}
                                 to={e.link}
                                 key={index}>
-                                <FadeImage src={e.cover} />
+                                <ProgressImage {...{
+                                    height: 120,
+                                    width: 120,
+                                    src: e.cover,
+                                }} />
                                 <div className={classes.meta}>
                                     <p className={classes.name}>
                                         <span>{e.name}</span>
@@ -55,10 +65,13 @@ class User extends Component {
     render() {
         var { classes, loading, profile, isme } = this.props;
 
+        // Force rerender all, let image progressively load
+        if (loading) {
+            return <Loader show={true} />;
+        }
+
         return (
             <div className={classes.container}>
-                <Loader className={loading} />
-
                 <Header {...{
                     showBack: true,
                     showFollow: !isme(),
@@ -66,7 +79,11 @@ class User extends Component {
                 }} />
 
                 <div className={classes.hero}>
-                    <FadeImage className={classes.avatar} src={profile.avatar} />
+                    <ProgressImage {...{
+                        height: 260,
+                        width: 260,
+                        src: profile.avatar,
+                    }} />
 
                     <div className={classes.info}>
                         <p className={classes.username}>
