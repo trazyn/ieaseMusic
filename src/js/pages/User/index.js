@@ -18,6 +18,12 @@ import Header from 'components/Header';
     profile: stores.user.profile,
     playlists: stores.user.playlists,
     isme: () => stores.user.profile.id === stores.me.profile.userId,
+    isPlaying: (id) => {
+        var controller = stores.controller;
+
+        return controller.playing
+            && controller.playlist.id === id.toString();
+    }
 }))
 @observer
 class User extends Component {
@@ -38,7 +44,9 @@ class User extends Component {
                     playlists.map((e, index) => {
                         return (
                             <Link
-                                className={clazz('clearfix', classes.item)}
+                                className={clazz('clearfix', classes.item, {
+                                    [classes.playing]: this.props.isPlaying(e.id)
+                                })}
                                 to={e.link}
                                 key={index}>
                                 <ProgressImage {...{
