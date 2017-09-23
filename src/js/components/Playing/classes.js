@@ -9,10 +9,12 @@ export default theme => ({
         background: '#fff',
         boxShadow: '0 30px 80px 0 rgba(97, 45, 45, .25)',
         zIndex: 999,
+        outline: 0,
 
         '& section': {
             position: 'relative',
             zIndex: 1,
+            outline: 0,
         },
 
         '& header': {
