@@ -65,6 +65,13 @@ export default class AudioPlayer extends Component {
         }
     }
 
+    afterRepeat() {
+        // In repeat mode, reset the checkpoint
+        if (this.refs.player.currentTime === 0) {
+            this.passed = 0;
+        }
+    }
+
     render() {
         var song = this.props.song.data || {};
 
@@ -79,8 +86,9 @@ export default class AudioPlayer extends Component {
                     this.passed = 0, this.props.next();
                 }}
                 onError={e => console.log(e)}
-                onTimeUpdate={e => this.progress(e.target.currentTime)}
                 onProgress={e => this.buffering(e)}
+                onSeeked={e => this.afterRepeat()}
+                onTimeUpdate={e => this.progress(e.target.currentTime)}
                 ref="player"
                 src={song.src}
                 style={{

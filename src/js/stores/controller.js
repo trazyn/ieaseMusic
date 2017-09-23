@@ -152,6 +152,9 @@ class Controller {
         } else {
             self.mode = PLAYER_SHUFFLE;
         }
+
+        // Looping ...
+        document.querySelector('audio').loop = self.mode === PLAYER_LOOP;
     }
 }
 
