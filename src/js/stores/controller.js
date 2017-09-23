@@ -27,7 +27,9 @@ class Controller {
 
         self.playing = false;
         self.history = [];
-        self.playlist = playlist;
+
+        // Disconnect all observer
+        self.playlist = JSON.parse(JSON.stringify(playlist));
         self.song = playlist.songs[0];
     }
 

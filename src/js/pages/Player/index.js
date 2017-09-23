@@ -34,7 +34,38 @@ import Controller from 'components/Controller';
     play: (songid) => {
         var { controller, player } = stores;
         var meta = player.meta;
+        var sameToPlaying = controller.playlist.id === player.meta.id;
 
+        if (!songid) {
+            // Change the
+            if (sameToPlaying) {
+                controller.toggle();
+            } else {
+                // Play a new playlist
+                controller.setup({
+                    id: meta.id,
+                    link: `/player/${meta.type}/${meta.id}`,
+                    name: meta.name,
+                    songs: player.songs,
+                });
+                controller.play();
+            }
+
+            return;
+        }
+
+        if (sameToPlaying) {
+            // Song is playing
+            if (songid === controller.song.id) {
+                controller.toggle();
+                return;
+            }
+
+            controller.play(songid);
+            return;
+        }
+
+        // Change playlist and play specific song
         controller.setup({
             id: meta.id,
             link: `/player/${meta.type}/${meta.id}`,
@@ -61,15 +92,6 @@ class Player extends Component {
         await getList(params);
         await getRelated(song);
         hideLoading();
-    }
-
-    togglePlayer() {
-        var { meta, canitoggle, toggle, play } = this.props;
-
-        // Should been a valiable playlist
-        if (meta.id) {
-            canitoggle() ? toggle() : play();
-        }
     }
 
     componentWillMount = () => this.load(this.props);
@@ -162,11 +184,6 @@ class Player extends Component {
                         [classes.active]: sameToPlaylist && e.id === song.id,
                     })}
                     onClick={ev => {
-                        if (sameToPlaylist && e.id === song.id) {
-                            this.props.toggle();
-                            return;
-                        }
-
                         this.props.play(e.id);
                     }} >
 
@@ -254,7 +271,7 @@ class Player extends Component {
 
                                 <div
                                     className={classes.play}
-                                    onClick={() => this.togglePlayer()}>
+                                    onClick={() => this.props.play()}>
                                     {
                                         (this.props.canitoggle() && playing)
                                             ? <i className="ion-ios-pause" />
