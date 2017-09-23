@@ -13,83 +13,103 @@ const cache = apicache.middleware;
 const onlyStatus200 = (req, res) => res.statusCode === 200;
 
 async function getRecentUser(id) {
-    // Get the recent user that played this song
-    var response = await axios(`/simi/user?id=${id}`);
     var users = [];
 
-    if (response.data.code !== 200) {
-        error('Failed to get recent user: %O', response.data);
-    } else {
-        response.data.userprofiles.map(e => {
-            users.push({
-                id: e.userId,
-                name: e.nickname,
-                avatar: `${e.avatarUrl}?param=50y50`,
-                link: `/user/${e.userId}`,
+    try {
+        // Get the recent user that played this song
+        let response = await axios(`/simi/user?id=${id}`);
+
+        if (response.data.code !== 200) {
+            throw response.data;
+        } else {
+            response.data.userprofiles.map(e => {
+                users.push({
+                    id: e.userId,
+                    name: e.nickname,
+                    avatar: `${e.avatarUrl}?param=50y50`,
+                    link: `/user/${e.userId}`,
+                });
             });
-        });
+        }
+    } catch (ex) {
+        error('Failed to get recent user: %O', ex);
     }
 
     return users;
 }
 
 async function getSimilarArtist(id) {
-    var response = await axios.get(`/simi/artist?id=${id}`);
     var artists = [];
 
-    if (response.data.code === 200) {
-        response.data.artists.map(e => {
-            artists.push({
-                id: e.id,
-                name: e.name,
-                avatar: `${e.picUrl}?param=50y50`,
-                link: `/artist/${e.id}`,
+    try {
+        let response = await axios.get(`/simi/artist?id=${id}`);
+
+        if (response.data.code === 200) {
+            response.data.artists.map(e => {
+                artists.push({
+                    id: e.id,
+                    name: e.name,
+                    avatar: `${e.picUrl}?param=50y50`,
+                    link: `/artist/${e.id}`,
+                });
             });
-        });
-    } else {
-        error('Failed to get similar artist: %O', response.data);
+        } else {
+            throw response.data;
+        }
+    } catch (ex) {
+        error('Failed to get similar artist: %O', ex);
     }
 
     return artists;
 }
 
 async function getSimilarPlaylist(id) {
-    var response = await axios.get(`/simi/playlist?id=${id}`);
     var playlists = [];
 
-    if (response.data.code !== 200) {
-        error('Failed to get similar playlist: %O', response.data);
-    } else {
-        response.data.playlists.map(e => {
-            playlists.push({
-                id: e.id,
-                name: e.name,
-                cover: e.coverImgUrl,
-                link: `/player/0/${e.id}`,
+    try {
+        let response = await axios.get(`/simi/playlist?id=${id}`);
+
+        if (response.data.code !== 200) {
+            throw response.data;
+        } else {
+            response.data.playlists.map(e => {
+                playlists.push({
+                    id: e.id,
+                    name: e.name,
+                    cover: e.coverImgUrl,
+                    link: `/player/0/${e.id}`,
+                });
             });
-        });
+        }
+    } catch (ex) {
+        error('Failed to get similar playlist: %O', ex);
     }
 
     return playlists;
 }
 
 async function getAlbumBySong(id) {
-    var response = await axios.get(`/simi/song?id=${id}`);
     var albums = [];
 
-    if (response.data.code !== 200) {
-        error('Failed to get similar song: %O', response.data);
-    } else {
-        response.data.songs.map(e => {
-            var album = e.album;
+    try {
+        let response = await axios.get(`/simi/song?id=${id}`);
 
-            albums.push({
-                id: album.id,
-                name: album.name,
-                cover: album.picUrl,
-                link: `/player/1/${album.id}`
+        if (response.data.code !== 200) {
+            throw response.data;
+        } else {
+            response.data.songs.map(e => {
+                var album = e.album;
+
+                albums.push({
+                    id: album.id,
+                    name: album.name,
+                    cover: album.picUrl,
+                    link: `/player/1/${album.id}`
+                });
             });
-        });
+        }
+    } catch (ex) {
+        error('Failed to get similar song: %O', ex);
     }
 
     return albums;
