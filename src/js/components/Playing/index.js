@@ -20,6 +20,12 @@ import colors from 'utils/colors';
 }))
 @observer
 class Playing extends Component {
+    pressEscExit(e) {
+        if (e.keyCode === 27) {
+            this.props.close();
+        }
+    }
+
     renderList() {
         var { classes, songs = [], filtered, song = {}, play, close } = this.props;
         var list = songs;
@@ -89,7 +95,9 @@ class Playing extends Component {
         return (
             <div
                 className={classes.container}
-                ref="container">
+                onKeyUp={e => this.pressEscExit(e)}
+                ref="container"
+                tabIndex="-1">
                 <div
                     className={classes.overlay}
                     onClick={close} />
@@ -97,6 +105,7 @@ class Playing extends Component {
                 <section>
                     <header>
                         <input
+                            autoFocus={true}
                             onInput={e => search(e.target.value)}
                             placeholder="Search..."
                             ref="search"
