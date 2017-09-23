@@ -180,77 +180,81 @@ router.get('/:type/:id', async(req, res) => {
      * */
     var type = +req.params.type;
     var id = req.params.id;
+    var meta = {};
+    var songs = [];
 
     debug('Params \'type\': %s', type);
     debug('Params \'id\': %s', id);
 
-    var response = await axios.get(type === 0 ? '/playlist/detail' : '/album', {
-        params: {
-            id
-        },
-    });
-    var data = response.data;
-    var meta = {};
-    var songs = [];
-
-    if (data.code !== 200) {
-        error('Failed to get player songs: %O', data);
-    } else {
-        songs = (data.songs || data.playlist.tracks).map(e => {
-            // eslint-disable-next-line
-            var { al /* Album */, ar /* Artist */ } = e;
-
-            return {
-                id: e.id,
-                name: e.name,
-                duration: e.dt,
-                album: {
-                    id: al.id,
-                    name: al.name,
-                    cover: `${al.picUrl}?param=y100y100`,
-                    link: `/player/1/${al.id}`
-                },
-                artists: ar.map(e => ({
-                    id: e.id,
-                    name: e.name,
-                    link: `/artist/${e.id}`,
-                }))
-            };
+    try {
+        let response = await axios.get(type === 0 ? '/playlist/detail' : '/album', {
+            params: {
+                id
+            },
         });
+        let data = response.data;
 
-        if (type === 0) {
-            // User's playlist
-            meta = data.playlist;
-
-            meta = {
-                name: meta.name,
-                size: meta.trackCount,
-                cover: meta.coverImgUrl,
-                author: [{
-                    id: meta.creator.userId,
-                    name: meta.creator.nickname,
-                    link: `/user/${meta.creator.userId}`,
-                }],
-                played: meta.playCount,
-                subscribed: meta.subscribed
-            };
+        if (data.code !== 200) {
+            throw data;
         } else {
-            // Album
-            meta = data.album;
+            songs = (data.songs || data.playlist.tracks).map(e => {
+                // eslint-disable-next-line
+                var { al /* Album */, ar /* Artist */ } = e;
 
-            meta = {
-                name: meta.name,
-                size: meta.size,
-                cover: meta.picUrl,
-                author: meta.artists.map(e => ({
+                return {
                     id: e.id,
                     name: e.name,
-                    link: `/artist/${e.id}`,
-                })),
-                company: meta.company,
-                subscribed: meta.info.liked,
-            };
+                    duration: e.dt,
+                    album: {
+                        id: al.id,
+                        name: al.name,
+                        cover: `${al.picUrl}?param=y100y100`,
+                        link: `/player/1/${al.id}`
+                    },
+                    artists: ar.map(e => ({
+                        id: e.id,
+                        name: e.name,
+                        link: `/artist/${e.id}`,
+                    }))
+                };
+            });
+
+            if (type === 0) {
+                // User's playlist
+                meta = data.playlist;
+
+                meta = {
+                    name: meta.name,
+                    size: meta.trackCount,
+                    cover: meta.coverImgUrl,
+                    author: [{
+                        id: meta.creator.userId,
+                        name: meta.creator.nickname,
+                        link: `/user/${meta.creator.userId}`,
+                    }],
+                    played: meta.playCount,
+                    subscribed: meta.subscribed
+                };
+            } else {
+                // Album
+                meta = data.album;
+
+                meta = {
+                    name: meta.name,
+                    size: meta.size,
+                    cover: meta.picUrl,
+                    author: meta.artists.map(e => ({
+                        id: e.id,
+                        name: e.name,
+                        link: `/artist/${e.id}`,
+                    })),
+                    company: meta.company,
+                    subscribed: meta.info.liked,
+                };
+            }
         }
+    } catch (ex) {
+        error('Failed to get player songs: %O', ex);
     }
 
     res.send({
