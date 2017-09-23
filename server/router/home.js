@@ -15,7 +15,7 @@ async function getNewest() {
         let response = await axios.get('/hot/album');
 
         if (response.data.code !== 200) {
-            error('Failed to get hot album: %O', response.data);
+            throw response.data;
         } else {
             response.data.albums.map(e => {
                 list.push({
@@ -42,7 +42,7 @@ async function getPersonalized() {
         let response = await axios.get('/personalized');
 
         if (response.data.code !== 200) {
-            error('Failed to get personalized: %O', response.data);
+            throw response.data;
         } else {
             response.data.result.map(e => {
                 list.push({
@@ -83,7 +83,7 @@ async function getLiked(id) {
                     error('Failed to get playlist %s, %O', liked.id, response.data);
                 }
             } catch (ex) {
-                error('Failed to get playlist %s, %O', liked.id, ex);
+                throw response.data;
             }
 
             list = [{
@@ -110,7 +110,7 @@ async function getDaily() {
         let response = await axios.get('/recommend/songs');
 
         if (response.data.code !== 200) {
-            error('Failed to get daily songs: %O', response.data);
+            throw response.data;
         } else {
             list = [{
                 id: uuid.v4(),
@@ -152,7 +152,7 @@ async function getRecommend() {
         let response = await axios.get('/recommend/resource');
 
         if (response.data.code !== 200) {
-            error('Failed to get recommend: %O', response.data);
+            throw response.data;
         } else {
             response.data.recommend.map(e => {
                 list.push({
