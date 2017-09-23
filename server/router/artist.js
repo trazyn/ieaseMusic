@@ -7,6 +7,89 @@ const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
 
+async function getArtist(id) {
+    var profile = {};
+    var songs = [];
+
+    try {
+        let response = await axios.get(`/artists?id=${id}`);
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            profile = data.artist;
+
+            profile = {
+                id: profile.id,
+                uid: profile.accountId,
+                name: profile.name,
+                background: profile.picUrl + '?param=640y300',
+                followed: profile.followed,
+                size: {
+                    song: profile.musicSize,
+                    mv: profile.mvSize,
+                    album: profile.albumSize,
+                },
+            };
+            songs = data.hotSongs;
+        }
+    } catch (ex) {
+        error('Failed to get artist: %O', ex);
+    }
+
+    return { profile, songs };
+}
+
+async function getAlbums(id) {
+    var albums = [];
+
+    try {
+        let response = await axios.get(`/artist/album?id=${id}&limit=999`);
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            albums = data.hotAlbums.map(e => ({
+                id: e.id,
+                name: e.name,
+                cover: e.picUrl,
+                link: `/player/1/${e.id}`
+            }));
+        }
+    } catch (ex) {
+        error('Failed to get albums: %O', ex);
+    }
+
+    return albums;
+}
+
+async function getSimilar(id) {
+    var similar = [];
+
+    try {
+        let response = await axios.get(`/simi/artist?id=${id}`);
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            similar = data.artists.map(e => ({
+                id: e.id,
+                name: e.name,
+                avatar: e.picUrl,
+                publishTime: e.publishTime,
+                link: `/artist/${e.id}`,
+            }));
+        }
+    } catch (ex) {
+        error('Failed to get similar artists: %O', ex);
+    }
+
+    return similar;
+}
+
 router.get('/:id', async(req, res) => {
     debug('Handle request for /artist');
 
@@ -14,55 +97,11 @@ router.get('/:id', async(req, res) => {
 
     debug('Params \'id\': %s', id);
 
-    var songs = [];
-    var artist = await axios.get(`/artists?id=${id}`);
-    var albums = await axios.get(`/artist/album?id=${id}&limit=999`);
-    var similar = await axios.get(`/simi/artist?id=${id}`);
-
-    if (false
-        || artist.data.code !== 200
-        || albums.data.code !== 200
-        || similar.data.code !== 200) {
-        error('Failed to get artist info: %O, %O', artist.data, albums.data, similar.data);
-
-        artist = {};
-        songs = [];
-        albums = [];
-        similar = [];
-    } else {
-        songs = artist.data.hotSongs;
-        artist = artist.data.artist;
-        albums = albums.data.hotAlbums;
-        similar = similar.data.artists;
-    }
-
     res.send({
-        profile: {
-            id: artist.id,
-            uid: artist.accountId,
-            name: artist.name,
-            background: artist.picUrl + '?param=640y300',
-            followed: artist.followed,
-            size: {
-                song: artist.musicSize,
-                mv: artist.mvSize,
-                album: artist.albumSize,
-            },
-        },
-        songs,
-        albums: albums.map(e => ({
-            id: e.id,
-            name: e.name,
-            cover: e.picUrl,
-            link: `/player/1/${e.id}`
-        })),
-        similar: similar.map(e => ({
-            id: e.id,
-            name: e.name,
-            avatar: e.picUrl,
-            publishTime: e.publishTime,
-            link: `/artist/${e.id}`,
-        })),
+        ...(await getArtist(id)),
+
+        albums: await getAlbums(id),
+        similar: await getSimilar(id),
     });
 });
 
