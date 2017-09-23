@@ -12,7 +12,7 @@ async function getUser(id) {
 
     try {
         let response = await axios.get(`/user/detail?uid=${id}`);
-        var data = response.data;
+        let data = response.data;
 
         if (data.code !== 200) {
             throw data;
@@ -40,7 +40,7 @@ async function getPlaylist(id) {
 
     try {
         let response = await axios.get(`/user/playlist?uid=${id}`);
-        var data = response.data;
+        let data = response.data;
 
         if (data.code !== 200) {
             throw data;
