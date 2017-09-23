@@ -7,6 +7,60 @@ const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
 
+async function getUser(id) {
+    var user = {};
+
+    try {
+        let response = await axios.get(`/user/detail?uid=${id}`);
+        var data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            user = data.profile;
+
+            user = {
+                id: user.userId,
+                name: user.nickname,
+                signature: user.signature,
+                avatar: user.avatarUrl,
+                followed: user.followed,
+                followers: user.followeds,
+            };
+        }
+    } catch (ex) {
+        error('Failed to get user: %O', ex);
+    }
+
+    return user;
+}
+
+async function getPlaylist(id) {
+    var list = [];
+
+    try {
+        let response = await axios.get(`/user/playlist?uid=${id}`);
+        var data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            list = data.playlist.map(e => ({
+                id: e.id,
+                name: e.name,
+                cover: e.coverImgUrl,
+                played: e.playCount,
+                size: e.trackCount,
+                link: `/player/0/${e.id}`
+            }));
+        }
+    } catch (ex) {
+        error('Failed to get playlist: %O', ex);
+    }
+
+    return list;
+}
+
 router.get('/:id', async(req, res) => {
     debug('Handle request for /user');
 
@@ -14,38 +68,9 @@ router.get('/:id', async(req, res) => {
 
     debug('Params \'id\': %s', id);
 
-    var user = await axios.get(`/user/detail?uid=${id}`);
-    var playlists = await axios.get(`/user/playlist?uid=${id}`);
-
-    if (false
-        || user.data.code !== 200
-        || playlists.data.code !== 200) {
-        error('Failed to get user info: %O, %O', user.data, playlists.data);
-
-        user = {};
-        playlists = [];
-    } else {
-        user = user.data.profile;
-        playlists = playlists.data.playlist;
-    }
-
     res.send({
-        profile: {
-            id: user.userId,
-            name: user.nickname,
-            signature: user.signature,
-            avatar: user.avatarUrl,
-            followed: user.followed,
-            followers: user.followeds,
-        },
-        playlists: playlists.map(e => ({
-            id: e.id,
-            name: e.name,
-            cover: e.coverImgUrl,
-            played: e.playCount,
-            size: e.trackCount,
-            link: `/player/0/${e.id}`
-        })),
+        profile: await getUser(id),
+        playlists: await getPlaylist(id),
     });
 });
 
