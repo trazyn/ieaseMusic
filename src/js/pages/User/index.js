@@ -81,6 +81,7 @@ class User extends Component {
         return (
             <div className={classes.container}>
                 <Header {...{
+                    followed: profile.followed,
                     showBack: true,
                     showFollow: !isme(),
                     showPlaylist: true,
