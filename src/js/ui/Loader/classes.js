@@ -18,7 +18,10 @@ export default theme => {
             transition: '.2s',
 
             '& span': {
-                marginTop: '5%',
+                marginTop: '8%',
+                maxWidth: '60vw',
+                textAlign: 'center',
+                lineHeight: '32px',
                 color: '#ea4c89',
             },
 

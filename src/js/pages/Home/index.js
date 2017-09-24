@@ -169,7 +169,9 @@ class Home extends Component {
             <div
                 className={classes.container}
                 ref="container">
-                <Loader show={loading} />
+                <Loader
+                    show={loading}
+                    text="Please Wati ..." />
                 <Header {...{
                     showBack: false,
                 }} />
