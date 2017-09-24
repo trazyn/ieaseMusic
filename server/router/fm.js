@@ -34,7 +34,8 @@ router.get('/', async(req, res) => {
                 artists: artists.map(e => ({
                     id: e.id,
                     name: e.name,
-                    link: `/artist/${e.id}`,
+                    // Broken link
+                    link: e.id ? `/artist/${e.id}` : '',
                 }))
             };
         }),

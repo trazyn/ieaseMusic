@@ -50,7 +50,8 @@ async function getSimilarArtist(id) {
                     id: e.id,
                     name: e.name,
                     avatar: `${e.picUrl}?param=50y50`,
-                    link: `/artist/${e.id}`,
+                    // Broken link
+                    link: e.id ? `/artist/${e.id}` : '',
                 });
             });
         } else {
@@ -214,7 +215,8 @@ router.get('/:type/:id', async(req, res) => {
                     artists: ar.map(e => ({
                         id: e.id,
                         name: e.name,
-                        link: `/artist/${e.id}`,
+                        // Broken link
+                        link: e.id ? `/artist/${e.id}` : '',
                     }))
                 };
             });
@@ -246,7 +248,8 @@ router.get('/:type/:id', async(req, res) => {
                     author: meta.artists.map(e => ({
                         id: e.id,
                         name: e.name,
-                        link: `/artist/${e.id}`,
+                        // Broken link
+                        link: e.id ? `/artist/${e.id}` : '',
                     })),
                     company: meta.company,
                     subscribed: meta.info.liked,
