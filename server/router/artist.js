@@ -32,13 +32,42 @@ async function getArtist(id) {
                     album: profile.albumSize,
                 },
             };
-            songs = data.hotSongs;
+            songs = data.hotSongs.map(e => {
+                // eslint-disable-next-line
+                var { al /* Album */, ar /* Artist */ } = e;
+
+                return {
+                    id: e.id,
+                    name: e.name,
+                    duration: e.dt,
+                    album: {
+                        id: al.id,
+                        name: al.name,
+                        cover: `${al.picUrl}?param=y100y100`,
+                        link: `/player/1/${al.id}`
+                    },
+                    artists: ar.map(e => ({
+                        id: e.id,
+                        name: e.name,
+                        // Broken link
+                        link: e.id ? `/artist/${e.id}` : '',
+                    }))
+                };
+            });
         }
     } catch (ex) {
         error('Failed to get artist: %O', ex);
     }
 
-    return { profile, songs };
+    return {
+        profile,
+        playlist: {
+            id: profile.id,
+            name: `TOP 50 - ${profile.name}`,
+            size: 50,
+            songs,
+        }
+    };
 }
 
 async function getAlbums(id) {
@@ -80,7 +109,8 @@ async function getSimilar(id) {
                 name: e.name,
                 avatar: e.picUrl,
                 publishTime: e.publishTime,
-                link: `/artist/${e.id}`,
+                // Broken link
+                link: e.id ? `/artist/${e.id}` : '',
             }));
         }
     } catch (ex) {

@@ -17,10 +17,50 @@ import Header from 'components/Header';
 @inject(stores => ({
     loading: stores.artist.loading,
     profile: stores.artist.profile,
-    songs: stores.artist.songs,
+    playlist: stores.artist.playlist,
     albums: stores.artist.albums,
     similar: stores.artist.similar,
     getArtist: stores.artist.getArtist,
+    playing: stores.controller.playing,
+    song: stores.controller.song,
+    isPlaying(id) {
+        var { controller, artist } = stores;
+        var res = controller.playing
+            && controller.playlist.id === artist.playlist.id;
+
+        if (res && id) {
+            res = res && controller.song.id === id;
+        }
+
+        return res;
+    },
+    play(songid) {
+        var { controller, artist } = stores;
+        var sameToPlaying = this.sameToPlaying();
+
+        if (sameToPlaying) {
+            if (songid === void 0
+                || (controller.playing && controller.song.id === songid)) {
+                controller.toggle();
+            } else {
+                controller.play(songid);
+            }
+        } else {
+            // Play a new playlist
+            controller.setup({
+                id: artist.playlist.id,
+                link: `/artist/${artist.profile.id}`,
+                name: artist.playlist.name,
+                songs: artist.playlist.songs,
+            });
+            controller.play(songid);
+        }
+    },
+    sameToPlaying() {
+        var { controller, artist } = stores;
+
+        return controller.playlist.id === artist.playlist.id;
+    },
 }))
 @observer
 class Artist extends Component {
@@ -46,25 +86,44 @@ class Artist extends Component {
 
     componentWillUnmount = () => sine.hide();
 
+    componentDidUpdate() {
+        var list = this.refs.list;
+
+        if (list) {
+            let playing = list.querySelector(`.${this.props.classes.playing}`);
+
+            if (playing) {
+                playing.scrollIntoViewIfNeeded();
+            }
+        }
+    }
+
     state = {
         renderTabContent: this.renderSongs.bind(this),
     };
 
     renderSongs() {
-        var { classes, songs } = this.props;
+        var { classes, playlist, sameToPlaying, song, isPlaying } = this.props;
 
         /* eslint-disable react/jsx-boolean-value */
         return (
-            <ul className={classes.songs}>
+            <ul
+                className={classes.songs}
+                ref="list">
                 {
-                    songs.map((e, index) => {
+                    playlist.songs.map((e, index) => {
                         return (
                             <li
                                 className={clazz({
-                                    [classes.playing]: index === 2
+                                    [classes.playing]: sameToPlaying() && song.id === e.id,
                                 })}
-                                key={index}>
-                                <i className="ion-ios-play" />
+                                key={index}
+                                onClick={ev => this.props.play(e.id)}>
+                                {
+                                    isPlaying(e.id)
+                                        ? <i className="ion-ios-pause" />
+                                        : <i className="ion-ios-play" />
+                                }
 
                                 <span data-index>
                                     {index}
@@ -78,14 +137,14 @@ class Artist extends Component {
 
                                 <span
                                     data-album
-                                    title={e.al.name}>
-                                    <Link to={`/player/1/${e.al.id}`}>
-                                        {e.al.name}
+                                    title={e.album.name}>
+                                    <Link to={`/player/1/${e.album.id}`}>
+                                        {e.album.name}
                                     </Link>
                                 </span>
 
                                 <span data-time>
-                                    {helper.getTime(e.dt)}
+                                    {helper.getTime(e.duration)}
                                 </span>
                             </li>
                         );
@@ -165,7 +224,7 @@ class Artist extends Component {
     }
 
     render() {
-        var { classes, loading, profile } = this.props;
+        var { classes, loading, profile, isPlaying } = this.props;
         var size = profile.size || {};
 
         return (
@@ -186,8 +245,14 @@ class Artist extends Component {
                     }} />
 
                     <div className={classes.inner}>
-                        <div className={classes.play}>
-                            <i className="ion-ios-play" />
+                        <div
+                            className={classes.play}
+                            onClick={e => this.props.play()}>
+                            {
+                                isPlaying()
+                                    ? <i className="ion-ios-pause" />
+                                    : <i className="ion-ios-play" />
+                            }
                         </div>
 
                         <canvas ref="canvas" />
