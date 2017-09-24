@@ -61,6 +61,10 @@ import Header from 'components/Header';
 
         return controller.playlist.id === artist.playlist.id;
     },
+
+    highlightAlbum(id) {
+        return stores.controller.playlist.id === id.toString();
+    }
 }))
 @observer
 class Artist extends Component {
@@ -165,7 +169,9 @@ class Artist extends Component {
                     albums.map((e, index) => {
                         return (
                             <div
-                                className={classes.album}
+                                className={clazz(classes.album, {
+                                    [classes.playing]: this.props.highlightAlbum(e.id),
+                                })}
                                 key={index}>
                                 <Link to={e.link}>
                                     <ProgressImage {...{
@@ -232,6 +238,7 @@ class Artist extends Component {
                 <Loader show={loading} />
 
                 <Header {...{
+                    followed: profile.followed,
                     showBack: true,
                     showFollow: true,
                     showPlaylist: true,
