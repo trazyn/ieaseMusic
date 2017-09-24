@@ -105,7 +105,7 @@ export default theme => {
             '& a': {
                 paddingBottom: 1,
                 maxWidth: 400,
-                fontSize: 14,
+                fontSize: 13,
                 color: '#081600',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
