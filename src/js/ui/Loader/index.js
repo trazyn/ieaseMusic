@@ -25,6 +25,8 @@ const randomText = [
     '下次我请',
     '皇帝之怒,响彻群山',
     '火墙火墙火墙火墙火墙火墙火墙火墙火墙',
+    '换坦嘲讽',
+    '炸弹快躲',
     '你的护甲毫无意义，你的信仰一文不值！',
     '这个按钮是干什么用的？',
     '你不能拿走我的蜡烛！',
@@ -49,6 +51,14 @@ class Loader extends Component {
     static defaultProps = {
         show: false,
     };
+
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.show === this.props.show) {
+            return false;
+        }
+
+        return true;
+    }
 
     render() {
         var classes = this.props.classes;
