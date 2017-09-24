@@ -4,10 +4,20 @@ import axios from 'axios';
 
 class Artist {
     @observable loading = true;
+
+    // Profile of the artist
     @observable profile = {};
-    @observable songs = [];
+
+    // All albums of artist
     @observable albums = [];
+
+    // Similar artists
     @observable similar = [];
+
+    // Contains 'id' and 'songs'
+    @observable playlist = {
+        songs: [],
+    };
 
     @action async getArtist(id) {
         self.loading = true;
@@ -17,9 +27,9 @@ class Artist {
 
         if (data) {
             self.profile = data.profile;
-            self.songs.replace(data.songs);
-            self.albums.replace(data.albums);
-            self.similar.replace(data.similar);
+            self.playlist = data.playlist;
+            self.albums = data.albums;
+            self.similar = data.similar;
         }
 
         self.loading = false;

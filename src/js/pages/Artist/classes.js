@@ -118,6 +118,7 @@ export default theme => ({
                 left: 0,
                 width: '100%',
                 height: 2,
+                transition: '.2s',
             },
         },
 
@@ -171,7 +172,7 @@ export default theme => ({
             },
 
             '&$playing i': {
-                left: 15,
+                left: 12.5,
                 width: 30,
                 background: 'linear-gradient(to left, #ff512f, #dd2476)',
                 boxShadow: '0 0 24px 0 #ea4c89',
@@ -186,6 +187,10 @@ export default theme => ({
             width: 60,
             color: '#9b9b9b',
             textAlign: 'center',
+        },
+
+        '& [data-index]': {
+            width: 55,
         },
 
         '& [data-name], & [data-album]': {
