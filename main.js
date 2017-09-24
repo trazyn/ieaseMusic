@@ -77,6 +77,7 @@ const createMainWindow = () => {
 };
 
 app.setName(pkg.name);
+app.dock.setIcon(`${__dirname}/src/assets/dock.png`);
 
 app.on('ready', createMainWindow);
 app.on('before-quit', () => {
