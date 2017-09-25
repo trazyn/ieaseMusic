@@ -205,11 +205,23 @@ class Playlist {
         var response = await axios.get(`/playlist/${type}`);
         var data = response.data;
 
-        if (data) {
-            self.list = data.playlists;
-        }
+        self.list = data.playlists;
+        self.nextHref = data.nextHref;
 
         self.loading = false;
+    }
+
+    // Scroll to load more data
+    @action async loadmore() {
+        if (!self.nextHref) {
+            return;
+        }
+
+        var response = await axios.get(self.nextHref);
+        var data = response.data;
+
+        self.list.push(...data.playlists);
+        self.nextHref = data.nextHref;
     }
 
     @action toggle(show = !self.show) {

@@ -31,7 +31,6 @@ export default theme => ({
             width: '100vw',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            transition: '.2s',
         },
 
         '&:after': {
@@ -51,7 +50,8 @@ export default theme => ({
         padding: 0,
         margin: 0,
         width: 180,
-        marginTop: 50,
+        marginTop: 30,
+        paddingTop: 20,
         listStyle: 'none',
         color: '#fff',
         overflow: 'hidden',
@@ -98,7 +98,7 @@ export default theme => ({
         '& a': {
             background: '#000',
             letterSpacing: 0,
-            boxShadow: '4px 8px 16px 0px rgba(255, 255, 255, .5)',
+            boxShadow: '0 0 24px 0 rgba(255, 255, 255, 1)',
             whiteSpace: 'nowrap',
         }
     },
@@ -108,7 +108,8 @@ export default theme => ({
         width: 'calc(100vw - 200px)',
         height: 'calc(100vh - 100px)',
         paddingLeft: 20,
-        marginTop: 50,
+        marginTop: 30,
+        paddingTop: 20,
         overflow: 'hidden',
         overflowY: 'auto',
     },
@@ -120,16 +121,18 @@ export default theme => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
 
-        '& img': {
-            width: 64,
-            height: 64,
+        '& figure': {
             marginRight: 14,
             border: 'thin solid #000',
             transition: '.2s',
 
             '&:hover': {
-                boxShadow: ' 0 0 24px 0 rgba(0, 0, 0, .5)'
+                boxShadow: '0 0 24px 0 rgba(255, 255, 255, 1)'
             }
+        },
+
+        '&$playing figure': {
+            boxShadow: `0 0 24px 0 ${colors.pallet.primary}`
         },
 
         '& p': {
@@ -163,5 +166,8 @@ export default theme => ({
                 borderBottomColor: '#fff',
             }
         }
-    }
+    },
+
+    playing: {},
+    loadmore: {},
 });

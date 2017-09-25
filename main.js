@@ -27,6 +27,7 @@ const createMainWindow = () => {
         y: mainWindowState.y,
         width: 740,
         height: 480,
+        resize: false,
         vibrancy: 'medium-light',
         backgroundColor: 'none',
         frame: false,
