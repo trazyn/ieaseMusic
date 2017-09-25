@@ -24,6 +24,8 @@ export default class AudioPlayer extends Component {
     passed = 0;
 
     progress(currentTime = 0) {
+        var duration = this.props.song.duration;
+
         // Reduce CPU usage, cancel the duplicate compution
         if (currentTime * 1000 - this.passed < 1000) {
             return;
@@ -35,11 +37,11 @@ export default class AudioPlayer extends Component {
             var ele = document.querySelector('#progress');
 
             if (ele) {
-                let percent = (currentTime * 1000) / this.props.song.duration;
+                let percent = (currentTime * 1000) / duration;
 
                 ele = ele.firstElementChild;
                 ele.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
-                ele.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(this.props.song.duration)}`);
+                ele.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(duration)}`);
 
                 this.buffering();
             }

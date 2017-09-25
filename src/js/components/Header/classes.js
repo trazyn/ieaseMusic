@@ -24,7 +24,8 @@ export default theme => ({
             cursor: 'pointer',
 
             '&:hover': {
-                color: `${theme.header.iconHoverColor} !important`
+                color: `${theme.header.iconHoverColor} !important`,
+                textShadow: `0 0 24px ${colors.pallet.primary}`,
             },
         },
 

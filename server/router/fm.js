@@ -10,21 +10,33 @@ const router = express();
 router.get('/', async(req, res) => {
     debug('Handle request for /fm');
 
-    var response = await axios.get(`/personal_fm`);
-    var data = response.data;
+    var songs = [];
 
-    if (data.code !== 200) {
-        error('Failed to get FM: %O', data);
+    try {
+        let response = await axios.get(`/personal_fm`);
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+
+        songs = data.data || [];
+    } catch (ex) {
+        error('Failed to get FM: %O', ex);
     }
 
     res.send({
-        songs: (data.data || []).map(e => {
+        id: 'PERSONAL_FM',
+        name: 'My FM',
+        link: '/fm',
+        size: songs.length,
+        songs: songs.map(e => {
             var { album, artists } = e;
 
             return {
                 id: e.id,
                 name: e.name,
-                duration: e.dt,
+                duration: e.duration,
                 album: {
                     id: album.id,
                     name: album.name,

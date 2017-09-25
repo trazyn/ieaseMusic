@@ -2,22 +2,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
+import clazz from 'classname';
 import injectSheet from 'react-jss';
 
 import classes from './classes';
 import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Header from 'components/Header';
 
 @inject(stores => ({
     loading: stores.fm.loading,
-    songs: stores.fm.songs,
-    getSongs: stores.fm.getSongs,
+    getFM: stores.fm.preload,
+    songs: stores.fm.playlist.songs,
+    song: stores.fm.song,
+    next: stores.fm.next,
+    play: stores.fm.play,
+    like: stores.me.like,
+    unlike: stores.me.unlike,
+    isLiked: stores.me.isLiked,
+
+    isFMPlaying() {
+        var { controller, fm } = stores;
+        return controller.playlist.id === fm.playlist.id;
+    },
+
+    isPlaying() {
+        var { controller, fm } = stores;
+
+        return controller.playing
+            && controller.playlist.id === fm.playlist.id;
+    },
 }))
 @observer
 class FM extends Component {
     componentWillMount() {
-        this.props.getSongs();
+        this.props.getFM();
     }
 
     renderBG() {
@@ -28,7 +48,9 @@ class FM extends Component {
                 {
                     songs.map((e, index) => {
                         return (
-                            <div className={classes.cover} key={index}>
+                            <div
+                                className={classes.cover}
+                                key={index}>
                                 <FadeImage src={e.album.cover} />
                             </div>
                         );
@@ -39,25 +61,32 @@ class FM extends Component {
     }
 
     render() {
-        var { classes, loading, songs } = this.props;
-        var song = songs[0];
+        var { classes, loading, isFMPlaying, isLiked, like, unlike, song, next } = this.props;
+        var liked = false;
 
-        if (!song || loading) {
+        if (loading) {
             return (
                 <Loader show={true} />
             );
         }
 
+        liked = isLiked(song.id);
+
         return (
             <div className={classes.container}>
                 <Header {...{
+                    color: 'white',
                     showBack: true,
                 }} />
                 {this.renderBG()}
 
                 <section className={classes.main}>
                     <article>
-                        <FadeImage src={song.album.cover} />
+                        <ProgressImage {...{
+                            height: 290,
+                            width: 290,
+                            src: song.album.cover,
+                        }} />
 
                         <aside>
                             <p className={classes.title}>
@@ -69,14 +98,22 @@ class FM extends Component {
                                 <span>
                                     {
                                         song.artists.map((e, index) => {
-                                            return <Link to={e.link} key={index}>{e.name}</Link>;
+                                            return (
+                                                <Link
+                                                    key={index}
+                                                    to={e.link}>
+                                                    {e.name}
+                                                </Link>
+                                            );
                                         })
                                     }
                                 </span>
                             </p>
                             <p className={classes.album}>
                                 <span>
-                                    <Link to={song.album.link} title={song.album.name}>
+                                    <Link
+                                        title={song.album.name}
+                                        to={song.album.link}>
                                         {song.album.name}
                                     </Link>
                                 </span>
@@ -84,15 +121,40 @@ class FM extends Component {
                         </aside>
                     </article>
 
-                    <div className={classes.progress}>
-                        <div />
-                    </div>
+                    {
+                        isFMPlaying() && (
+                            <div
+                                className={classes.bar}
+                                id="progress">
+                                <div className={classes.playing} />
+                                <div className={classes.buffering} />
+                            </div>
+                        )
+                    }
 
                     <div className={classes.controls}>
-                        <i className="ion-ios-heart" />
+                        <i
+                            className={clazz('ion-ios-heart', {
+                                [classes.liked]: liked,
+                            })}
+                            onClick={e => liked ? unlike(song) : like(song)} />
+
                         <i className="ion-android-arrow-down" />
-                        <i className="ion-ios-pause" />
-                        <i className="ion-ios-fastforward" />
+
+                        <span onClick={e => this.props.play()}>
+                            {
+                                this.props.isPlaying()
+                                    ? <i className="ion-ios-pause" />
+                                    : <i className="ion-ios-play" />
+                            }
+                        </span>
+
+                        <i
+                            className="ion-ios-fastforward"
+                            onClick={next}
+                            style={{
+                                marginRight: 0,
+                            }} />
                     </div>
                 </section>
             </div>

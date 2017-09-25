@@ -156,6 +156,7 @@ export default theme => {
 
             '& i$liked': {
                 color: colors.pallet.grape,
+                textShadow: `0 0 24px ${colors.pallet.grape}`,
             }
         },
 
