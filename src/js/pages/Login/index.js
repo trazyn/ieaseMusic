@@ -65,7 +65,7 @@ class Login extends Component {
 
                 <header>
                     <h1>Sign in</h1>
-                    <p>Hello there! Sign in and start playing with NeteaseMusic &lt;3</p>
+                    <p>Hello there! Sign in and start playing with ieaseMusic &lt;3</p>
                 </header>
 
                 <section>
