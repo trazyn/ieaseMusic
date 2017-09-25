@@ -141,6 +141,7 @@ export default theme => {
             marginBottom: -30,
             width: 'calc(100vw - 64px)',
             overflow: 'hidden',
+            cursor: 'pointer',
 
             '& $playing, & $buffering': {
                 position: 'absolute',
