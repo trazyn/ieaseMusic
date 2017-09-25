@@ -36,6 +36,15 @@ class FM {
         controller.play();
     }
 
+    // Ban a song
+    @action async ban(id) {
+        var response = await axios.get(`/fm_trash?id=${id}`);
+
+        if (response.data.code === 200) {
+            self.next();
+        }
+    }
+
     @action async next() {
         var index = self.playlist.songs.findIndex(e => e.id === controller.song.id);
 

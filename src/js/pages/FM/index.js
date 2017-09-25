@@ -19,6 +19,7 @@ import Header from 'components/Header';
     next: stores.fm.next,
     play: stores.fm.play,
     like: stores.me.like,
+    ban: stores.fm.ban,
     unlike: stores.me.unlike,
     isLiked: stores.me.isLiked,
 
@@ -61,7 +62,7 @@ class FM extends Component {
     }
 
     render() {
-        var { classes, loading, isFMPlaying, isLiked, like, unlike, song, next } = this.props;
+        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, song, next } = this.props;
         var liked = false;
 
         if (loading) {
@@ -139,7 +140,9 @@ class FM extends Component {
                             })}
                             onClick={e => liked ? unlike(song) : like(song)} />
 
-                        <i className="ion-android-arrow-down" />
+                        <i
+                            className="ion-android-arrow-down"
+                            onClick={e => ban(song.id)} />
 
                         <span onClick={e => this.props.play()}>
                             {
