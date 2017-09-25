@@ -1,12 +1,8 @@
 
 import perdido from 'perdido';
-
-import helper from 'utils/helper';
 import colors from 'utils/colors';
 
 export default theme => {
-    var progress = helper.randomName();
-
     return {
         container: {
 
@@ -75,9 +71,7 @@ export default theme => {
                 alignItems: 'center',
             },
 
-            '& img': {
-                height: 290,
-                width: 290,
+            '& figure': {
                 marginRight: 24,
                 boxShadow: '0 0 24px 0 rgba(0, 0, 0, .4)',
             },
@@ -141,26 +135,42 @@ export default theme => {
             },
         },
 
-        progress: {
+        bar: {
             position: 'relative',
+            height: 30,
+            marginBottom: -30,
             width: 'calc(100vw - 64px)',
-            height: 4,
+            overflow: 'hidden',
 
-            '&:before': {
-                content: '""',
+            '& $playing, & $buffering': {
                 position: 'absolute',
                 top: 0,
                 left: 0,
+                height: 4,
+            },
+
+            '& $playing': {
                 display: 'block',
                 width: '100%',
-                height: '100%',
                 background: 'linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)',
                 backgroundSize: '24em .25em',
-                transition: 'all 0.2s ease-out',
                 boxShadow: '-4px 5px 24px 0px rgba(176, 14, 78, 1)',
-                animation: `${progress} 10s linear infinite`,
+                transition: 'all 0.2s ease-out',
+                transform: 'translate3d(-100%, 0, 0)',
+            },
+
+            '& $buffering': {
+                width: '100%',
+                background: colors.randomGradient(),
+                backgroundPosition: 0,
+                opacity: .2,
+                transform: 'translate3d(-100%, 0, 0)',
+                transition: 'transform .2s ease-out',
             },
         },
+
+        playing: {},
+        buffering: {},
 
         controls: {
             '& i': {
@@ -176,21 +186,16 @@ export default theme => {
 
                 '&:hover': {
                     color: colors.pallet.primary,
+                    textShadow: `0 0 24px ${colors.pallet.dribbble}`,
                 }
             },
 
-            '& i:last-child': {
-                marginRight: 0,
+            '& i$liked': {
+                color: colors.pallet.grape,
+                textShadow: `0 0 24px ${colors.pallet.grape}`,
             }
         },
 
-        [`@keyframes ${progress}`]: {
-            '0%': {
-                backgroundPosition: '0%',
-            },
-            '100%': {
-                backgroundPosition: '100%',
-            },
-        }
+        liked: {},
     };
 };

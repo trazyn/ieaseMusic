@@ -2,7 +2,7 @@
 const pallet = {
     primary: '#6496f0',
     sunflower: '#ffce54',
-    grape: '#ed5565',
+    grape: '#e0245e',
     coral: '#ff6470',
     mint: '#ec87c0',
     dribbble: '#ea4c89',

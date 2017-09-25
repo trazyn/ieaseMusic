@@ -2,6 +2,8 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
+import fm from './fm';
+
 const PLAYER_SHUFFLE = 0;
 const PLAYER_REPEAT = 1;
 const PLAYER_LOOP = 2;
@@ -21,7 +23,8 @@ class Controller {
     history = [];
 
     @action setup(playlist) {
-        if (self.playlist.id === playlist.id) {
+        if (self.playlist.id === playlist.id
+            && playlist.id !== 'PERSONAL_FM') {
             return;
         }
 
@@ -48,6 +51,7 @@ class Controller {
             self.history[forward ? 'push' : 'unshift'](song.id);
         }
 
+        fm.song = song;
         self.song = song;
         self.playing = true;
         self.resolveSong();
@@ -73,6 +77,10 @@ class Controller {
         var next;
 
         switch (true) {
+            case self.playlist.id === 'PERSONAL_FM':
+                fm.next();
+                return;
+
             /* Already in history */
             case ++index < history.length:
                 next = history[index];
