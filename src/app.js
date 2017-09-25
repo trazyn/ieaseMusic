@@ -15,6 +15,7 @@ import stores from './js/stores';
 class App extends Component {
     componentDidMount() {
         var { controller, fm, me, menu, playing } = stores;
+        var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
         ipcRenderer.on('player-play', (e, args) => {
@@ -50,19 +51,19 @@ class App extends Component {
         });
 
         ipcRenderer.on('show-home', () => {
-            this.refs.navigator.router.push('/');
+            navigator.router.push('/');
         });
 
         ipcRenderer.on('show-top', () => {
-            this.refs.navigator.router.push('/top');
+            navigator.router.push('/top');
         });
 
         ipcRenderer.on('show-playlist', () => {
-            this.refs.navigator.router.push('/playlist');
+            navigator.router.push('/playlist/全部');
         });
 
         ipcRenderer.on('show-fm', () => {
-            this.refs.navigator.router.push('/fm');
+            navigator.router.push('/fm');
         });
 
         ipcRenderer.on('show-menu', () => {
@@ -74,23 +75,22 @@ class App extends Component {
         });
 
         window.addEventListener('contextmenu', e => {
-            var { controller, fm } = stores;
-            var menu = new remote.Menu.buildFromTemplate([
+            let contextmenu = new remote.Menu.buildFromTemplate([
                 {
                     label: controller.playing ? 'Pause' : 'Play',
-                    click() {
+                    click: () => {
                         controller.toggle();
                     }
                 },
                 {
                     label: 'Next',
-                    click() {
+                    click: () => {
                         isFMPlaying() ? fm.next() : controller.next();
                     }
                 },
                 {
                     label: 'Previous',
-                    click() {
+                    click: () => {
                         controller.prev();
                     }
                 },
@@ -98,8 +98,23 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
-                    label: 'Like',
-                    click() {
+                    label: 'Menu',
+                    click: () => {
+                        menu.toggle(true);
+                    }
+                },
+                {
+                    label: 'Next Up',
+                    click: () => {
+                        playing.toggle(true);
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Like 💖',
+                    click: () => {
                         if (me.likes.get(controller.song.id)) {
                             return;
                         }
@@ -107,8 +122,8 @@ class App extends Component {
                     }
                 },
                 {
-                    label: 'Ban',
-                    click() {
+                    label: 'Ban 💩',
+                    click: () => {
                         fm.ban(controller.song.id);
                     }
                 },
@@ -117,7 +132,7 @@ class App extends Component {
                 },
                 {
                     label: 'Preferences...',
-                    click() {
+                    click: () => {
                         // TODO
                     },
                 },
@@ -125,21 +140,36 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
+                    label: 'Home',
+                    click: () => {
+                        navigator.router.push('/');
+                    }
+                },
+                {
+                    label: 'Playlist',
+                    click: () => {
+                        navigator.router.push('/playlist/全部');
+                    }
+                },
+                {
+                    label: 'FM',
+                    click: () => {
+                        navigator.router.push('/fm');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
                     label: 'Bug report 🐛',
-                    click() {
+                    click: () => {
                         shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
                     }
                 },
                 {
                     label: 'Fork me on Github 🚀',
-                    click() {
+                    click: () => {
                         shell.openExternal('https://github.com/trazyn/ieaseMusic');
-                    }
-                },
-                {
-                    label: '💕 Follow me on Twitter 👏',
-                    click() {
-                        shell.openExternal('https://twitter.com/var_darling');
                     }
                 },
                 {
@@ -147,13 +177,24 @@ class App extends Component {
                 },
                 {
                     label: 'Goodbye 😘',
-                    click() {
+                    click: () => {
                         ipcRenderer.send('goodbye');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: '💕 Follow me on Twitter 👏',
+                    click: () => {
+                        shell.openExternal('https://twitter.com/var_darling');
                     }
                 },
             ]);
 
-            menu.popup(remote.getCurrentWindow());
+            contextmenu.popup(remote.getCurrentWindow(), {
+                async: true,
+            });
         });
     }
 

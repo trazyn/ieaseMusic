@@ -108,7 +108,7 @@ let mainMenu = [
         ],
     },
     {
-        label: 'History',
+        label: 'Recently Played',
         submenu: [
             {
                 label: 'Nothing...',
@@ -116,7 +116,7 @@ let mainMenu = [
         ],
     },
     {
-        label: 'Playing',
+        label: 'Next Up',
         submenu: [
             {
                 label: 'Nothing...',
@@ -190,14 +190,14 @@ let mainMenu = [
                 role: 'separator',
             },
             {
-                label: 'Show Menu',
+                label: 'Menu',
                 accelerator: 'Cmd+M',
                 click() {
                     mainWindow.webContents.send('show-menu');
                 }
             },
             {
-                label: 'Show Playing',
+                label: 'Next Up',
                 accelerator: 'Cmd+P',
                 click() {
                     mainWindow.webContents.send('show-playing');
@@ -397,7 +397,7 @@ const createMainWindow = () => {
     });
 
     ipcMain.on('update-history', (event, args) => {
-        var historyMenu = mainMenu.find(e => e.label === 'History');
+        var historyMenu = mainMenu.find(e => e.label === 'Recently Played');
         var submenu = args.songs.map((e, index) => {
             return {
                 label: e.name,
@@ -416,7 +416,7 @@ const createMainWindow = () => {
     });
 
     ipcMain.on('update-playing', async(event, args) => {
-        var playingMenu = mainMenu.find(e => e.label === 'Playing');
+        var playingMenu = mainMenu.find(e => e.label === 'Next Up');
         var submenu = args.songs.map((e, index) => {
             return {
                 label: e.name,
