@@ -51,7 +51,10 @@ class Controller {
             self.history[forward ? 'push' : 'unshift'](song.id);
         }
 
-        fm.song = song;
+        if (self.playlist.id === 'PERSONAL_FM') {
+            fm.song = song;
+        }
+
         self.song = song;
         self.playing = true;
         self.resolveSong();
