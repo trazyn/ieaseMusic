@@ -7,7 +7,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import helper from 'utils/helper';
-import FadeImage from 'ui/FadeImage';
+import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
 import Controller from 'components/Controller';
@@ -17,6 +17,10 @@ import Controller from 'components/Controller';
     types: stores.playlist.types,
     list: stores.playlist.list,
     getList: stores.playlist.getList,
+    loadmore: stores.playlist.loadmore,
+    isPlaying: (id) => {
+        return stores.controller.playlist.id === id.toString();
+    }
 }))
 @observer
 class Playlist extends Component {
@@ -30,14 +34,39 @@ class Playlist extends Component {
         }
     }
 
+    async loadmore(e) {
+        var container = this.refs.list;
+
+        // Drop the duplicate invoke
+        if (container.classList.contains(classes.loadmore)) {
+            return;
+        }
+
+        if (container.scrollTop + container.offsetHeight + 50 > container.scrollHeight) {
+            // Mark as loading
+            container.classList.add(classes.loadmore);
+
+            await this.props.loadmore();
+            container.classList.remove(classes.loadmore);
+        }
+    }
+
     renderList() {
-        var { classes, list } = this.props;
+        var { classes, list, isPlaying } = this.props;
 
         return list.map((e, index) => {
             return (
-                <article className={classes.item} key={index}>
+                <article
+                    className={clazz(classes.item, {
+                        [classes.playing]: isPlaying(e.id),
+                    })}
+                    key={index}>
                     <Link to={e.link}>
-                        <FadeImage src={e.cover} />
+                        <ProgressImage {...{
+                            height: 64,
+                            width: 64,
+                            src: e.cover,
+                        }} />
                     </Link>
 
                     <aside className={classes.info}>
@@ -58,10 +87,13 @@ class Playlist extends Component {
         var { classes, loading, types, params, list } = this.props;
 
         return (
-            <div className={classes.container} data-type={encodeURIComponent(params.type)}>
+            <div
+                className={classes.container}
+                data-type={encodeURIComponent(params.type)}>
                 <div className={classes.inner}>
                     <Loader show={loading} />
                     <Header {...{
+                        color: 'white',
                         showBack: true,
                     }} />
 
@@ -87,7 +119,10 @@ class Playlist extends Component {
                         }
                     </ul>
 
-                    <section className={classes.list}>
+                    <section
+                        className={classes.list}
+                        onScroll={e => this.loadmore()}
+                        ref="list">
                         {this.renderList()}
                     </section>
 

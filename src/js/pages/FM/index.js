@@ -121,16 +121,16 @@ class FM extends Component {
                         </aside>
                     </article>
 
-                    {
-                        isFMPlaying() && (
-                            <div
-                                className={classes.bar}
-                                id="progress">
-                                <div className={classes.playing} />
-                                <div className={classes.buffering} />
-                            </div>
-                        )
-                    }
+                    <div className={classes.bar}>
+                        {
+                            isFMPlaying() && (
+                                <div id="progress">
+                                    <div className={classes.playing} />
+                                    <div className={classes.buffering} />
+                                </div>
+                            )
+                        }
+                    </div>
 
                     <div className={classes.controls}>
                         <i
