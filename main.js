@@ -1,6 +1,5 @@
 
-import fs from 'fs';
-import { app, powerMonitor, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, Menu, Tray, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import _debug from 'debug';
 
@@ -10,11 +9,333 @@ import api from './server/api';
 
 let debug = _debug('dev:main');
 let forceQuit = false;
+let menu;
+let tray;
 let mainWindow;
-let isSuspend = false;
-let userData = app.getPath('userData');
-let imagesCacheDir = `${userData}/images`;
-let voicesCacheDir = `${userData}/voices`;
+let isOsx = process.platform === 'darwin';
+let mainMenu = [
+    {
+        label: 'ieaseMusic',
+        submenu: [
+            {
+                label: `About ieaseMusic`,
+                selector: 'orderFrontStandardAboutPanel:',
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'hide'
+            },
+            {
+                role: 'hideothers'
+            },
+            {
+                role: 'unhide'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Quit',
+                accelerator: 'Command+Q',
+                selector: 'terminate:',
+                click() {
+                    forceQuit = true;
+                    mainWindow = null;
+                    app.quit();
+                }
+            }
+        ]
+    },
+    {
+        label: 'Controls',
+        submenu: [
+            {
+                label: 'Pause',
+                accelerator: 'Space',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-toggle');
+                }
+            },
+            {
+                label: 'Next',
+                accelerator: 'Cmd+Right',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-next');
+                }
+            },
+            {
+                label: 'Previous',
+                accelerator: 'Cmd+Left',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-previous');
+                }
+            },
+            {
+                label: 'Increase Volume',
+                accelerator: 'Cmd+Up',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-volume-up');
+                }
+            },
+            {
+                label: 'Decrease Volume',
+                accelerator: 'Cmd+Down',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-volume-up');
+                }
+            },
+            {
+                label: 'Like',
+                accelerator: 'Cmd+L',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-like');
+                }
+            },
+        ],
+    },
+    {
+        label: 'History',
+        submenu: [
+            {
+                label: 'Nothing...',
+            }
+        ],
+    },
+    {
+        label: 'Playing',
+        submenu: [
+            {
+                label: 'Nothing...',
+            }
+        ],
+    },
+    {
+        label: 'Edit',
+        submenu: [
+            {
+                role: 'undo'
+            },
+            {
+                role: 'redo'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'cut'
+            },
+            {
+                role: 'copy'
+            },
+            {
+                role: 'paste'
+            },
+            {
+                role: 'pasteandmatchstyle'
+            },
+            {
+                role: 'delete'
+            },
+            {
+                role: 'selectall'
+            }
+        ]
+    },
+    {
+        label: 'View',
+        submenu: [
+            {
+                label: 'Show Home',
+                accelerator: 'Cmd+Shift+H',
+                click() {
+                    mainWindow.webContents.send('show-home');
+                }
+            },
+            {
+                label: 'Show TOP',
+                accelerator: 'Cmd+Shift+T',
+                click() {
+                    mainWindow.webContents.send('show-top');
+                }
+            },
+            {
+                label: 'Show Playlist',
+                accelerator: 'Cmd+Shift+P',
+                click() {
+                    mainWindow.webContents.send('show-playlist');
+                }
+            },
+            {
+                label: 'Show FM',
+                accelerator: 'Cmd+Shift+F',
+                click() {
+                    mainWindow.webContents.send('show-fm');
+                }
+            },
+            {
+                role: 'separator',
+            },
+            {
+                label: 'Show Menu',
+                accelerator: 'Cmd+M',
+                click() {
+                    mainWindow.webContents.send('show-menu');
+                }
+            },
+            {
+                label: 'Show Playing',
+                accelerator: 'Cmd+P',
+                click() {
+                    mainWindow.webContents.send('show-playing');
+                }
+            },
+            {
+                role: 'separator'
+            },
+            {
+                role: 'toggledevtools'
+            },
+        ]
+    },
+    {
+        role: 'window',
+        submenu: [
+            {
+                role: 'minimize'
+            },
+            {
+                role: 'close'
+            }
+        ]
+    },
+    {
+        role: 'help',
+        submenu: [
+            {
+                label: 'Bug report 🐛',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                }
+            },
+            {
+                label: 'Fork me on Github 🚀',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: '💕 Follow me on Twitter 👏',
+                click() {
+                    shell.openExternal('https://twitter.com/var_darling');
+                }
+            }
+        ]
+    }
+];
+let trayMenu = [
+    {
+        label: 'Pause',
+        click() {
+            mainWindow.webContents.send('player-toggle');
+        }
+    },
+    {
+        label: 'Next',
+        click() {
+            mainWindow.webContents.send('player-next');
+        }
+    },
+    {
+        label: 'Previous',
+        click() {
+            mainWindow.webContents.send('player-previous');
+        }
+    },
+    {
+        label: 'Toggle main window',
+        click() {
+            let isVisible = mainWindow.isVisible();
+            isVisible ? mainWindow.hide() : mainWindow.show();
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Fork me on Github',
+        click() {
+            shell.openExternal('https://github.com/trazyn/ieaseMusic');
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Toggle DevTools',
+        accelerator: 'Alt+Command+I',
+        click() {
+            mainWindow.show();
+            mainWindow.toggleDevTools();
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        selector: 'terminate:',
+        click() {
+            forceQuit = true;
+            mainWindow = null;
+            app.quit();
+        }
+    }
+];
+
+function updateMenu(playing = true) {
+    mainMenu[1]['submenu'][0]['label'] = playing ? 'Pause' : 'Play';
+    menu = Menu.buildFromTemplate(mainMenu);
+
+    if (isOsx) {
+        Menu.setApplicationMenu(null);
+        Menu.setApplicationMenu(menu);
+    }
+}
+
+function updateTray(playing = true) {
+    // Update unread mesage count
+    trayMenu[0].label = playing ? 'Pause' : 'Play';
+
+    let contextmenu = Menu.buildFromTemplate(trayMenu);
+    let icon = playing
+        ? `${__dirname}/src/assets/playing.png`
+        : `${__dirname}/src/assets/notplaying.png`
+        ;
+
+    if (!tray) {
+        // Init tray icon
+        tray = new Tray(icon);
+
+        tray.on('right-click', () => {
+            tray.popUpContextMenu();
+        });
+    }
+
+    tray.setImage(icon);
+    tray.setContextMenu(contextmenu);
+}
 
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
@@ -57,27 +378,68 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.on('is-suspend', (event, args) => {
-        event.returnValue = isSuspend;
+    ipcMain.on('update-history', (event, args) => {
+        var historyMenu = mainMenu.find(e => e.label === 'History');
+        var submenu = args.songs.map((e, index) => {
+            return {
+                label: e.name,
+                accelerator: `Cmd+${index}`,
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-play', {
+                        id: e.id,
+                    });
+                }
+            };
+        });
+
+        historyMenu.submenu = submenu;
+        updateMenu();
     });
 
-    powerMonitor.on('resume', () => {
-        isSuspend = false;
-        mainWindow.webContents.send('os-resume');
+    ipcMain.on('update-playing', async(event, args) => {
+        var playingMenu = mainMenu.find(e => e.label === 'Playing');
+        var submenu = args.songs.map((e, index) => {
+            return {
+                label: e.name,
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('player-play', {
+                        id: e.id,
+                    });
+                }
+            };
+        });
+
+        playingMenu.submenu = submenu;
+        updateMenu();
     });
 
-    [imagesCacheDir, voicesCacheDir].map(e => {
-        if (!fs.existsSync(e)) {
-            fs.mkdirSync(e);
-        }
+    ipcMain.on('update-status', (event, args) => {
+        var { playing, song } = args;
+
+        updateMenu(playing);
+        updateTray(playing, song);
     });
+
+    if (isOsx) {
+        app.setAboutPanelOptions({
+            applicationName: 'ieaseMusic',
+            applicationVersion: pkg.version,
+            copyright: 'Made with 💖 by trazyn. \n https://github.com/trazyn/ieaseMusic',
+            credits: `With the invaluable help of: \n github.com/Binaryify/NeteaseCloudMusicApi`,
+            version: pkg.version
+        });
+    }
+
+    updateMenu();
+    updateTray();
 
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
-
     debug('Create main process success 🍻');
 };
 
-app.setName(pkg.name);
+app.setName('ieaseMusic');
 app.dock.setIcon(`${__dirname}/src/assets/dock.png`);
 
 app.on('ready', createMainWindow);

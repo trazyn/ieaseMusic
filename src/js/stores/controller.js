@@ -1,5 +1,6 @@
 
 import { observable, action } from 'mobx';
+import { ipcRenderer } from 'electron';
 import axios from 'axios';
 
 import fm from './fm';
@@ -22,7 +23,7 @@ class Controller {
     // Keep a history with current playlist
     history = [];
 
-    @action setup(playlist) {
+    @action async setup(playlist) {
         if (self.playlist.id === playlist.id
             && playlist.id !== 'PERSONAL_FM') {
             return;
@@ -34,6 +35,10 @@ class Controller {
         // Disconnect all observer
         self.playlist = JSON.parse(JSON.stringify(playlist));
         self.song = playlist.songs[0];
+
+        ipcRenderer.send('update-playing', {
+            songs: playlist.songs.slice(),
+        });
     }
 
     @action async play(songid, forward = true) {
@@ -49,6 +54,10 @@ class Controller {
         // Save to history list
         if (!self.history.includes(songid)) {
             self.history[forward ? 'push' : 'unshift'](song.id);
+
+            ipcRenderer.send('update-history', {
+                songs: self.playlist.songs.slice().filter(e => self.history.includes(e.id)),
+            });
         }
 
         if (self.playlist.id === 'PERSONAL_FM') {
@@ -153,6 +162,11 @@ class Controller {
 
     @action toggle() {
         self.playing = !self.playing;
+
+        ipcRenderer.send('update-status', {
+            playing: self.playing,
+            song: self.song,
+        });
     }
 
     @action changeMode() {
