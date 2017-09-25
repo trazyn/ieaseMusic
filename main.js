@@ -22,6 +22,12 @@ let mainMenu = [
                 selector: 'orderFrontStandardAboutPanel:',
             },
             {
+                label: 'Preferences...',
+                click() {
+                    // TODO
+                }
+            },
+            {
                 type: 'separator'
             },
             {
@@ -263,6 +269,18 @@ let trayMenu = [
         }
     },
     {
+        type: 'separator'
+    },
+    {
+        label: 'Preferences...',
+        click() {
+            // TODO
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
         label: 'Toggle main window',
         click() {
             let isVisible = mainWindow.isVisible();
@@ -420,6 +438,12 @@ const createMainWindow = () => {
 
         updateMenu(playing);
         updateTray(playing, song);
+    });
+
+    ipcMain.on('goodbye', (event) => {
+        forceQuit = true;
+        mainWindow = null;
+        app.quit();
     });
 
     if (isOsx) {
