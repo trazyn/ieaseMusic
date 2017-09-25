@@ -41,6 +41,15 @@ class FM extends Component {
         this.props.getFM();
     }
 
+    seek(e) {
+        var width = e.target.getBoundingClientRect().width;
+        var padWidth = (window.innerWidth - width) / 2;
+        var percent = (e.clientX - padWidth) / width;
+        var time = this.props.song.duration * percent;
+
+        document.querySelector('audio').currentTime = time / 1000;
+    }
+
     renderBG() {
         var { classes, songs } = this.props;
 
@@ -122,7 +131,9 @@ class FM extends Component {
                         </aside>
                     </article>
 
-                    <div className={classes.bar}>
+                    <div
+                        className={classes.bar}
+                        onClick={e => this.seek(e)}>
                         {
                             isFMPlaying() && (
                                 <div id="progress">
