@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Router, hashHistory } from 'react-router';
 import { Provider } from 'mobx-react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote, shell } from 'electron';
 import { ThemeProvider } from 'react-jss';
 
 import './global.css';
@@ -71,6 +71,89 @@ class App extends Component {
 
         ipcRenderer.on('show-playing', () => {
             playing.toggle(true);
+        });
+
+        window.addEventListener('contextmenu', e => {
+            var { controller, fm } = stores;
+            var menu = new remote.Menu.buildFromTemplate([
+                {
+                    label: controller.playing ? 'Pause' : 'Play',
+                    click() {
+                        controller.toggle();
+                    }
+                },
+                {
+                    label: 'Next',
+                    click() {
+                        isFMPlaying() ? fm.next() : controller.next();
+                    }
+                },
+                {
+                    label: 'Previous',
+                    click() {
+                        controller.prev();
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Like',
+                    click() {
+                        if (me.likes.get(controller.song.id)) {
+                            return;
+                        }
+                        me.like(controller.song);
+                    }
+                },
+                {
+                    label: 'Ban',
+                    click() {
+                        fm.ban(controller.song.id);
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Preferences...',
+                    click() {
+                        // TODO
+                    },
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Bug report 🐛',
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                    }
+                },
+                {
+                    label: 'Fork me on Github 🚀',
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                    }
+                },
+                {
+                    label: '💕 Follow me on Twitter 👏',
+                    click() {
+                        shell.openExternal('https://twitter.com/var_darling');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Goodbye 😘',
+                    click() {
+                        ipcRenderer.send('goodbye');
+                    }
+                },
+            ]);
+
+            menu.popup(remote.getCurrentWindow());
         });
     }
 
