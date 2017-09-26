@@ -22,7 +22,7 @@ import Header from 'components/Header';
         var controller = stores.controller;
 
         return controller.playing
-            && controller.playlist.id === id.toString();
+            && controller.playlist.id === id;
     }
 }))
 @observer

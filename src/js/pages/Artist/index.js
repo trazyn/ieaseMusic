@@ -63,7 +63,7 @@ import Header from 'components/Header';
     },
 
     highlightAlbum(id) {
-        return stores.controller.playlist.id === id.toString();
+        return stores.controller.playlist.id === id;
     }
 }))
 @observer
