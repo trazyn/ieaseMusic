@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import MinifyPlugin from 'babel-minify-webpack-plugin';
 import config from './index';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default {
@@ -40,13 +41,23 @@ export default {
         new CopyWebpackPlugin([
             {
                 from: `${config.assets}/**/*`,
-                to: `${config.dist}/src`,
+                to: `${config.dist}`,
             },
             {
                 from: path.resolve(__dirname, '../package.json'),
                 to: config.dist,
             },
         ]),
+
+        new HtmlWebpackPlugin({
+            filename: `${config.dist}/src/index.html`,
+            template: './src/index.html',
+            inject: 'body',
+            hash: true,
+            minify: {
+                collapseWhitespace: true
+            }
+        })
     ],
 
     // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works

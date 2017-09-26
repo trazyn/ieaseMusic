@@ -1,18 +1,60 @@
 {
   "name": "iease-music",
   "version": "0.0.1",
-  "description": "",
+  "description": "这应该是最好的网易云音乐播放器了，没有之一，如果有请打醒 🤘",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "node node_modules/.bin/eslint .",
+    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.electron.js --progress --profile --colors",
+    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.production.js --progress --profile --colors",
+    "build": "rm -rf dist && npm run build-main && npm run build-renderer",
     "api": "cross-env NODE_ENV=development AUTORUN=1 DEBUG_COLORS=true DEBUG=dev:*,-not_this node -r babel-register server/api.js",
     "hot-server": "cross-env NODE_ENV=development DEBUG_COLORS=true DEBUG=dev:*,-not_this node -r babel-register server/dev.js",
     "start-hot": "cross-env HOT=1 NODE_ENV=development DEBUG_COLORS=true DEBUG=dev:*,-not_this ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
+    "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
   "author": "var.darling@gmail.com",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trazyn/ieaseMusic.git"
+  },
+  "build": {
+    "productName": "ieaseMusic",
+    "appId": "gh.trazyn.ieaseMusic",
+    "compression": "maximum",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "ieaseMusic ${version}"
+    },
+    "mac": {
+      "icon": "../resource/dock.icns"
+    },
+    "directories": {
+      "output": "../release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "trazyn",
+        "repo": "ieaseMusic"
+      }
+    ]
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
@@ -29,9 +71,11 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "concurrently": "^3.5.0",
+    "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
     "electron": "^1.7.6",
+    "electron-builder": "^19.31.1",
     "eslint": "^4.6.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
@@ -43,8 +87,9 @@
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-standard": "^3.0.1",
     "express": "^4.15.4",
-    "json-loader": "^0.5.7",
+    "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
+    "json-loader": "^0.5.7",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
     "webpack": "^3.5.6",

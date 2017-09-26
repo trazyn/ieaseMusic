@@ -23,6 +23,10 @@ export default {
                 loader: 'json-loader',
             },
             {
+                test: /\.html/,
+                loader: 'html-loader',
+            },
+            {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 loader: 'url-loader'
             },

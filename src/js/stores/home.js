@@ -10,9 +10,7 @@ class Home {
     @observable loading = true;
     @observable list = [];
 
-    @action async getList() {
-        self.loading = true;
-
+    @action async load() {
         var res;
 
         if (me.hasLogin()) {
@@ -33,13 +31,19 @@ class Home {
             controller.song = controller.playlist.songs[0];
         }
 
-        self.loading = false;
         self.list = res.data.list;
+
+        return self.list;
+    }
+
+    @action async getList() {
+        self.loading = true;
+
+        await self.load();
 
         // Just call once for init player
         self.getList = Function;
-
-        return self.list;
+        self.loading = false;
     }
 }
 
