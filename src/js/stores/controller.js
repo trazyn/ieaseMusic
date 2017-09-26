@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron';
 import axios from 'axios';
 
 import fm from './fm';
+import preferences from './preferences';
 
 const PLAYER_SHUFFLE = 0;
 const PLAYER_REPEAT = 1;
@@ -63,6 +64,23 @@ class Controller {
         if (self.playlist.id === 'PERSONAL_FM') {
             fm.song = song;
         }
+
+        if (preferences.showNotification) {
+            let notification = new window.Notification(song.name, {
+                icon: song.album.cover,
+                body: song.artists.map(e => e.name).join(' / '),
+                vibrate: [200, 100, 200],
+            });
+
+            notification.onclick = () => {
+                ipcRenderer.send('show');
+            };
+        }
+
+        ipcRenderer.send('update-status', {
+            playing: true,
+            song,
+        });
 
         self.song = song;
         self.playing = true;
@@ -169,13 +187,17 @@ class Controller {
         });
     }
 
-    @action changeMode() {
+    @action changeMode(mode) {
         var index = MODES.indexOf(self.mode);
 
-        if (++index < MODES.length) {
-            self.mode = MODES[index];
+        if (MODES.includes(mode)) {
+            self.mode = mode;
         } else {
-            self.mode = PLAYER_SHUFFLE;
+            if (++index < MODES.length) {
+                self.mode = MODES[index];
+            } else {
+                self.mode = PLAYER_SHUFFLE;
+            }
         }
 
         // Looping ...
@@ -184,4 +206,5 @@ class Controller {
 }
 
 const self = new Controller();
+export { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT };
 export default self;

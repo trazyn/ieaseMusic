@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import axios from 'axios';
 
 import me from './me';
+import preferences from './preferences';
 import controller from './controller';
 
 class Home {
@@ -21,7 +22,12 @@ class Home {
             me.rocking(res.data.list[0]);
             // Play the recommend songs
             controller.setup(res.data.list[1]);
-            controller.play();
+
+            if (preferences.autoPlay) {
+                controller.play();
+            } else {
+                controller.song = controller.playlist.songs[0];
+            }
         } else {
             res = await axios.get(`/home`);
         }

@@ -8,6 +8,7 @@ import { ThemeProvider } from 'react-jss';
 
 import './global.css';
 import 'utils/albumColors';
+import { PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
 import theme from './theme';
 import getRoutes from './js/routes';
 import stores from './js/stores';
@@ -64,6 +65,10 @@ class App extends Component {
 
         ipcRenderer.on('show-fm', () => {
             navigator.router.push('/fm');
+        });
+
+        ipcRenderer.on('show-preferences', () => {
+            navigator.router.push('/preferences');
         });
 
         ipcRenderer.on('show-menu', () => {
@@ -131,9 +136,29 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
+                    label: 'Repeat 🤘',
+                    type: 'radio',
+                    checked: controller.mode === PLAYER_LOOP,
+                    click: () => {
+                        controller.changeMode(PLAYER_LOOP);
+                    }
+                },
+                {
+                    label: 'Shuffle ⚡️',
+                    type: 'radio',
+                    checked: controller.mode === PLAYER_SHUFFLE,
+                    enabled: !isFMPlaying(),
+                    click: () => {
+                        controller.changeMode(PLAYER_SHUFFLE);
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
                     label: 'Preferences...',
                     click: () => {
-                        // TODO
+                        navigator.router.push('/preferences');
                     },
                 },
                 {
