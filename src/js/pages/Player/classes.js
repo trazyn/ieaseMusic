@@ -244,5 +244,16 @@ export default theme => ({
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         maxWidth: 288,
+    },
+
+    nothing: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 24,
+        letterSpacing: 1,
+        wordSpacing: 3,
+        color: '#000',
     }
 });

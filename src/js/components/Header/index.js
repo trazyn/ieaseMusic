@@ -8,6 +8,7 @@ import classes from './classes';
 
 @inject(stores => ({
     subscribed: stores.player.meta.subscribed,
+    hasLogin: stores.me.hasLogin,
     showMenu: () => stores.menu.toggle(true),
     showPlaying: () => stores.playing.toggle(true),
 }))
@@ -51,7 +52,7 @@ class Header extends Component {
     }
 
     renderFollow() {
-        var { showFollow, classes, followed } = this.props;
+        var { classes, showFollow, followed } = this.props;
 
         if (showFollow) {
             return (
@@ -86,9 +87,10 @@ class Header extends Component {
     }
 
     renderFav() {
-        var { showFav, color, subscribed } = this.props;
+        var { hasLogin, showFav, color, subscribed } = this.props;
 
-        if (!showFav) {
+        if (!showFav
+            || !hasLogin()) {
             return false;
         }
 
