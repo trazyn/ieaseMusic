@@ -21,6 +21,7 @@ const classes = {
 @inject(stores => ({
     initialized: stores.me.initialized,
     init: async() => {
+        await stores.preferences.init();
         await stores.me.init();
     },
     hasLogin: stores.me.hasLogin,
