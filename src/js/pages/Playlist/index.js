@@ -19,7 +19,7 @@ import Controller from 'components/Controller';
     getList: stores.playlist.getList,
     loadmore: stores.playlist.loadmore,
     isPlaying: (id) => {
-        return stores.controller.playlist.id === id.toString();
+        return stores.controller.playlist.id === id;
     }
 }))
 @observer

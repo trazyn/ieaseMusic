@@ -31,11 +31,11 @@ import Controller from 'components/Controller';
         // Now is playing
         return controller.playing
             // And the same song
-            && controller.playlist.id === id.toString();
+            && controller.playlist.id === id;
     },
     canitoggle: (id) => {
         // Should has same id
-        return stores.controller.playlist.id === id.toString();
+        return stores.controller.playlist.id === id;
     },
 }))
 @observer
