@@ -19,7 +19,7 @@ export default theme => ({
     container: {
         background: colors.randomGradient(),
 
-        ...getBackgrounds(theme.playlistBackgrounds),
+        ...getBackgrounds(theme.playlist.backgrounds),
 
         '&:before, &:after': {
             content: '""',
