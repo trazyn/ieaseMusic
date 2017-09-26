@@ -4,7 +4,7 @@
 > Built by Electron, React, MobX, JSS
 
 
-不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Window`和 `Linux`。目前 `API` 由 `Binaryify/NeteaseCloudMusicApi` 提供(可能会自己重造轮子，全姿势解锁)。
+不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Window`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
 
 
 ## Preview
