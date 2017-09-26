@@ -188,7 +188,7 @@ let mainMenu = [
                 }
             },
             {
-                role: 'separator',
+                type: 'separator',
             },
             {
                 label: 'Menu',
@@ -205,7 +205,7 @@ let mainMenu = [
                 }
             },
             {
-                role: 'separator'
+                type: 'separator'
             },
             {
                 role: 'toggledevtools'
