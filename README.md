@@ -32,7 +32,7 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/untagged-3016cd15491435ffcd1e/ieaseMusic-0.0.1-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.1/ieaseMusic-0.0.1-mac.dmg) the `.dmg` file.
 
 #### Linux
 `等待填坑`
