@@ -204,6 +204,12 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
+                    label: 'Minimize 👇',
+                    click: () => {
+                        ipcRenderer.send('minimize');
+                    }
+                },
+                {
                     label: 'Goodbye 😘',
                     click: () => {
                         ipcRenderer.send('goodbye');
