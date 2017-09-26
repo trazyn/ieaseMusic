@@ -438,20 +438,25 @@ const createMainWindow = () => {
     ipcMain.on('update-status', (event, args) => {
         var { playing, song } = args;
 
+        if (tray) {
+            updateTray(playing, song);
+        }
         updateMenu(playing);
-        updateTray(playing, song);
     });
 
     ipcMain.on('update-preferences', (event, args) => {
         mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
 
-        if (!args.showTray
-            && tray) {
-            tray.destroy();
-            tray = null;
-        } else {
-            updateTray(args.playing);
+        if (!args.showTray) {
+            if (tray) {
+                tray.destroy();
+                tray = null;
+            }
+
+            return;
         }
+
+        updateTray(args.playing);
     });
 
     ipcMain.on('show', event => {
@@ -476,7 +481,6 @@ const createMainWindow = () => {
     }
 
     updateMenu();
-    updateTray();
 
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
