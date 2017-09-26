@@ -47,6 +47,14 @@ class Login extends Component {
         });
     }
 
+    async handleEnter(e) {
+        if (e.charCode !== 13) {
+            return;
+        }
+
+        this.doLogin();
+    }
+
     render() {
         var { classes, logining } = this.props;
 
@@ -74,6 +82,7 @@ class Login extends Component {
                         ref="phone"
                         type="text" />
                     <input
+                        onKeyPress={e => this.handleEnter(e)}
                         placeholder="Password"
                         ref="password"
                         type="password" />
