@@ -151,7 +151,7 @@ export default theme => {
             },
 
             '& i:hover': {
-                color: theme.hoverColor,
+                color: theme.controller.hoverColor,
             },
 
             '& i$liked': {
