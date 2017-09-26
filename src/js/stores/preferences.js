@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import { ipcRenderer } from 'electron';
 
 import controller from './controller';
+import theme from '../../theme.js';
 import storage from 'utils/storage';
 
 class Preferences {
@@ -17,26 +18,29 @@ class Preferences {
             showTray = self.showTray,
             alwaysOnTop = self.alwaysOnTop,
             showNotification = self.showNotification,
-            autoPlay = self.autoPlay
+            autoPlay = self.autoPlay,
+            backgrounds = theme.playlist.backgrounds,
         } = preferences;
 
         self.showTray = !!showTray;
         self.alwaysOnTop = !!alwaysOnTop;
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
+        self.backgrounds = backgrounds;
 
         // Save preferences
         self.save();
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, backgrounds } = self;
 
         await storage.set('preferences', {
             showTray,
             alwaysOnTop,
             showNotification,
             autoPlay,
+            backgrounds,
         });
 
         ipcRenderer.send('update-preferences', {
@@ -63,6 +67,11 @@ class Preferences {
 
     @action setAutoPlay(autoPlay) {
         self.autoPlay = autoPlay;
+        self.save();
+    }
+
+    @action setBackgrounds(backgrounds) {
+        self.backgrounds = backgrounds;
         self.save();
     }
 }

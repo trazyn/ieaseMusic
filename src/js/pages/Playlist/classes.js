@@ -1,14 +1,18 @@
 
 import perdido from 'perdido';
+
 import colors from 'utils/colors';
+import preferences from 'stores/preferences';
 
 function getBackgrounds(theme) {
     var backgrounds = {};
 
-    theme.map(e => {
+    theme.map((e, index) => {
         var rule = `&[data-type="${encodeURIComponent(e.type)}"]:before`;
+        var custome = preferences.backgrounds[index].background;
+
         backgrounds[rule] = {
-            'background-image': `url(${e.background})`,
+            'background-image': `url(${custome || e.background})`,
         };
     });
 

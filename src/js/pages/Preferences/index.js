@@ -16,7 +16,9 @@ import Switch from 'ui/Switch';
         autoPlay,
         setAutoPlay,
         alwaysOnTop,
-        setAlwaysOnTop
+        setAlwaysOnTop,
+        backgrounds,
+        setBackgrounds,
     } = stores.preferences;
 
     return {
@@ -28,10 +30,19 @@ import Switch from 'ui/Switch';
         setAutoPlay,
         alwaysOnTop,
         setAlwaysOnTop,
+        backgrounds,
+        setBackgrounds,
     };
 })
 @observer
 class Preferences extends Component {
+    saveBackground(index, background) {
+        var backgrounds = this.props.backgrounds;
+
+        backgrounds[index] = background;
+        this.props.setBackgrounds(backgrounds);
+    }
+
     render() {
         var {
             classes,
@@ -43,6 +54,7 @@ class Preferences extends Component {
             setAutoPlay,
             showNotification,
             setShowNotification,
+            backgrounds,
         } = this.props;
 
         return (
@@ -101,6 +113,26 @@ class Preferences extends Component {
                             onChange={e => setShowNotification(e.target.checked)} />
                     </label>
 
+                    <h3>Playlist Background ...</h3>
+                    {
+                        backgrounds.map((e, index) => {
+                            return (
+                                <div
+                                    className={classes.background}
+                                    key={index}>
+                                    <span>{e.type}</span>
+                                    <input
+                                        type="text"
+                                        defaultValue={e.background}
+                                        onBlur={ev => this.saveBackground(index, {
+                                            type: e.type,
+                                            background: ev.target.value,
+                                        })}
+                                        placeholder="Please entry the background address" />
+                                </div>
+                            );
+                        })
+                    }
                 </section>
             </div>
         );
