@@ -110,7 +110,7 @@ async function getLiked(id) {
             error('Failed to get liked: %O', response.data);
         } else {
             let liked = response.data.playlist[0];
-            let songs = await getSongs(id);
+            let songs = await getSongs(liked.id);
 
             list = [{
                 id: liked.id.toString(),
