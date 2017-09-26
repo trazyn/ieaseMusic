@@ -51,6 +51,12 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/playlist.png)
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/preferences.png)
 
+## Development
+```
+$ npm install
+$ npm run dev
+```
+
 ## Keyboard shortcuts
 
 Description            | Keys
@@ -70,12 +76,14 @@ Description            | Keys
 播放列表               | <kbd>Cmd</kbd> <kbd>P</kbd>
 偏好设置               | <kbd>Cmd</kbd> <kbd>,</kbd>
 
-其实这些在鼠标右键菜单上面都有
+其实这些在鼠标右键菜单上面都有，上面这些看看就好，我也没记住
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/contextmenu.png)
 
 ## Question
 
-目前接口上面收藏歌单和 `Follow` 用户暂时没有，界面部分搜索没做，DJ界面不打算做，感觉内容质量较差，这部分旅游结束后进行。对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？
+目前接口上面收藏歌单和 `Follow` 用户暂时没有，界面部分搜索没做，DJ界面不打算做，感觉内容质量较差，这部分旅游结束后进行。
+
+对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？
 
 ## TODO:
 - [x] Home
