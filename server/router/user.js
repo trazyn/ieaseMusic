@@ -20,7 +20,7 @@ async function getUser(id) {
             user = data.profile;
 
             user = {
-                id: user.userId,
+                id: user.userId.toString(),
                 name: user.nickname,
                 signature: user.signature,
                 avatar: user.avatarUrl,
@@ -46,7 +46,7 @@ async function getPlaylist(id) {
             throw data;
         } else {
             list = data.playlist.map(e => ({
-                id: e.id,
+                id: e.id.toString(),
                 name: e.name,
                 cover: e.coverImgUrl,
                 played: e.playCount,
