@@ -23,8 +23,9 @@ let mainMenu = [
             },
             {
                 label: 'Preferences...',
+                accelerator: 'Cmd+,',
                 click() {
-                    // TODO
+                    mainWindow.webContents.send('show-preferences');
                 }
             },
             {
@@ -273,8 +274,9 @@ let trayMenu = [
     },
     {
         label: 'Preferences...',
+        accelerator: 'Cmd+,',
         click() {
-            // TODO
+            mainWindow.webContents.send('show-preferences');
         }
     },
     {
@@ -322,7 +324,7 @@ let trayMenu = [
     }
 ];
 
-function updateMenu(playing = true) {
+function updateMenu(playing) {
     mainMenu[1]['submenu'][0]['label'] = playing ? 'Pause' : 'Play';
     menu = Menu.buildFromTemplate(mainMenu);
 
@@ -332,7 +334,7 @@ function updateMenu(playing = true) {
     }
 }
 
-function updateTray(playing = true) {
+function updateTray(playing) {
     // Update unread mesage count
     trayMenu[0].label = playing ? 'Pause' : 'Play';
 
@@ -366,7 +368,7 @@ const createMainWindow = () => {
         y: mainWindowState.y,
         width: 740,
         height: 480,
-        resize: false,
+        resizable: false,
         vibrancy: 'medium-light',
         backgroundColor: 'none',
         frame: false,
@@ -438,6 +440,15 @@ const createMainWindow = () => {
 
         updateMenu(playing);
         updateTray(playing, song);
+    });
+
+    ipcMain.on('update-preferences', (event, args) => {
+        mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
+    });
+
+    ipcMain.on('show', event => {
+        mainWindow.show();
+        mainWindow.focus();
     });
 
     ipcMain.on('goodbye', (event) => {
