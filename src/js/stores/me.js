@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import storage from 'utils/storage';
 import player from './player';
+import home from './home';
 
 class Me {
     @observable initialized = false;
@@ -41,16 +42,17 @@ class Me {
             }
         });
 
-        self.logining = false;
-
         if (response.data.code !== 200) {
             console.error(`Failed to login: ${response.data.msg}`);
+            self.logining = false;
             return false;
         }
 
         self.profile = response.data.profile;
-
+        await home.load();
         await storage.set('profile', self.profile);
+        self.logining = false;
+
         return self.profile;
     }
 
