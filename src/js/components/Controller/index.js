@@ -24,7 +24,8 @@ import ProgressImage from 'ui/ProgressImage';
     },
     getPlaylistName: () => {
         return `🎉 ${stores.controller.playlist.name}`;
-    }
+    },
+    hasLogin: stores.me.hasLogin,
 }))
 @observer
 class Controller extends Component {
@@ -36,7 +37,7 @@ class Controller extends Component {
     }
 
     render() {
-        var { classes, song, mode, prev, next, toggle, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName } = this.props;
+        var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName } = this.props;
         var liked = isLiked(song.id);
 
         if (!song.id) {
@@ -92,11 +93,15 @@ class Controller extends Component {
                         </div>
 
                         <div className={classes.action}>
-                            <i
-                                className={clazz('ion-ios-heart', {
-                                    [classes.liked]: liked,
-                                })}
-                                onClick={e => liked ? unlike(song) : like(song)} />
+                            {
+                                hasLogin() && (
+                                    <i
+                                        className={clazz('ion-ios-heart', {
+                                            [classes.liked]: liked,
+                                        })}
+                                        onClick={e => liked ? unlike(song) : like(song)} />
+                                )
+                            }
 
                             <i
                                 className={clazz({

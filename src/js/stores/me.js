@@ -20,6 +20,7 @@ class Me {
         if (response.data.code !== 200
             || !profile) {
             self.profile = {};
+            self.initialized = true;
             return false;
         }
 

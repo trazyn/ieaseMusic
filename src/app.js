@@ -80,6 +80,7 @@ class App extends Component {
         });
 
         window.addEventListener('contextmenu', e => {
+            let logined = me.hasLogin();
             let contextmenu = new remote.Menu.buildFromTemplate([
                 {
                     label: controller.playing ? 'Pause' : 'Play',
@@ -119,6 +120,7 @@ class App extends Component {
                 },
                 {
                     label: 'Like 💖',
+                    enabled: logined,
                     click: () => {
                         if (me.likes.get(controller.song.id)) {
                             return;
@@ -128,6 +130,7 @@ class App extends Component {
                 },
                 {
                     label: 'Ban 💩',
+                    enabled: logined,
                     click: () => {
                         fm.ban(controller.song.id);
                     }

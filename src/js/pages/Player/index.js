@@ -82,6 +82,8 @@ import Controller from 'components/Controller';
             // And the playlist is not likes
             && me.likes.get('id') !== player.meta.id;
     },
+
+    hasLogin: stores.me.hasLogin,
 }))
 @observer
 class Player extends Component {
@@ -116,8 +118,14 @@ class Player extends Component {
     }
 
     renderPeople() {
-        var { users, artists } = this.props;
+        var { classes, hasLogin, users, artists } = this.props;
         var content = [];
+
+        if (!hasLogin()) {
+            return (
+                <div className={classes.nothing}>Nothing ...</div>
+            );
+        }
 
         if (users.length) {
             content.push(

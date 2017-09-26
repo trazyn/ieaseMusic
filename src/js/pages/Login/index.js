@@ -58,7 +58,7 @@ class Login extends Component {
 
                 <Link
                     className={classes.back}
-                    to="/artist/10199">
+                    to="/">
                     <i className="ion-android-arrow-back" />
                     Discover music
                 </Link>
