@@ -52,7 +52,11 @@ class Header extends Component {
     }
 
     renderFollow() {
-        var { classes, showFollow, followed } = this.props;
+        var { classes, hasLogin, showFollow, followed } = this.props;
+
+        if (!hasLogin()) {
+            return false;
+        }
 
         if (showFollow) {
             return (
