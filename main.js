@@ -160,28 +160,28 @@ let mainMenu = [
         label: 'View',
         submenu: [
             {
-                label: 'Show Home',
+                label: 'Home',
                 accelerator: 'Cmd+Shift+H',
                 click() {
                     mainWindow.webContents.send('show-home');
                 }
             },
             {
-                label: 'Show TOP',
+                label: 'TOP',
                 accelerator: 'Cmd+Shift+T',
                 click() {
                     mainWindow.webContents.send('show-top');
                 }
             },
             {
-                label: 'Show Playlist',
+                label: 'Playlist',
                 accelerator: 'Cmd+Shift+P',
                 click() {
                     mainWindow.webContents.send('show-playlist');
                 }
             },
             {
-                label: 'Show FM',
+                label: 'FM',
                 accelerator: 'Cmd+Shift+F',
                 click() {
                     mainWindow.webContents.send('show-fm');
@@ -444,6 +444,14 @@ const createMainWindow = () => {
 
     ipcMain.on('update-preferences', (event, args) => {
         mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
+
+        if (!args.showTray
+            && tray) {
+            tray.destroy();
+            tray = null;
+        } else {
+            updateTray(args.playing);
+        }
     });
 
     ipcMain.on('show', event => {

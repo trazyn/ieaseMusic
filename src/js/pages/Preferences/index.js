@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
-import { ipcRenderer } from 'electron';
 import injectSheet from 'react-jss';
 
 import classes from './classes';
@@ -10,6 +9,8 @@ import Switch from 'ui/Switch';
 
 @inject(stores => {
     var {
+        showTray,
+        setShowTray,
         showNotification,
         setShowNotification,
         autoPlay,
@@ -19,6 +20,8 @@ import Switch from 'ui/Switch';
     } = stores.preferences;
 
     return {
+        showTray,
+        setShowTray,
         showNotification,
         setShowNotification,
         autoPlay,
@@ -29,13 +32,11 @@ import Switch from 'ui/Switch';
 })
 @observer
 class Preferences extends Component {
-    updatePreferences() {
-        ipcRenderer.send('update-preferences', {});
-    }
-
     render() {
         var {
             classes,
+            showTray,
+            setShowTray,
             alwaysOnTop,
             setAlwaysOnTop,
             autoPlay,
@@ -68,6 +69,18 @@ class Preferences extends Component {
                             checked={alwaysOnTop}
                             id="alwaysOnTop"
                             onChange={e => setAlwaysOnTop(e.target.checked)} />
+                    </label>
+
+                    <label htmlFor="showTray">
+                        <div>
+                            <h4>Show menu bar icon</h4>
+                            <p>If the menu bar icon is hidden, you can still access ieaseMusic using the dock icon.</p>
+                        </div>
+
+                        <Switch
+                            checked={showTray}
+                            id="showTray"
+                            onChange={e => setShowTray(e.target.checked)} />
                     </label>
 
                     <label htmlFor="autoPlay">
