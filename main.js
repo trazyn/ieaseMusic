@@ -464,6 +464,10 @@ const createMainWindow = () => {
         mainWindow.focus();
     });
 
+    ipcMain.on('minimize', event => {
+        mainWindow.minimize();
+    });
+
     ipcMain.on('goodbye', (event) => {
         forceQuit = true;
         mainWindow = null;
