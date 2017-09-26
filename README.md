@@ -81,7 +81,7 @@ Description            | Keys
 
 ## Question
 
-目前接口上面收藏歌单和 `Follow` 用户暂时没有，界面部分搜索没做，DJ界面不打算做，感觉内容质量较差，这部分旅游结束后进行。
+目前接口上面收藏歌单和 `Follow` 用户暂时没有，界面部分搜索和评论没做，DJ界面不打算做，感觉内容质量较差，这部分旅游结束后进行。
 
 对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？
 
@@ -93,6 +93,7 @@ Description            | Keys
 - [x] User
 - [x] Artist
 - [x] Album
+- [ ] Comment
 - [ ] Search
 - [x] Login
 - [ ] Scrobble to Last.fm
