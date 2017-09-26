@@ -64,7 +64,9 @@ import Header from 'components/Header';
 
     highlightAlbum(id) {
         return stores.controller.playlist.id === id;
-    }
+    },
+
+    hasLogin: stores.me.hasLogin,
 }))
 @observer
 class Artist extends Component {
@@ -201,7 +203,11 @@ class Artist extends Component {
     }
 
     renderArtists() {
-        var { classes, similar } = this.props;
+        var { classes, hasLogin, similar } = this.props;
+
+        if (!hasLogin()) {
+            return <section className={classes.nothing}>Nothing ...</section>;
+        }
 
         return (
             <section className={classes.artists}>
