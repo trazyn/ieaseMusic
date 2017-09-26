@@ -298,4 +298,16 @@ export default theme => ({
             boxShadow: '0 0 24px 0 rgba(0, 0, 0, .5)',
         }
     },
+
+    nothing: {
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 24,
+        letterSpacing: 1,
+        wordSpacing: 3,
+        color: '#000',
+    }
 });
