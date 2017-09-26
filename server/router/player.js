@@ -24,7 +24,7 @@ async function getRecentUser(id) {
         } else {
             response.data.userprofiles.map(e => {
                 users.push({
-                    id: e.userId,
+                    id: e.userId.toString(),
                     name: e.nickname,
                     avatar: `${e.avatarUrl}?param=50y50`,
                     link: `/user/${e.userId}`,
@@ -47,7 +47,7 @@ async function getSimilarArtist(id) {
         if (response.data.code === 200) {
             response.data.artists.map(e => {
                 artists.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     avatar: `${e.picUrl}?param=50y50`,
                     // Broken link
@@ -75,7 +75,7 @@ async function getSimilarPlaylist(id) {
         } else {
             response.data.playlists.map(e => {
                 playlists.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     cover: e.coverImgUrl,
                     link: `/player/0/${e.id}`,
@@ -102,7 +102,7 @@ async function getAlbumBySong(id) {
                 var album = e.album;
 
                 albums.push({
-                    id: album.id,
+                    id: album.id.toString(),
                     name: album.name,
                     cover: album.picUrl,
                     link: `/player/1/${album.id}`
@@ -134,7 +134,7 @@ router.get('/song/:id', cache('5 minutes', onlyStatus200), async(req, res) => {
 
         song = data.data[0];
         song = {
-            id: song.id,
+            id: song.id.toString(),
             src: song.url,
             md5: song.md5,
             bitRate: song.br,
@@ -203,17 +203,17 @@ router.get('/:type/:id', async(req, res) => {
                 var { al /* Album */, ar /* Artist */ } = e;
 
                 return {
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     duration: e.dt,
                     album: {
-                        id: al.id,
+                        id: al.id.toString(),
                         name: al.name,
                         cover: `${al.picUrl}?param=y100y100`,
                         link: `/player/1/${al.id}`
                     },
                     artists: ar.map(e => ({
-                        id: e.id,
+                        id: e.id.toString(),
                         name: e.name,
                         // Broken link
                         link: e.id ? `/artist/${e.id}` : '',
@@ -230,7 +230,7 @@ router.get('/:type/:id', async(req, res) => {
                     size: meta.trackCount,
                     cover: meta.coverImgUrl,
                     author: [{
-                        id: meta.creator.userId,
+                        id: meta.creator.userId.toString(),
                         name: meta.creator.nickname,
                         link: `/user/${meta.creator.userId}`,
                     }],
@@ -246,7 +246,7 @@ router.get('/:type/:id', async(req, res) => {
                     size: meta.size,
                     cover: meta.picUrl,
                     author: meta.artists.map(e => ({
-                        id: e.id,
+                        id: e.id.toString(),
                         name: e.name,
                         // Broken link
                         link: e.id ? `/artist/${e.id}` : '',

@@ -1,4 +1,3 @@
-
 import express from 'express';
 import axios from 'axios';
 import uuid from 'uuid';
@@ -19,7 +18,7 @@ async function getNewest() {
         } else {
             response.data.albums.map(e => {
                 list.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     type: 1,
                     name: e.name,
                     size: e.size,
@@ -46,7 +45,7 @@ async function getPersonalized() {
         } else {
             response.data.result.map(e => {
                 list.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     type: 0,
                     name: e.name,
                     played: e.playCount,
@@ -62,6 +61,45 @@ async function getPersonalized() {
     return list;
 }
 
+async function getSongs(id) {
+
+    var songs = [];
+
+    try {
+        let response = await axios.get(`/playlist/detail?id=${id}`);
+
+        if (response.data.code === 200) {
+            songs = response.data.playlist.tracks.map(e => {
+                var { al /* Album */, ar /* Artist */ } = e;
+
+                return {
+                    id: e.id.toString(),
+                    name: e.name,
+                    duration: e.dt,
+                    album: {
+                        id: al.id.toString(),
+                        name: al.name,
+                        cover: `${al.picUrl}?param=y100y100`,
+                        link: `/player/1/${al.id}`
+                    },
+                    artists: ar.map(e => ({
+                        id: e.id.toString(),
+                        name: e.name,
+                        // Broken link
+                        link: e.id ? `/artist/${e.id}` : '',
+                    }))
+                };
+            });
+        } else {
+            throw response.data;
+        }
+    } catch (ex) {
+        error('Failed to get songs %O', ex);
+    }
+
+    return songs;
+}
+
 async function getLiked(id) {
     var list = [];
 
@@ -72,28 +110,16 @@ async function getLiked(id) {
             error('Failed to get liked: %O', response.data);
         } else {
             let liked = response.data.playlist[0];
-            let songs = [];
-
-            try {
-                let response = await axios.get(`/playlist/detail?id=${liked.id}`);
-
-                if (response.data.code === 200) {
-                    songs = response.data.playlist.tracks.map(e => e.id);
-                } else {
-                    error('Failed to get playlist %s, %O', liked.id, response.data);
-                }
-            } catch (ex) {
-                throw response.data;
-            }
+            let songs = await getSongs(id);
 
             list = [{
-                id: liked.id,
+                id: liked.id.toString(),
                 name: liked.name,
                 size: liked.trackCount,
                 updateTime: liked.updateTime,
                 publishTime: liked.publishTime,
                 link: `/player/0/${liked.id}`,
-                songs,
+                songs: songs.map(e => e.id),
             }];
         }
     } catch (ex) {
@@ -120,17 +146,17 @@ async function getDaily() {
                     var { album, artists } = e;
 
                     return {
-                        id: e.id,
+                        id: e.id.toString(),
                         name: e.name,
                         duration: e.duration,
                         album: {
-                            id: album.id,
+                            id: album.id.toString(),
                             name: album.name,
                             cover: `${album.picUrl}?param=100y100`,
                             link: `/player/1/${album.id}`,
                         },
                         artists: artists.map(e => ({
-                            id: e.id,
+                            id: e.id.toString(),
                             name: e.name,
                             // Broken link
                             link: e.id ? `/artist/${e.id}` : '',
@@ -157,7 +183,7 @@ async function getRecommend() {
         } else {
             response.data.recommend.map(e => {
                 list.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     type: 0,
                     name: e.name,
                     played: e.playcount,
@@ -191,8 +217,12 @@ router.get('/:id?', async(req, res) => {
             ...(await getNewest()),
         ];
     } else {
+        let personalized = await getPersonalized();
+
+        personalized[0].songs = await getSongs(personalized[0].id);
+        debug('%O', personalized[0].songs);
         list = [
-            ...(await getPersonalized()),
+            ...personalized,
             ...(await getNewest()),
         ];
     }

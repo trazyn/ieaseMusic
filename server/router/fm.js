@@ -34,17 +34,17 @@ router.get('/', async(req, res) => {
             var { album, artists } = e;
 
             return {
-                id: e.id,
+                id: e.id.toString(),
                 name: e.name,
                 duration: e.duration,
                 album: {
-                    id: album.id,
+                    id: album.id.toString(),
                     name: album.name,
                     cover: album.picUrl,
                     link: `/player/1/${album.id}`,
                 },
                 artists: artists.map(e => ({
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     // Broken link
                     link: e.id ? `/artist/${e.id}` : '',

@@ -21,7 +21,7 @@ async function getArtist(id) {
             profile = data.artist;
 
             profile = {
-                id: profile.id,
+                id: profile.id.toString(),
                 uid: profile.accountId,
                 name: profile.name,
                 background: profile.picUrl + '?param=640y300',
@@ -37,17 +37,17 @@ async function getArtist(id) {
                 var { al /* Album */, ar /* Artist */ } = e;
 
                 return {
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     duration: e.dt,
                     album: {
-                        id: al.id,
+                        id: al.id.toString(),
                         name: al.name,
                         cover: `${al.picUrl}?param=y100y100`,
                         link: `/player/1/${al.id}`
                     },
                     artists: ar.map(e => ({
-                        id: e.id,
+                        id: e.id.toString(),
                         name: e.name,
                         // Broken link
                         link: e.id ? `/artist/${e.id}` : '',
@@ -62,7 +62,7 @@ async function getArtist(id) {
     return {
         profile,
         playlist: {
-            id: profile.id,
+            id: profile.id.toString(),
             name: `TOP 50 - ${profile.name}`,
             size: 50,
             songs,
@@ -81,7 +81,7 @@ async function getAlbums(id) {
             throw data;
         } else {
             albums = data.hotAlbums.map(e => ({
-                id: e.id,
+                id: e.id.toString(),
                 name: e.name,
                 cover: e.picUrl,
                 link: `/player/1/${e.id}`
@@ -105,7 +105,7 @@ async function getSimilar(id) {
             throw data;
         } else {
             similar = data.artists.map(e => ({
-                id: e.id,
+                id: e.id.toString(),
                 name: e.name,
                 avatar: e.picUrl,
                 publishTime: e.publishTime,

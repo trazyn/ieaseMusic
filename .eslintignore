@@ -2,4 +2,6 @@
 dist/*
 __tests__/*
 src/assets/*
+server/*
+NeteaseCloudMusicApi/*
 

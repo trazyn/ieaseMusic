@@ -36,14 +36,14 @@ router.get('/:type?/:offset?', async(req, res) => {
                 var creator = e.creator;
 
                 playlists.push({
-                    id: e.id,
+                    id: e.id.toString(),
                     name: e.name,
                     played: e.playCount,
                     size: e.trackCount,
                     link: `/player/0/${e.id}`,
                     cover: `${e.coverImgUrl}?param=100y100`,
                     user: {
-                        id: creator.userId,
+                        id: creator.userId.toString(),
                         name: creator.nickname,
                         link: `/user/${creator.userId}`,
                     },
