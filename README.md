@@ -32,7 +32,7 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg) the `.dmg` file.
+[Download]() the `.dmg` file.
 
 #### Linux
 `等待填坑`
