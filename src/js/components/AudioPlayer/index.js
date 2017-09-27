@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { ipcRenderer } from 'electron';
 
 import helper from 'utils/helper';
 
@@ -19,6 +20,18 @@ export default class AudioPlayer extends Component {
                 // Anti warnning
             }
         }
+    }
+
+    componentDidMount() {
+        ipcRenderer.on('player-volume-up', () => {
+            var volume = this.refs.player.volume + .1;
+            this.refs.player.volume = volume > 1 ? 1 : volume;
+        });
+
+        ipcRenderer.on('player-volume-down', () => {
+            var volume = this.refs.player.volume - .1;
+            this.refs.player.volume = volume < 0 ? 0 : volume;
+        });
     }
 
     passed = 0;
