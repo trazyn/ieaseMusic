@@ -1,4 +1,9 @@
 # ieaseMusic
+
+<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" /> 
+
+> Icon by [octiviotti](https://octiviotti.deviantart.com/)
+
 > Elegant NeteaseMusic desktop app, Rock with NeteaseMusic :metal:
 
 > Built by Electron, React, MobX, JSS
