@@ -98,3 +98,6 @@ Description            | Keys
 - [x] Login
 - [ ] Scrobble to Last.fm
 - [ ] Website
+
+## License
+还是 MIT 吧，懒得改了
