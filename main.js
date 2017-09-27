@@ -1,5 +1,5 @@
 
-import { app, BrowserWindow, Menu, Tray, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import _debug from 'debug';
 
@@ -357,6 +357,23 @@ function updateTray(playing) {
     tray.setContextMenu(contextmenu);
 }
 
+function registerGlobalShortcut() {
+    // Play the next song
+    globalShortcut.register('MediaNextTrack', e => {
+        mainWindow.webContents.send('player-next');
+    });
+
+    // Play the previous song
+    globalShortcut.register('MediaPreviousTrack', e => {
+        mainWindow.webContents.send('player-previous');
+    });
+
+    // Toggle the player
+    globalShortcut.register('MediaPlayPause', e => {
+        mainWindow.webContents.send('player-toggle');
+    });
+}
+
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
         defaultWidth: 740,
@@ -371,6 +388,7 @@ const createMainWindow = () => {
         resizable: false,
         vibrancy: 'medium-light',
         backgroundColor: 'none',
+        // Headless
         frame: false,
     });
 
@@ -398,6 +416,7 @@ const createMainWindow = () => {
         }
     });
 
+    // Update the history menu
     ipcMain.on('update-history', (event, args) => {
         var historyMenu = mainMenu.find(e => e.label === 'Recently Played');
         var submenu = args.songs.map((e, index) => {
@@ -417,6 +436,7 @@ const createMainWindow = () => {
         updateMenu();
     });
 
+    // Update next up menu
     ipcMain.on('update-playing', async(event, args) => {
         var playingMenu = mainMenu.find(e => e.label === 'Next Up');
         var submenu = args.songs.map((e, index) => {
@@ -435,6 +455,7 @@ const createMainWindow = () => {
         updateMenu();
     });
 
+    // Update menu icon image and controls menu
     ipcMain.on('update-status', (event, args) => {
         var { playing, song } = args;
 
@@ -444,6 +465,7 @@ const createMainWindow = () => {
         updateMenu(playing);
     });
 
+    // Show/Hide menu icon
     ipcMain.on('update-preferences', (event, args) => {
         mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
 
@@ -459,15 +481,18 @@ const createMainWindow = () => {
         updateTray(args.playing);
     });
 
+    // Show the main window
     ipcMain.on('show', event => {
         mainWindow.show();
         mainWindow.focus();
     });
 
+    // Minimize the window
     ipcMain.on('minimize', event => {
         mainWindow.minimize();
     });
 
+    // Quit app
     ipcMain.on('goodbye', (event) => {
         forceQuit = true;
         mainWindow = null;
@@ -475,6 +500,7 @@ const createMainWindow = () => {
     });
 
     if (isOsx) {
+        // App about
         app.setAboutPanelOptions({
             applicationName: 'ieaseMusic',
             applicationVersion: pkg.version,
@@ -485,7 +511,7 @@ const createMainWindow = () => {
     }
 
     updateMenu();
-
+    registerGlobalShortcut();
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
 };

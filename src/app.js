@@ -19,14 +19,17 @@ class App extends Component {
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
+        // Player play
         ipcRenderer.on('player-play', (e, args) => {
             controller.play(args.id);
         });
 
+        // Toggle the player
         ipcRenderer.on('player-toggle', () => {
             controller.toggle();
         });
 
+        // Play the next song
         ipcRenderer.on('player-next', () => {
             let FMPlaying = isFMPlaying();
 
@@ -37,10 +40,12 @@ class App extends Component {
             }
         });
 
+        // Play previous song
         ipcRenderer.on('player-previous', () => {
             controller.prev();
         });
 
+        // Like a song
         ipcRenderer.on('player-like', () => {
             var song = controller.song;
 
@@ -51,34 +56,42 @@ class App extends Component {
             me.like(controller.song);
         });
 
+        // Go the home screen
         ipcRenderer.on('show-home', () => {
             navigator.router.push('/');
         });
 
+        // Show the Ranking list
         ipcRenderer.on('show-top', () => {
             navigator.router.push('/top');
         });
 
+        // All playlists
         ipcRenderer.on('show-playlist', () => {
             navigator.router.push('/playlist/全部');
         });
 
+        // Show personal FM channel
         ipcRenderer.on('show-fm', () => {
             navigator.router.push('/fm');
         });
 
+        // Show preferences screen
         ipcRenderer.on('show-preferences', () => {
             navigator.router.push('/preferences');
         });
 
+        // SHow slide menu panel
         ipcRenderer.on('show-menu', () => {
             menu.toggle(true);
         });
 
+        // Show the next up
         ipcRenderer.on('show-playing', () => {
             playing.toggle(true);
         });
 
+        // Right click menu
         window.addEventListener('contextmenu', e => {
             let logined = me.hasLogin();
             let contextmenu = new remote.Menu.buildFromTemplate([
