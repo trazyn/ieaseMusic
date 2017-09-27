@@ -18,7 +18,7 @@ export default theme => ({
             display: 'inline-block',
             height: 32,
             width: 32,
-            marginRight: 12,
+            marginRight: 4,
             fontSize: 20,
             textAlign: 'center',
             cursor: 'pointer',

@@ -1,6 +1,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { inject, observer } from 'mobx-react';
+import { ipcRenderer } from 'electron';
 import injectSheet from 'react-jss';
 import clazz from 'classname';
 
@@ -152,6 +153,13 @@ class Header extends Component {
                     {
                         this.renderMenu()
                     }
+
+                    <i
+                        className="ion-ios-arrow-down"
+                        onClick={e => ipcRenderer.send('minimize')}
+                        style={{
+                            color: this.props.color,
+                        }} />
                 </div>
             </header>
         );
