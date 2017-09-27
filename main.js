@@ -95,7 +95,7 @@ let mainMenu = [
                 accelerator: 'Cmd+Down',
                 click() {
                     mainWindow.show();
-                    mainWindow.webContents.send('player-volume-up');
+                    mainWindow.webContents.send('player-volume-down');
                 }
             },
             {
