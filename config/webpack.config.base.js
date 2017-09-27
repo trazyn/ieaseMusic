@@ -30,6 +30,30 @@ export default {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 loader: 'url-loader'
             },
+            {
+                test: /\.(eot|woff|woff2|ttf)([?]?.*)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        name: 'fonts/[name].[ext]',
+                    },
+                }],
+            },
+            {
+                test: /\.svg$/,
+                use: ['svg-inline-loader'],
+                include: path.resolve(__dirname, 'src'),
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        mimetype: 'image/svg+xml',
+                    },
+                }],
+                include: /node_modules/,
+            },
         ]
     },
 
