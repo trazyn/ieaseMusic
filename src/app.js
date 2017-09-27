@@ -5,7 +5,7 @@ import { Router, hashHistory } from 'react-router';
 import { Provider } from 'mobx-react';
 import { ipcRenderer, remote, shell } from 'electron';
 import { ThemeProvider } from 'react-jss';
-import 'ionicons/dist/css/ionicons.css';
+import 'ionicons201/css/ionicons.css';
 
 import './global.css';
 import 'utils/albumColors';
