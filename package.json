@@ -13,6 +13,7 @@
     "hot-server": "cross-env NODE_ENV=development DEBUG_COLORS=true DEBUG=dev:*,-not_this node -r babel-register server/dev.js",
     "start-hot": "cross-env HOT=1 NODE_ENV=development DEBUG_COLORS=true DEBUG=dev:*,-not_this ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
+    "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
   "author": "var.darling@gmail.com",
@@ -43,6 +44,10 @@
     },
     "mac": {
       "icon": "../resource/dock.icns"
+    },
+    "linux": {
+      "icon": "../resource",
+      "category": "Music"
     },
     "directories": {
       "output": "../release"
