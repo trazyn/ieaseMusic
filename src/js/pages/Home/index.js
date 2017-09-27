@@ -183,7 +183,7 @@ class Home extends Component {
                             <svg class="${classes.svg}">
                                 <defs>
                                     <pattern id="mask" patternUnits="userSpaceOnUse" height="600" width="600">
-                                        <image xmlns:xlink="http://www.w3.org/1999/xlink" x="100px" y="-100px" xlink:href="https://trazyn.github.io/neoui-ng/images/bgcolorful.jpg" width="600" height="600"></image>
+                                        <image xmlns:xlink="http://www.w3.org/1999/xlink" x="100px" y="-100px" xlink:href="assets/bgcolorful.jpg" width="600" height="600"></image>
                                     </pattern>
                                 </defs>
                                 <text class="${classes.welcome}" text-anchor="middle" x="50%" y="0" dy="100px">Welcome</text>
