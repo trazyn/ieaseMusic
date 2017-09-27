@@ -171,7 +171,7 @@ class Home extends Component {
                 ref="container">
                 <Loader
                     show={loading}
-                    text="Please Wati ..." />
+                    text="Please Wait ..." />
                 <Header {...{
                     showBack: false,
                 }} />
