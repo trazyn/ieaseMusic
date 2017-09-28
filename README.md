@@ -60,6 +60,8 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 
 ## Development
 ```
+git submodule init
+git submodule update
 $ npm install
 $ npm run dev
 ```
