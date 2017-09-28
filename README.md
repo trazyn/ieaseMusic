@@ -42,7 +42,12 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 [Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.3/ieaseMusic-0.0.3-mac.dmg) the `.dmg` file.
 
 #### Linux
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.3/iease-music-0.0.3-x86_64.AppImage).
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.3/iease-music-0.0.3-x86_64.AppImage) the `.AppImage` file.
+
+The AppImage needs to be made executable after download:
+```
+$ chmod u+x wewechat-1.0.0-x86_64.AppImage
+```
 
 #### Windows(Windows 7+ are supported, 64-bit only)
 `等待填坑`
