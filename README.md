@@ -32,6 +32,8 @@
 
 [fengjueming/unblock-NeteastMusic](https://github.com/fengjueming/unblock-NeteastMusic)
 
+解锁后播放音乐存在延时过高问题可以参考 [#4](https://github.com/trazyn/ieaseMusic/issues/4)
+
 ## Install
 
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
