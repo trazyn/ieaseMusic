@@ -15,15 +15,15 @@ class Me {
     @observable likes = new Map();
 
     @action async init() {
-        var response = await axios.get('/login/refresh');
         var profile = await storage.get('profile');
 
-        if (response.data.code !== 200
-            || !profile) {
+        if (!profile) {
             self.profile = {};
             self.initialized = true;
             return false;
         }
+
+        await axios.get('/login/refresh');
 
         // App has been initialized
         self.profile = profile;

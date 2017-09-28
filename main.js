@@ -328,9 +328,10 @@ function updateMenu(playing) {
     mainMenu[1]['submenu'][0]['label'] = playing ? 'Pause' : 'Play';
     menu = Menu.buildFromTemplate(mainMenu);
 
-    if (isOsx) {
-        Menu.setApplicationMenu(null);
+    try {
         Menu.setApplicationMenu(menu);
+    } catch (ex) {
+        // Anti warnning
     }
 }
 
@@ -389,7 +390,7 @@ const createMainWindow = () => {
         vibrancy: 'medium-light',
         backgroundColor: 'none',
         // Headless
-        frame: false,
+        frame: !isOsx,
     });
 
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
