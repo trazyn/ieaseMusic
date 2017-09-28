@@ -8,4 +8,4 @@ if [ -z "$GH_TOKEN" ]; then
 fi
 
 # This will build, package and upload the app to GitHub.
-npm run build && node_modules/.bin/build --projectDir ./dist --mac -p always
+npm run build && node_modules/.bin/build --projectDir ./dist --mac --linux -p always
