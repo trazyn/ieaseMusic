@@ -46,7 +46,7 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 
 The AppImage needs to be made executable after download:
 ```
-$ chmod u+x wewechat-1.0.0-x86_64.AppImage
+$ chmod u+x iease-music-0.0.3-x86_64.AppImage
 ```
 
 #### Windows(Windows 7+ are supported, 64-bit only)
