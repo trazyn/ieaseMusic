@@ -1,10 +1,15 @@
 # ieaseMusic
+
+<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
+
+> Icon by [octiviotti](https://octiviotti.deviantart.com/)
+
 > Elegant NeteaseMusic desktop app, Rock with NeteaseMusic :metal:
 
 > Built by Electron, React, MobX, JSS
 
 
-不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Window`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
+不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Windows`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
 
 
 ## Preview
@@ -27,17 +32,19 @@
 
 [fengjueming/unblock-NeteastMusic](https://github.com/fengjueming/unblock-NeteastMusic)
 
+解锁后播放音乐存在延时过高问题可以参考 [#4](https://github.com/trazyn/ieaseMusic/issues/4)
+
 ## Install
 
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.1/ieaseMusic-0.0.1-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.3/ieaseMusic-0.0.3-mac.dmg) the `.dmg` file.
 
 #### Linux
 `$ npm run package-linux`
 
-#### Window(Windows 7+ are supported, 64-bit only)
+#### Windows(Windows 7+ are supported, 64-bit only)
 `等待填坑`
 
 ## Screenshots
@@ -53,6 +60,8 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 
 ## Development
 ```
+git submodule init
+git submodule update
 $ npm install
 $ npm run dev
 ```
