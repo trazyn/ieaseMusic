@@ -1,6 +1,6 @@
 # ieaseMusic
 
-<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" /> 
+<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
 
 > Icon by [octiviotti](https://octiviotti.deviantart.com/)
 
@@ -9,7 +9,7 @@
 > Built by Electron, React, MobX, JSS
 
 
-不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Window`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
+不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Windows`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
 
 
 ## Preview
@@ -42,7 +42,7 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 #### Linux
 `$ npm run package-linux`
 
-#### Window(Windows 7+ are supported, 64-bit only)
+#### Windows(Windows 7+ are supported, 64-bit only)
 `等待填坑`
 
 ## Screenshots
