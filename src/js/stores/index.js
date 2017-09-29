@@ -1,6 +1,4 @@
 
-import axios from 'axios';
-
 import me from './me';
 import menu from './menu';
 import home from './home';
@@ -28,7 +26,5 @@ const stores = {
     playing,
     preferences,
 };
-
-axios.defaults.baseURL = 'http://localhost:8000';
 
 export default stores;

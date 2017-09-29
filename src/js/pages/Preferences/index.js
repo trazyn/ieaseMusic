@@ -19,6 +19,8 @@ import Switch from 'ui/Switch';
         setAlwaysOnTop,
         naturalScroll,
         setNaturalScroll,
+        port,
+        setPort,
         backgrounds,
         setBackgrounds,
     } = stores.preferences;
@@ -34,6 +36,8 @@ import Switch from 'ui/Switch';
         setAlwaysOnTop,
         naturalScroll,
         setNaturalScroll,
+        port,
+        setPort,
         backgrounds,
         setBackgrounds,
     };
@@ -60,6 +64,8 @@ class Preferences extends Component {
             setNaturalScroll,
             showNotification,
             setShowNotification,
+            port,
+            setPort,
             backgrounds,
         } = this.props;
 
@@ -131,6 +137,26 @@ class Preferences extends Component {
                             onChange={e => setNaturalScroll(e.target.checked)} />
                     </label>
 
+                    <label
+                        htmlFor="naturalScroll"
+                        style={{
+                            display: 'block',
+                        }}>
+                        <div>
+                            <h4>API server port</h4>
+                            <p>After change port, you need restart the app.</p>
+                        </div>
+
+                        <input
+                            className={classes.textInput}
+                            min="1000"
+                            max="65535"
+                            defaultValue={port}
+                            onBlur={ev => setPort(+ev.target.value)}
+                            placeholder="1000 ~ 65535"
+                            type="number" />
+                    </label>
+
                     <h3>Playlist Background ...</h3>
                     {
                         backgrounds.map((e, index) => {
@@ -140,13 +166,14 @@ class Preferences extends Component {
                                     key={index}>
                                     <span>{e.type}</span>
                                     <input
-                                        type="text"
+                                        className={classes.textInput}
                                         defaultValue={e.background}
                                         onBlur={ev => this.saveBackground(index, {
                                             type: e.type,
                                             background: ev.target.value,
                                         })}
-                                        placeholder="Please entry the background address" />
+                                        placeholder="Please entry the background address"
+                                        type="text" />
                                 </div>
                             );
                         })

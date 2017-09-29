@@ -53,7 +53,7 @@ export default theme => {
                 margin: '24px 0',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-            }
+            },
         },
 
         close: {
@@ -66,23 +66,23 @@ export default theme => {
 
         background: {
             margin: '24px 0',
+        },
 
-            '& input': {
-                display: 'block',
-                height: 36,
-                width: '100%',
-                lineHeight: '36px',
-                background: 'none',
-                color: 'gray',
-                fontSize: 13,
-                textAlign: 'left',
-                border: 0,
-                borderBottom: '1px solid #ddd',
-                outline: 0,
-                transition: '.2s',
-            },
+        textInput: {
+            display: 'block',
+            height: 36,
+            width: '100%',
+            lineHeight: '36px',
+            background: 'none',
+            color: 'gray',
+            fontSize: 13,
+            textAlign: 'left',
+            border: 0,
+            borderBottom: '1px solid #ddd',
+            outline: 0,
+            transition: '.2s',
 
-            '& input:focus': {
+            '&focus': {
                 borderBottomColor: colors.pallet.coral,
             },
         }

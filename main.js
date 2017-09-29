@@ -1,6 +1,8 @@
 
 import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
+import storage from 'electron-json-storage';
+import axios from 'axios';
 import _debug from 'debug';
 
 import pkg from './package.json';
@@ -531,8 +533,17 @@ app.on('activate', e => {
     }
 });
 
-api.listen(config.api.port, (err) => {
-    if (err) throw err;
+storage.get('preferences', (err, data) => {
+    var port = config.api.port;
 
-    debug(`API server is running with port ${config.api.port} 👊`);
+    if (!err) {
+        port = data.port || port;
+    }
+
+    axios.defaults.baseURL = `http://localhost:${port}`;
+    api.listen(port, (err) => {
+        if (err) throw err;
+
+        debug(`API server is running with port ${port} 👊`);
+    });
 });

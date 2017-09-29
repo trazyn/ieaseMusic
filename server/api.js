@@ -10,8 +10,6 @@ const cache = apicache.middleware;
 const onlyStatus200 = (req, res) => res.statusCode === 200;
 const port = process.env.API_PORT || 8000;
 
-axios.defaults.baseURL = `http://localhost:${port}`;
-
 // Set cookie for axios
 app.use((req, res, next) => {
     axios.defaults.headers = req.headers;
