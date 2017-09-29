@@ -31,7 +31,7 @@ import Controller from 'components/Controller';
     playing: stores.controller.playing,
     toggle: stores.controller.toggle,
     canitoggle: () => stores.controller.playlist.id === stores.player.meta.id,
-    play: (songid) => {
+    play: async(songid) => {
         var { controller, player } = stores;
         var meta = player.meta;
         var sameToPlaying = controller.playlist.id === player.meta.id;
@@ -61,7 +61,7 @@ import Controller from 'components/Controller';
                 return;
             }
 
-            controller.play(songid);
+            await controller.play(songid);
             return;
         }
 
@@ -72,7 +72,7 @@ import Controller from 'components/Controller';
             name: meta.name,
             songs: player.songs,
         });
-        controller.play(songid);
+        await controller.play(songid);
     },
     canifav: () => {
         var { player, me } = stores;
@@ -191,8 +191,8 @@ class Player extends Component {
                     className={clazz({
                         [classes.active]: sameToPlaylist && e.id === song.id,
                     })}
-                    onClick={ev => {
-                        this.props.play(e.id);
+                    onClick={async ev => {
+                        await this.props.play(e.id);
                     }} >
 
                     {
