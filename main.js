@@ -386,11 +386,15 @@ const createMainWindow = () => {
         y: mainWindowState.y,
         width: 740,
         height: 480,
-        resizable: false,
+        minWidth: 720,
+        minHeight: 450,
+        maxWidth: 1000,
+        maxHeight: 580,
+        resizable: true,
         vibrancy: 'medium-light',
         backgroundColor: 'none',
         // Headless
-        frame: !isOsx,
+        frame: false,
     });
 
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
