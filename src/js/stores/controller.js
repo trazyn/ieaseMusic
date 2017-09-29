@@ -84,7 +84,7 @@ class Controller {
 
         self.song = song;
         self.playing = true;
-        self.resolveSong();
+        await self.resolveSong();
     }
 
     @action async resolveSong() {
