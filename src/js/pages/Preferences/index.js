@@ -17,6 +17,8 @@ import Switch from 'ui/Switch';
         setAutoPlay,
         alwaysOnTop,
         setAlwaysOnTop,
+        naturalScroll,
+        setNaturalScroll,
         backgrounds,
         setBackgrounds,
     } = stores.preferences;
@@ -30,6 +32,8 @@ import Switch from 'ui/Switch';
         setAutoPlay,
         alwaysOnTop,
         setAlwaysOnTop,
+        naturalScroll,
+        setNaturalScroll,
         backgrounds,
         setBackgrounds,
     };
@@ -52,6 +56,8 @@ class Preferences extends Component {
             setAlwaysOnTop,
             autoPlay,
             setAutoPlay,
+            naturalScroll,
+            setNaturalScroll,
             showNotification,
             setShowNotification,
             backgrounds,
@@ -111,6 +117,18 @@ class Preferences extends Component {
                             checked={showNotification}
                             id="showNotification"
                             onChange={e => setShowNotification(e.target.checked)} />
+                    </label>
+
+                    <label htmlFor="naturalScroll">
+                        <div>
+                            <h4>Scroll direction: Natural</h4>
+                            <p>Content tracks finger movement.</p>
+                        </div>
+
+                        <Switch
+                            checked={naturalScroll}
+                            id="naturalScroll"
+                            onChange={e => setNaturalScroll(e.target.checked)} />
                     </label>
 
                     <h3>Playlist Background ...</h3>

@@ -17,6 +17,7 @@ import Controller from 'components/Controller';
     loading: stores.top.loading,
     list: stores.top.list,
     getList: stores.top.getList,
+    naturalScroll: stores.preferences.naturalScroll,
 }))
 @observer
 class Top extends Component {
@@ -83,7 +84,7 @@ class Top extends Component {
     }
 
     render() {
-        var { classes, loading } = this.props;
+        var { classes, loading, naturalScroll } = this.props;
 
         if (loading) {
             return <Loader show={true} />;
@@ -96,7 +97,7 @@ class Top extends Component {
                     color: 'white',
                 }} />
 
-                <Scroller>
+                <Scroller reverseScroll={!naturalScroll}>
                     {
                         this.renderList()
                     }
