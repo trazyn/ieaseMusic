@@ -14,9 +14,7 @@
     "start-hot": "cross-env HOT=1 NODE_ENV=development DEBUG_COLORS=true DEBUG=dev:*,-not_this ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
     "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
-    "package-win": "npm run build && rm -rf release && build --win --ia32 --projectDir ./dist",
-    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
-    "dd": "electron-builder --win --ia32 --projectDir ./dist"
+    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
   "author": "var.darling@gmail.com",
   "license": "MIT",
@@ -48,18 +46,8 @@
       "icon": "../resource/dock.icns"
     },
     "linux": {
-      "target": "deb",
       "icon": "../resource",
       "category": "Music"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "../resource/ieaseMusic.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowToChangeInstallationDirectory": true
     },
     "directories": {
       "output": "../release"
