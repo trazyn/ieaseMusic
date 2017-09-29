@@ -1,9 +1,11 @@
 
 import { observable, action } from 'mobx';
 import { ipcRenderer } from 'electron';
+import axios from 'axios';
 
 import controller from './controller';
 import theme from '../../theme.js';
+import config from '../../../config/index';
 import storage from 'utils/storage';
 
 class Preferences {
@@ -12,6 +14,7 @@ class Preferences {
     @observable showNotification = true;
     @observable autoPlay = true;
     @observable naturalScroll = true;
+    @observable port = config.api.port;
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -21,6 +24,7 @@ class Preferences {
             showNotification = self.showNotification,
             autoPlay = self.autoPlay,
             naturalScroll = self.naturalScroll,
+            port = self.port,
             backgrounds = theme.playlist.backgrounds,
         } = preferences;
 
@@ -29,14 +33,16 @@ class Preferences {
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
         self.naturalScroll = !!naturalScroll;
+        self.port = port || config.api.port;
         self.backgrounds = backgrounds;
 
         // Save preferences
         self.save();
+        axios.defaults.baseURL = `http://localhost:${self.port}`;
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, backgrounds } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, backgrounds } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -44,6 +50,7 @@ class Preferences {
             showNotification,
             autoPlay,
             naturalScroll,
+            port,
             backgrounds,
         });
 
@@ -81,6 +88,16 @@ class Preferences {
 
     @action setBackgrounds(backgrounds) {
         self.backgrounds = backgrounds;
+        self.save();
+    }
+
+    @action setPort(port) {
+        if (port < 1000
+            || port > 65535) {
+            port = config.api.port;
+        }
+
+        self.port = port;
         self.save();
     }
 }

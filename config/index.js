@@ -8,7 +8,7 @@ const config = {
     },
 
     api: {
-        port: process.env.API_PORT || 8000,
+        port: process.env.API_PORT || 10086,
     },
 
     client: path.resolve(__dirname, '../src'),
