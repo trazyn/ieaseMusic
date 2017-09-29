@@ -79,6 +79,7 @@ export default theme => ({
             width: 100,
             height: 100,
             borderRadius: 100,
+            pointerEvents: 'none',
             transition: '.4s',
         },
 

@@ -9,6 +9,7 @@ export default theme => ({
 
         '& img': {
             height: 'auto',
+            pointerEvents: 'none',
         },
     },
 
