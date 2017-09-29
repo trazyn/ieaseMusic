@@ -11,6 +11,7 @@ class Preferences {
     @observable alwaysOnTop = true;
     @observable showNotification = true;
     @observable autoPlay = true;
+    @observable naturalScroll = true;
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -19,6 +20,7 @@ class Preferences {
             alwaysOnTop = self.alwaysOnTop,
             showNotification = self.showNotification,
             autoPlay = self.autoPlay,
+            naturalScroll = self.naturalScroll,
             backgrounds = theme.playlist.backgrounds,
         } = preferences;
 
@@ -26,6 +28,7 @@ class Preferences {
         self.alwaysOnTop = !!alwaysOnTop;
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
+        self.naturalScroll = !!naturalScroll;
         self.backgrounds = backgrounds;
 
         // Save preferences
@@ -33,13 +36,14 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, backgrounds } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, backgrounds } = self;
 
         await storage.set('preferences', {
             showTray,
             alwaysOnTop,
             showNotification,
             autoPlay,
+            naturalScroll,
             backgrounds,
         });
 
@@ -67,6 +71,11 @@ class Preferences {
 
     @action setAutoPlay(autoPlay) {
         self.autoPlay = autoPlay;
+        self.save();
+    }
+
+    @action setNaturalScroll(naturalScroll) {
+        self.naturalScroll = naturalScroll;
         self.save();
     }
 

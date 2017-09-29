@@ -37,6 +37,7 @@ import Controller from 'components/Controller';
         // Should has same id
         return stores.controller.playlist.id === id;
     },
+    naturalScroll: stores.preferences.naturalScroll,
 }))
 @observer
 class Home extends Component {
@@ -134,11 +135,11 @@ class Home extends Component {
     }
 
     renderPlaylist() {
-        var { classes, playlist } = this.props;
+        var { classes, playlist, naturalScroll } = this.props;
         var logined = this.props.hasLogin();
 
         return (
-            <Scroller>
+            <Scroller reverseScroll={!naturalScroll}>
                 {
                     playlist.map((e, index) => {
                         var isLiked = logined && index === 0;

@@ -23,7 +23,8 @@ import Header from 'components/Header';
 
         return controller.playing
             && controller.playlist.id === id;
-    }
+    },
+    naturalScroll: stores.preferences.naturalScroll,
 }))
 @observer
 class User extends Component {
@@ -36,10 +37,10 @@ class User extends Component {
     }
 
     renderList() {
-        var { classes, playlists } = this.props;
+        var { classes, playlists, naturalScroll } = this.props;
 
         return (
-            <Scroller>
+            <Scroller reverseScroll={!naturalScroll}>
                 {
                     playlists.map((e, index) => {
                         return (
