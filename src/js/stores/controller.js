@@ -100,7 +100,7 @@ class Controller {
         self.song = Object.assign({}, self.song, { data });
     }
 
-    @action next() {
+    @action async next() {
         var songs = self.playlist.songs;
         var history = self.history;
         var index = history.indexOf(self.song.id);
@@ -142,15 +142,15 @@ class Controller {
                 }
         }
 
-        self.play(next);
+        await self.play(next);
     }
 
-    @action prev() {
+    @action async prev() {
         var history = self.history;
         var index = history.indexOf(self.song.id);
 
         if (--index >= 0) {
-            self.play(history[index], false);
+            await self.play(history[index], false);
             return;
         }
 
@@ -160,9 +160,11 @@ class Controller {
             let song = songs[index];
 
             if (!songs.length) {
-                return self.play(history[history.length - 1]);
+                await self.play(history[history.length - 1]);
+                return;
             }
-            return self.play(song.id, false);
+            await self.play(song.id, false);
+            return;
         }
 
         index = self.playlist.songs.findIndex(e => e.id === self.song.id);
@@ -171,7 +173,7 @@ class Controller {
             index = self.playlist.songs.length - 1;
         }
 
-        self.play(self.playlist.songs[index]['id'], false);
+        await self.play(self.playlist.songs[index]['id'], false);
     }
 
     @action pause() {

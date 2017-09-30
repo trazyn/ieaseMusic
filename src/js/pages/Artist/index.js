@@ -34,7 +34,7 @@ import Header from 'components/Header';
 
         return res;
     },
-    play(songid) {
+    async play(songid) {
         var { controller, artist } = stores;
         var sameToPlaying = this.sameToPlaying();
 
@@ -43,7 +43,7 @@ import Header from 'components/Header';
                 || (controller.playing && controller.song.id === songid)) {
                 controller.toggle();
             } else {
-                controller.play(songid);
+                await controller.play(songid);
             }
         } else {
             // Play a new playlist
@@ -53,7 +53,7 @@ import Header from 'components/Header';
                 name: artist.playlist.name,
                 songs: artist.playlist.songs,
             });
-            controller.play(songid);
+            await controller.play(songid);
         }
     },
     sameToPlaying() {
@@ -124,7 +124,9 @@ class Artist extends Component {
                                     [classes.playing]: sameToPlaying() && song.id === e.id,
                                 })}
                                 key={index}
-                                onClick={ev => this.props.play(e.id)}>
+                                onClick={async ev => {
+                                    await this.props.play(e.id);
+                                }}>
                                 {
                                     isPlaying(e.id)
                                         ? <i className="ion-ios-pause" />
@@ -260,7 +262,9 @@ class Artist extends Component {
                     <div className={classes.inner}>
                         <div
                             className={classes.play}
-                            onClick={e => this.props.play()}>
+                            onClick={async e => {
+                                await this.props.play();
+                            }}>
                             {
                                 isPlaying()
                                     ? <i className="ion-ios-pause" />
