@@ -48,7 +48,7 @@ import Controller from 'components/Controller';
                     name: meta.name,
                     songs: player.songs,
                 });
-                controller.play();
+                await controller.play();
             }
 
             return;
