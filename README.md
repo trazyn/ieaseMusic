@@ -1,5 +1,7 @@
 # ieaseMusic
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/LICENSE)
+
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
 
 > Icon by [octiviotti](https://octiviotti.deviantart.com/)
