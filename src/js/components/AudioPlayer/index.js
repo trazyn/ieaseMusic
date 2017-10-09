@@ -9,6 +9,8 @@ import helper from 'utils/helper';
     song: stores.controller.song,
     next: stores.controller.next,
     playing: stores.controller.playing,
+    volume: stores.preferences.volume,
+    setVolume: stores.preferences.setVolume,
 }))
 @observer
 export default class AudioPlayer extends Component {
@@ -23,15 +25,24 @@ export default class AudioPlayer extends Component {
     }
 
     componentDidMount() {
+        var player = this.refs.player;
+        var { volume, setVolume } = this.props;
+
         ipcRenderer.on('player-volume-up', () => {
-            var volume = this.refs.player.volume + .1;
-            this.refs.player.volume = volume > 1 ? 1 : volume;
+            var volume = player.volume + .1;
+
+            player.volume = volume > 1 ? 1 : volume;
+            setVolume(player.volume);
         });
 
         ipcRenderer.on('player-volume-down', () => {
-            var volume = this.refs.player.volume - .1;
-            this.refs.player.volume = volume < 0 ? 0 : volume;
+            var volume = player.volume - .1;
+
+            player.volume = volume < 0 ? 0 : volume;
+            setVolume(player.volume);
         });
+
+        player.volume = volume;
     }
 
     passed = 0;

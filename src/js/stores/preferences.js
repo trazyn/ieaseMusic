@@ -14,6 +14,7 @@ class Preferences {
     @observable showNotification = true;
     @observable autoPlay = true;
     @observable naturalScroll = true;
+    @observable volume = 1;
     @observable port = config.api.port;
 
     @action async init() {
@@ -25,6 +26,7 @@ class Preferences {
             autoPlay = self.autoPlay,
             naturalScroll = self.naturalScroll,
             port = self.port,
+            volume = self.volume,
             backgrounds = theme.playlist.backgrounds,
         } = preferences;
 
@@ -34,6 +36,7 @@ class Preferences {
         self.autoPlay = !!autoPlay;
         self.naturalScroll = !!naturalScroll;
         self.port = port || config.api.port;
+        self.volume = +volume || 1;
         self.backgrounds = backgrounds;
 
         // Save preferences
@@ -42,7 +45,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, backgrounds } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, backgrounds } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -51,6 +54,7 @@ class Preferences {
             autoPlay,
             naturalScroll,
             port,
+            volume,
             backgrounds,
         });
 
@@ -88,6 +92,11 @@ class Preferences {
 
     @action setBackgrounds(backgrounds) {
         self.backgrounds = backgrounds;
+        self.save();
+    }
+
+    @action setVolume(volume) {
+        self.volume = volume;
         self.save();
     }
 
