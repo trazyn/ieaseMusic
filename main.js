@@ -70,7 +70,7 @@ let mainMenu = [
             },
             {
                 label: 'Next',
-                accelerator: 'Cmd+Right',
+                accelerator: 'Right',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('player-next');
@@ -78,7 +78,7 @@ let mainMenu = [
             },
             {
                 label: 'Previous',
-                accelerator: 'Cmd+Left',
+                accelerator: 'Left',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('player-previous');
@@ -86,7 +86,7 @@ let mainMenu = [
             },
             {
                 label: 'Increase Volume',
-                accelerator: 'Cmd+Up',
+                accelerator: 'Up',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('player-volume-up');
@@ -94,7 +94,7 @@ let mainMenu = [
             },
             {
                 label: 'Decrease Volume',
-                accelerator: 'Cmd+Down',
+                accelerator: 'Down',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('player-volume-down');

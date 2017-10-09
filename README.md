@@ -78,10 +78,10 @@ $ npm run dev
 Description            | Keys
 -----------------------| -----------------------
 暂停/播放              | <kbd>Space</kbd>
-上一曲                 | <kbd>Cmd</kbd> <kbd>Left</kbd>
-下一曲                 | <kbd>Cmd</kbd> <kbd>Right</kbd>
-音量加                 | <kbd>Cmd</kbd> <kbd>Up</kbd>
-音量减                 | <kbd>Cmd</kbd> <kbd>Down</kbd>
+上一曲                 | <kbd>Left</kbd>
+下一曲                 | <kbd>Right</kbd>
+音量加                 | <kbd>Up</kbd>
+音量减                 | <kbd>Down</kbd>
 喜欢歌曲               | <kbd>Cmd</kbd> <kbd>L</kbd>
 播放历史记录           | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
 跳转首页               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>H</kbd>

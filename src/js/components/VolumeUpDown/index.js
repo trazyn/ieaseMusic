@@ -17,6 +17,10 @@ class VolumeUpDown extends Component {
         direction: true,
     };
 
+    componentWillUpdate() {
+        this.animationDone();
+    }
+
     componentDidUpdate() {
         this.refs.container.classList.add(this.props.classes.animated);
     }
