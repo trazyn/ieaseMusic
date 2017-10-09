@@ -7,6 +7,7 @@ import Loader from 'ui/Loader';
 import AudioPlayer from 'components/AudioPlayer';
 import Menu from 'components/Menu';
 import Playing from 'components/Playing';
+import VolumeUpDown from 'components/VolumeUpDown';
 
 const classes = {
     container: {
@@ -48,6 +49,7 @@ class Layout extends Component {
                     {this.props.children}
                 </div>
 
+                <VolumeUpDown />
                 <Menu />
                 <Playing />
                 <AudioPlayer />
