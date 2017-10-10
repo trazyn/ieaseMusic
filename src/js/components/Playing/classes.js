@@ -79,10 +79,12 @@ export default theme => ({
             padding: 0,
         },
 
-        '&:hover $mask': {
+        '&$active $mask, &:hover $mask': {
             opacity: 1,
         }
     },
+
+    active: {},
 
     title: {
         maxWidth: 200,
