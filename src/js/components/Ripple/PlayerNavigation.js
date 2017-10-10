@@ -25,7 +25,7 @@ class PlayerNavigation extends Component {
     }
 
     shouldComponentUpdate() {
-        return this.shouldUpdate;
+        return !!this.shouldUpdate;
     }
 
     componentDidMount() {
