@@ -112,10 +112,15 @@ Description            | Keys
 - [x] User
 - [x] Artist
 - [x] Album
-- [ ] Comment
+- [ ] Login with email
 - [ ] Search
 - [x] Login
+- [x] Pllylist subscribe
+- [ ] Follow
+- [ ] Flac high quality audio
+- [ ] Resolve dead link(search form QQ music)
 - [ ] Scrobble to Last.fm
+- [ ] Comment（貌似很多人讨厌评论啊）
 - [ ] Website
 
 ## License
