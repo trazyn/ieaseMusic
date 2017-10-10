@@ -7,6 +7,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import ProgressImage from 'ui/ProgressImage';
+import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
 
 @inject(stores => ({
     song: stores.controller.song,
@@ -105,9 +106,9 @@ class Controller extends Component {
 
                             <i
                                 className={clazz({
-                                    'ion-ios-shuffle-strong': mode === 0,
-                                    'ion-ios-infinite': mode === 1,
-                                    'ion-ios-loop-strong': mode === 2,
+                                    'ion-ios-shuffle-strong': mode === PLAYER_SHUFFLE,
+                                    'ion-ios-infinite': mode === PLAYER_REPEAT,
+                                    'ion-ios-loop-strong': mode === PLAYER_LOOP,
                                 })}
                                 onClick={this.props.changeMode} />
 

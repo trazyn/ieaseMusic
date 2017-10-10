@@ -7,7 +7,6 @@ import injectSheet from 'react-jss';
 import classes from './classes';
 
 @inject(stores => ({
-    volume: stores.preferences.volume,
     isMuted: () => stores.preferences.volume === 0,
 }))
 @observer
@@ -44,7 +43,7 @@ class VolumeUpDown extends Component {
     }
 
     render() {
-        var { classes, isMuted, direction } = this.props;
+        var { classes, isMuted } = this.props;
 
         return (
             <div
@@ -59,9 +58,9 @@ class VolumeUpDown extends Component {
                                 fontSize: 32,
                             }} />
                         : (
-                            direction
-                                ? <i className="ion-volume-low" />
-                                : <i className="ion-volume-medium" />
+                            this.state.direction
+                                ? <i className="ion-volume-medium" />
+                                : <i className="ion-volume-low" />
                         )
                 }
             </div>

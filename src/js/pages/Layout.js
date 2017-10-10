@@ -7,7 +7,10 @@ import Loader from 'ui/Loader';
 import AudioPlayer from 'components/AudioPlayer';
 import Menu from 'components/Menu';
 import Playing from 'components/Playing';
-import VolumeUpDown from 'components/VolumeUpDown';
+import VolumeUpDown from 'components/Ripple/VolumeUpDown';
+import PlayerNavigation from 'components/Ripple/PlayerNavigation';
+import PlayerMode from 'components/Ripple/PlayerMode';
+import PlayerStatus from 'components/Ripple/PlayerStatus';
 
 const classes = {
     container: {
@@ -53,6 +56,9 @@ class Layout extends Component {
                 <Menu />
                 <Playing />
                 <AudioPlayer />
+                <PlayerNavigation />
+                <PlayerMode />
+                <PlayerStatus />
             </div>
         );
     }
