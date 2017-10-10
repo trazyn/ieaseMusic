@@ -116,6 +116,58 @@ async function getAlbumBySong(id) {
     return albums;
 }
 
+router.get('/subscribe/:id', async(req, res) => {
+    debug('Handle request for /player/subscribe');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/subscribe/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to subscribe playlist: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
+router.get('/unsubscribe/:id', async(req, res) => {
+    debug('Handle request for /player/unsubscribe');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/unsubscribe/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to unsubscribe playlist: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
 router.get('/song/:id', cache('5 minutes', onlyStatus200), async(req, res) => {
     debug('Handle request for /player/song');
 

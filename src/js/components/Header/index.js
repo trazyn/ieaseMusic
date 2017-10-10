@@ -10,6 +10,7 @@ import classes from './classes';
 @inject(stores => ({
     subscribed: stores.player.meta.subscribed,
     hasLogin: stores.me.hasLogin,
+    subscribe: stores.player.subscribe,
     showMenu: () => stores.menu.toggle(true),
     showPlaying: () => stores.playing.toggle(true),
 }))
@@ -92,7 +93,7 @@ class Header extends Component {
     }
 
     renderFav() {
-        var { hasLogin, showFav, color, subscribed } = this.props;
+        var { hasLogin, showFav, color, subscribed, subscribe } = this.props;
 
         if (!showFav
             || !hasLogin()) {
@@ -103,7 +104,7 @@ class Header extends Component {
             return (
                 <i
                     className={clazz('ion-ios-star', this.props.classes.subscribed)}
-                    onClick={e => {}} />
+                    onClick={e => subscribe(false)} />
             );
         }
 
@@ -112,7 +113,8 @@ class Header extends Component {
                 className="ion-ios-star-outline"
                 style={{
                     color,
-                }} />
+                }}
+                onClick={e => subscribe(true)} />
         );
     }
 

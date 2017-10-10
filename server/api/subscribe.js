@@ -2,15 +2,18 @@ const express = require('express')
 const router = express()
 const { createWebAPIRequest } = require('../../NeteaseCloudMusicApi/util/util')
 
-// type ALL, ZH,EA,KR,JP
 router.get('/', (req, res) => {
   const cookie = req.get('Cookie') ? req.get('Cookie') : ''
+  const id = req.query.id
+  const csrf = req.cookies['__csrf']
   const data = {
-    'csrf_token': ''
+    csrf_token: csrf,
+    id,
   }
+
   createWebAPIRequest(
     'music.163.com',
-    '/api/discovery/newAlbum',
+    `/weapi/playlist/subscribe?csrf_token=${csrf}`,
     'POST',
     data,
     cookie,
