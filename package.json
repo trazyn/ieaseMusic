@@ -1,6 +1,6 @@
 {
   "name": "iease-music",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "这应该是最好的网易云音乐播放器了，没有之一，如果有请打醒 🤘",
   "main": "main.js",
   "scripts": {
@@ -18,7 +18,11 @@
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
     "dd": "electron-builder --win --ia32 --projectDir ./dist"
   },
-  "author": "var.darling@gmail.com",
+  "author": {
+    "name": "trazyn",
+    "email": "var.darling@gmail.com",
+    "url": "https://twitter.com/var_darling"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -119,6 +123,7 @@
     "axios": "^0.16.2",
     "big-integer": "^1.6.25",
     "classname": "0.0.0",
+    "cookie-parser": "^1.4.3",
     "debug": "^3.0.1",
     "delegate": "^3.1.3",
     "electron-json-storage": "^3.1.0",
