@@ -1,6 +1,7 @@
 
 /* eslint-disable */
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import apicache from 'apicache'
 import axios from 'axios';
 /* eslint-enable */
@@ -9,6 +10,8 @@ const app = express();
 const cache = apicache.middleware;
 const onlyStatus200 = (req, res) => res.statusCode === 200;
 const port = process.env.API_PORT || 8000;
+
+app.use(cookieParser());
 
 // Set cookie for axios
 app.use((req, res, next) => {
@@ -240,6 +243,8 @@ app.use('/user/record', require('../NeteaseCloudMusicApi/router/user_playrecord'
 
 // New added
 app.use('/hot/album', require('./api/hot_album'));
+app.use('/subscribe', require('./api/subscribe'));
+app.use('/unsubscribe', require('./api/unsubscribe'));
 
 app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
 app.use('/player', require('./router/player'));

@@ -44,6 +44,19 @@ class Player {
         }
     }
 
+    @action async subscribe(subscribed) {
+        var response = await axios.get(
+            subscribed
+                ? `/player/subscribe/${self.meta.id}`
+                : `/player/unsubscribe/${self.meta.id}`
+        );
+        var data = response.data;
+
+        if (data.success) {
+            self.meta.subscribed = subscribed;
+        }
+    }
+
     @action toggleLoading(show = !self.loading) {
         self.loading = show;
     }
