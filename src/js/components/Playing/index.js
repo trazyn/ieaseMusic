@@ -26,6 +26,60 @@ class Playing extends Component {
         }
     }
 
+    highlight(offset) {
+        var list = this.refs.list;
+        var classes = this.props.classes;
+        var songs = Array.from(list.querySelectorAll('li[data-id]'));
+        var index = songs.findIndex(e => e.classList.contains(classes.active));
+
+        if (index > -1) {
+            songs[index].classList.remove(classes.active);
+        }
+
+        index += offset;
+
+        if (index < 0) {
+            // Fallback to the last element
+            index = songs.length - 1;
+        } else if (index > songs.length - 1) {
+            // Fallback to the 1th element
+            index = 0;
+        }
+
+        var active = songs[index];
+
+        if (active) {
+            // Keep active item always in the viewport
+            active.classList.add(classes.active);
+            list.scrollTop = active.offsetTop + active.offsetHeight - list.offsetHeight;
+        }
+    }
+
+    navigation(e) {
+        var keyCode = e.keyCode;
+        var offset = {
+            // Up
+            '38': -1,
+            // Down
+            '40': +1,
+        }[keyCode];
+
+        if (offset) {
+            this.highlight(offset);
+        }
+
+        if (keyCode !== 13) {
+            return;
+        }
+
+        var active = this.refs.list.querySelector(`.${this.props.classes.active}`);
+
+        if (active) {
+            let songid = active.dataset.id;
+            this.props.play(songid);
+        }
+    }
+
     renderList() {
         var { classes, songs = [], filtered, song = {}, play, close } = this.props;
         var list = songs;
@@ -50,6 +104,7 @@ class Playing extends Component {
                     className={clazz(classes.song, {
                         [classes.playing]: e.id === song.id,
                     })}
+                    data-id={e.id}
                     key={index}
                     onClick={() => {
                         play(e.id);
@@ -107,6 +162,7 @@ class Playing extends Component {
                         <input
                             autoFocus={true}
                             onInput={e => search(e.target.value)}
+                            onKeyUp={e => this.navigation(e)}
                             placeholder="Search..."
                             ref="search"
                             type="text" />
@@ -118,7 +174,9 @@ class Playing extends Component {
                             src="assets/close.png" />
                     </header>
 
-                    <ul className={classes.list}>
+                    <ul
+                        className={classes.list}
+                        ref="list">
                         {this.renderList()}
                     </ul>
                 </section>
