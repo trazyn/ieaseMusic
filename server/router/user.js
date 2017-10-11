@@ -74,4 +74,56 @@ router.get('/:id', async(req, res) => {
     });
 });
 
+router.get('/unfollow/:id', async(req, res) => {
+    debug('Handle request for /user/unfollow');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/unfollow/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to unfollow user: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
+router.get('/follow/:id', async(req, res) => {
+    debug('Handle request for /user/follow');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/follow/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to follow user: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
 module.exports = router;

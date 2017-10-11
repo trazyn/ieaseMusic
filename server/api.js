@@ -81,8 +81,6 @@ app.use('/event', require('../NeteaseCloudMusicApi/router/event'));
 // 垃圾桶
 app.use('/fm_trash', require('../NeteaseCloudMusicApi/router/fm_trash'));
 
-app.use('/follow', require('../NeteaseCloudMusicApi/router/follow'));
-
 // 喜欢歌曲
 app.use('/like', require('../NeteaseCloudMusicApi/router/like'));
 
@@ -245,6 +243,8 @@ app.use('/user/record', require('../NeteaseCloudMusicApi/router/user_playrecord'
 app.use('/hot/album', require('./api/hot_album'));
 app.use('/subscribe', require('./api/subscribe'));
 app.use('/unsubscribe', require('./api/unsubscribe'));
+app.use('/follow', require('./api/follow'));
+app.use('/unfollow', require('./api/unfollow'));
 
 app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
 app.use('/player', require('./router/player'));

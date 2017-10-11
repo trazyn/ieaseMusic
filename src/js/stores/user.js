@@ -16,6 +16,19 @@ class User {
         self.playlists = response.data.playlists;
         self.loading = false;
     }
+
+    @action async follow(followed) {
+        var response = await axios.get(
+            followed
+                ? `/user/unfollow/${self.profile.id}`
+                : `/user/follow/${self.profile.id}`
+        );
+        var data = response.data;
+
+        if (data.success) {
+            self.profile.followed = !followed;
+        }
+    }
 }
 
 const self = new User();

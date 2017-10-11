@@ -11,13 +11,14 @@ import classes from './classes';
     subscribed: stores.player.meta.subscribed,
     hasLogin: stores.me.hasLogin,
     subscribe: stores.player.subscribe,
+    follow: stores.user.follow,
+    followed: stores.user.profile.followed,
     showMenu: () => stores.menu.toggle(true),
     showPlaying: () => stores.playing.toggle(true),
 }))
 @observer
 class Header extends Component {
     static propTypes = {
-        followed: PropTypes.bool,
         showBack: PropTypes.bool,
         showFav: PropTypes.bool,
         showPlaylist: PropTypes.bool,
@@ -26,7 +27,6 @@ class Header extends Component {
     };
 
     static defaultProps = {
-        followed: false,
         showBack: true,
         showFav: false,
         showPlaylist: true,
@@ -54,7 +54,7 @@ class Header extends Component {
     }
 
     renderFollow() {
-        var { classes, hasLogin, showFollow, followed } = this.props;
+        var { classes, hasLogin, showFollow, follow, followed } = this.props;
 
         if (!hasLogin()) {
             return false;
@@ -66,8 +66,8 @@ class Header extends Component {
                     className={clazz(classes.follow, {
                         [classes.followed]: followed,
                     })}
-                    onClick={e => {}}>
-                    Follow
+                    onClick={e => follow(followed)}>
+                    { followed ? 'Followed' : 'Follow' }
                 </button>
             );
         }
