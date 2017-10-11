@@ -34,6 +34,21 @@ class Artist {
 
         self.loading = false;
     }
+
+    @action async follow(followed) {
+        var response = await axios.get(
+            followed
+                ? `/artist/unfollow/${self.profile.id}`
+                : `/artist/follow/${self.profile.id}`
+        );
+        var data = response.data;
+
+        if (data.success) {
+            self.profile = Object.assign({}, self.profile, {
+                followed: !followed,
+            });
+        }
+    }
 }
 
 const self = new Artist();

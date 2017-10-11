@@ -100,7 +100,7 @@ Description            | Keys
 
 ## Question
 
-目前接口上面~~收藏歌单~~`(Done)`和 `Follow` 用户暂时没有，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~(进行中)。
+目前接口上面~~收藏歌单和 `Follow` 用户暂时没有~~`(DONE)`，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~(进行中)。
 
 对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？
 
@@ -116,7 +116,7 @@ Description            | Keys
 - [ ] Search
 - [x] Login
 - [x] Pllylist subscribe
-- [ ] Follow
+- [x] Follow
 - [ ] Flac high quality audio
 - [ ] Resolve dead link(search form QQ music)
 - [ ] Scrobble to Last.fm

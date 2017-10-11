@@ -245,6 +245,8 @@ app.use('/subscribe', require('./api/subscribe'));
 app.use('/unsubscribe', require('./api/unsubscribe'));
 app.use('/follow', require('./api/follow'));
 app.use('/unfollow', require('./api/unfollow'));
+app.use('/sub', require('./api/sub'));
+app.use('/unsub', require('./api/unsub'));
 
 app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
 app.use('/player', require('./router/player'));

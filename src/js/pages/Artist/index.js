@@ -17,6 +17,7 @@ import Header from 'components/Header';
 @inject(stores => ({
     loading: stores.artist.loading,
     profile: stores.artist.profile,
+    follow: stores.artist.follow,
     playlist: stores.artist.playlist,
     albums: stores.artist.albums,
     similar: stores.artist.similar,
@@ -238,7 +239,7 @@ class Artist extends Component {
     }
 
     render() {
-        var { classes, loading, profile, isPlaying } = this.props;
+        var { classes, loading, profile, isPlaying, follow } = this.props;
         var size = profile.size || {};
 
         return (
@@ -246,6 +247,7 @@ class Artist extends Component {
                 <Loader show={loading} />
 
                 <Header {...{
+                    follow,
                     followed: profile.followed,
                     showBack: true,
                     showFollow: true,

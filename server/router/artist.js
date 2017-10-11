@@ -120,6 +120,58 @@ async function getSimilar(id) {
     return similar;
 }
 
+router.get('/unfollow/:id', async(req, res) => {
+    debug('Handle request for /artist/unfollow');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/unsub/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to unfollow artist: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
+router.get('/follow/:id', async(req, res) => {
+    debug('Handle request for /artist/follow');
+
+    var id = req.params.id;
+    var success = false;
+
+    debug('Params \'id\': %s', id);
+
+    try {
+        let response = await axios.get(`/sub/?id=${id}`);
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to follow artist: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
 router.get('/:id', async(req, res) => {
     debug('Handle request for /artist');
 

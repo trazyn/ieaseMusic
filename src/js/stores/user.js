@@ -26,7 +26,9 @@ class User {
         var data = response.data;
 
         if (data.success) {
-            self.profile.followed = !followed;
+            self.profile = Object.assign({}, self.profile, {
+                followed: !followed,
+            });
         }
     }
 }
