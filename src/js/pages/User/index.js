@@ -17,6 +17,7 @@ import Header from 'components/Header';
     getUser: stores.user.getUser,
     profile: stores.user.profile,
     playlists: stores.user.playlists,
+    follow: stores.user.follow,
     isme: () => stores.user.profile.id === stores.me.profile.userId,
     isPlaying: (id) => {
         var controller = stores.controller;
@@ -72,7 +73,7 @@ class User extends Component {
     }
 
     render() {
-        var { classes, loading, profile, isme } = this.props;
+        var { classes, loading, profile, isme, follow } = this.props;
 
         // Force rerender all, let image progressively load
         if (loading) {
@@ -82,6 +83,7 @@ class User extends Component {
         return (
             <div className={classes.container}>
                 <Header {...{
+                    follow,
                     followed: profile.followed,
                     showBack: true,
                     showFollow: !isme(),

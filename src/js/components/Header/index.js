@@ -11,14 +11,14 @@ import classes from './classes';
     subscribed: stores.player.meta.subscribed,
     hasLogin: stores.me.hasLogin,
     subscribe: stores.player.subscribe,
-    follow: stores.user.follow,
-    followed: stores.user.profile.followed,
     showMenu: () => stores.menu.toggle(true),
     showPlaying: () => stores.playing.toggle(true),
 }))
 @observer
 class Header extends Component {
     static propTypes = {
+        follow: PropTypes.func,
+        followed: PropTypes.bool,
         showBack: PropTypes.bool,
         showFav: PropTypes.bool,
         showPlaylist: PropTypes.bool,
