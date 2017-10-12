@@ -26,6 +26,7 @@ class Search {
     nextHref4playlists = '';
     nextHref4albums = '';
     nextHref4artists = '';
+    nextHref4users = '';
 
     @action async getPlaylists(keyword) {
         self.loading = true;
@@ -94,6 +95,29 @@ class Search {
 
         self.artists.push(...data.artists);
         self.nextHref4artists = data.nextHref;
+    }
+
+    @action async getUsers(keyword) {
+        self.loading = true;
+
+        var response = await axios.get(`/api/search/1002/0/${keyword}`);
+        var data = response.data;
+
+        self.users = data.users;
+        self.nextHref4users = data.nextHref;
+        self.loading = false;
+    }
+
+    @action async loadmoreUsers() {
+        if (!self.nextHref4users) {
+            return;
+        }
+
+        var response = await axios.get(self.nextHref4users);
+        var data = response.data;
+
+        self.users.push(...data.users);
+        self.nextHref4users = data.nextHref;
     }
 
     @action toggle(show = !self.show) {

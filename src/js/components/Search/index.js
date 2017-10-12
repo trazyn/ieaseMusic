@@ -24,6 +24,9 @@ import ProgressImage from 'ui/ProgressImage';
     artists: stores.search.artists,
     getArtists: stores.search.getArtists,
     loadmoreArtists: stores.search.loadmoreArtists,
+    users: stores.search.users,
+    getUsers: stores.search.getUsers,
+    loadmoreUsers: stores.search.loadmoreUsers,
 }))
 @observer
 class Search extends Component {
@@ -32,6 +35,15 @@ class Search extends Component {
         search: this.props.getPlaylists,
         loadmore: this.props.loadmorePlaylists,
     };
+
+    reset() {
+        this.props.close();
+        this.setState({
+            renderContent: this.renderPlaylist.bind(this),
+            search: this.props.getPlaylists,
+            loadmore: this.props.loadmorePlaylists,
+        });
+    }
 
     search(e) {
         if (e.keyCode !== 13) {
@@ -43,7 +55,7 @@ class Search extends Component {
     }
 
     renderPlaylist() {
-        var { classes, close, playlists } = this.props;
+        var { classes, playlists } = this.props;
 
         if (playlists.length === 0) {
             return (
@@ -58,7 +70,7 @@ class Search extends Component {
                 <Link
                     className={classes.row}
                     key={index}
-                    onClick={close}
+                    onClick={() => this.reset()}
                     to={e.link}>
                     <ProgressImage {...{
                         src: e.cover,
@@ -93,7 +105,7 @@ class Search extends Component {
     }
 
     renderAlbums() {
-        var { classes, close, albums } = this.props;
+        var { classes, albums } = this.props;
 
         if (albums.length === 0) {
             return (
@@ -108,7 +120,7 @@ class Search extends Component {
                 <Link
                     className={classes.row}
                     key={index}
-                    onClick={close}
+                    onClick={() => this.reset()}
                     to={e.link}>
                     <ProgressImage {...{
                         src: e.cover,
@@ -135,7 +147,7 @@ class Search extends Component {
     }
 
     renderArtists() {
-        var { classes, close, artists, follow } = this.props;
+        var { classes, artists, follow } = this.props;
 
         if (artists.length === 0) {
             return (
@@ -151,7 +163,7 @@ class Search extends Component {
                     className={classes.artist}
                     key={index}>
                     <Link
-                        onClick={close}
+                        onClick={() => this.reset()}
                         to={e.link}>
                         <ProgressImage {...{
                             src: e.avatar,
@@ -187,6 +199,38 @@ class Search extends Component {
                                 }
                             }} />
                     </aside>
+                </div>
+            );
+        });
+    }
+
+    renderUsers() {
+        var { classes, users } = this.props;
+
+        if (users.length === 0) {
+            return (
+                <div className={classes.placeholder}>
+                    <span>Nothing ...</span>
+                </div>
+            );
+        }
+
+        return users.map((e, index) => {
+            return (
+                <div
+                    className={classes.user}
+                    key={index}>
+                    <Link
+                        className="tooltip"
+                        data-text={e.name}
+                        onClick={() => this.reset()}
+                        to={e.link}>
+                        <ProgressImage {...{
+                            src: e.avatar,
+                            height: 64,
+                            width: 64,
+                        }} />
+                    </Link>
                 </div>
             );
         });
@@ -231,7 +275,7 @@ class Search extends Component {
     }
 
     render() {
-        var { classes, loading, show, close } = this.props;
+        var { classes, loading, show } = this.props;
 
         if (!show) {
             return false;
@@ -242,7 +286,7 @@ class Search extends Component {
                 <img
                     alt="Close"
                     className={classes.close}
-                    onClick={close}
+                    onClick={() => this.reset()}
                     src="assets/close-white.png" />
 
                 <div className={classes.inner}>
@@ -281,7 +325,14 @@ class Search extends Component {
                             })}>
                             Singer
                         </span>
-                        <span>User</span>
+                        <span
+                            onClick={e => this.selected(e.target, {
+                                search: this.props.getUsers,
+                                loadmore: this.props.loadmoreUsers,
+                                renderContent: () => this.renderUsers(),
+                            })}>
+                            User
+                        </span>
                     </nav>
 
                     <section

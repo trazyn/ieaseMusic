@@ -10,7 +10,7 @@ class User {
     @action async getUser(userid) {
         self.loading = true;
 
-        var response = await axios.get(`/user/${userid}`);
+        var response = await axios.get(`/api/user/${userid}`);
 
         self.profile = response.data.profile;
         self.playlists = response.data.playlists;

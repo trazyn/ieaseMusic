@@ -149,6 +149,21 @@ export default theme => ({
         }
     },
 
+    user: {
+        ...perdido.column('1/4', { gutter: '20px' }),
+        marginBottom: 20,
+        transform: 'translateY(12px)',
+
+        '& figure': {
+            borderRadius: 64,
+            transition: '.2s',
+        },
+
+        '&:hover figure': {
+            boxShadow: '0 0 24px 0 #fff',
+        }
+    },
+
     liked: {},
 
     row: {
