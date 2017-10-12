@@ -136,6 +136,42 @@ async function getArtists(keywords, offset = 0) {
     };
 }
 
+async function getUsers(keywords, offset = 0) {
+    var users = [];
+
+    try {
+        let response = await axios.get('/search', {
+            params: {
+                offset,
+                keywords,
+                limit: 30,
+                type: 1002,
+            }
+        });
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            data.result.userprofiles.map(e => {
+                users.push({
+                    id: e.userId.toString(),
+                    name: e.nickname,
+                    avatar: e.avatarUrl,
+                    link: `/user/${e.userId}`,
+                });
+            });
+        }
+    } catch (ex) {
+        error('Failed to search users: %O', ex);
+    }
+
+    return {
+        users,
+        nextHref: users.length === 30 ? `/api/search/1002/${offset + 30}/${keywords}` : '',
+    };
+}
+
 /**
 Search type
 
@@ -171,6 +207,11 @@ router.get('/:type/:offset/:keyword', async(req, res) => {
         // Get artists
         case '100':
             data = await getArtists(keyword, offset);
+            break;
+
+        // Get users
+        case '1002':
+            data = await getUsers(keyword, offset);
             break;
     }
 
