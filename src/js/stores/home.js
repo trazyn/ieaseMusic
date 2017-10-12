@@ -14,14 +14,14 @@ class Home {
         var res;
 
         if (me.hasLogin()) {
-            res = await axios.get(`/home/${me.profile.userId}`);
+            res = await axios.get(`/api/home/${me.profile.userId}`);
 
             // Save the songs of red heart
             me.rocking(res.data.list[0]);
             // Play the recommend songs
             controller.setup(res.data.list[1]);
         } else {
-            res = await axios.get(`/home`);
+            res = await axios.get(`/api/home`);
             controller.setup(res.data.list[0]);
         }
 

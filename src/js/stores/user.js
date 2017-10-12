@@ -20,8 +20,8 @@ class User {
     @action async follow(followed) {
         var response = await axios.get(
             followed
-                ? `/user/unfollow/${self.profile.id}`
-                : `/user/follow/${self.profile.id}`
+                ? `/api/user/unfollow/${self.profile.id}`
+                : `/api/user/follow/${self.profile.id}`
         );
         var data = response.data;
 

@@ -13,6 +13,8 @@ const port = process.env.API_PORT || 8000;
 
 app.use(cookieParser());
 
+axios.defaults.baseURL = `http://localhost:${port}`;
+
 // Set cookie for axios
 app.use((req, res, next) => {
     axios.defaults.headers = req.headers;
@@ -88,9 +90,6 @@ app.use('/likelist', require('../NeteaseCloudMusicApi/router/likelist'));
 
 // 手机登录
 app.use('/login/cellphone', require('../NeteaseCloudMusicApi/router/loginCellphone'));
-
-// 邮箱登录
-app.use('/login', require('../NeteaseCloudMusicApi/router/login'));
 
 // 登录刷新
 app.use('/login/refresh', cache('1 hour', onlyStatus200), require('../NeteaseCloudMusicApi/router/login_refresh'));
@@ -247,14 +246,16 @@ app.use('/follow', require('./api/follow'));
 app.use('/unfollow', require('./api/unfollow'));
 app.use('/sub', require('./api/sub'));
 app.use('/unsub', require('./api/unsub'));
+app.use('/login', require('./api/login'));
 
-app.use('/home', cache('5 minutes', onlyStatus200), require('./router/home'));
-app.use('/player', require('./router/player'));
-app.use('/user', require('./router/user'));
-app.use('/artist', require('./router/artist'));
-app.use('/top', cache('1 hour', onlyStatus200), require('./router/top'));
-app.use('/playlist', cache('10 minutes', onlyStatus200), require('./router/playlist'));
-app.use('/fm', require('./router/fm'));
+app.use('/api/home', cache('5 minutes', onlyStatus200), require('./router/home'));
+app.use('/api/player', require('./router/player'));
+app.use('/api/user', require('./router/user'));
+app.use('/api/artist', require('./router/artist'));
+app.use('/api/top', cache('1 hour', onlyStatus200), require('./router/top'));
+app.use('/api/playlist', cache('10 minutes', onlyStatus200), require('./router/playlist'));
+app.use('/api/fm', require('./router/fm'));
+app.use('/api/search', require('./router/search'));
 
 if (process.env.AUTORUN) {
     app.listen(port);

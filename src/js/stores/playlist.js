@@ -202,7 +202,7 @@ class Playlist {
     @action async getList(type = '全部') {
         self.loading = true;
 
-        var response = await axios.get(`/playlist/${type}`);
+        var response = await axios.get(`/api/playlist/${type}`);
         var data = response.data;
 
         self.list = data.playlists;

@@ -33,7 +33,7 @@ class Top {
             "20": 台湾Hito排行榜,
             "21": Beatport全球电子舞曲榜
          * */
-        var response = await axios.get('/top/0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21');
+        var response = await axios.get('/api/top/0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21');
 
         self.list = response.data.list;
         self.loading = false;

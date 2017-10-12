@@ -10,6 +10,7 @@ import top from './top';
 import playlist from './playlist';
 import fm from './fm';
 import playing from './playing';
+import search from './search';
 import preferences from './preferences';
 
 const stores = {
@@ -24,6 +25,7 @@ const stores = {
     playlist,
     fm,
     playing,
+    search,
     preferences,
 };
 

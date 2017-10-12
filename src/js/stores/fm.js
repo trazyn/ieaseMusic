@@ -19,7 +19,7 @@ class FM {
     @action async shuffle() {
         self.loading = true;
 
-        var response = await axios.get(`/fm`);
+        var response = await axios.get(`/api/fm`);
 
         self.playlist = response.data;
         self.song = self.playlist.songs[0];
@@ -38,7 +38,7 @@ class FM {
 
     // Ban a song
     @action async ban(id) {
-        var response = await axios.get(`/fm_trash?id=${id}`);
+        var response = await axios.get(`/api/fm_trash?id=${id}`);
 
         if (response.data.code === 200) {
             self.next();

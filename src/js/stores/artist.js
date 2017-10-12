@@ -22,7 +22,7 @@ class Artist {
     @action async getArtist(id) {
         self.loading = true;
 
-        var response = await axios.get(`/artist/${id}`);
+        var response = await axios.get(`/api/artist/${id}`);
         var data = response.data;
 
         if (data) {
@@ -38,8 +38,8 @@ class Artist {
     @action async follow(followed) {
         var response = await axios.get(
             followed
-                ? `/artist/unfollow/${self.profile.id}`
-                : `/artist/follow/${self.profile.id}`
+                ? `/api/artist/unfollow/${self.profile.id}`
+                : `/api/artist/follow/${self.profile.id}`
         );
         var data = response.data;
 
