@@ -282,7 +282,10 @@ class Search extends Component {
         }
 
         return (
-            <div className={classes.container}>
+            <div
+                className={classes.container}
+                // Press ESC close
+                onKeyUp={e => e.keyCode === 27 && this.reset()}>
                 <img
                     alt="Close"
                     className={classes.close}
