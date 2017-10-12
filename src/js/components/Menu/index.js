@@ -11,10 +11,11 @@ import FadeImage from 'ui/FadeImage';
 
 @inject(stores => ({
     show: stores.menu.show,
-    close: () => stores.menu.toggle(false),
     hasLogin: stores.me.hasLogin,
     profile: stores.me.profile,
     logout: stores.me.logout,
+    close: () => stores.menu.toggle(false),
+    showSearch: () => stores.search.toggle(true),
 }))
 @observer
 class Menu extends Component {
@@ -68,7 +69,7 @@ class Menu extends Component {
     }
 
     render() {
-        var { classes, show, close } = this.props;
+        var { classes, show, close, showSearch } = this.props;
 
         if (!show) {
             return false;
@@ -106,8 +107,10 @@ class Menu extends Component {
                             </p>
                             <p>
                                 <Link
-                                    onClick={close}
-                                    to="/search">
+                                    onClick={() => {
+                                        showSearch();
+                                        close();
+                                    }}>
                                     Search
                                 </Link>
                             </p>

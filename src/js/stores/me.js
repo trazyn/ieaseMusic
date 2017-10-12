@@ -91,7 +91,7 @@ class Me {
     }
 
     async exeLike(song, truefalse) {
-        var response = await axios.get('/api/like', {
+        var response = await axios.get('/like', {
             params: {
                 id: song.id,
                 like: truefalse

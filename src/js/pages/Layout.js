@@ -24,7 +24,7 @@ const classes = {
     },
 
     mask: {
-        filter: 'blur(4px)',
+        filter: 'blur(10px)',
     },
 };
 
