@@ -67,6 +67,11 @@ class App extends Component {
             navigator.router.push('/');
         });
 
+        // Search
+        ipcRenderer.on('show-search', () => {
+            stores.search.toggle(true);
+        });
+
         // Show the Ranking list
         ipcRenderer.on('show-top', () => {
             navigator.router.push('/top');
@@ -190,6 +195,12 @@ class App extends Component {
                     label: 'Home',
                     click: () => {
                         navigator.router.push('/');
+                    }
+                },
+                {
+                    label: 'Search',
+                    click: () => {
+                        stores.search.toggle(true);
                     }
                 },
                 {

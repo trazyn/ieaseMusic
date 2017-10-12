@@ -169,6 +169,13 @@ let mainMenu = [
                 }
             },
             {
+                label: 'Search',
+                accelerator: 'Cmd+F',
+                click() {
+                    mainWindow.webContents.send('show-search');
+                }
+            },
+            {
                 label: 'TOP',
                 accelerator: 'Cmd+Shift+T',
                 click() {
