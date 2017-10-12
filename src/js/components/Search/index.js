@@ -221,8 +221,6 @@ class Search extends Component {
                     className={classes.user}
                     key={index}>
                     <Link
-                        className="tooltip"
-                        data-text={e.name}
                         onClick={() => this.reset()}
                         to={e.link}>
                         <ProgressImage {...{
@@ -231,6 +229,8 @@ class Search extends Component {
                             width: 64,
                         }} />
                     </Link>
+
+                    <span className={classes.username}>{e.name}</span>
                 </div>
             );
         });
