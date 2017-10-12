@@ -35,11 +35,11 @@ class Artist {
         self.loading = false;
     }
 
-    @action async follow(followed) {
+    @action async follow(followed, id = self.profile.id) {
         var response = await axios.get(
             followed
-                ? `/api/artist/unfollow/${self.profile.id}`
-                : `/api/artist/follow/${self.profile.id}`
+                ? `/api/artist/unfollow/${id}`
+                : `/api/artist/follow/${id}`
         );
         var data = response.data;
 
@@ -48,6 +48,8 @@ class Artist {
                 followed: !followed,
             });
         }
+
+        return data.success;
     }
 }
 

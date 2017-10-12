@@ -14,6 +14,7 @@ import ProgressImage from 'ui/ProgressImage';
     loading: stores.search.loading,
     show: stores.search.show,
     close: () => stores.search.toggle(false),
+    follow: stores.artist.follow,
     playlists: stores.search.playlists,
     getPlaylists: stores.search.getPlaylists,
     loadmorePlaylists: stores.search.loadmorePlaylists,
@@ -107,7 +108,8 @@ class Search extends Component {
                 <Link
                     className={classes.row}
                     key={index}
-                    onClick={close}>
+                    onClick={close}
+                    to={e.link}>
                     <ProgressImage {...{
                         src: e.cover,
                         height: 40,
@@ -133,7 +135,7 @@ class Search extends Component {
     }
 
     renderArtists() {
-        var { classes, close, artists } = this.props;
+        var { classes, close, artists, follow } = this.props;
 
         if (artists.length === 0) {
             return (
@@ -173,7 +175,17 @@ class Search extends Component {
                             className={clazz('ion-ios-heart', {
                                 liked: e.followed,
                             })}
-                            onClick={e => console.log(e)} />
+                            onClick={async ev => {
+                                var target = ev.target;
+                                var followed = target.classList.contains(classes.liked);
+
+                                if (await follow(followed, e.id)) {
+                                    followed
+                                        ? target.classList.remove(classes.liked)
+                                        : target.classList.add(classes.liked)
+                                    ;
+                                }
+                            }} />
                     </aside>
                 </div>
             );
