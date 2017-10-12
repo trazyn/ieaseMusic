@@ -53,6 +53,89 @@ async function getPlaylists(keywords, offset = 0) {
     };
 }
 
+async function getAlbums(keywords, offset = 0) {
+    var albums = [];
+
+    try {
+        let response = await axios.get('/search', {
+            params: {
+                offset,
+                keywords,
+                limit: 30,
+                type: 10,
+            }
+        });
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            data.result.albums.map(e => {
+                var artist = e.artist;
+
+                albums.push({
+                    id: e.id.toString(),
+                    name: e.name,
+                    cover: e.picUrl,
+                    publish: e.publishTime,
+                    size: e.size,
+                    link: `/player/1/${e.id}`,
+                    artist: {
+                        id: artist.id,
+                        name: artist.name,
+                        link: `/artist/${artist.id}`,
+                    },
+                });
+            });
+        }
+    } catch (ex) {
+        error('Failed to search albums: %O', ex);
+    }
+
+    return {
+        albums,
+        nextHref: albums.length === 30 ? `/api/search/10/${offset + 30}/${keywords}` : '',
+    };
+}
+
+async function getArtists(keywords, offset = 0) {
+    var artists = [];
+
+    try {
+        let response = await axios.get('/search', {
+            params: {
+                offset,
+                keywords,
+                limit: 30,
+                type: 100,
+            }
+        });
+        let data = response.data;
+
+        if (data.code !== 200) {
+            throw data;
+        } else {
+            data.result.artists.map(e => {
+                artists.push({
+                    id: e.id.toString(),
+                    name: e.name,
+                    avatar: e.picUrl || 'http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=100y100',
+                    followed: e.followed,
+                    size: e.albumSize,
+                    link: `/artist/${e.id}`,
+                });
+            });
+        }
+    } catch (ex) {
+        error('Failed to search artists: %O', ex);
+    }
+
+    return {
+        artists,
+        nextHref: artists.length === 30 ? `/api/search/100/${offset + 30}/${keywords}` : '',
+    };
+}
+
 /**
 Search type
 
@@ -75,8 +158,19 @@ router.get('/:type/:offset/:keyword', async(req, res) => {
     debug('Params \'type\': %s, \'keyword\': %s, \'offset\': %s', type, keyword, offset);
 
     switch (type.toString()) {
+        // Get playlists
         case '1000':
             data = await getPlaylists(keyword, offset);
+            break;
+
+        // Get albums
+        case '10':
+            data = await getAlbums(keyword, offset);
+            break;
+
+        // Get artists
+        case '100':
+            data = await getArtists(keyword, offset);
             break;
     }
 

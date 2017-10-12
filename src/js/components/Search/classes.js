@@ -1,4 +1,5 @@
 
+import perdido from 'perdido';
 import colors from 'utils/colors';
 
 export default theme => ({
@@ -63,6 +64,14 @@ export default theme => ({
         }
     },
 
+    close: {
+        position: 'absolute',
+        height: 32,
+        top: 16,
+        right: 32,
+        cursor: 'pointer',
+    },
+
     inner: {
         margin: '0 32px',
     },
@@ -84,10 +93,63 @@ export default theme => ({
     },
 
     list: {
+        ...perdido.utils.clearFix,
         height: 'calc(100vh - 32px - 70px - 32px)',
         overflow: 'hidden',
         overflowY: 'auto',
     },
+
+    artist: {
+        ...perdido.column('1/2', { gutter: '20px' }),
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginBottom: 20,
+        transform: 'translateY(12px)',
+
+        '& a': {
+            color: '#fff',
+        },
+
+        '& aside': {
+            display: 'flex',
+            width: '100%',
+            marginLeft: 12,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+
+        '& p': {
+            fontSize: 13,
+            margin: 0,
+
+            '& + span': {
+                fontSize: 12,
+                color: 'gray',
+            }
+        },
+
+        '& i': {
+            fontSize: 20,
+            cursor: 'pointer',
+            transition: '.2s',
+
+            '&:hover, $liked': {
+                color: colors.pallet.grape,
+                textShadow: `0 0 24px ${colors.pallet.grape}`,
+            },
+        },
+
+        '& figure > img': {
+            transition: '.2s',
+        },
+
+        '&:hover figure > img': {
+            transform: 'scale(1.2)',
+        }
+    },
+
+    liked: {},
 
     row: {
         display: 'flex',

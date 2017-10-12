@@ -4,7 +4,7 @@ import axios from 'axios';
 
 class Search {
     @observable loading = false;
-    @observable show = true;
+    @observable show = false;
     @observable playlists = [];
     @observable albums = [];
     @observable artists = [];
@@ -24,11 +24,13 @@ class Search {
 
     // URL of get more playlists
     nextHref4playlists = '';
+    nextHref4albums = '';
+    nextHref4artists = '';
 
     @action async getPlaylists(keyword) {
         self.loading = true;
 
-        var response = await axios.get(`/api/search/1000/30/${keyword}`);
+        var response = await axios.get(`/api/search/1000/0/${keyword}`);
         var data = response.data;
 
         self.playlists = data.playlists;
@@ -46,6 +48,52 @@ class Search {
 
         self.playlists.push(...data.playlists);
         self.nextHref4playlists = data.nextHref;
+    }
+
+    @action async getAlbums(keyword) {
+        self.loading = true;
+
+        var response = await axios.get(`/api/search/10/0/${keyword}`);
+        var data = response.data;
+
+        self.albums = data.albums;
+        self.nextHref4albums = data.nextHref;
+        self.loading = false;
+    }
+
+    @action async loadmoreAlbums() {
+        if (!self.nextHref4albums) {
+            return;
+        }
+
+        var response = await axios.get(self.nextHref4albums);
+        var data = response.data;
+
+        self.albums.push(...data.albums);
+        self.nextHref4albums = data.nextHref;
+    }
+
+    @action async getArtists(keyword) {
+        self.loading = true;
+
+        var response = await axios.get(`/api/search/100/0/${keyword}`);
+        var data = response.data;
+
+        self.artists = data.artists;
+        self.nextHref4artists = data.nextHref;
+        self.loading = false;
+    }
+
+    @action async loadmoreArtists() {
+        if (!self.nextHref4artists) {
+            return;
+        }
+
+        var response = await axios.get(self.nextHref4artists);
+        var data = response.data;
+
+        self.artists.push(...data.artists);
+        self.nextHref4artists = data.nextHref;
     }
 
     @action toggle(show = !self.show) {
