@@ -2,9 +2,11 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
 import { inject, observer } from 'mobx-react';
+import clazz from 'classname';
 
 import Loader from 'ui/Loader';
 import AudioPlayer from 'components/AudioPlayer';
+import Search from 'components/Search';
 import Menu from 'components/Menu';
 import Playing from 'components/Playing';
 import VolumeUpDown from 'components/Ripple/VolumeUpDown';
@@ -19,7 +21,11 @@ const classes = {
         top: 0,
         width: '100vw',
         height: '100vh',
-    }
+    },
+
+    mask: {
+        filter: 'blur(4px)',
+    },
 };
 
 @inject(stores => ({
@@ -29,6 +35,7 @@ const classes = {
         await stores.me.init();
     },
     hasLogin: stores.me.hasLogin,
+    searching: stores.search.show,
 }))
 @observer
 class Layout extends Component {
@@ -37,7 +44,7 @@ class Layout extends Component {
     }
 
     render() {
-        var { classes, initialized } = this.props;
+        var { classes, initialized, searching } = this.props;
 
         // Wait for app has initialized
         if (!initialized) {
@@ -48,12 +55,15 @@ class Layout extends Component {
             <div
                 className={classes.container}
                 ref="container">
-                <div>
+                <div className={clazz({
+                    [classes.mask]: searching,
+                })}>
                     {this.props.children}
                 </div>
 
-                <VolumeUpDown />
                 <Menu />
+                <Search />
+                <VolumeUpDown />
                 <Playing />
                 <AudioPlayer />
                 <PlayerNavigation />

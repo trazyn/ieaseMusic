@@ -22,7 +22,7 @@ class Player {
     @observable artists = [];
 
     @action async getDetail(type, id) {
-        var response = await axios.get(`/player/${type}/${id}`);
+        var response = await axios.get(`/api/player/${type}/${id}`);
 
         var detail = response.data;
         var pallet = await helper.getPallet(detail.meta.cover);
@@ -34,7 +34,7 @@ class Player {
     }
 
     @action async getRelated(song) {
-        var response = await axios.get(`/player/related/${song.id}/${song.artists[0]['id']}`);
+        var response = await axios.get(`/api/player/related/${song.id}/${song.artists[0]['id']}`);
         var data = response.data;
 
         if (data) {
@@ -47,8 +47,8 @@ class Player {
     @action async subscribe(subscribed) {
         var response = await axios.get(
             subscribed
-                ? `/player/subscribe/${self.meta.id}`
-                : `/player/unsubscribe/${self.meta.id}`
+                ? `/api/player/subscribe/${self.meta.id}`
+                : `/api/player/unsubscribe/${self.meta.id}`
         );
         var data = response.data;
 

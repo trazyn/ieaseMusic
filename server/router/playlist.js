@@ -53,7 +53,7 @@ router.get('/:type?/:offset?', async(req, res) => {
 
         if (data.more) {
             offset += limit;
-            nextHref = `/playlist/${type}/${offset}`;
+            nextHref = `/api/playlist/${type}/${offset}`;
         }
     } catch (ex) {
         error('Failed to get playlist: %O', ex);

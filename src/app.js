@@ -16,7 +16,7 @@ import stores from './js/stores';
 
 class App extends Component {
     componentDidMount() {
-        var { controller, fm, me, menu, playing } = stores;
+        var { controller, fm, me, menu, playing, search } = stores;
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
@@ -27,6 +27,11 @@ class App extends Component {
 
         // Toggle the player
         ipcRenderer.on('player-toggle', () => {
+            // Ignore signal
+            if (search.show) {
+                return;
+            }
+
             controller.toggle();
         });
 

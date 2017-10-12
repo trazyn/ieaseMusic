@@ -4,7 +4,7 @@ const pallet = {
     sunflower: '#ffce54',
     grape: '#e0245e',
     coral: '#ff6470',
-    mint: '#ec87c0',
+    mint: '#48cfad',
     dribbble: '#ea4c89',
     twitter: '#55acee',
     google: '#039be5',

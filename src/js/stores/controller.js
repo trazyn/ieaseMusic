@@ -88,7 +88,7 @@ class Controller {
     }
 
     @action async resolveSong() {
-        var response = await axios.get(`/player/song/${self.song.id}`);
+        var response = await axios.get(`/api/player/song/${self.song.id}`);
         var data = response.data.song;
 
         if (!data.src) {
