@@ -150,7 +150,11 @@ export default theme => ({
     },
 
     user: {
-        ...perdido.column('1/4', { gutter: '20px' }),
+        ...perdido.column('1/5', { gutter: '20px' }),
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 20,
         transform: 'translateY(12px)',
 
@@ -161,7 +165,15 @@ export default theme => ({
 
         '&:hover figure': {
             boxShadow: '0 0 24px 0 #fff',
-        }
+        },
+    },
+
+    username: {
+        fontSize: 12,
+        padding: '4px 8px',
+        marginTop: 12,
+        background: '#000',
+        textAlign: 'center',
     },
 
     liked: {},
@@ -204,6 +216,7 @@ export default theme => ({
         },
 
         '& $played, & $tracks': {
+            fontSize: 12,
             padding: '4px 8px',
             background: '#000',
         },
