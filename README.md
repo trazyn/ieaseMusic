@@ -44,14 +44,14 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.4/ieaseMusic-0.0.4-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/ieaseMusic-0.0.5-mac.dmg) the `.dmg` file.
 
 #### Linux
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.4/iease-music-0.0.4-x86_64.AppImage) the `.AppImage` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/iease-music-0.0.5-x86_64.AppImage) the `.AppImage` file.
 
 The AppImage needs to be made executable after download:
 ```
-$ chmod u+x iease-music-0.0.4-x86_64.AppImage
+$ chmod u+x iease-music-0.0.5-x86_64.AppImage
 ```
 
 #### Windows(Windows 7+ are supported, 64-bit only)
@@ -87,6 +87,7 @@ Description            | Keys
 音量减                 | <kbd>Down</kbd>
 喜欢歌曲               | <kbd>Cmd</kbd> <kbd>L</kbd>
 播放历史记录           | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
+搜索                   | <kbd>Cmd</kbd> <kbd>F</kbd>
 跳转首页               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>H</kbd>
 查看榜单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>T</kbd>
 所有歌单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>P</kbd>
@@ -113,12 +114,12 @@ Description            | Keys
 - [x] Artist
 - [x] Album
 - [ ] Login with email
-- [ ] Search
+- [x] Search
 - [x] Login
 - [x] Pllylist subscribe
 - [x] Follow
 - [ ] Flac high quality audio
-- [ ] Resolve dead link(search form QQ music)
+- [ ] Resolve dead link(search from QQ music)
 - [ ] Scrobble to Last.fm
 - [ ] Comment（貌似很多人讨厌评论啊）
 - [ ] Website
