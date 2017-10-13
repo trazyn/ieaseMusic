@@ -48,7 +48,22 @@ Download the last version on the [website](https://github.com/trazyn/ieaseMusic/
 [Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/ieaseMusic-0.0.5-mac.dmg) the `.dmg` file.
 
 #### Linux
-[Download](https://github.com/trazyn/ieaseMusic/releases/latest)
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/ieaseMusic-0.0.5-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+```
+$ sudo dpkg -i ieaseMusic-0.0.5-linux-amd64.deb
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/ieaseMusic-0.0.5-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
+```
+$ sudo yum localinstall ieaseMusic-0.0.5-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v0.0.5/iease-music-0.0.5-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-0.0.5-x86_64.AppImage
+$ ./iease-music-0.0.5-x86_64.AppImage
+```
 
 #### Windows(Windows 7+ are supported, 64-bit only)
 `等待填坑`
