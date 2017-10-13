@@ -16,7 +16,7 @@ import stores from './js/stores';
 
 class App extends Component {
     componentDidMount() {
-        var { controller, fm, me, menu, playing } = stores;
+        var { controller, fm, me, menu, playing, search } = stores;
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
@@ -28,7 +28,7 @@ class App extends Component {
         // Toggle the player
         ipcRenderer.on('player-toggle', () => {
             // Ignore signal
-            if (stores.search.show) {
+            if (search.show || playing.show) {
                 return;
             }
 
@@ -69,7 +69,7 @@ class App extends Component {
 
         // Search
         ipcRenderer.on('show-search', () => {
-            stores.search.toggle(true);
+            search.toggle(true);
         });
 
         // Show the Ranking list
