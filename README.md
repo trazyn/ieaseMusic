@@ -20,6 +20,7 @@
 ## Preview
 
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/preview.gif)
+![2017-10-13 10 26 13](https://user-images.githubusercontent.com/1774898/31527631-3aab6178-b001-11e7-8633-c2cbb7b4af2a.gif)
 
 ## Feature
 - 帅
@@ -96,9 +97,9 @@ Description            | Keys
 
 ## Question
 
-目前接口上面~~收藏歌单和 `Follow` 用户暂时没有~~`(DONE)`，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~(进行中)。
+目前接口上面~~收藏歌单和 `Follow` 用户暂时没有~~`(DONE)`，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~。
 
-对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？
+~~对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？~~
 
 ## TODO:
 - [x] Home
