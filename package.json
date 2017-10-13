@@ -52,7 +52,9 @@
       "icon": "../resource/dock.icns"
     },
     "linux": {
-      "target": "deb",
+      "target": [
+        "deb", "rpm", "AppImage"
+      ],
       "icon": "../resource",
       "category": "Music"
     },
