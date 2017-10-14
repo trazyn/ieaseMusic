@@ -33,7 +33,7 @@
 - Desktop notifications
 - Modern UI design
 - High quality music(FLAC)
-- Fix dead music link #3(QQ music and Kugou music, need more)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music and Kugou music, need more)
 - 就这些吧，编不下去了
 
 ## 海外党网解锁请参考
@@ -132,7 +132,7 @@ Description            | Keys
 - [x] Pllylist subscribe
 - [x] Follow
 - [x] Flac high quality audio
-- [ ] Resolve dead link(search from QQ music)
+- [x] Fix dead music link([#3](https://github.com/trazyn/ieaseMusic/issues/3))
 - [ ] Scrobble to Last.fm
 - [ ] Comment（貌似很多人讨厌评论啊）
 - [ ] Website
