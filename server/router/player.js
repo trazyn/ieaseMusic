@@ -116,6 +116,31 @@ async function getAlbumBySong(id) {
     return albums;
 }
 
+async function getFlac(name, artists) {
+    var response = await axios.get('http://sug.music.baidu.com/info/suggestion', {
+        params: {
+            word: name,
+            version: 2,
+            from: 0,
+        }
+    });
+    var songs = response.data.data.song;
+    var song = songs.find(e => artists.indexOf(e.artistname) > -1);
+
+    if (!song) {
+        return false;
+    }
+    response = await axios.get('http://music.baidu.com/data/music/fmlink', {
+        params: {
+            songIds: song.songid,
+            type: 'flac',
+        },
+    });
+
+    debug('FLAC: %O', response.data.data.songList);
+    return response.data.data.songList[0].songLink;
+}
+
 router.get('/subscribe/:id', async(req, res) => {
     debug('Handle request for /player/subscribe');
 
@@ -168,13 +193,35 @@ router.get('/unsubscribe/:id', async(req, res) => {
     });
 });
 
-router.get('/song/:id', cache('5 minutes', onlyStatus200), async(req, res) => {
+router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200), async(req, res) => {
     debug('Handle request for /player/song');
 
     var id = req.params.id;
+    var name = req.params.name;
+    var artists = req.params.artists;
+    var flac = req.params.flac || 0;
     var song = {};
 
-    debug('Params \'id\': %s', id);
+    debug('Params \'id\': %s, \'name\': %s, \'artists\': %s, \'flac\': %s', id, name, artists, flac);
+
+    try {
+        if (+flac) {
+            let src = await getFlac(name, artists);
+
+            if (src) {
+                res.send({
+                    song: {
+                        src,
+                        isFlac: true,
+                    }
+                });
+
+                return;
+            }
+        }
+    } catch (ex) {
+        debug('Failed to get flac file: %O', ex);
+    }
 
     try {
         let response = await axios.get(`/music/url?id=${id}`);

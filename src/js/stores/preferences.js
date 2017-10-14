@@ -16,6 +16,7 @@ class Preferences {
     @observable naturalScroll = true;
     @observable volume = 1;
     @observable port = config.api.port;
+    @observable highquality = 1;
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -27,6 +28,7 @@ class Preferences {
             naturalScroll = self.naturalScroll,
             port = self.port,
             volume = self.volume,
+            highquality = self.highquality,
             backgrounds = theme.playlist.backgrounds,
         } = preferences;
 
@@ -37,6 +39,7 @@ class Preferences {
         self.naturalScroll = !!naturalScroll;
         self.port = port || config.api.port;
         self.volume = +volume || 1;
+        self.highquality = +highquality || 0;
         self.backgrounds = backgrounds;
 
         // Save preferences
@@ -45,7 +48,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, backgrounds } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -55,6 +58,7 @@ class Preferences {
             naturalScroll,
             port,
             volume,
+            highquality,
             backgrounds,
         });
 
@@ -97,6 +101,11 @@ class Preferences {
 
     @action setVolume(volume) {
         self.volume = volume;
+        self.save();
+    }
+
+    @action setHighquality(highquality) {
+        self.highquality = highquality;
         self.save();
     }
 
