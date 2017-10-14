@@ -53,7 +53,9 @@
     },
     "linux": {
       "target": [
-        "deb", "rpm", "AppImage"
+        "deb",
+        "rpm",
+        "AppImage"
       ],
       "icon": "../resource",
       "category": "Music"
@@ -132,6 +134,7 @@
     "electron-window-state": "^4.1.1",
     "han": "0.0.7",
     "ionicons201": "^1.0.0",
+    "md5": "^2.2.1",
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "moment": "^2.18.1",

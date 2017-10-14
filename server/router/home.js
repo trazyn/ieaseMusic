@@ -62,7 +62,6 @@ async function getPersonalized() {
 }
 
 async function getSongs(id) {
-
     var songs = [];
 
     try {
@@ -70,7 +69,8 @@ async function getSongs(id) {
 
         if (response.data.code === 200) {
             songs = response.data.playlist.tracks.map(e => {
-                var { al /* Album */, ar /* Artist */ } = e;
+                // eslint-disable-next-line
+                var {al /* Album */, ar /* Artist */} = e;
 
                 return {
                     id: e.id.toString(),
