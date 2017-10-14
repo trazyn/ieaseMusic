@@ -112,6 +112,22 @@ Description            | Keys
 其实这些在鼠标右键菜单上面都有，上面这些看看就好，我也没记住
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/contextmenu.png)
 
+## 贡献曲库
+请参考
+- [server/search/index.js](https://github.com/trazyn/ieaseMusic/blob/master/server/search/index.js)
+- [server/search/Kugou.js](https://github.com/trazyn/ieaseMusic/blob/master/server/search/Kugou.js)
+
+```
+export default async(keyword, artists) => {
+    // Your code
+    return {
+        src: 'Music link'
+    };
+};
+```
+
+曲库导出一个方法，接受2个参数，`歌曲名称`和`歌手名称`（多个名称以逗号分隔，eg：`王心凌,罗志祥`），返回一个`Promise`，对于搜索结果应使用`歌手名称`来匹配正确曲目，返回对象中`src`为歌曲链接。
+
 ## Question
 
 目前接口上面~~收藏歌单和 `Follow` 用户暂时没有~~`(DONE)`，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~。
