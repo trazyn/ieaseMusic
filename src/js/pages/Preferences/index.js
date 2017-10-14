@@ -21,6 +21,8 @@ import Switch from 'ui/Switch';
         setNaturalScroll,
         port,
         setPort,
+        highquality,
+        setHighquality,
         backgrounds,
         setBackgrounds,
     } = stores.preferences;
@@ -38,6 +40,8 @@ import Switch from 'ui/Switch';
         setNaturalScroll,
         port,
         setPort,
+        highquality,
+        setHighquality,
         backgrounds,
         setBackgrounds,
     };
@@ -66,6 +70,8 @@ class Preferences extends Component {
             setShowNotification,
             port,
             setPort,
+            highquality,
+            setHighquality,
             backgrounds,
         } = this.props;
 
@@ -137,8 +143,16 @@ class Preferences extends Component {
                             onChange={e => setNaturalScroll(e.target.checked)} />
                     </label>
 
+                    <label htmlFor="highquality">
+                        <h4>High Quality Music</h4>
+
+                        <Switch
+                            checked={highquality}
+                            id="highquality"
+                            onChange={e => setHighquality(+e.target.checked)} />
+                    </label>
+
                     <label
-                        htmlFor="naturalScroll"
                         style={{
                             display: 'block',
                         }}>
