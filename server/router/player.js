@@ -248,8 +248,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200),
         error('Failed to get song URL: %O', ex);
     }
 
-    var other = await search(name, artists);
-    debug('%O', other);
+    debug('Resolve song: %O', song);
 
     res.send({
         song,
