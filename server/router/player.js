@@ -4,6 +4,7 @@ import express from 'express';
 import apicache from 'apicache'
 import axios from 'axios';
 import _debug from 'debug';
+import search from '../search';
 /* eslint-enable */
 
 const debug = _debug('dev:api');
@@ -228,7 +229,12 @@ router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200),
         let data = response.data;
 
         if (data.code !== 200) {
-            throw data;
+            // Search from other source
+            song = await search(name, artists);
+
+            if (!song.src) {
+                throw data;
+            }
         }
 
         song = data.data[0];
@@ -241,6 +247,9 @@ router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200),
     } catch (ex) {
         error('Failed to get song URL: %O', ex);
     }
+
+    var other = await search(name, artists);
+    debug('%O', other);
 
     res.send({
         song,
