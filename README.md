@@ -32,6 +32,7 @@
 - Keyboard support
 - Desktop notifications
 - Modern UI design
+- High quality music(FLAC)
 - 就这些吧，编不下去了
 
 ## 海外党网解锁请参考
