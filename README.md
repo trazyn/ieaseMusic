@@ -33,6 +33,7 @@
 - Desktop notifications
 - Modern UI design
 - High quality music(FLAC)
+- Fix dead music link #3(QQ music and Kugou music, need more)
 - 就这些吧，编不下去了
 
 ## 海外党网解锁请参考
@@ -139,6 +140,8 @@ Description            | Keys
 ## 参考列表
 - 高品质音乐
   [YongHaoWu/NeteaseCloudMusicFlac](https://github.com/YongHaoWu/NeteaseCloudMusicFlac)
+- 添加其他曲库，解决死链问题
+  [ITJesse/UnblockNeteaseMusic](https://github.com/ITJesse/UnblockNeteaseMusic)
 
 ## License
 还是 MIT 吧，懒得改了
