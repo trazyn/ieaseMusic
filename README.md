@@ -136,5 +136,9 @@ Description            | Keys
 - [ ] Comment（貌似很多人讨厌评论啊）
 - [ ] Website
 
+## 参考列表
+- 高品质音乐
+  [YongHaoWu/NeteaseCloudMusicFlac](https://github.com/YongHaoWu/NeteaseCloudMusicFlac)
+
 ## License
 还是 MIT 吧，懒得改了
