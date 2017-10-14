@@ -95,6 +95,16 @@ class Controller extends Component {
 
                         <div className={classes.action}>
                             {
+                                (song.data && song.data.isFlac) && (
+                                    <span
+                                        className={classes.highquality}
+                                        title="High Quality Music">
+                                        SQ
+                                    </span>
+                                )
+                            }
+
+                            {
                                 hasLogin() && (
                                     <i
                                         className={clazz('ion-ios-heart', {

@@ -160,6 +160,21 @@ export default theme => {
             }
         },
 
+        highquality: {
+            display: 'inline-block',
+            padding: '2px 6px',
+            marginRight: 30,
+            letterSpacing: 1,
+            textTransform: 'uppercase',
+            fontFamily: 'Roboto',
+            fontSize: 12,
+            color: colors.pallet.dribbble,
+            border: `thin solid ${colors.pallet.dribbble}`,
+            textShadow: `0 0 24px ${colors.pallet.dribbble}`,
+            transform: 'translateY(-3px)',
+            zoom: .8,
+        },
+
         liked: { },
 
         mode: {
