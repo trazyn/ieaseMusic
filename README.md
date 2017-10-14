@@ -129,7 +129,7 @@ Description            | Keys
 - [x] Login
 - [x] Pllylist subscribe
 - [x] Follow
-- [ ] Flac high quality audio
+- [x] Flac high quality audio
 - [ ] Resolve dead link(search from QQ music)
 - [ ] Scrobble to Last.fm
 - [ ] Comment（貌似很多人讨厌评论啊）
