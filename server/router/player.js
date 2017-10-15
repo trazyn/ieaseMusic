@@ -229,12 +229,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200),
         let data = response.data;
 
         if (data.code !== 200) {
-            // Search from other source
-            song = await search(name, artists);
-
-            if (!song.src) {
-                throw data;
-            }
+            throw data;
         }
 
         song = data.data[0];
@@ -244,8 +239,18 @@ router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200),
             md5: song.md5,
             bitRate: song.br,
         };
+
+        if (!song.src) {
+            throw new Error('No Copyright');
+        }
     } catch (ex) {
-        error('Failed to get song URL: %O', ex);
+        try {
+            // Search from other source
+            debug('Search: %s, %s', name, artists);
+            song = await search(name, artists);
+        } catch (ex) {
+            error('Failed to get song URL: %O', ex);
+        }
     }
 
     debug('Resolve song: %O', song);
