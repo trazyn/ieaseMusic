@@ -8,6 +8,7 @@ import helper from 'utils/helper';
 @inject(stores => ({
     song: stores.controller.song,
     next: stores.controller.next,
+    play: () => stores.controller.play(stores.controller.song.id),
     playing: stores.controller.playing,
     volume: stores.preferences.volume,
     setVolume: stores.preferences.setVolume,
@@ -17,7 +18,11 @@ export default class AudioPlayer extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.playing !== this.props.playing) {
             try {
-                this.refs.player[nextProps.playing ? 'play' : 'pause']();
+                if (!this.refs.player.src) {
+                    this.props.play();
+                } else {
+                    this.refs.player[nextProps.playing ? 'play' : 'pause']();
+                }
             } catch (ex) {
                 // Anti warnning
             }
