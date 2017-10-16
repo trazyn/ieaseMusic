@@ -1,12 +1,13 @@
 
 import QQ from './QQ';
 import Kugou from './Kugou';
+import Baidu from './Baidu';
 import _debug from 'debug';
 
 const debug = _debug('plugin:');
 
 export default (keyword, artists) => {
-    var plugins = [QQ, Kugou];
+    var plugins = [Baidu, QQ, Kugou];
 
     debug('Plugin has loaded, search: \'%s\', \'%s\'', keyword, artists);
 

@@ -33,7 +33,7 @@ function getURL(data) {
 }
 
 export default async(keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use QQ plugin.`);
+    debug(`Search '${keyword} - ${artists}' use QQ library.`);
 
     try {
         await updateVkey();
