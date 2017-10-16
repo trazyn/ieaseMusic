@@ -47,21 +47,21 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.0-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.1-mac.dmg) the `.dmg` file.
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.0-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.1-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
 $ sudo dpkg -i ieaseMusic-0.0.5-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.0-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/ieaseMusic-1.0.1-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
 $ sudo yum localinstall ieaseMusic-0.0.5-linux-x86_64.rpm
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/iease-music-1.0.0-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.0/iease-music-1.0.1-x86_64.AppImage) the `.Appimage` file for other distribution:
 ```
 $ chmod u+x iease-music-0.0.5-x86_64.AppImage
 $ ./iease-music-0.0.5-x86_64.AppImage
