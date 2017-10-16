@@ -22,7 +22,7 @@ async function getURL(hash) {
 }
 
 export default async(keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use Kugou plugin.`);
+    debug(`Search '${keyword} - ${artists}' use Kugou library.`);
 
     var response = await axios.get(`http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=${encodeURIComponent(keyword)}&page=1&pagesize=1&showtype=1`);
     var data = response.data;
