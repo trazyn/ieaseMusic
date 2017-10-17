@@ -4,7 +4,7 @@ import Kugou from './Kugou';
 import Baidu from './Baidu';
 import _debug from 'debug';
 
-const debug = _debug('plugin:');
+const debug = _debug('dev:plugin');
 
 export default (keyword, artists) => {
     var plugins = [Baidu, QQ, Kugou];
