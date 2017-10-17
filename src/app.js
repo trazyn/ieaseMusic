@@ -6,6 +6,7 @@ import { Provider } from 'mobx-react';
 import { ipcRenderer, remote, shell } from 'electron';
 import { ThemeProvider } from 'react-jss';
 import 'ionicons201/css/ionicons.css';
+import 'roboto-fontface/css/roboto/roboto-fontface.css';
 
 import './global.css';
 import 'utils/albumColors';

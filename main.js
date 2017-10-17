@@ -334,14 +334,14 @@ let trayMenu = [
 ];
 
 function updateMenu(playing) {
+    if (!isOsx) {
+        return;
+    }
+
     mainMenu[1]['submenu'][0]['label'] = playing ? 'Pause' : 'Play';
     menu = Menu.buildFromTemplate(mainMenu);
 
-    try {
-        Menu.setApplicationMenu(menu);
-    } catch (ex) {
-        // Anti warnning
-    }
+    Menu.setApplicationMenu(menu);
 }
 
 function updateTray(playing) {
