@@ -145,6 +145,7 @@
     "react-jss": "^7.1.0",
     "react-router": "^3.0.5",
     "react-scroll-horizontal": "github:trazyn/react-scroll-horizontal#gh-pages",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "roboto-fontface": "^0.8.0"
   }
 }
