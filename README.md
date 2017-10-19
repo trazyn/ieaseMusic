@@ -47,7 +47,10 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.1/ieaseMusic-1.0.1-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.1/ieaseMusic-1.0.1-mac.dmg) the `.dmg` file, Or use `homebrew`:
+```
+brew cask install ieasemusic
+```
 
 #### Linux
 
