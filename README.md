@@ -70,6 +70,11 @@ $ chmod u+x iease-music-0.0.5-x86_64.AppImage
 $ ./iease-music-0.0.5-x86_64.AppImage
 ```
 
+Archlinux aur install:
+```
+https://aur.archlinux.org/packages/iease-music
+```
+
 #### Windows(Windows 7+ are supported, 64-bit only)
 `等待填坑`
 
