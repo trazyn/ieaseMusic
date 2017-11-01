@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 import { inject, observer } from 'mobx-react';
 import clazz from 'classname';
 
+import Offline from 'ui/Offline';
 import Loader from 'ui/Loader';
 import AudioPlayer from 'components/AudioPlayer';
 import Search from 'components/Search';
@@ -39,12 +40,34 @@ const classes = {
 }))
 @observer
 class Layout extends Component {
+    state = {
+        offline: false,
+    };
+
     async componentWillMount() {
         await this.props.init();
     }
 
+    componentDidMount() {
+        window.addEventListener('offline', () => {
+            this.setState({
+                offline: true,
+            });
+        });
+
+        window.addEventListener('online', () => {
+            this.setState({
+                offline: false,
+            });
+        });
+    }
+
     render() {
         var { classes, initialized, searching } = this.props;
+
+        if (this.state.offline) {
+            return <Offline show={true} />;
+        }
 
         // Wait for app has initialized
         if (!initialized) {
