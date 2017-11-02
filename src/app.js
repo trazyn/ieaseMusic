@@ -35,6 +35,13 @@ class App extends Component {
             controller.toggle();
         });
 
+        // Pause the player when system suspend
+        ipcRenderer.on('player-pause', () => {
+            if (controller.playing) {
+                controller.toggle();
+            }
+        });
+
         // Play the next song
         ipcRenderer.on('player-next', () => {
             let FMPlaying = isFMPlaying();
