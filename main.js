@@ -1,5 +1,5 @@
 
-import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
 import axios from 'axios';
@@ -507,6 +507,11 @@ const createMainWindow = () => {
         forceQuit = true;
         mainWindow = null;
         app.quit();
+    });
+
+    // App has suspend
+    powerMonitor.on('suspend', () => {
+        mainWindow.webContents.send('player-pause');
     });
 
     if (isOsx) {
