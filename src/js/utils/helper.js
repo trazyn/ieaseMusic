@@ -1,5 +1,6 @@
 
 import uuid from 'uuid';
+import { asYouType } from 'libphonenumber-js';
 
 const helper = {
     pad(number) {
@@ -29,6 +30,16 @@ const helper = {
                 }
             });
         });
+    },
+
+    getCountryCode(phone) {
+        if (/1[34578][012356789]\d{8}|134[012345678]\d{7}/.test(phone)) {
+            return '86';
+        }
+
+        var formatter = new asYouType();
+        formatter.input(phone);
+        return formatter.country_phone_code;
     },
 
     pureColor(colors = []) {
