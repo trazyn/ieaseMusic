@@ -30,7 +30,15 @@ class Menu extends Component {
         var link = `/user/${profile.userId}`;
 
         if (!hasLogin()) {
-            return false;
+            return (
+                <p>
+                    <Link
+                        onClick={close}
+                        to="/login">
+                        Sign in
+                    </Link>
+                </p>
+            );
         }
 
         return (

@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import axios from 'axios';
 
 import storage from 'utils/storage';
+import helper from 'utils/helper';
 import player from './player';
 import home from './home';
 
@@ -37,6 +38,7 @@ class Me {
 
         var response = await axios.get('/login/cellphone', {
             params: {
+                countrycode: helper.getCountryCode(phone),
                 phone,
                 password,
             }
