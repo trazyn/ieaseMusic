@@ -95,7 +95,6 @@ export default theme => {
                 '&:hover': {
                     borderBottomColor: '#000',
                 },
-
             }
         },
 

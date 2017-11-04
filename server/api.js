@@ -256,6 +256,7 @@ app.use('/api/top', cache('1 hour', onlyStatus200), require('./router/top'));
 app.use('/api/playlist', cache('10 minutes', onlyStatus200), require('./router/playlist'));
 app.use('/api/fm', require('./router/fm'));
 app.use('/api/search', require('./router/search'));
+app.use('/api/comments', require('./router/comments'));
 
 if (process.env.AUTORUN) {
     app.listen(port);
