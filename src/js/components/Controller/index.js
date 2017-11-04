@@ -27,6 +27,7 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
         return `🎉 ${stores.controller.playlist.name}`;
     },
     hasLogin: stores.me.hasLogin,
+    showComments: () => stores.comments.toggle(true),
 }))
 @observer
 class Controller extends Component {
@@ -38,7 +39,7 @@ class Controller extends Component {
     }
 
     render() {
-        var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName } = this.props;
+        var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName, showComments } = this.props;
         var liked = isLiked(song.id);
 
         if (!song.id) {
@@ -103,6 +104,10 @@ class Controller extends Component {
                                     </span>
                                 )
                             }
+
+                            <i
+                                className="ion-ios-chatboxes"
+                                onClick={e => showComments()} />
 
                             {
                                 hasLogin() && (

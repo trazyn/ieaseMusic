@@ -11,6 +11,7 @@ import playlist from './playlist';
 import fm from './fm';
 import playing from './playing';
 import search from './search';
+import comments from './comments';
 import preferences from './preferences';
 
 const stores = {
@@ -26,6 +27,7 @@ const stores = {
     fm,
     playing,
     search,
+    comments,
     preferences,
 };
 
