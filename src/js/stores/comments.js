@@ -8,19 +8,23 @@ class Comments {
     @observable hotList = [];
     @observable newestList = [];
     @observable total = 0;
-
+    @observable song = {
+        album: {},
+        artist: [],
+    };
     nextHref = '';
 
     @action toggle(show = !self.show) {
         self.show = show;
     }
 
-    @action async getList(id) {
+    @action async getList(song) {
         self.loading = true;
 
-        var response = await axios.get(`/api/comments/${id}`);
+        var response = await axios.get(`/api/comments/${song.id}`);
         var data = response.data;
 
+        self.song = song;
         self.hotList = data.hotList;
         self.newestList = data.newestList;
         self.total = data.total;

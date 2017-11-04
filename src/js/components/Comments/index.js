@@ -16,18 +16,18 @@ import Loader from 'ui/Loader';
     loading: stores.comments.loading,
     hotList: stores.comments.hotList,
     newestList: stores.comments.newestList,
-    getList: stores.comments.getList,
+    getList: () => stores.comments.getList(Object.assign({}, stores.controller.song)),
     loadmore: stores.comments.loadmore,
     like: stores.me.like,
     ban: stores.fm.ban,
     unlike: stores.me.unlike,
     isLiked: stores.me.isLiked,
-    song: stores.controller.song,
+    song: stores.comments.song,
 }))
 @observer
 class Comments extends Component {
     componentWillMount() {
-        this.props.getList(this.props.song.id);
+        this.props.getList();
     }
 
     async loadmore(e) {
@@ -112,9 +112,12 @@ class Comments extends Component {
         var { classes, loading, song, close, isLiked, unlike, like } = this.props;
         var liked = isLiked(song.id);
 
+        if (loading || !song.id) {
+            return <Loader show={true} />;
+        }
+
         return (
             <div className={classes.container}>
-                <Loader show={loading} />
                 <img
                     alt="Close"
                     className={classes.close}
