@@ -194,7 +194,7 @@ router.get('/unsubscribe/:id', async(req, res) => {
     });
 });
 
-router.get('/song/:id/:name/:artists/:flac?', cache('5 minutes', onlyStatus200), async(req, res) => {
+router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200), async(req, res) => {
     debug('Handle request for /player/song');
 
     var id = req.params.id;
