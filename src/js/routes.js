@@ -17,7 +17,7 @@ import stores from 'stores';
 function requireAuth(nextState, replace) {
     if (!stores.me.hasLogin()) {
         replace({
-            pathname: '/login'
+            pathname: '/login/1'
         });
     }
 }
@@ -26,7 +26,7 @@ export default () => {
     return (
         <Route path="/" component={Layout}>
             <IndexRoute component={Home} />
-            <Route path="/login" component={Login} />
+            <Route path="/login/:fm" component={Login} />
             <Route path="/player/:type/:id" component={Player} />
             <Route path="/user/:id" component={User} />
             <Route path="/artist/:id" component={Artist} />

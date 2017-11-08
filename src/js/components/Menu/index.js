@@ -34,7 +34,7 @@ class Menu extends Component {
                 <p>
                     <Link
                         onClick={close}
-                        to="/login">
+                        to="/login/0">
                         Sign in
                     </Link>
                 </p>

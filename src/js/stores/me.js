@@ -36,10 +36,11 @@ class Me {
     @action async login(phone, password) {
         self.logining = true;
 
+        var formatter = helper.formatPhone(phone);
         var response = await axios.get('/login/cellphone', {
             params: {
-                countrycode: helper.getCountryCode(phone),
-                phone,
+                countrycode: formatter.code,
+                phone: formatter.phone,
                 password,
             }
         });
