@@ -32,14 +32,21 @@ const helper = {
         });
     },
 
-    getCountryCode(phone) {
-        if (/1[34578][012356789]\d{8}|134[012345678]\d{7}/.test(phone)) {
-            return '86';
+    formatPhone(phone) {
+        if (!phone.startsWith('+86')
+            && /1[34578][012356789]\d{8}|134[012345678]\d{7}/.test(phone)) {
+            return {
+                code: '86',
+                phone,
+            };
         }
 
         var formatter = new asYouType();
         formatter.input(phone);
-        return formatter.country_phone_code;
+        return {
+            code: formatter.country_phone_code,
+            phone: formatter.national_number,
+        };
     },
 
     pureColor(colors = []) {
