@@ -196,7 +196,7 @@ class Controller {
         });
     }
 
-    @action changeMode(mode) {
+    @action changeMode(mode = PLAYER_REPEAT) {
         var index = MODES.indexOf(self.mode);
 
         if (MODES.includes(mode)) {

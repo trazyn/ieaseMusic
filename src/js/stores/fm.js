@@ -12,6 +12,7 @@ class FM {
     };
 
     preload() {
+        controller.changeMode();
         self.shuffle();
         self.preload = Function;
     }

@@ -9,7 +9,7 @@ import 'ionicons201/css/ionicons.css';
 
 import './global.css';
 import 'utils/albumColors';
-import { PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
+import { PLAYER_REPEAT, PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
 import theme from './theme';
 import getRoutes from './js/routes';
 import stores from './js/stores';
@@ -171,15 +171,19 @@ class App extends Component {
                 },
                 {
                     label: 'Repeat 🤘',
-                    type: 'radio',
+                    type: 'checkbox',
                     checked: controller.mode === PLAYER_LOOP,
                     click: () => {
-                        controller.changeMode(PLAYER_LOOP);
+                        if (controller.mode === PLAYER_LOOP) {
+                            controller.changeMode(PLAYER_REPEAT);
+                        } else {
+                            controller.changeMode(PLAYER_LOOP);
+                        }
                     }
                 },
                 {
                     label: 'Shuffle ⚡️',
-                    type: 'radio',
+                    type: 'checkbox',
                     checked: controller.mode === PLAYER_SHUFFLE,
                     enabled: !isFMPlaying(),
                     click: () => {
