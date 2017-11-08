@@ -2,6 +2,8 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
+import controller from './controller';
+
 class Comments {
     @observable loading = true;
     @observable show = false;
@@ -30,6 +32,18 @@ class Comments {
         self.total = data.total;
         self.nextHref = data.nextHref;
         self.loading = false;
+    }
+
+    @action async like(id, liked) {
+        var response = await axios.get(`/api/comments/like/${id}/${controller.song.id}/${+liked}`);
+        var data = response.data;
+
+        if (data.success === true) {
+            let comment = [...self.hotList.slice(), ...self.newestList.slice()].find(e => e.commentId === id);
+
+            comment.likedCount += liked ? 1 : -1;
+            comment.liked = liked;
+        }
     }
 
     @action async loadmore() {

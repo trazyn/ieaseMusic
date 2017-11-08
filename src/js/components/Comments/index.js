@@ -16,6 +16,7 @@ import Loader from 'ui/Loader';
     loading: stores.comments.loading,
     hotList: stores.comments.hotList,
     newestList: stores.comments.newestList,
+    thumbsup: stores.comments.like,
     getList: () => stores.comments.getList(Object.assign({}, stores.controller.song)),
     loadmore: stores.comments.loadmore,
     like: stores.me.like,
@@ -48,7 +49,7 @@ class Comments extends Component {
     }
 
     renderComment(key, item) {
-        var classes = this.props.classes;
+        var { classes, thumbsup } = this.props;
 
         return (
             <div
@@ -69,27 +70,16 @@ class Comments extends Component {
                     <p>{item.content}</p>
 
                     <div className={classes.meta}>
+                        <span
+                            className={clazz('tooltip', classes.thumbsup, {
+                                [classes.liked]: item.liked,
+                            })}
+                            data-text={`${helper.humanNumber(item.likedCount)} liked`}
+                            onClick={ev => thumbsup(item.commentId, !item.liked)}>
+                            <i className="ion-thumbsup" />
+                        </span>
+
                         {moment(item.time).endOf('day').fromNow()}
-
-                        <div>
-                            <span
-                                className={clazz('tooltip', classes.thumbsup, {
-                                    [classes.liked]: item.liked,
-                                })}
-                                data-text={`${helper.humanNumber(item.likedCount)} liked`}
-                                onClick={e => console.log(e)}>
-                                <i className="ion-thumbsup" />
-                            </span>
-
-                            <span className={classes.reply}>
-                                Reply
-                                <i
-                                    className="ion-android-arrow-forward"
-                                    style={{
-                                        marginLeft: 2,
-                                    }} />
-                            </span>
-                        </div>
                     </div>
                 </aside>
             </div>

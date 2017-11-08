@@ -259,6 +259,7 @@ app.use('/api/search', require('./router/search'));
 app.use('/api/comments', require('./router/comments'));
 
 if (process.env.AUTORUN) {
+    console.log(`API Server run with port: ${port}`);
     app.listen(port);
 }
 
