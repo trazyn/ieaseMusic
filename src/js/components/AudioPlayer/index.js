@@ -111,7 +111,7 @@ export default class AudioPlayer extends Component {
                     this.passed = 0, this.progress();
                 }}
                 onEnded={e => {
-                    this.passed = 0, this.props.next();
+                    this.passed = 0, this.props.next(true);
                 }}
                 onError={e => console.log(e)}
                 onProgress={e => this.buffering(e)}

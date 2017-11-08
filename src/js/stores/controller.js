@@ -101,13 +101,19 @@ class Controller {
         self.song = Object.assign({}, self.song, { data });
     }
 
-    @action async next() {
+    @action async next(loop = false) {
         var songs = self.playlist.songs;
         var history = self.history;
         var index = history.indexOf(self.song.id);
         var next;
 
         switch (true) {
+            case loop === true
+                    && self.mode === PLAYER_LOOP:
+                // Fix https://github.com/trazyn/ieaseMusic/issues/68
+                next = self.song.id;
+                break;
+
             case self.playlist.id === 'PERSONAL_FM':
                 fm.next();
                 return;
@@ -202,9 +208,6 @@ class Controller {
                 self.mode = PLAYER_SHUFFLE;
             }
         }
-
-        // Looping ...
-        document.querySelector('audio').loop = self.mode === PLAYER_LOOP;
     }
 }
 
