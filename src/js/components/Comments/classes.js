@@ -86,6 +86,7 @@ export default theme => ({
         },
 
         '& footer': {
+            position: 'relative',
             padding: '12px 24px',
         },
 
@@ -110,6 +111,17 @@ export default theme => ({
                 height: '100%',
                 backgroundColor: 'rgba(0, 0, 0, .3)'
             }
+        },
+
+        '&:before': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            display: 'block',
+            width: '100%',
+            height: '20vh',
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(216, 216, 216, .6))',
         }
     },
 
