@@ -18,7 +18,7 @@ import Header from 'components/Header';
     profile: stores.user.profile,
     playlists: stores.user.playlists,
     follow: stores.user.follow,
-    isme: () => stores.user.profile.id === stores.me.profile.userId,
+    isme: () => stores.user.profile.id === stores.me.profile.userId.toString(),
     isPlaying: (id) => {
         var controller = stores.controller;
 

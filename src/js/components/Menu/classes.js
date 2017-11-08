@@ -48,6 +48,7 @@ export default theme => ({
             fontSize: 20,
             textIndent: 4,
             letterSpacing: 4,
+            cursor: 'pointer',
         },
 
         '& a:after': {
