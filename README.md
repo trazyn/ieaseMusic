@@ -80,9 +80,6 @@ or
 $ pacman -S iease-music-git
 ```
 
-#### Windows(Windows 7+ are supported, 64-bit only)
-`等待填坑`
-
 ## Screenshots
 
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/home.png)
@@ -155,7 +152,7 @@ export default async(keyword, artists) => {
 - [x] User
 - [x] Artist
 - [x] Album
-- [ ] Login with email
+- [ ] Login with email(Need help)
 - [x] Search
 - [x] Login
 - [x] Pllylist subscribe
@@ -163,7 +160,8 @@ export default async(keyword, artists) => {
 - [x] Flac high quality audio
 - [x] Fix dead music link([#3](https://github.com/trazyn/ieaseMusic/issues/3))
 - [ ] Scrobble to Last.fm
-- [ ] Comment（貌似很多人讨厌评论啊）
+- [x] Comment（Read only）
+- [ ] Lyrics
 - [ ] Website
 
 ## 参考列表
