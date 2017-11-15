@@ -162,6 +162,7 @@ export default async(keyword, artists) => {
 - [ ] Scrobble to Last.fm
 - [x] Comment（Read only）
 - [ ] Lyrics
+- [ ] Auto update
 - [ ] Website
 
 ## 参考列表
