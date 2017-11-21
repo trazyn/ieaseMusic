@@ -6,12 +6,12 @@ import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
 import moment from 'moment';
 import clazz from 'classname';
-
 import classes from './classes';
 import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
-import Controller from 'components/Controller';
+import Collection from 'components/Collection';
+// import Controller from 'components/Controller';
 
 @inject(stores => ({
     hasLogin: stores.me.hasLogin,
@@ -130,6 +130,7 @@ class Home extends Component {
                         {item.name}
                     </div>
                 </div>
+
             </div>
         );
     }
@@ -180,7 +181,8 @@ class Home extends Component {
                 <main>
                     <div
                         className={classes.logo}
-                        dangerouslySetInnerHTML={{__html: `
+                        dangerouslySetInnerHTML={{
+                            __html: `
                             <svg class="${classes.svg}">
                                 <defs>
                                     <pattern id="mask" patternUnits="userSpaceOnUse" height="600" width="600">
@@ -200,8 +202,8 @@ class Home extends Component {
                         }
                     </div>
                 </main>
-
-                <Controller />
+                <Collection />
+                {/* <Controller /> */}
             </div>
         );
     }

@@ -6,6 +6,7 @@ export default theme => ({
         width: '100vw',
         height: '100vh',
         background: colors.randomGradient(),
+        display: 'none',
 
         '& main': {
             background: 'linear-gradient(to top, transparent, rgba(255, 255, 255, 1))',
