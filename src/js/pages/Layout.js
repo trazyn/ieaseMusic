@@ -6,7 +6,7 @@ import clazz from 'classname';
 
 import Offline from 'ui/Offline';
 import Loader from 'ui/Loader';
-import AudioPlayer from 'components/AudioPlayer';
+// import AudioPlayer from 'components/AudioPlayer';
 import Search from 'components/Search';
 import Menu from 'components/Menu';
 import Playing from 'components/Playing';
@@ -94,7 +94,7 @@ class Layout extends Component {
                 <Search />
                 <VolumeUpDown />
                 <Playing />
-                <AudioPlayer />
+                {/* <AudioPlayer /> */}
                 <PlayerNavigation />
                 <PlayerMode />
                 <PlayerStatus />

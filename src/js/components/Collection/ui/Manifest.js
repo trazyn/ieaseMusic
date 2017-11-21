@@ -5,4 +5,5 @@ export const Manifest = [
     { id: 'bg-main', src: BgMain },
     { id: 'bg-particle-01', src: BP1 },
     { id: 'bg-particle-02', src: BP2 },
+    // { id: 'testimg', src: TestImg },
 ];

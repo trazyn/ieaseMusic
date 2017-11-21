@@ -47,7 +47,6 @@ class Home extends Component {
 
     renderItem(item) {
         var { classes, isPlaying } = this.props;
-
         return (
             <Link
                 to={item.link}
@@ -202,7 +201,7 @@ class Home extends Component {
                         }
                     </div>
                 </main>
-                <Collection />
+                <Collection playlist={this.props.playlist} />
                 {/* <Controller /> */}
             </div>
         );

@@ -35,4 +35,15 @@ export default class Utils {
             default:
         }
     }
-}
+    static hypot() {
+        let y = 0;
+        let len = arguments.length;
+        for (var i = 0; i < len; i++) {
+            if (arguments[i] === Infinity || arguments[i] === -Infinity) {
+                return Infinity;
+            }
+            y += arguments[i] * arguments[i];
+        }
+        return Math.sqrt(y);
+    }
+};
