@@ -47,7 +47,7 @@ class Controller extends Component {
         }
 
         return (
-            <div className={classes.container}>
+            <div className={`${classes.container} dragarea`}>
                 <div
                     className={classes.bar}
                     id="progress"

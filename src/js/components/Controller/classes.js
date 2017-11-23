@@ -4,11 +4,12 @@ import colors from 'utils/colors';
 export default theme => {
     return {
         container: {
-            position: 'fixed',
+            position: 'absolute',
             bottom: 0,
             left: 0,
             width: '100vw',
-            height: 50,
+            height: 65,
+            zIndex: 100,
             background: '#fff',
             color: '#000',
 
@@ -174,7 +175,7 @@ export default theme => {
             zoom: .8,
         },
 
-        liked: { },
+        liked: {},
 
         mode: {
             color: '#4a4a4a',

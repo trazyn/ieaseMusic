@@ -21,7 +21,7 @@ export default class ListHub {
         this.app.view.style['touch-action'] = 'pan-y';
         this.app.stage.interactive = true;
         this.app.renderer.plugins.interaction.autoPreventDefault = false;
-        document.body.appendChild(this.app.view);
+        this.element.appendChild(this.app.view);
         this.loadManifest();
         this.createBackground();
         this.createBoxList();

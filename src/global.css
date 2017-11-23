@@ -17,6 +17,7 @@ html {
   padding: 0;
   background: none;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 body {
@@ -87,19 +88,20 @@ a:visited {
   width: 0;
 }
 
-canvas {
-  position: fixed;
-  z-index: 1111;
+.main-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#main-collection {
+  position: absolute;
+  z-index: 10;
   left: 0;
   top: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .dragarea {
   -webkit-app-region: drag;
-  width: 100vw;
-  position: fixed;
-  z-index: 1112;
-  height: 20vh;
-  left: 0;
-  top: 0;
 }

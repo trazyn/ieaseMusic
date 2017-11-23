@@ -34,7 +34,6 @@ export default class Box extends PIXI.Container {
         let effectAmt = aspect > tgAspect ? 1.15 : 1.2;
         this.setX(this.pureX, effectAmt);
     }
-
     getBoxPosition() {
         let pt = this.toGlobal(this.boxImage.position);
         pt.width = this.imageWidth;

@@ -19,9 +19,7 @@ class Collection extends Component {
     }
     render() {
         return (
-            <div id="main-collection">
-                .
-            </div>
+            <div id="main-collection" />
         );
     };
 };
