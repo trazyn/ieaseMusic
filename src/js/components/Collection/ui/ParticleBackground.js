@@ -14,7 +14,6 @@ export default class ParticleBackground extends PIXI.Container {
         this.externalForces = { x: 0, y: 0 };
         this.particleBounds = new PIXI.Rectangle();
         this.alpha = 0;
-        console.log(1);
     }
     initParticles(arr) {
         this.particles = [];
@@ -83,13 +82,5 @@ export default class ParticleBackground extends PIXI.Container {
 
     reflectForces(mu = 1) {
         this.externalForces.x = -this.externalForces.x * mu;
-    }
-
-    cullHalf() {
-        if (this.particles) {
-            for (let i = 0; i < this.particles.length; i++) {
-                if (i % 2 === 0) this.particles[i].visible = (this.smallMode) ? Boolean(false) : Boolean(true);
-            }
-        }
     }
 };

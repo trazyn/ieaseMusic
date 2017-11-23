@@ -11,7 +11,7 @@ export default class ParticleStream extends PIXI.Graphics {
     }
     init() {
         this.alphaMult = 1;
-        this.threshold = 120;
+        this.threshold = 60;
         this.particles = [];
 
         for (let i = 0; i < this.maxParticles; i++) {
@@ -28,45 +28,41 @@ export default class ParticleStream extends PIXI.Graphics {
 
     update(arr) {
         this.clear();
-        if (!this.smallMode) {
-            for (let i = 0; i < this.maxParticles; i++) {
-                let p = this.particles[i];
-                p.x += p.spd;
-                let dy = (p.fx === 0) ? Math.sin(p.x / p.intr) * p.mag : Math.cos(p.x / p.intr) * p.mag;
-                p.y = p.baseY + dy;
+        for (let i = 0; i < this.maxParticles; i++) {
+            let p = this.particles[i];
+            p.x += p.spd;
+            let dy = (p.fx === 0) ? Math.sin(p.x / p.intr) * p.mag : Math.cos(p.x / p.intr) * p.mag;
+            p.y = p.baseY + dy;
 
-                if (p.x > this.stageWidth + 100) {
-                    p.x = -100;
+            if (p.x > this.stageWidth + 100) {
+                p.x = -100;
+            }
+            for (let k = 0; k < arr.length; k++) {
+                let dist = Utils.hypot(p.x - arr[k].x, p.y - arr[k].y);
+                let bt = this.threshold * 3;
+                if (dist < bt) {
+                    let alf = (1 - dist / bt) * 0.2 * this.alphaMult;
+                    this.lineStyle(1, 0xffffff, alf);
+                    this.moveTo(p.x, p.y);
+                    this.lineTo(arr[k].x, arr[k].y);
                 }
+            }
 
-                for (let k = 0; k < arr.length; k++) {
-                    let dist = Utils.hypot(p.x - arr[k].x, p.y - arr[k].y);
-                    let bt = this.threshold * 3;
-                    if (dist < bt) {
-                        let alf = (1 - dist / bt) * 0.2 * this.alphaMult;
+            for (let j = (i + 1); j < this.maxParticles; j++) {
+                let p2 = this.particles[j];
+                if (p.x > 0 || p2.x > 0) {
+                    let dist = Utils.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < this.threshold) {
+                        let alf = (1 - dist / this.threshold) * 0.2 * this.alphaMult;
                         this.lineStyle(1, 0xffffff, alf);
                         this.moveTo(p.x, p.y);
-                        this.lineTo(arr[k].x, arr[k].y);
+                        this.lineTo(p2.x, p2.y);
                     }
                 }
-
-                for (let j = (i + 1); j < this.maxParticles; j++) {
-                    let p2 = this.particles[j];
-                    if (p.x > 0 || p2.x > 0) {
-                        let dist = Utils.hypot(p.x - p2.x, p.y - p2.y);
-                        if (dist < this.threshold) {
-                            let alf = (1 - dist / this.threshold) * 0.2 * this.alphaMult;
-                            this.lineStyle(1, 0xffffff, alf);
-                            this.moveTo(p.x, p.y);
-                            this.lineTo(p2.x, p2.y);
-                        }
-                    }
-                }
-
-                this.beginFill(0xffffff, 0.2 * this.alphaMult);
-                this.drawCircle(p.x, p.y, 1);
-                this.endFill();
             }
+            this.beginFill(0xffffff, 0.2 * this.alphaMult);
+            this.drawCircle(p.x, p.y, 1);
+            this.endFill();
         }
     }
 

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import Scroller from 'react-scroll-horizontal';
+// import Scroller from 'react-scroll-horizontal';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
@@ -71,10 +71,8 @@ class Home extends Component {
             </Link>
         );
     }
-
     renderLiked(item) {
         var { classes, isPlaying } = this.props;
-
         return (
             <Link
                 className={clazz('clearfix', classes.liked, {
@@ -134,38 +132,37 @@ class Home extends Component {
         );
     }
 
-    renderPlaylist() {
-        var { classes, playlist, naturalScroll } = this.props;
-        var logined = this.props.hasLogin();
+    // renderPlaylist() {
+    //     var { classes, playlist, naturalScroll } = this.props;
+    //     var logined = this.props.hasLogin();
 
-        return (
-            <Scroller reverseScroll={!naturalScroll}>
-                {
-                    playlist.map((e, index) => {
-                        var isLiked = logined && index === 0;
-                        var isDaily = logined && index === 1;
+    //     return (
+    //         <Scroller reverseScroll={!naturalScroll}>
+    //             {
+    //                 playlist.map((e, index) => {
+    //                     var isLiked = logined && index === 0;
+    //                     var isDaily = logined && index === 1;
 
-                        return (
-                            <div
-                                className={clazz('clearfix', classes.item)}
-                                key={index}>
-                                {
+    //                     return (
+    //                         <div
+    //                             className={clazz('clearfix', classes.item)}
+    //                             key={index}>
+    //                             {
 
-                                    isLiked
-                                        ? this.renderLiked(e)
-                                        : (isDaily ? this.renderDaily(e) : this.renderItem(e))
-                                }
-                            </div>
-                        );
-                    })
-                }
-            </Scroller>
-        );
-    }
+    //                                 isLiked
+    //                                     ? this.renderLiked(e)
+    //                                     : (isDaily ? this.renderDaily(e) : this.renderItem(e))
+    //                             }
+    //                         </div>
+    //                     );
+    //                 })
+    //             }
+    //         </Scroller>
+    //     );
+    // }
 
     render() {
-        var { classes, loading } = this.props;
-
+        var { classes, loading, playlist } = this.props;
         return (
             <div
                 className={classes.container}
@@ -196,12 +193,12 @@ class Home extends Component {
                     <div style={{
                         marginTop: 20,
                     }}>
-                        {
+                        {/* {
                             this.renderPlaylist()
-                        }
+                        } */}
                     </div>
                 </main>
-                <Collection playlist={this.props.playlist} />
+                <Collection loading={loading} playlist={playlist} />
                 {/* <Controller /> */}
             </div>
         );

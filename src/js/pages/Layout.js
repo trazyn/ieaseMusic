@@ -80,6 +80,7 @@ class Layout extends Component {
             <div
                 className={classes.container}
                 ref="container">
+                <div className="dragarea" />
                 <div className={clazz({
                     [classes.mask]: searching,
                 })}>
