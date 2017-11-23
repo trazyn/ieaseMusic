@@ -24,7 +24,11 @@ export default class BoxImage extends PIXI.Container {
     }
     loadImage() {
         this.ldr = new PIXI.loaders.Loader();
-        this.ldr.add(`ablum-cover-${this._data.id}`, this.replaceCover(this._data.cover));
+        if (!this.ldr.resources[`ablum-cover-${this._data.id}`]) {
+            this.ldr.add(`ablum-cover-${this._data.id}`, this.replaceCover(this._data.cover));
+        } else {
+            this.handleImageLoadComplete();
+        }
         this.ldr.on('progress', this.handleImageLoadProgress);
         this.ldr.once('complete', this.handleImageLoadComplete.bind(this));
         this.ldr.load();

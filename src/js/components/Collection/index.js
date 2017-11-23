@@ -7,9 +7,8 @@ class Collection extends Component {
             if (!this.props.loading) {
                 if (typeof this.props.playlist[0] !== 'undefined') {
                     clearInterval(this.detect);
-                    console.log('go');
-                    const app = document.getElementById('main-collection');
-                    new ListHub(app).init(this.props.playlist);
+                    const ele = document.getElementById('main-collection');
+                    new ListHub(ele).init(this.props.playlist);
                 }
             }
         }, 1000);

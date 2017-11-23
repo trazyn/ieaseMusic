@@ -16,15 +16,13 @@ export default class ListHub {
         this._playList = playList;
         this.bgParticles = new ParticleBackground(80);
         this.grabbing = false;
-        let rendererOptions = { width: this.stageWidth, height: this.stageHeight, resolution: 1, backgroundColor: 0x000000 };
+        let rendererOptions = { width: this.stageWidth, height: this.stageHeight, resolution: 1, backgroundColor: 0xffffff };
         this.app = new PIXI.Application(rendererOptions);
         this.app.view.style['touch-action'] = 'pan-y';
         this.app.stage.interactive = true;
         this.app.renderer.plugins.interaction.autoPreventDefault = false;
         this.element.appendChild(this.app.view);
         this.loadManifest();
-        this.createBackground();
-        this.createBoxList();
         // this.createBoxStream();
         console.log(this.app.stage);
         // last bind event
@@ -44,12 +42,18 @@ export default class ListHub {
     loadManifest() {
         this.ldr = PIXI.loader;
         for (let i = 0; i < this.manifest.length; i++) {
-            this.ldr.add(this.manifest[i].id, this.manifest[i].src);
+            if (!PIXI.loader.resources[this.manifest[i].id]) {
+                this.ldr.add(this.manifest[i].id, this.manifest[i].src);
+            } else {
+                this.handleLoadComplete();
+            }
         }
         this.ldr.once('complete', this.handleLoadComplete.bind(this));
         this.ldr.load();
     }
     handleLoadComplete() {
+        this.createBackground();
+        this.createBoxList();
         this.startScene();
     }
     addMouseEvents = () => {
