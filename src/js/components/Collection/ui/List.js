@@ -20,7 +20,7 @@ export default class List extends PIXI.Container {
     createList() {
         this.BoxListLayer = new PIXI.Container();
         this.layoutData = [
-            { dx: 100, dy: 90, dz: 0.78, w: 150, h: 150 },
+            { dx: 100, dy: 170, dz: 0.78, w: 150, h: 150 },
             { dx: 200, dy: 260, dz: 0.89, w: 130, h: 130 }
         ];
         let lyLength = this.layoutData.length;
@@ -41,15 +41,30 @@ export default class List extends PIXI.Container {
     }
     update() {
         let max = this.AllBoxes.length;
+        let boundLeft = (this.AllBoxes[0].x > this.stageWidth * 0.5);
+        let boundRight = (this.AllBoxes[max - 1].x < this.stageWidth * 0.2);
+        let checkLeft = (this.externalForces.x > 0) && boundLeft;
+        let checkRight = (this.externalForces.x < 0) && boundRight;
+
+        if (checkLeft || checkRight) {
+            this.refreshForces(0);
+        }
+        if (boundRight) {
+            this.driftForce = 0.5;
+        } else if (boundLeft) {
+            this.driftForce = -0.5;
+        }
         let arr = [];
         for (let i = 0; i < max; i++) {
             this.AllBoxes[i].addForce(this.externalForces.x + this.driftForce, this.stageWidth);
             let pt = this.AllBoxes[i].getBoxPosition();
-            let w = (pt.width * this.BoxListLayer.scale.x) / 1;
-            let h = (pt.height * this.BoxListLayer.scale.y) / 1;
-            let pt2 = { x: pt.x + w, y: pt.y };
-            let pt3 = { x: pt.x + w, y: pt.y + h };
-            let pt4 = { x: pt.x, y: pt.y + h };
+            let w = pt.width * this.BoxListLayer.scale.x;
+            let h = pt.height * this.BoxListLayer.scale.y;
+            let plusW = w * 1;
+            let plusH = h * 1;
+            let pt2 = { x: pt.x + plusW, y: pt.y + plusH };
+            let pt3 = { x: pt.x + plusW, y: pt.y + plusW };
+            let pt4 = { x: pt.x, y: pt.y + plusH };
             arr.push(pt);
             arr.push(pt2);
             arr.push(pt3);
@@ -63,6 +78,10 @@ export default class List extends PIXI.Container {
         this.externalForces.y = this.externalForces.y * 0.95;
         if (Math.abs(this.externalForces.x) < 0.5) this.externalForces.x = 0;
         if (Math.abs(this.externalForces.y) < 0.5) this.externalForces.y = 0;
+    }
+
+    refreshForces(rf = 1) {
+        this.externalForces.x = -this.externalForces.x * rf;
     }
     addPushForce = (mx, my) => {
         if (Math.abs(mx * 2) > Math.abs(this.externalForces.x)) this.externalForces.x = mx * 2;

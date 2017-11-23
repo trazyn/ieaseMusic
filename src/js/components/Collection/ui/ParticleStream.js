@@ -11,7 +11,7 @@ export default class ParticleStream extends PIXI.Graphics {
     }
     init() {
         this.alphaMult = 1;
-        this.threshold = 60;
+        this.threshold = 65;
         this.particles = [];
 
         for (let i = 0; i < this.maxParticles; i++) {
@@ -68,21 +68,5 @@ export default class ParticleStream extends PIXI.Graphics {
 
     animOut() {
         return TweenLite.to(this, 0.4, { alphaMult: 0 });
-    }
-
-    resize(w, h, sm = false) {
-        this.smallMode = sm;
-        this.visible = (sm) ? Boolean(false) : Boolean(true);
-
-        for (let i = 0; i < this.maxParticles; i++) {
-            let p = this.particles[i];
-            let xper = p.x / this.stageWidth;
-            let yper = p.baseY / this.stageHeight;
-            p.x = xper * w;
-            p.baseY = yper * h;
-        }
-
-        this.stageWidth = w;
-        this.stageHeight = h;
     }
 }

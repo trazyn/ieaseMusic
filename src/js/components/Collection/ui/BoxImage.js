@@ -1,7 +1,8 @@
-import Utils from '../Utils';
-// import TestImg from '../../../../assets/ui/test.jpg';
+// import queryString from 'query-string';
 import { TimelineMax, Strong } from 'gsap';
+import Utils from '../Utils';
 const PIXI = require('pixi.js');
+// const queryString = require('query-string');
 
 export default class BoxImage extends PIXI.Container {
     constructor(data, w = 150, h = 150) {
@@ -23,19 +24,31 @@ export default class BoxImage extends PIXI.Container {
     }
     loadImage() {
         this.ldr = new PIXI.loaders.Loader();
-        this.ldr.add(`ablum-cover-${this._data.id}`, this._data.cover);
+        this.ldr.add(`ablum-cover-${this._data.id}`, this.replaceCover(this._data.cover));
         this.ldr.on('progress', this.handleImageLoadProgress);
         this.ldr.once('complete', this.handleImageLoadComplete.bind(this));
         this.ldr.load();
         this.addChild(this.thumbHolder);
+    }
+    replaceCover(url) {
+        const arr = url.split('?');
+        let returnUrl = '';
+        if (arr[1] === 'param=130y130') {
+            returnUrl = arr[0] + '?param=500y500';
+        } else {
+            returnUrl = url;
+        }
+        return returnUrl;
     }
     handleImageLoadComplete() {
         let img = this.ldr.resources[`ablum-cover-${this._data.id}`].texture;
         this.thumb = new PIXI.Sprite(img);
         Utils.scaleTextureToCover(this.thumb, this.imageWidth, this.imageHeight, 'center');
         this.thumbHolder.alpha = 1;
-        this.thumbHolder.x = this.imageWidth * 0.5;
-        this.thumbHolder.y = this.imageHeight * 0.5;
+        // this.thumbHolder.x = this.imageWidth * 0.5;
+        // this.thumbHolder.y = this.imageHeight * 0.5;
+        this.thumbHolder.x = 0;
+        this.thumbHolder.y = 0;
         this.addChild(this.thumbHolder);
         this.thumbHolder.addChild(this.thumb);
     }
