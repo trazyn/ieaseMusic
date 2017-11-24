@@ -8,6 +8,7 @@ import { ThemeProvider } from 'react-jss';
 import 'ionicons201/css/ionicons.css';
 
 import './global.css';
+import 'roboto-fontface/css/roboto-condensed/roboto-condensed-fontface.css';
 import 'utils/albumColors';
 import { PLAYER_REPEAT, PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
 import theme from './theme';
