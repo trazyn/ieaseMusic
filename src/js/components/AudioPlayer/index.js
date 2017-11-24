@@ -20,7 +20,7 @@ export default class AudioPlayer extends Component {
             try {
                 if (!this.refs.player.src
                     // Avoid init player duplicate play
-                    && this.props.song.id !== nextProps.song.id) {
+                    && (this.props.song.id !== nextProps.song.id || !this.props.playing)) {
                     this.props.play();
                 } else {
                     this.refs.player[nextProps.playing ? 'play' : 'pause']();
