@@ -105,3 +105,8 @@ a:visited {
 .dragarea {
   -webkit-app-region: drag;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}

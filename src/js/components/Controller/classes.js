@@ -10,20 +10,23 @@ export default theme => {
             width: '100vw',
             height: 65,
             zIndex: 100,
-            background: '#fff',
+            background: 'rgba(255,255,255,0.95)',
             color: '#000',
 
             '& section': {
                 display: 'flex',
+                width: '100%',
+                height: '100%',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                position: 'relative',
             },
 
             '& aside': {
                 display: 'flex',
-                paddingLeft: 20,
-                paddingRight: 32,
-                flex: 1,
+                paddingLeft: 15,
+                paddingRight: 15,
+                flex: '1 0 20vw',
                 justifyContent: 'space-between',
                 alignItems: 'center',
 
@@ -33,16 +36,48 @@ export default theme => {
                 }
             }
         },
-
+        cover: {
+            margin: '0 5px'
+        },
+        timeLabel: {
+            fontSize: 11,
+            color: '#4a4a4a',
+        },
+        processBar: {
+            height: 4,
+            margin: '8px auto',
+            width: 'calc(100% - 10px)',
+            display: 'block',
+            '&>.rangeslider__handle': {
+                width: '10px',
+                height: '10px',
+                userSelect: 'none',
+                boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.22)',
+                outline: 'none',
+                '&:after': {
+                    width: 6,
+                    height: 6,
+                    top: 2,
+                    left: 2,
+                    backgroundColor: '#7cb342',
+                    boxShadow: 'none'
+                }
+            },
+        },
         bar: {
-            width: '100vw',
+            width: 'calc(100% - 30px)',
             cursor: 'pointer',
+            height: 10,
+            position: 'relative',
+            overflow: 'hidden',
+            background: '#ddd',
 
-            '&, & $playing, & $buffering': {
-                position: 'fixed',
+            '&>$playing, &>$buffering': {
+                position: 'absolute',
                 left: 0,
-                bottom: 50,
-                height: 2,
+                bottom: 0,
+                height: 10,
+                zIndex: 100,
             },
 
             '& $playing': {
@@ -81,13 +116,30 @@ export default theme => {
 
         playing: {},
         buffering: {},
-
-        info: {
+        centerBar: {
+            flex: '1 0 36vw',
+            '-webkit-app-region': 'no-drag',
             display: 'flex',
+            height: '100%',
+            justifyContent: 'center',
             flexDirection: 'column',
+            overflow: 'hidden'
+        },
+        info: {
+            width: 'calc(100% - 10px)',
+            display: 'flex',
+            flexDirection: 'row',
             justifyContent: 'space-between',
-
-            '& a': {
+            alignItems: 'flex-end',
+            padding: '5px',
+            '&>div:first-child': {
+                flex: '1 0 80%',
+            },
+            '&>div:first-child>p': {
+                display: 'inline',
+                padding: '0 3px',
+            },
+            '&>a': {
                 display: 'inline-block',
                 paddingBottom: 2,
                 borderBottom: 'thin solid rgba(255, 255, 255, 0)',
@@ -100,8 +152,6 @@ export default theme => {
         },
 
         title: {
-            marginBottom: '3px !important',
-
             '& a': {
                 paddingBottom: 1,
                 maxWidth: 400,
@@ -137,6 +187,11 @@ export default theme => {
         },
 
         action: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
             '& i': {
                 display: 'inline-block',
                 height: 24,
@@ -157,6 +212,17 @@ export default theme => {
             '& i$liked': {
                 color: colors.pallet.grape,
                 textShadow: `0 0 24px ${colors.pallet.grape}`,
+            },
+            '&>svg': {
+                margin: '0 3px'
+            },
+            '& .loopMode': {
+                '&>path': {
+                    visibility: 'hidden'
+                },
+                '&>path.show': {
+                    visibility: 'visible'
+                }
             }
         },
 
@@ -182,8 +248,11 @@ export default theme => {
         },
 
         controls: {
-            display: 'inline-block',
-            marginLeft: 16,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            padding: '0 10px',
             color: '#000',
         },
 

@@ -40,11 +40,6 @@ export default {
                 }],
             },
             {
-                test: /\.svg$/,
-                use: ['svg-inline-loader'],
-                include: path.resolve(__dirname, 'src'),
-            },
-            {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 use: [{
                     loader: 'url-loader',
@@ -53,6 +48,11 @@ export default {
                     },
                 }],
                 include: /node_modules/,
+            },
+            {
+                test: /\.svg$/,
+                use: ['svg-inline-loader'],
+                include: path.resolve(__dirname, 'src'),
             },
         ]
     },
