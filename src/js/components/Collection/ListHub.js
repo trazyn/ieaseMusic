@@ -6,14 +6,15 @@ import { Manifest } from './ui/Manifest';
 const PIXI = require('pixi.js');
 
 export default class ListHub {
-    constructor(element) {
+    constructor(element, playList) {
         this.element = element;
         this.stageWidth = window.innerWidth;
         this.stageHeight = window.innerHeight;
         this.manifest = Manifest;
-    }
-    init(playList) {
         this._playList = playList;
+        this.init();
+    }
+    init() {
         this.bgParticles = new ParticleBackground(80);
         this.grabbing = false;
         let rendererOptions = { width: this.stageWidth, height: this.stageHeight, resolution: 1, backgroundColor: 0xffffff };
@@ -23,7 +24,6 @@ export default class ListHub {
         this.app.renderer.plugins.interaction.autoPreventDefault = false;
         this.element.appendChild(this.app.view);
         this.loadManifest();
-        // this.createBoxStream();
         console.log(this.app.stage);
         // last bind event
         this.addMouseEvents();
@@ -37,7 +37,7 @@ export default class ListHub {
     createBoxList() {
         this.boxList = new List(this._playList, this.stageWidth, this.stageHeight);
         this.boxList.animIn();
-        this.app.stage.addChild(this.boxList);
+        this.app.stage.addChildAt(this.boxList, 2);
     }
     loadManifest() {
         this.ldr = PIXI.loader;
@@ -52,8 +52,10 @@ export default class ListHub {
         this.ldr.load();
     }
     handleLoadComplete() {
-        this.createBackground();
-        this.createBoxList();
+        if (this.app.stage.children.length === 0) {
+            this.createBackground();
+            this.createBoxList();
+        }
         this.startScene();
     }
     addMouseEvents = () => {
@@ -66,7 +68,6 @@ export default class ListHub {
         this.app.stage.on('touchend', this.handleMouseUp);
         this.app.stage.on('touchendoutside', this.handleMouseUp);
         this.app.stage.on('touchmove', this.handleMouseMove);
-        this.app.stage.on('keydown', this.handleKeyDown);
     }
     handleMouseMove = (e) => {
         if (!this.lastMousePos) this.lastMousePos = { x: e.data.global.x, y: e.data.global.y };
@@ -106,5 +107,8 @@ export default class ListHub {
         window.requestAnimationFrame(this.loopFrame);
         if (this.bgParticles) this.bgParticles.update();
         if (this.boxList) this.boxList.update();
+    }
+    destory() {
+        console.log('test');
     }
 };

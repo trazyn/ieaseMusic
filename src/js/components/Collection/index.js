@@ -8,13 +8,14 @@ class Collection extends Component {
                 if (typeof this.props.playlist[0] !== 'undefined') {
                     clearInterval(this.detect);
                     const ele = document.getElementById('main-collection');
-                    new ListHub(ele).init(this.props.playlist);
+                    this.pixiApp = new ListHub(ele, this.props.playlist);
                 }
             }
         }, 1000);
     }
     componentWillUnmount() {
         clearInterval(this.detect);
+        // this.pixiApp.destory();
     }
     render() {
         return (

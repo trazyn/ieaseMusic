@@ -34,6 +34,7 @@ export default class BoxLabel extends PIXI.Container {
         this.bg.y = (this.labelHight - this.labelHight / 3) / 4;
         this.renderLabel.y = (this.labelHight - this.labelHight / 4) / 4;
         this.renderLabel.x = 8;
+        this.renderLabel.resolution = 4;
         this.addChild(this.renderLabel);
         this.addChildAt(this.bg, 0);
     }

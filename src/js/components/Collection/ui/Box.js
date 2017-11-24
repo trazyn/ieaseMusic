@@ -59,17 +59,4 @@ export default class Box extends PIXI.Container {
         });
         window.dispatchEvent(eve);
     }
-    // animIn(d = 0, cb = null, cbp = []) {
-    //     // this.addEvents();
-    //     // if (this.anim) this.anim.kill();
-    //     this.anim = new TimelineMax({ onComplete: cb, onCompleteParams: cbp });
-    //     // this.anim.add(this.boxImage.animIn(d), 0);
-    //     return this.anim;
-    // }
-    // animOut(d = 0, cb = null, cbp = []) {
-    //     // if (this.anim) this.anim.kill();
-    //     this.anim = new TimelineMax({ delay: d, onComplete: cb, onCompleteParams: cbp });
-    //     this.anim.to(this, 0.3, { x: '-30', ease: Strong.easeOut }, 0);
-    //     return this.anim;
-    // }
 };

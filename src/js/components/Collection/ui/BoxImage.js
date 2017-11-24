@@ -21,7 +21,6 @@ export default class BoxImage extends PIXI.Container {
         this.msk.scale.x = 0;
         this.thumbHolder.addChild(this.msk);
         this.loadImage();
-        console.log(this._data.name);
     }
     loadImage() {
         this.ldr = new PIXI.loaders.Loader();

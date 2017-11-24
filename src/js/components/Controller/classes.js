@@ -228,7 +228,7 @@ export default theme => {
         highquality: {
             display: 'inline-block',
             padding: '2px 6px',
-            marginRight: 30,
+            margin: '7px 5px 0 3px',
             letterSpacing: 1,
             textTransform: 'uppercase',
             fontFamily: 'Roboto',
