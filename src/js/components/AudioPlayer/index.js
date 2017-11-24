@@ -12,6 +12,7 @@ import helper from 'utils/helper';
     playing: stores.controller.playing,
     volume: stores.preferences.volume,
     setVolume: stores.preferences.setVolume,
+    autoPlay: stores.preferences.autoPlay,
 }))
 @observer
 export default class AudioPlayer extends Component {
@@ -20,7 +21,7 @@ export default class AudioPlayer extends Component {
             try {
                 if (!this.refs.player.src
                     // Avoid init player duplicate play
-                    && (this.props.song.id !== nextProps.song.id || !this.props.playing)) {
+                    && !this.props.autoPlay) {
                     this.props.play();
                 } else {
                     this.refs.player[nextProps.playing ? 'play' : 'pause']();
