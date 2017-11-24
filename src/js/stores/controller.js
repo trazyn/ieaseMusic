@@ -25,7 +25,7 @@ class Controller {
 
     @observable process = 0;
 
-    @observable volume = 50;
+    @observable volume = 60;
 
     @observable isMuted = false;
 

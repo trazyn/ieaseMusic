@@ -12,6 +12,7 @@ export default theme => {
             zIndex: 100,
             background: 'rgba(255,255,255,0.95)',
             color: '#000',
+            boxShadow: 'inset 0 -2px 3px rgba(0, 0, 0, 0.2), 0 0px 3px rgba(0, 0, 0, 0.4)',
 
             '& section': {
                 display: 'flex',
@@ -117,7 +118,7 @@ export default theme => {
         playing: {},
         buffering: {},
         centerBar: {
-            flex: '1 0 34vw',
+            flex: '1 0 30vw',
             '-webkit-app-region': 'no-drag',
             display: 'flex',
             height: '100%',
