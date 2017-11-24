@@ -26,7 +26,7 @@ export default theme => {
                 display: 'flex',
                 paddingLeft: 15,
                 paddingRight: 15,
-                flex: '1 0 20vw',
+                flex: '1 0 25vw',
                 justifyContent: 'space-between',
                 alignItems: 'center',
 
@@ -117,7 +117,7 @@ export default theme => {
         playing: {},
         buffering: {},
         centerBar: {
-            flex: '1 0 36vw',
+            flex: '1 0 34vw',
             '-webkit-app-region': 'no-drag',
             display: 'flex',
             height: '100%',
@@ -133,11 +133,12 @@ export default theme => {
             alignItems: 'flex-end',
             padding: '5px',
             '&>div:first-child': {
-                flex: '1 0 80%',
+                flex: '0 0 70%',
+                overflow: 'hidden'
             },
             '&>div:first-child>p': {
                 display: 'inline',
-                padding: '0 3px',
+                padding: '0 3px'
             },
             '&>a': {
                 display: 'inline-block',
@@ -166,7 +167,7 @@ export default theme => {
         author: {
             marginTop: 2,
             fontSize: 11,
-            maxWidth: 400,
+            maxWidth: 300,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',

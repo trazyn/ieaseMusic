@@ -25,6 +25,10 @@ class Controller {
 
     @observable process = 0;
 
+    @observable volume = 50;
+
+    @observable isMuted = false;
+
     // Keep a history with current playlist
     history = [];
 
@@ -221,6 +225,13 @@ class Controller {
 
     @action async setCurrentSongId(id) {
         self.currentSongId = id;
+    }
+
+    @action async setVolume(value) {
+        self.volume = value;
+    }
+    @action toggleMuted() {
+        self.isMuted = !self.isMuted;
     }
 
     @action changeMode(mode = PLAYER_REPEAT) {

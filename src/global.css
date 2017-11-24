@@ -113,3 +113,36 @@ p {
   margin: 0;
   padding: 0;
 }
+
+.volumeBarContent {
+  display: flex;
+  height: 24px;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  -webkit-app-region: no-drag;
+}
+
+.volumeBarContent svg path {
+  display: none;
+}
+
+.volumeBarContent svg path.show {
+  display: block;
+}
+
+.volumeBar.rangeslider {
+  flex: 0 0 20px;
+  margin: 0;
+  height: 2px;
+}
+
+.volumeBar.rangeslider-horizontal .rangeslider__handle {
+  width: 8px;
+  height: 8px;
+}
+
+.volumeBar.rangeslider-horizontal .rangeslider__handle::after {
+  display: none;
+}

@@ -26,6 +26,10 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     resetProcess: stores.controller.resetProcess,
     incrementProcess: stores.controller.incrementProcess,
     process: stores.controller.process,
+    volume: stores.controller.volume,
+    setVolume: stores.controller.setVolume,
+    isMuted: stores.controller.isMuted,
+    toggleMuted: stores.controller.toggleMuted,
     getPlayerLink: () => {
         return stores.controller.playlist.link;
     },
@@ -39,6 +43,9 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
 class Controller extends Component {
     get MusicBarTime() {
         return Math.floor(this.props.song.duration / 1000);
+    }
+    get MusicVolume() {
+        return parseFloat(this.props.volume / 100).toFixed(2);
     }
     formatTimeLabel(time) {
         let length = Math.floor(parseInt(time));
@@ -59,6 +66,12 @@ class Controller extends Component {
             this.props.resetProcess();
         }
     }
+    handleVolumeChange = (value) => {
+        this.props.setVolume(value);
+    }
+    handleVolumeMuted() {
+        document.querySelector('audio').volume = 0;
+    }
     handleChangeComplete = () => {
         this.props.toPlay();
     }
@@ -69,9 +82,13 @@ class Controller extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log('st', props.process);
+        console.log('v', props.isMuted);
         if (!props.playing && props.process > 0) {
             document.querySelector('audio').currentTime = this.props.process;
+        }
+        document.querySelector('audio').volume = this.MusicVolume;
+        if (props.isMuted) {
+            this.handleVolumeMuted();
         }
     }
     componentDidMount() {
@@ -83,7 +100,7 @@ class Controller extends Component {
                 this.props.resetProcess();
             }
         }, 1000);
-        document.querySelector('audio').volume = 1;
+
         ipcRenderer.on('player-next', () => {
             this.props.resetProcess();
         });
@@ -226,7 +243,23 @@ class Controller extends Component {
                                     }}>
                                     <path fill="#000000" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
                                 </svg>
+
                             </div>
+                            <div className="volumeBarContent">
+                                <svg style={{ width: 24, height: 24 }} viewBox="0 0 24 24" onClick={this.props.toggleMuted}>
+                                    <path className={`${this.props.isMuted ? '' : 'show'}`} fill="#000000" d="M5,9V15H9L14,20V4L9,9M18.5,12C18.5,10.23 17.5,8.71 16,7.97V16C17.5,15.29 18.5,13.76 18.5,12Z" />
+                                    <path className={`${this.props.isMuted ? 'show' : ''}`} fill="#000000" d="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" />          </svg>
+                                <MusicBar
+                                    className={'volumeBar'}
+                                    min={0}
+                                    step={1}
+                                    tooltip={true}
+                                    max={100}
+                                    onChange={this.handleVolumeChange}
+                                    value={this.props.isMuted ? 0 : this.props.volume}
+                                />
+                            </div>
+
                         </div>
                     </aside>
                 </section>
