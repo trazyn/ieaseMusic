@@ -48,8 +48,39 @@ class Comments extends Component {
         }
     }
 
+    renderNestest(list) {
+        var { classes, close } = this.props;
+
+        if (!list.length) {
+            return false;
+        }
+
+        return (
+            <ul className={classes.nestest}>
+                {
+                    list.map((e, index) => {
+                        return (
+                            <li key={index}>
+                                <Link
+                                    onClick={close}
+                                    to={`/user/${e.user.userId}`}>
+                                    {e.user.nickname}
+                                </Link>
+                                ：
+
+                                <span>
+                                    {e.content}
+                                </span>
+                            </li>
+                        );
+                    })
+                }
+            </ul>
+        );
+    }
+
     renderComment(key, item) {
-        var { classes, thumbsup } = this.props;
+        var { classes, thumbsup, close } = this.props;
 
         return (
             <div
@@ -58,6 +89,7 @@ class Comments extends Component {
                 <Link
                     className="tooltip"
                     data-text={item.user.nickname}
+                    onClick={close}
                     to={`/user/${item.user.userId}`}>
                     <ProgressImage {...{
                         height: 48,
@@ -81,6 +113,9 @@ class Comments extends Component {
 
                         {moment(item.time).endOf('day').fromNow()}
                     </div>
+                    {
+                        this.renderNestest(item.beReplied)
+                    }
                 </aside>
             </div>
         );
@@ -138,6 +173,7 @@ class Comments extends Component {
                                     return (
                                         <Link
                                             key={index}
+                                            onClick={close}
                                             to={e.link}>
                                             {e.name}
                                         </Link>

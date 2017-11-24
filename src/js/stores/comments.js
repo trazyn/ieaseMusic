@@ -14,6 +14,7 @@ class Comments {
         album: {},
         artist: [],
     };
+
     nextHref = '';
 
     @action toggle(show = !self.show) {
