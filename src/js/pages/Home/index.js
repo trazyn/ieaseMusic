@@ -1,16 +1,16 @@
 
 import React, { Component } from 'react';
-import Scroller from 'react-scroll-horizontal';
+// import Scroller from 'react-scroll-horizontal';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
 import moment from 'moment';
 import clazz from 'classname';
-
 import classes from './classes';
 import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
+import Collection from 'components/Collection';
 import Controller from 'components/Controller';
 
 @inject(stores => ({
@@ -43,11 +43,16 @@ import Controller from 'components/Controller';
 class Home extends Component {
     componentDidMount() {
         this.props.getPlaylist();
+        window.addEventListener('pixiopenlink', (data) => {
+            console.log('get data', data.detail.link);
+            if (data.detail.link) {
+                this.props.router.push(data.detail.link);
+            }
+        });
     }
 
     renderItem(item) {
         var { classes, isPlaying } = this.props;
-
         return (
             <Link
                 to={item.link}
@@ -72,10 +77,8 @@ class Home extends Component {
             </Link>
         );
     }
-
     renderLiked(item) {
         var { classes, isPlaying } = this.props;
-
         return (
             <Link
                 className={clazz('clearfix', classes.liked, {
@@ -130,42 +133,42 @@ class Home extends Component {
                         {item.name}
                     </div>
                 </div>
+
             </div>
         );
     }
 
-    renderPlaylist() {
-        var { classes, playlist, naturalScroll } = this.props;
-        var logined = this.props.hasLogin();
+    // renderPlaylist() {
+    //     var { classes, playlist, naturalScroll } = this.props;
+    //     var logined = this.props.hasLogin();
 
-        return (
-            <Scroller reverseScroll={!naturalScroll}>
-                {
-                    playlist.map((e, index) => {
-                        var isLiked = logined && index === 0;
-                        var isDaily = logined && index === 1;
+    //     return (
+    //         <Scroller reverseScroll={!naturalScroll}>
+    //             {
+    //                 playlist.map((e, index) => {
+    //                     var isLiked = logined && index === 0;
+    //                     var isDaily = logined && index === 1;
 
-                        return (
-                            <div
-                                className={clazz('clearfix', classes.item)}
-                                key={index}>
-                                {
+    //                     return (
+    //                         <div
+    //                             className={clazz('clearfix', classes.item)}
+    //                             key={index}>
+    //                             {
 
-                                    isLiked
-                                        ? this.renderLiked(e)
-                                        : (isDaily ? this.renderDaily(e) : this.renderItem(e))
-                                }
-                            </div>
-                        );
-                    })
-                }
-            </Scroller>
-        );
-    }
+    //                                 isLiked
+    //                                     ? this.renderLiked(e)
+    //                                     : (isDaily ? this.renderDaily(e) : this.renderItem(e))
+    //                             }
+    //                         </div>
+    //                     );
+    //                 })
+    //             }
+    //         </Scroller>
+    //     );
+    // }
 
     render() {
-        var { classes, loading } = this.props;
-
+        var { classes, loading, playlist } = this.props;
         return (
             <div
                 className={classes.container}
@@ -177,30 +180,7 @@ class Home extends Component {
                     showBack: false,
                 }} />
 
-                <main>
-                    <div
-                        className={classes.logo}
-                        dangerouslySetInnerHTML={{__html: `
-                            <svg class="${classes.svg}">
-                                <defs>
-                                    <pattern id="mask" patternUnits="userSpaceOnUse" height="600" width="600">
-                                        <image xmlns:xlink="http://www.w3.org/1999/xlink" x="100px" y="-100px" xlink:href="assets/bgcolorful.jpg" width="600" height="600"></image>
-                                    </pattern>
-                                </defs>
-                                <text class="${classes.welcome}" text-anchor="middle" x="50%" y="0" dy="100px">Welcome</text>
-                                <text class="${classes.description}" text-anchor="middle" x="50%" y="0" dy="130px">ieaseMusic is Made by 💖</text>
-                            </svg>
-                        `}} />
-
-                    <div style={{
-                        marginTop: 20,
-                    }}>
-                        {
-                            this.renderPlaylist()
-                        }
-                    </div>
-                </main>
-
+                <Collection loading={loading} playlist={playlist} />
                 <Controller />
             </div>
         );

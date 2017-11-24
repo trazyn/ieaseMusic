@@ -22,6 +22,14 @@ class Controller {
     // Currently played song
     @observable song = {};
 
+    @observable currentSongId = 0;
+
+    @observable process = 0;
+
+    @observable volume = 60;
+
+    @observable isMuted = false;
+
     // Keep a history with current playlist
     history = [];
 
@@ -49,6 +57,9 @@ class Controller {
 
         if (songid) {
             song = songs.find(e => e.id === songid);
+        }
+        if (songid !== self.currentSongId) {
+            self.resetProcess();
         }
 
         song = song || songs[0];
@@ -85,6 +96,7 @@ class Controller {
 
         comments.getList(song);
         self.song = song;
+        self.currentSongId = song.id;
         self.playing = true;
         await self.resolveSong();
     }
@@ -111,7 +123,7 @@ class Controller {
 
         switch (true) {
             case loop === true
-                    && self.mode === PLAYER_LOOP:
+                && self.mode === PLAYER_LOOP:
                 // Fix https://github.com/trazyn/ieaseMusic/issues/68
                 next = self.song.id;
                 break;
@@ -189,6 +201,10 @@ class Controller {
         self.playing = false;
     }
 
+    @action toPlay() {
+        self.playing = true;
+    }
+
     @action toggle() {
         self.playing = !self.playing;
 
@@ -196,6 +212,28 @@ class Controller {
             playing: self.playing,
             song: self.song,
         });
+    }
+    @action async setProcess(value) {
+        self.process = value;
+    }
+
+    @action async incrementProcess() {
+        self.process += 1;
+    }
+
+    @action async resetProcess() {
+        self.process = 0;
+    }
+
+    @action async setCurrentSongId(id) {
+        self.currentSongId = id;
+    }
+
+    @action async setVolume(value) {
+        self.volume = value;
+    }
+    @action toggleMuted() {
+        self.isMuted = !self.isMuted;
     }
 
     @action changeMode(mode = PLAYER_REPEAT) {

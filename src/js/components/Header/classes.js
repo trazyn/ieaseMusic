@@ -4,16 +4,19 @@ import colors from 'utils/colors';
 export default theme => ({
     container: {
         position: 'absolute',
-        left: 16,
-        top: 16,
+        left: 0,
+        top: 0,
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        width: 'calc(100vw - 32px)',
-        height: 32,
+        alignItems: 'flex-start',
+        width: '100vw',
+        height: '20vh',
         lineHeight: '32px',
         zIndex: 99,
-
+        '& >div': {
+            padding: 16,
+            color: '#fff',
+        },
         '& i': {
             display: 'inline-block',
             height: 32,
@@ -22,7 +25,7 @@ export default theme => ({
             fontSize: 20,
             textAlign: 'center',
             cursor: 'pointer',
-
+            color: '#fff',
             '&:hover': {
                 color: `${theme.header.iconHoverColor} !important`,
                 textShadow: `0 0 24px ${colors.pallet.primary}`,

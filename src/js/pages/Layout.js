@@ -18,9 +18,6 @@ import PlayerStatus from 'components/Ripple/PlayerStatus';
 
 const classes = {
     container: {
-        position: 'fixed',
-        left: 0,
-        top: 0,
         width: '100vw',
         height: '100vh',
     },
@@ -80,9 +77,9 @@ class Layout extends Component {
             <div
                 className={classes.container}
                 ref="container">
-                <div className={clazz({
+                <div className={`${clazz({
                     [classes.mask]: searching,
-                })}>
+                })} main-container`}>
                     {this.props.children}
                 </div>
 

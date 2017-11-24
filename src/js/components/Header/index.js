@@ -31,7 +31,7 @@ class Header extends Component {
         showFav: false,
         showPlaylist: true,
         showFollow: false,
-        color: '#654b58',
+        color: '#fff',
     };
 
     goBack = () => this._reactInternalInstance._context.router.goBack();
@@ -133,7 +133,7 @@ class Header extends Component {
         var classes = this.props.classes;
 
         return (
-            <header className={classes.container}>
+            <header className={`${classes.container} dragarea`}>
                 <div>
                     {
                         this.renderBack()

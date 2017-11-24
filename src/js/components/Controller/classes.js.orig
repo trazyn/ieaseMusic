@@ -168,7 +168,11 @@ export default theme => {
         author: {
             marginTop: 2,
             fontSize: 11,
+<<<<<<< HEAD
+            maxWidth: 200,
+=======
             maxWidth: 300,
+>>>>>>> feature/collection
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',

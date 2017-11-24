@@ -1,0 +1,76 @@
+// import queryString from 'query-string';
+import { TimelineMax, Strong } from 'gsap';
+import Utils from '../Utils';
+const PIXI = require('pixi.js');
+// const queryString = require('query-string');
+
+export default class BoxImage extends PIXI.Container {
+    constructor(data, w = 150, h = 150) {
+        super();
+        this._data = data;
+        this.imageWidth = w;
+        this.imageHeight = h;
+        this.init();
+    }
+    init() {
+        this.thumbHolder = new PIXI.Container();
+        this.msk = new PIXI.Graphics();
+        this.msk.beginFill(0xffffff);
+        this.msk.drawRect(0, 0, this.imageWidth, this.imageHeight);
+        this.msk.cacheAsBitmap = true;
+        this.msk.scale.x = 0;
+        this.thumbHolder.addChild(this.msk);
+        this.loadImage();
+    }
+    loadImage() {
+        this.ldr = new PIXI.loaders.Loader();
+        if (!this.ldr.resources[`ablum-cover-${this._data.id}`]) {
+            this.ldr.add(`ablum-cover-${this._data.id}`, this.replaceCover(this._data.cover));
+        } else {
+            this.handleImageLoadComplete();
+        }
+        this.ldr.on('progress', this.handleImageLoadProgress);
+        this.ldr.once('complete', this.handleImageLoadComplete.bind(this));
+        this.ldr.load();
+        this.addChild(this.thumbHolder);
+    }
+    replaceCover(url) {
+        const arr = url.split('?');
+        let returnUrl = '';
+        if (arr[1] === 'param=130y130') {
+            returnUrl = arr[0] + '?param=500y500';
+        } else {
+            returnUrl = url;
+        }
+        return returnUrl;
+    }
+    handleImageLoadComplete() {
+        let img = this.ldr.resources[`ablum-cover-${this._data.id}`].texture;
+        this.thumb = new PIXI.Sprite(img);
+        Utils.scaleTextureToCover(this.thumb, this.imageWidth, this.imageHeight, 'center');
+        this.thumbHolder.alpha = 1;
+        // this.thumbHolder.x = this.imageWidth * 0.5;
+        // this.thumbHolder.y = this.imageHeight * 0.5;
+        this.thumbHolder.x = 0;
+        this.thumbHolder.y = 0;
+        this.addChild(this.thumbHolder);
+        this.thumbHolder.addChild(this.thumb);
+    }
+    getHeight() {
+        return this.imageHeight;
+    }
+    checkDoAnimIn = (d = 0) => {
+        let anim = new TimelineMax({ delay: d });
+        anim.to(this.thumbHolder, 2, { alpha: 1, ease: Strong.easeOut }, 0);
+        anim.to(this.thumbHolder.scale, 2, { x: 1, y: 1, ease: Strong.easeOut }, 0);
+        anim.to(this.msk.scale, 1, { x: 1, ease: Strong.easeIn }, 0);
+        return anim;
+    }
+
+    animIn = (d = 0) => {
+        this.animInRequested = true;
+        this.animDelay = d;
+        let anim = this.checkDoAnimIn(d);
+        return anim;
+    }
+};

@@ -155,6 +155,32 @@ class Controller extends Component {
                     </Link>
                     <div className={classes.centerBar}>
                         <div className={classes.info}>
+<<<<<<< HEAD
+                            <p
+                                className={classes.title}
+                                title={song.name}>
+                                {/* Click the song name show the album screen */}
+                                <Link to={song.album.link}>
+                                    {song.name}
+                                </Link>
+                            </p>
+
+                            <p className={classes.author}>
+                                {
+                                    song.artists.map((e, index) => {
+                                        // Show the artist
+                                        return (
+                                            <Link
+                                                key={index}
+                                                title={e.name}
+                                                to={e.link}>
+                                                {e.name}
+                                            </Link>
+                                        );
+                                    })
+                                }
+                            </p>
+=======
                             <div className={classes.infoInner}>
                                 <p className={classes.title}>
                                     {/* Click the song name show the album screen */}
@@ -183,6 +209,7 @@ class Controller extends Component {
                                 <span>{this.formatTimeLabel(this.props.process)}/</span>
                                 <span>{this.formatTimeLabel(this.MusicBarTime)}</span>
                             </div>
+>>>>>>> feature/collection
                         </div>
                         {/* <div className={classes.bar} id="progress">
                             <div className={classes.playing} />
@@ -213,15 +240,19 @@ class Controller extends Component {
                                     </span>
                                 )
                             }
+
+<<<<<<< HEAD
                             <span
                                 className={classes.comments}
-                                style={{ display: 'none' }}
                                 onClick={e => showComments()}>
                                 {helper.humanNumber(comments)} Comments
                             </span>
+
+=======
                             <svg style={{ width: 16, height: 16 }} onClick={e => showComments()} viewBox="0 0 24 24">
                                 <path fill="#000000" d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7C5,5.89 5.9,5 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.9 12.75,23 12.5,23V23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15Z" />
                             </svg>
+>>>>>>> feature/collection
                             {
                                 hasLogin() && (
                                     <i
