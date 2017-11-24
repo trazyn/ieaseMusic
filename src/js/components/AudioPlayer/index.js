@@ -18,7 +18,9 @@ export default class AudioPlayer extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.playing !== this.props.playing) {
             try {
-                if (!this.refs.player.src) {
+                if (!this.refs.player.src
+                    // Avoid init player duplicate play
+                    && this.props.song.id !== nextProps.song.id) {
                     this.props.play();
                 } else {
                     this.refs.player[nextProps.playing ? 'play' : 'pause']();
