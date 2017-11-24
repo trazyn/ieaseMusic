@@ -16,6 +16,7 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     prev: stores.controller.prev,
     toggle: stores.controller.toggle,
     playing: stores.controller.playing,
+    toPlay: stores.controller.toPlay,
     changeMode: stores.controller.changeMode,
     isLiked: stores.me.isLiked,
     like: stores.me.like,
@@ -54,6 +55,12 @@ class Controller extends Component {
             musicProcess: value
         });
         document.querySelector('audio').currentTime = value;
+        if (value >= this.MusicBarTime - 1) {
+            this.resetMusicProcess();
+        }
+    }
+    handleChangeComplete = () => {
+        this.props.toPlay();
     }
     autoIcrement = () => {
         this.autoIcrement = setInterval(() => {
@@ -62,12 +69,7 @@ class Controller extends Component {
             });
         }, 1000);
     }
-    seek(e) {
-        console.log(e.Target);
-        var percent = e.clientX / window.innerWidth;
-        var time = this.props.song.duration * percent;
-        document.querySelector('audio').currentTime = time / 1000;
-    }
+
     componentWillReceiveProps(props) {
         if (!props.playing && this.state.musicProcess > 0) {
             document.querySelector('audio').currentTime = this.state.musicProcess;
@@ -89,6 +91,7 @@ class Controller extends Component {
     }
     componentWillUnmount() {
         clearInterval(this.timer);
+        this.resetMusicProcess();
     }
     render() {
         var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName, showComments } = this.props;

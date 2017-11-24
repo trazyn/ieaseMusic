@@ -187,6 +187,10 @@ class Controller {
         self.playing = false;
     }
 
+    @action toPlay() {
+        self.playing = true;
+    }
+
     @action toggle() {
         self.playing = !self.playing;
 
