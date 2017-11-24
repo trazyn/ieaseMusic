@@ -197,5 +197,32 @@ export default theme => ({
         }
     },
 
+    nestest: {
+        padding: 0,
+        margin: 0,
+        marginTop: 14,
+        listStyle: 'none',
+
+        '& a': {
+            display: 'inline-block',
+            padding: '1px 2px',
+            color: '#2d82ca',
+            whiteSpace: 'nowrap',
+            borderBottom: 'thin solid transparent',
+            transition: '.2s',
+
+            '&:hover': {
+                borderBottomColor: '#2d82ca',
+            }
+        },
+
+        '& li': {
+            background: 'rgba(0, 0, 0, 0.03)',
+            padding: '4px 12px',
+            fontSize: 12,
+            lineHeight: '20px',
+        }
+    },
+
     loadmore: {},
 });

@@ -103,7 +103,7 @@ export default theme => {
 
             '& a': {
                 paddingBottom: 1,
-                maxWidth: 400,
+                maxWidth: 200,
                 fontSize: 13,
                 color: '#081600',
                 overflow: 'hidden',
@@ -115,7 +115,7 @@ export default theme => {
         author: {
             marginTop: 2,
             fontSize: 11,
-            maxWidth: 400,
+            maxWidth: 200,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -178,6 +178,24 @@ export default theme => {
 
         mode: {
             color: '#4a4a4a',
+        },
+
+        comments: {
+            display: 'inline-block',
+            padding: '2px 4px',
+            marginRight: 20,
+            borderTop: 'thin solid #333',
+            borderBottom: 'thin solid #333',
+            fontSize: 11,
+            textTransform: 'uppercase',
+            transform: 'translateY(-2px)',
+            cursor: 'pointer',
+            transition: '.2s',
+
+            '&:hover': {
+                color: theme.controller.hoverColor,
+                borderColor: theme.controller.hoverColor,
+            }
         },
 
         controls: {

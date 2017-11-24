@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
+import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
 import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
 
@@ -28,6 +29,7 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     },
     hasLogin: stores.me.hasLogin,
     showComments: () => stores.comments.toggle(true),
+    comments: stores.comments.total,
 }))
 @observer
 class Controller extends Component {
@@ -39,7 +41,23 @@ class Controller extends Component {
     }
 
     render() {
-        var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName, showComments } = this.props;
+        var {
+            classes,
+            song,
+            mode,
+            prev,
+            next,
+            toggle,
+            hasLogin,
+            isLiked,
+            like,
+            unlike,
+            playing,
+            getPlayerLink,
+            getPlaylistName,
+            showComments,
+            comments
+        } = this.props;
         var liked = isLiked(song.id);
 
         if (!song.id) {
@@ -71,7 +89,9 @@ class Controller extends Component {
 
                     <aside>
                         <div className={classes.info}>
-                            <p className={classes.title}>
+                            <p
+                                className={classes.title}
+                                title={song.name}>
                                 {/* Click the song name show the album screen */}
                                 <Link to={song.album.link}>
                                     {song.name}
@@ -85,6 +105,7 @@ class Controller extends Component {
                                         return (
                                             <Link
                                                 key={index}
+                                                title={e.name}
                                                 to={e.link}>
                                                 {e.name}
                                             </Link>
@@ -105,9 +126,11 @@ class Controller extends Component {
                                 )
                             }
 
-                            <i
-                                className="ion-ios-chatboxes"
-                                onClick={e => showComments()} />
+                            <span
+                                className={classes.comments}
+                                onClick={e => showComments()}>
+                                {helper.humanNumber(comments)} Comments
+                            </span>
 
                             {
                                 hasLogin() && (
