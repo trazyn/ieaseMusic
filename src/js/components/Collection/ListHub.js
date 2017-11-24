@@ -55,8 +55,8 @@ export default class ListHub {
         if (this.app.stage.children.length === 0) {
             this.createBackground();
             this.createBoxList();
+            this.startScene();
         }
-        this.startScene();
     }
     addMouseEvents = () => {
         this.grabbing = false;

@@ -22,6 +22,10 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     isLiked: stores.me.isLiked,
     like: stores.me.like,
     unlike: stores.me.unlike,
+    setProcess: stores.controller.setProcess,
+    resetProcess: stores.controller.resetProcess,
+    incrementProcess: stores.controller.incrementProcess,
+    process: stores.controller.process,
     getPlayerLink: () => {
         return stores.controller.playlist.link;
     },
@@ -33,9 +37,6 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
 }))
 @observer
 class Controller extends Component {
-    state = {
-        musicProcess: 0
-    }
     get MusicBarTime() {
         return Math.floor(this.props.song.duration / 1000);
     }
@@ -52,12 +53,10 @@ class Controller extends Component {
         return minute + ':' + second;
     }
     handleChange = (value) => {
-        this.setState({
-            musicProcess: value
-        });
+        this.props.setProcess(value);
         document.querySelector('audio').currentTime = value;
         if (value >= this.MusicBarTime - 1) {
-            this.resetMusicProcess();
+            this.props.resetProcess();
         }
     }
     handleChangeComplete = () => {
@@ -65,44 +64,35 @@ class Controller extends Component {
     }
     autoIcrement = () => {
         this.autoIcrement = setInterval(() => {
-            this.setState({
-                musicProcess: this.state.musicProcess + 1
-            });
+            this.props.incrementProcess();
         }, 1000);
     }
 
     componentWillReceiveProps(props) {
-        if (!props.playing && this.state.musicProcess > 0) {
-            document.querySelector('audio').currentTime = this.state.musicProcess;
+        console.log('st', props.process);
+        if (!props.playing && props.process > 0) {
+            document.querySelector('audio').currentTime = this.props.process;
         }
-    }
-    resetMusicProcess() {
-        this.setState({
-            musicProcess: 0
-        });
     }
     componentDidMount() {
         this.timer = setInterval(() => {
             if (this.props.playing) {
-                this.setState({
-                    musicProcess: this.state.musicProcess + 1
-                });
+                this.props.incrementProcess();
             }
-            if (this.state.musicProcess >= this.MusicBarTime) {
-                this.resetMusicProcess();
+            if (this.props.process >= this.MusicBarTime) {
+                this.props.resetProcess();
             }
         }, 1000);
         document.querySelector('audio').volume = 1;
         ipcRenderer.on('player-next', () => {
-            this.resetMusicProcess();
+            this.props.resetProcess();
         });
         ipcRenderer.on('player-previous', () => {
-            this.resetMusicProcess();
+            this.props.resetProcess();
         });
     }
     componentWillUnmount() {
         clearInterval(this.timer);
-        // this.resetMusicProcess();
     }
     render() {
         var { classes, song, mode, prev, next, toggle, hasLogin, isLiked, like, unlike, playing, getPlayerLink, getPlaylistName, showComments } = this.props;
@@ -155,7 +145,7 @@ class Controller extends Component {
                             </div>
 
                             <div className={classes.timeLabel}>
-                                <span>{this.formatTimeLabel(this.state.musicProcess)}/</span>
+                                <span>{this.formatTimeLabel(this.props.process)}/</span>
                                 <span>{this.formatTimeLabel(this.MusicBarTime)}</span>
                             </div>
                         </div>
@@ -169,7 +159,7 @@ class Controller extends Component {
                             step={1}
                             tooltip={false}
                             max={this.MusicBarTime}
-                            value={this.state.musicProcess}
+                            value={this.props.process}
                             onChangeStart={this.handleChangeStart}
                             onChange={this.handleChange}
                             onChangeComplete={this.handleChangeComplete}
@@ -211,7 +201,7 @@ class Controller extends Component {
                             <div className={classes.controls}>
                                 <svg style={{ width: 38, height: 38 }} onClick={() => {
                                     prev();
-                                    this.resetMusicProcess();
+                                    this.props.resetProcess();
                                 }} viewBox="0 0 24 24">
                                     <path fill="#000000" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8H10V16H8M16,8V16L11,12" />
                                 </svg>
@@ -232,7 +222,7 @@ class Controller extends Component {
                                 <svg style={{ width: 38, height: 38 }} viewBox="0 0 24 24"
                                     onClick={() => {
                                         next();
-                                        this.resetMusicProcess();
+                                        this.props.resetProcess();
                                     }}>
                                     <path fill="#000000" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
                                 </svg>

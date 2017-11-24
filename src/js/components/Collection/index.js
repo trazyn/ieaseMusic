@@ -15,7 +15,6 @@ class Collection extends Component {
     }
     componentWillUnmount() {
         clearInterval(this.detect);
-        // this.pixiApp.destory();
     }
     render() {
         return (

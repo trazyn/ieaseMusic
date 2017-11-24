@@ -21,6 +21,10 @@ class Controller {
     // Currently played song
     @observable song = {};
 
+    @observable currentSongId = 0;
+
+    @observable process = 0;
+
     // Keep a history with current playlist
     history = [];
 
@@ -48,6 +52,9 @@ class Controller {
 
         if (songid) {
             song = songs.find(e => e.id === songid);
+        }
+        if (songid !== self.currentSongId) {
+            self.resetProcess();
         }
 
         song = song || songs[0];
@@ -83,6 +90,7 @@ class Controller {
         });
 
         self.song = song;
+        self.currentSongId = song.id;
         self.playing = true;
         await self.resolveSong();
     }
@@ -198,6 +206,21 @@ class Controller {
             playing: self.playing,
             song: self.song,
         });
+    }
+    @action async setProcess(value) {
+        self.process = value;
+    }
+
+    @action async incrementProcess() {
+        self.process += 1;
+    }
+
+    @action async resetProcess() {
+        self.process = 0;
+    }
+
+    @action async setCurrentSongId(id) {
+        self.currentSongId = id;
     }
 
     @action changeMode(mode = PLAYER_REPEAT) {
