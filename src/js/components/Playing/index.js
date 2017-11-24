@@ -20,6 +20,20 @@ import colors from 'utils/colors';
 }))
 @observer
 class Playing extends Component {
+    componentDidUpdate() {
+        var { show, song } = this.props;
+
+        if (show) {
+            let playing = Array.from(
+                this.refs.list.querySelectorAll('[data-id]')
+            ).find(e => e.dataset.id === song.id);
+
+            if (playing) {
+                playing.scrollIntoView();
+            }
+        }
+    }
+
     pressEscExit(e) {
         if (e.keyCode === 27) {
             this.props.close();
