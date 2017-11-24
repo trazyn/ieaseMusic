@@ -9,6 +9,7 @@
   user-select: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  outline: 0;
 }
 
 body,
@@ -17,7 +18,9 @@ html {
   padding: 0;
   background: none;
   overflow: hidden;
-  border-radius: 4px;
+  /* background-image: url('./assets/ui/bg-main.jpg');
+  background-size:cover;  */
+  /* border-radius: 4px; */
 }
 
 body {

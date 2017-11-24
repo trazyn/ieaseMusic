@@ -43,6 +43,12 @@ import Controller from 'components/Controller';
 class Home extends Component {
     componentDidMount() {
         this.props.getPlaylist();
+        window.addEventListener('pixiopenlink', (data) => {
+            console.log('get data', data.detail.link);
+            if (data.detail.link) {
+                this.props.router.push(data.detail.link);
+            }
+        });
     }
 
     renderItem(item) {

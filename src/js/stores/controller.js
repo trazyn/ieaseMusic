@@ -109,7 +109,7 @@ class Controller {
 
         switch (true) {
             case loop === true
-                    && self.mode === PLAYER_LOOP:
+                && self.mode === PLAYER_LOOP:
                 // Fix https://github.com/trazyn/ieaseMusic/issues/68
                 next = self.song.id;
                 break;

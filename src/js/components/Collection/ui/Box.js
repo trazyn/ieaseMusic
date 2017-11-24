@@ -1,4 +1,5 @@
 import BoxImage from '../ui/BoxImage';
+import BoxLabel from './BoxLabel';
 // import { TimelineMax, Strong } from 'gsap';
 const PIXI = require('pixi.js');
 export default class Box extends PIXI.Container {
@@ -15,11 +16,14 @@ export default class Box extends PIXI.Container {
     }
     init(xv) {
         this.setX(xv);
-        // console.log('box x:', this.pureX);
-        // console.log('box y:', this.y);
         this.boxImage = new BoxImage(this._setupData, this.imageWidth, this.imageHeight);
+        this.boxLabel = new BoxLabel(this._setupData.name, this.imageWidth, this.imageHeight);
         this.boxImage.y = -Math.round((this.boxImage.getHeight()) * 0.5);
+        this.interactive = true;
+        this.buttonMode = true;
         this.addChild(this.boxImage);
+        this.addChild(this.boxLabel);
+        this.addEvents();
     }
     setX(xval, effectAmt) {
         // let inv = 1/this.zval;
@@ -39,6 +43,21 @@ export default class Box extends PIXI.Container {
         pt.width = this.imageWidth;
         pt.height = this.imageHeight;
         return pt;
+    }
+    addEvents() {
+        this.on('mouseover', this.handleOver);
+        this.on('mouseout', this.handleOut);
+        this.on('click', this.handleClickToAction);
+    }
+    handleOver() {
+    }
+    handleClickToAction() {
+        let eve = new window.CustomEvent('pixiopenlink', {
+            detail: {
+                link: this._setupData.link
+            }
+        });
+        window.dispatchEvent(eve);
     }
     // animIn(d = 0, cb = null, cbp = []) {
     //     // this.addEvents();

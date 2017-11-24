@@ -15,12 +15,13 @@ export default class BoxImage extends PIXI.Container {
     init() {
         this.thumbHolder = new PIXI.Container();
         this.msk = new PIXI.Graphics();
-        this.msk.beginFill(0xff0000);
+        this.msk.beginFill(0xffffff);
         this.msk.drawRect(0, 0, this.imageWidth, this.imageHeight);
         this.msk.cacheAsBitmap = true;
         this.msk.scale.x = 0;
-        // this.thumbHolder.addChild(this.msk);
+        this.thumbHolder.addChild(this.msk);
         this.loadImage();
+        console.log(this._data.name);
     }
     loadImage() {
         this.ldr = new PIXI.loaders.Loader();

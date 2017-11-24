@@ -197,7 +197,6 @@ export default theme => {
                 height: 24,
                 width: 24,
                 lineHeight: '24px',
-                marginRight: 16,
                 fontSize: 16,
                 color: '#4a4a4a',
                 textAlign: 'center',
