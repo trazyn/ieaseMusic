@@ -7,6 +7,7 @@ import controller from './controller';
 import theme from '../../theme.js';
 import config from '../../../config/index';
 import storage from 'utils/storage';
+import lastfm from 'utils/lastfm';
 
 class Preferences {
     @observable showTray = true;
@@ -17,6 +18,11 @@ class Preferences {
     @observable volume = 1;
     @observable port = config.api.port;
     @observable highquality = 1;
+    @observable lastfm = {
+        username: '', // Your last.fm username
+        password: '', // Your last.fm password
+    };
+    @observable connecting = false;
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -30,6 +36,7 @@ class Preferences {
             volume = self.volume,
             highquality = self.highquality,
             backgrounds = theme.playlist.backgrounds,
+            lastfm = self.lastfm,
         } = preferences;
 
         self.showTray = !!showTray;
@@ -41,14 +48,17 @@ class Preferences {
         self.volume = +volume || 1;
         self.highquality = +highquality || 0;
         self.backgrounds = backgrounds;
+        self.lastfm = lastfm;
 
         // Save preferences
         self.save();
         axios.defaults.baseURL = `http://localhost:${self.port}`;
+
+        return preferences;
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, lastfm } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -60,6 +70,7 @@ class Preferences {
             volume,
             highquality,
             backgrounds,
+            lastfm,
         });
 
         ipcRenderer.send('update-preferences', {
@@ -99,6 +110,11 @@ class Preferences {
         self.save();
     }
 
+    @action setLastfm(lastfm) {
+        self.lastfm = lastfm;
+        self.save();
+    }
+
     @action setVolume(volume) {
         self.volume = volume;
         self.save();
@@ -117,6 +133,24 @@ class Preferences {
 
         self.port = port;
         self.save();
+    }
+
+    @action async connect() {
+        var { username, password } = self.lastfm;
+
+        self.connecting = true;
+
+        var success = await lastfm.initialize(username, password);
+
+        if (success) {
+            self.setLastfm({
+                username,
+                password,
+                connected: `${username}:${password}`,
+            });
+        }
+
+        self.connecting = false;
     }
 }
 

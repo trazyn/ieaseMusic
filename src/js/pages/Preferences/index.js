@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
+import clazz from 'classname';
 
 import classes from './classes';
 import Switch from 'ui/Switch';
@@ -25,6 +26,10 @@ import Switch from 'ui/Switch';
         setHighquality,
         backgrounds,
         setBackgrounds,
+        lastfm,
+        setLastfm,
+        connect,
+        connecting,
     } = stores.preferences;
 
     return {
@@ -44,6 +49,10 @@ import Switch from 'ui/Switch';
         setHighquality,
         backgrounds,
         setBackgrounds,
+        lastfm,
+        setLastfm,
+        connect,
+        connecting,
     };
 })
 @observer
@@ -53,6 +62,20 @@ class Preferences extends Component {
 
         backgrounds[index] = background;
         this.props.setBackgrounds(backgrounds);
+    }
+
+    saveLastfm() {
+        this.props.setLastfm({
+            username: this.refs.username.value,
+            password: this.refs.password.value,
+            connected: this.props.lastfm.connected,
+        });
+    }
+
+    isConnected() {
+        var { username, password, connected } = this.props.lastfm;
+
+        return connected && `${username}:${password}` === connected;
     }
 
     render() {
@@ -73,6 +96,9 @@ class Preferences extends Component {
             highquality,
             setHighquality,
             backgrounds,
+            lastfm,
+            connect,
+            connecting,
         } = this.props;
 
         return (
@@ -171,12 +197,65 @@ class Preferences extends Component {
                             type="number" />
                     </label>
 
+                    <h3>
+                        Connet to Last.fm
+                        <small>Track what you listen to, whenever you listen.</small>
+                    </h3>
+                    <div className={classes.field}>
+                        <span>Username</span>
+                        <input
+                            className={classes.textInput}
+                            defaultValue={lastfm.username}
+                            onBlur={ev => this.saveLastfm()}
+                            placeholder="Your last.fm username"
+                            ref="username"
+                            type="text" />
+                    </div>
+
+                    <div className={classes.field}>
+                        <span>Username</span>
+                        <input
+                            className={classes.textInput}
+                            defaultValue={lastfm.password}
+                            onBlur={ev => this.saveLastfm()}
+                            placeholder="Your last.fm password"
+                            ref="password"
+                            type="password" />
+                    </div>
+                    <button
+                        className={clazz(classes.connect, {
+                            [classes.connected]: this.isConnected(),
+                        })}
+                        disabled={this.isConnected() || connecting || !lastfm.username || !lastfm.password}
+                        onClick={e => connect()}>
+                        {
+                            connecting ? (
+                                <span>
+                                    <i className="ion-ios-loop" />
+                                    Conneting to Last.fm
+                                </span>
+                            ) : (
+                                this.isConnected() ? (
+                                    <span>
+                                        <i className="ion-android-done" />
+                                        Conneted to Last.fm
+                                    </span>
+                                ) : (
+                                    <span>
+                                        <i className="ion-flash" />
+                                        Connet to Last.fm
+                                    </span>
+                                )
+                            )
+                        }
+                    </button>
+
                     <h3>Playlist Background ...</h3>
                     {
                         backgrounds.map((e, index) => {
                             return (
                                 <div
-                                    className={classes.background}
+                                    className={classes.field}
                                     key={index}>
                                     <span>{e.type}</span>
                                     <input

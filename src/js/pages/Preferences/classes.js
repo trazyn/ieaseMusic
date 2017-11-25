@@ -42,6 +42,16 @@ export default theme => {
                 wordSpacing: 3,
             },
 
+            '& h3 small': {
+                display: 'block',
+                margin: 0,
+                marginTop: 2,
+                fontSize: 12,
+                fontFamily: 'Roboto',
+                fontWeight: 'normal',
+                color: 'gray',
+            },
+
             '& section': {
                 fontFamily: 'Roboto',
                 fontSize: 14,
@@ -64,7 +74,7 @@ export default theme => {
             cursor: 'pointer',
         },
 
-        background: {
+        field: {
             margin: '24px 0',
         },
 
@@ -85,6 +95,42 @@ export default theme => {
             '&focus': {
                 borderBottomColor: colors.pallet.coral,
             },
-        }
+        },
+
+        connect: {
+            position: 'relative',
+            padding: '0 14px',
+            height: 40,
+            fontSize: 14,
+            lineHeight: '40px',
+            border: 'none',
+            borderRadius: 1,
+            background: colors.pallet.primary,
+            fontFamily: 'Helvetica Neue',
+            fontWeight: '300',
+            color: '#fff',
+            outline: 0,
+            overflow: 'hidden',
+            cursor: 'pointer',
+            letterSpacing: 1,
+            transition: '.4s',
+
+            '&:not(:disabled):hover': {
+                boxShadow: '0 0 24px 0 rgba(0, 0, 0, .5)',
+            },
+
+            '&:disabled': {
+                opacity: '.5',
+            },
+
+            '& i': {
+                fontSize: 16,
+                marginRight: 16,
+            }
+        },
+
+        connected: {
+            background: colors.pallet.mint,
+        },
     };
 };

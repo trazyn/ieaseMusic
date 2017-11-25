@@ -6,6 +6,7 @@ import clazz from 'classname';
 
 import Offline from 'ui/Offline';
 import Loader from 'ui/Loader';
+import lastfm from 'utils/lastfm';
 import AudioPlayer from 'components/AudioPlayer';
 import Search from 'components/Search';
 import Menu from 'components/Menu';
@@ -35,6 +36,10 @@ const classes = {
     init: async() => {
         await stores.preferences.init();
         await stores.me.init();
+
+        var { username, password } = stores.preferences.lastfm;
+
+        await lastfm.initialize(username, password);
     },
     hasLogin: stores.me.hasLogin,
     searching: stores.search.show,
