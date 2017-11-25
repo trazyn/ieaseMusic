@@ -2,10 +2,11 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
-import storage from 'utils/storage';
-import helper from 'utils/helper';
 import player from './player';
 import home from './home';
+import storage from 'utils/storage';
+import helper from 'utils/helper';
+import lastfm from 'utils/lastfm';
 
 class Me {
     @observable initialized = false;
@@ -83,6 +84,8 @@ class Me {
 
     // Like a song
     @action async like(song) {
+        await lastfm.love(song);
+
         if (await self.exeLike(song, true)) {
             self.likes.set(song.id, true);
         }
@@ -90,6 +93,7 @@ class Me {
 
     // Unlike a song
     @action async unlike(song) {
+        await lastfm.unlove(song);
         self.likes.set(song.id, !(await self.exeLike(song, false)));
     }
 

@@ -33,6 +33,7 @@
 - Desktop notifications
 - Modern UI design
 - High quality music(FLAC)
+- Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music and Kugou music, need more)
 - 就这些吧，编不下去了
 
@@ -152,14 +153,13 @@ export default async(keyword, artists) => {
 - [x] User
 - [x] Artist
 - [x] Album
-- [ ] Login with email(Need help)
 - [x] Search
 - [x] Login
 - [x] Pllylist subscribe
 - [x] Follow
 - [x] Flac high quality audio
 - [x] Fix dead music link([#3](https://github.com/trazyn/ieaseMusic/issues/3))
-- [ ] Scrobble to Last.fm
+- [x] Scrobble to Last.fm
 - [x] Comment（Read only）
 - [ ] Lyrics
 - [ ] Auto update
