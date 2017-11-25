@@ -36,6 +36,17 @@ export default theme => {
         bar: {
             width: '100vw',
             cursor: 'pointer',
+            transition: '.2s',
+
+            '&:hover': {
+                '&, & $playing, & $buffering': {
+                    height: 8,
+                },
+
+                '& $playing:after': {
+                    bottom: 8,
+                }
+            },
 
             '&, & $playing, & $buffering': {
                 position: 'fixed',
@@ -51,7 +62,7 @@ export default theme => {
                 backgroundPosition: 0,
                 zIndex: 1,
                 transform: 'translate3d(-100%, 0, 0)',
-                transition: 'transform .2s ease-out',
+                transition: '.2s ease-out',
             },
 
             '& $playing:after': {
@@ -66,6 +77,7 @@ export default theme => {
                 color: '#fff',
                 background: '#000',
                 whiteSpace: 'nowrap',
+                transition: '.2s ease-out',
             },
 
             '& $buffering': {
@@ -74,7 +86,7 @@ export default theme => {
                 backgroundPosition: 0,
                 opacity: .2,
                 transform: 'translate3d(-100%, 0, 0)',
-                transition: 'transform .2s ease-out',
+                transition: '.2s ease-out',
             },
         },
 
