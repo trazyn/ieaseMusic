@@ -31,6 +31,8 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     setVolume: stores.controller.setVolume,
     isMuted: stores.controller.isMuted,
     toggleMuted: stores.controller.toggleMuted,
+    incrementVolume: stores.controller.incrementVolume,
+    decrementVolume: stores.controller.decrementVolume,
     getPlayerLink: () => {
         return stores.controller.playlist.link;
     },
@@ -108,6 +110,12 @@ class Controller extends Component {
         });
         ipcRenderer.on('player-previous', () => {
             this.props.resetProcess();
+        });
+        ipcRenderer.on('player-volume-up', () => {
+            this.props.incrementVolume();
+        });
+        ipcRenderer.on('player-volume-down', () => {
+            this.props.decrementVolume();
         });
     }
     componentWillUnmount() {

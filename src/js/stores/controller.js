@@ -236,6 +236,14 @@ class Controller {
         self.isMuted = !self.isMuted;
     }
 
+    @action async incrementVolume() {
+        self.volume += 1;
+    }
+
+    @action async decrementVolume() {
+        self.volume -= 1;
+    }
+
     @action changeMode(mode = PLAYER_REPEAT) {
         var index = MODES.indexOf(self.mode);
 
