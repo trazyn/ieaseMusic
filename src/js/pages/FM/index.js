@@ -6,6 +6,7 @@ import clazz from 'classname';
 import injectSheet from 'react-jss';
 
 import classes from './classes';
+import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
 import ProgressImage from 'ui/ProgressImage';
@@ -34,6 +35,9 @@ import Header from 'components/Header';
         return controller.playing
             && controller.playlist.id === fm.playlist.id;
     },
+
+    showComments: () => stores.comments.toggle(true),
+    comments: stores.comments.total,
 }))
 @observer
 class FM extends Component {
@@ -71,7 +75,7 @@ class FM extends Component {
     }
 
     render() {
-        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, song, next } = this.props;
+        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, song, next, showComments, comments } = this.props;
         var liked = false;
 
         if (loading) {
@@ -126,6 +130,14 @@ class FM extends Component {
                                         to={song.album.link}>
                                         {song.album.name}
                                     </Link>
+                                </span>
+                            </p>
+
+                            <p
+                                className={classes.comments}
+                                onClick={e => showComments()}>
+                                <span>
+                                    {helper.humanNumber(comments)} Comments
                                 </span>
                             </p>
                         </aside>
