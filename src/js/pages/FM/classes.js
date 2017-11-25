@@ -135,6 +135,12 @@ export default theme => {
             },
         },
 
+        comments: {
+            textTransform: 'uppercase',
+            transform: 'translateY(-12px)',
+            cursor: 'pointer',
+        },
+
         bar: {
             position: 'relative',
             height: 30,
