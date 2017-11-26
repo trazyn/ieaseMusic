@@ -29,6 +29,7 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     },
     hasLogin: stores.me.hasLogin,
     showComments: () => stores.comments.toggle(true),
+    showLyrics: () => stores.lyrics.toggle(true),
     comments: stores.comments.total,
 }))
 @observer
@@ -56,7 +57,8 @@ class Controller extends Component {
             getPlayerLink,
             getPlaylistName,
             showComments,
-            comments
+            comments,
+            showLyrics,
         } = this.props;
         var liked = isLiked(song.id);
 
@@ -127,7 +129,13 @@ class Controller extends Component {
                             }
 
                             <span
-                                className={classes.comments}
+                                className={classes.text}
+                                onClick={e => showLyrics()}>
+                                LRC
+                            </span>
+
+                            <span
+                                className={classes.text}
                                 onClick={e => showComments()}>
                                 {helper.humanNumber(comments)} Comments
                             </span>

@@ -12,6 +12,7 @@ import fm from './fm';
 import playing from './playing';
 import search from './search';
 import comments from './comments';
+import lyrics from './lyrics';
 import preferences from './preferences';
 
 const stores = {
@@ -28,6 +29,7 @@ const stores = {
     playing,
     search,
     comments,
+    lyrics,
     preferences,
 };
 

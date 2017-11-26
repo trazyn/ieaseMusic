@@ -14,6 +14,7 @@ import lastfm from 'utils/lastfm';
     volume: stores.preferences.volume,
     setVolume: stores.preferences.setVolume,
     autoPlay: stores.preferences.autoPlay,
+    lyrics: stores.lyrics.list,
 }))
 @observer
 export default class AudioPlayer extends Component {
@@ -83,6 +84,28 @@ export default class AudioPlayer extends Component {
         this.passed = currentTime * 1000;
     }
 
+    scrollerLyrics(currentTime = 0) {
+        var ele = document.querySelector('#lyrics');
+        var lyrics = this.props.lyrics;
+
+        if (ele) {
+            let key = helper.getLyricsKey(currentTime * 1000, lyrics);
+
+            if (key) {
+                let playing = ele.querySelectorAll('[playing]');
+
+                Array.from(playing).map(e => e.removeAttribute('playing'));
+
+                playing = ele.querySelector(`[data-times='${key}']`);
+
+                if (!playing.getAttribute('playing')) {
+                    playing.setAttribute('playing', true);
+                    playing.scrollIntoViewIfNeeded();
+                }
+            }
+        }
+    }
+
     buffering() {
         var ele = document.querySelector('#progress');
         var player = this.refs.player;
@@ -121,7 +144,10 @@ export default class AudioPlayer extends Component {
                 onError={e => console.log(e)}
                 onProgress={e => this.buffering(e)}
                 onSeeked={e => this.resetProgress()}
-                onTimeUpdate={e => this.progress(e.target.currentTime)}
+                onTimeUpdate={e => {
+                    this.progress(e.target.currentTime);
+                    this.scrollerLyrics(e.target.currentTime);
+                }}
                 ref="player"
                 src={(song.data || {}).src}
                 style={{

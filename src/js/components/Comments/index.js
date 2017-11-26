@@ -10,6 +10,7 @@ import classes from './classes';
 import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
+import Hero from 'components/Hero';
 
 @inject(stores => ({
     close: () => stores.comments.toggle(false),
@@ -19,10 +20,6 @@ import Loader from 'ui/Loader';
     thumbsup: stores.comments.like,
     getList: () => stores.comments.getList(Object.assign({}, stores.controller.song)),
     loadmore: stores.comments.loadmore,
-    like: stores.me.like,
-    ban: stores.fm.ban,
-    unlike: stores.me.unlike,
-    isLiked: stores.me.isLiked,
     song: stores.comments.song,
 }))
 @observer
@@ -134,8 +131,7 @@ class Comments extends Component {
     }
 
     render() {
-        var { classes, loading, song, close, isLiked, unlike, like } = this.props;
-        var liked = isLiked(song.id);
+        var { classes, loading, song, close } = this.props;
 
         if (loading || !song.id) {
             return <Loader show={true} />;
@@ -149,40 +145,8 @@ class Comments extends Component {
                     onClick={close}
                     src="assets/close.png" />
 
-                <div className={classes.hero}>
-                    <ProgressImage {...{
-                        height: window.innerHeight,
-                        width: window.innerHeight,
-                        src: song.album.cover.replace(/100y100$/, '500y500'),
-                    }} />
+                <Hero close={close} />
 
-                    <header>
-                        <i
-                            className={clazz('ion-ios-heart', {
-                                [classes.liked]: liked,
-                            })}
-                            onClick={e => liked ? unlike(song) : like(song)} />
-                    </header>
-
-                    <footer>
-                        <h3>{song.name}</h3>
-                        <p className={classes.author}>
-                            {
-                                song.artists.map((e, index) => {
-                                    // Show the artist
-                                    return (
-                                        <Link
-                                            key={index}
-                                            onClick={close}
-                                            to={e.link}>
-                                            {e.name}
-                                        </Link>
-                                    );
-                                })
-                            }
-                        </p>
-                    </footer>
-                </div>
                 <aside
                     className={classes.list}
                     onScroll={e => this.loadmore()}
