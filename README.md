@@ -161,7 +161,7 @@ export default async(keyword, artists) => {
 - [x] Fix dead music link([#3](https://github.com/trazyn/ieaseMusic/issues/3))
 - [x] Scrobble to Last.fm
 - [x] Comment（Read only）
-- [ ] Lyrics
+- [x] Lyrics
 - [ ] Auto update
 - [ ] Website
 
