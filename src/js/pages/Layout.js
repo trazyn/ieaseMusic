@@ -12,6 +12,7 @@ import Search from 'components/Search';
 import Menu from 'components/Menu';
 import Playing from 'components/Playing';
 import Comments from 'components/Comments';
+import Lyrics from 'components/Lyrics';
 import VolumeUpDown from 'components/Ripple/VolumeUpDown';
 import PlayerNavigation from 'components/Ripple/PlayerNavigation';
 import PlayerMode from 'components/Ripple/PlayerMode';
@@ -44,6 +45,7 @@ const classes = {
     hasLogin: stores.me.hasLogin,
     searching: stores.search.show,
     showComments: stores.comments.show,
+    showLyrics: stores.lyrics.show,
 }))
 @observer
 class Layout extends Component {
@@ -70,7 +72,7 @@ class Layout extends Component {
     }
 
     render() {
-        var { classes, initialized, searching, showComments } = this.props;
+        var { classes, initialized, searching, showComments, showLyrics } = this.props;
 
         if (this.state.offline) {
             return <Offline show={true} />;
@@ -93,6 +95,10 @@ class Layout extends Component {
 
                 {
                     showComments && <Comments />
+                }
+
+                {
+                    showLyrics && <Lyrics />
                 }
 
                 <Menu />

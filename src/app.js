@@ -17,7 +17,7 @@ import stores from './js/stores';
 
 class App extends Component {
     componentDidMount() {
-        var { controller, fm, me, menu, playing, search } = stores;
+        var { controller, fm, me, menu, playing, search, comments, lyrics } = stores;
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
@@ -225,6 +225,21 @@ class App extends Component {
                     label: 'FM',
                     click: () => {
                         navigator.router.push('/fm');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Show Comments 💬',
+                    click: () => {
+                        comments.toggle(true);
+                    }
+                },
+                {
+                    label: 'Show Lyrics 🎤',
+                    click: () => {
+                        lyrics.toggle(true);
                     }
                 },
                 {

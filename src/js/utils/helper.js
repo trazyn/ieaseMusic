@@ -32,6 +32,14 @@ const helper = {
         });
     },
 
+    getLyricsKey(times, lyrics) {
+        var keys = Object.keys(lyrics);
+
+        return keys.find((e, index) => {
+            return times > +e && index < keys.length - 1 && times < +keys[index + 1];
+        });
+    },
+
     formatPhone(phone) {
         if (!phone.startsWith('+86')
             && /1[34578][012356789]\d{8}|134[012345678]\d{7}/.test(phone)) {

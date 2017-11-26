@@ -192,7 +192,7 @@ export default theme => {
             color: '#4a4a4a',
         },
 
-        comments: {
+        text: {
             display: 'inline-block',
             padding: '2px 4px',
             marginRight: 20,
