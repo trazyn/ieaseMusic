@@ -8,7 +8,7 @@ export default {
 
     ...baseConfig,
 
-    devtool: 'source-map',
+    devtool: false,
 
     entry: [
         'babel-polyfill',

@@ -8,6 +8,11 @@ var lastfm;
 
 async function getSession() {
     var success = await new Promise((resolve, reject) => {
+        if (!lastfm) {
+            resolve(false);
+            return;
+        }
+
         lastfm.getSessionKey(result => {
             resolve(result.success);
         });
