@@ -12,7 +12,6 @@ export default theme => ({
         overflow: 'hidden',
 
         '& header': {
-            display: 'flex',
             justifyContent: 'space-between',
             padding: '24px',
             fontSize: 24,
@@ -56,6 +55,21 @@ export default theme => ({
             width: '100%',
             height: '20vh',
             background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(216, 216, 216, .6))',
+        },
+
+        '& section p': {
+            color: '#fff',
+        },
+
+        '& section span': {
+            display: 'inline-block',
+            padding: '12px 24px',
+            marginBottom: 20,
+            fontSize: 12,
+            color: '#fff',
+            background: '#000',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
         }
     },
 
@@ -94,4 +108,26 @@ export default theme => ({
             content: 'none',
         }
     },
+
+    highquality: {
+        display: 'inline-block',
+        padding: '6px 8px',
+        marginLeft: 30,
+        letterSpacing: 1,
+        textTransform: 'uppercase',
+        fontFamily: 'Roboto',
+        fontSize: 12,
+        color: '#fff',
+        background: colors.pallet.dribbble,
+        boxShadow: `0 0 24px ${colors.pallet.dribbble}`,
+        transform: 'translateY(-6px)',
+        zoom: .8,
+    },
+
+    active: {
+        '& span': {
+            fontSize: '18px !important',
+            color: `${colors.pallet.dribbble} !important`,
+        }
+    }
 });
