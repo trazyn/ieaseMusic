@@ -77,5 +77,15 @@ export default theme => ({
         '& figure > img': {
             height: '100vh',
         }
-    }
+    },
+
+    placeholder: {
+        paddingTop: '20vh',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 32,
+        letterSpacing: 1,
+        wordSpacing: 3,
+        textAlign: 'center',
+        color: '#fff',
+    },
 });

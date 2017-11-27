@@ -27,8 +27,33 @@ class Lyrics extends Component {
         }
     }
 
+    renderLyrics() {
+        var { lyrics, classes } = this.props;
+        var times = Object.keys(lyrics);
+
+        if (times.length === 0) {
+            return (
+                <div className={classes.placeholder}>
+                    <span>Nothing ...</span>
+                </div>
+            );
+        }
+
+        return times.map((e, index) => {
+            return (
+                <p
+                    data-times={e}
+                    key={index}>
+                    <span>
+                        {lyrics[e]}
+                    </span>
+                </p>
+            );
+        });
+    }
+
     render() {
-        var { classes, loading, lyrics, song, close } = this.props;
+        var { classes, loading, song, close } = this.props;
 
         if (loading || !song.id) {
             return <Loader show={true} />;
@@ -60,17 +85,7 @@ class Lyrics extends Component {
                             paddingBottom: '14vh',
                         }}>
                             {
-                                Object.keys(lyrics).map((e, index) => {
-                                    return (
-                                        <p
-                                            data-times={e}
-                                            key={index}>
-                                            <span>
-                                                {lyrics[e]}
-                                            </span>
-                                        </p>
-                                    );
-                                })
+                                this.renderLyrics()
                             }
                         </div>
                     </section>
