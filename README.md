@@ -174,6 +174,8 @@ export default async(keyword, artists) => {
 ## License
 还是 MIT 吧，懒得改了
 
-## If you like my works you can buy me coffee
+#### If you like my works you can buy me a coffee
+<span>
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/alipay.JPG" width="300" />
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/wechat.JPG" width="300" />
+</span>
