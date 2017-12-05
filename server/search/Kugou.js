@@ -1,7 +1,7 @@
 
-import axios from 'axios';
-import md5 from 'md5';
+import request from 'request-promise-native';
 import _debug from 'debug';
+import md5 from 'md5';
 
 const debug = _debug('dev:plugin:Kugou');
 const error = _debug('dev:plugin:Kugou:error');
@@ -9,48 +9,55 @@ const error = _debug('dev:plugin:Kugou:error');
 async function getURL(hash) {
     var key = md5(`${hash}kgcloud`);
 
-    var response = await axios.get(`http://trackercdn.kugou.com/i/?acceptMp3=1&cmd=4&pid=6&hash=${hash}&key=${key}`);
-    var data = response.data;
+    var response = await request({
+        url: `http://trackercdn.kugou.com/i/?acceptMp3=1&cmd=4&pid=6&hash=${hash}&key=${key}`,
+        json: true,
+    });
 
-    if (data.error
-        || data.status !== 1) {
-        error('Failed to get song URL: %O', data);
+    if (response.error
+        || response.status !== 1) {
+        debug('Nothing.');
         return null;
     } else {
-        return data.url;
+        return response.url;
     }
 }
 
 export default async(keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Kugou library.`);
 
-    var response = await axios.get('http://mobilecdn.kugou.com/api/v3/search/song', {
-        params: {
+    var response = await request({
+        uri: 'http://mobilecdn.kugou.com/api/v3/search/song',
+        qs: {
             format: 'json',
             keyword: [keyword].concat(artists.split(',')).join('+'),
             page: 1,
             pagesize: 1,
             showtype: 1,
-        }
+        },
+        json: true,
     });
+
     var data = response.data;
 
-    debug('%O', data);
-
-    if (data.status !== 1
-        || data.data.info.length === 0) {
+    if (response.status !== 1
+        || data.info.length === 0) {
         error('Nothing.');
         return;
     }
 
-    for (let e of data.data.info) {
+    for (let e of data.info) {
         if (artists.split(',').find(artist => e.singername.indexOf(artist)) === -1) {
             continue;
         }
 
         debug('Got a result \n"%O"', e);
-        return {
-            src: await getURL(e['320hash'] || e['hash'])
-        };
+        try {
+            return {
+                src: await getURL(e['320hash'] || e['hash'])
+            };
+        } catch (ex) {
+            error('Failed to get song: %O', ex);
+        }
     }
 };

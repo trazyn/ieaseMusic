@@ -2,10 +2,14 @@
 import search from './index';
 
 async function test() {
-    var res = await search('一直想着他', '庄心妍');
-
-    console.log(res);
+    var res = {};
+    try {
+        res = await search('你在终点等我', '王菲');
+        console.log(res);
+    } catch (ex) {
+        console.error(ex);
+    }
     return res;
 }
 
-console.log(test());
+test();

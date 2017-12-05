@@ -7,7 +7,7 @@ import _debug from 'debug';
 const debug = _debug('dev:plugin');
 
 export default (keyword, artists) => {
-    var plugins = [Baidu, QQ, Kugou];
+    var plugins = [QQ, Baidu, Kugou];
 
     debug('Plugin has loaded, search: \'%s\', \'%s\'', keyword, artists);
 
