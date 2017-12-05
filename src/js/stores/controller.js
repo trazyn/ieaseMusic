@@ -7,6 +7,7 @@ import fm from './fm';
 import comments from './comments';
 import preferences from './preferences';
 import lastfm from 'utils/lastfm';
+import helper from 'utils/helper';
 
 const PLAYER_SHUFFLE = 0;
 const PLAYER_REPEAT = 1;
@@ -93,7 +94,9 @@ class Controller {
 
     @action async resolveSong() {
         var song = self.song;
-        var response = await axios.get(`/api/player/song/${song.id}/${encodeURIComponent(song.name)}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date());
+        var response = await axios.get(
+            `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date()
+        );
         var data = response.data.song;
 
         if (!data.src) {
