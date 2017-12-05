@@ -51,7 +51,7 @@ export default async(keyword, artists) => {
 
     var response = await axios.get('http://c.y.qq.com/soso/fcgi-bin/search_cp', {
         params: {
-            w: keyword,
+            w: [keyword].concat(artists.split(',')).join('+'),
             p: 1,
             n: 100,
             aggr: 1,
