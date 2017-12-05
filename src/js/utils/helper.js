@@ -99,6 +99,24 @@ const helper = {
         }
 
         return number;
+    },
+
+    clearWith(name, args) {
+        var clear = (token) => {
+            var index = name.indexOf(token);
+
+            if (index !== -1) {
+                name = name.substring(0, index);
+            }
+
+            return name;
+        };
+
+        args.map(e => {
+            name = clear(e);
+        });
+
+        return name;
     }
 };
 
