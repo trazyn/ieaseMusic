@@ -24,21 +24,31 @@ async function getURL(hash) {
 export default async(keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Kugou library.`);
 
-    var response = await axios.get(`http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=${encodeURIComponent(keyword)}&page=1&pagesize=1&showtype=1`);
+    var response = await axios.get('http://mobilecdn.kugou.com/api/v3/search/song', {
+        params: {
+            format: 'json',
+            keyword: [keyword].concat(artists.split(',')).join('+'),
+            page: 1,
+            pagesize: 1,
+            showtype: 1,
+        }
+    });
     var data = response.data;
+
+    debug('%O', data);
 
     if (data.status !== 1
         || data.data.info.length === 0) {
+        error('Nothing.');
         return;
     }
 
     for (let e of data.data.info) {
-        if (artists.split(',').findIndex(artist => e.singername.indexOf(artist)) === -1) {
+        if (artists.split(',').find(artist => e.singername.indexOf(artist)) === -1) {
             continue;
         }
 
-        debug('Find %O', e);
-
+        debug('Got a result \n"%O"', e);
         return {
             src: await getURL(e['320hash'] || e['hash'])
         };
