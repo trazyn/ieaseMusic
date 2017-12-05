@@ -4,75 +4,86 @@ import _debug from 'debug';
 
 const debug = _debug('dev:plugin:QQ');
 const error = _debug('dev:plugin:QQ:error');
-const baseUrl = 'dl.stream.qqmusic.qq.com';
-const baseApi = 'http://101.96.10.58/c.y.qq.com';
 
-let updateTime = null;
-let vkey = null;
-let guid = null;
-
-async function updateVkey() {
+async function getSong(mid) {
     var currentMs = (new Date()).getUTCMilliseconds();
-    guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
+    var guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
+    var file = await genKey(mid);
+    var response = await axios.get(`https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?json=3&format=json&guid=${guid.toString()}`);
+    var data = response.data;
 
-    if (!updateTime
-        || updateTime + 3600 * 1000 < +new Date()) {
-        try {
-            var response = await axios.get(`${baseApi}/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`);
-            vkey = response.data.key;
-            updateTime = +new Date();
-        } catch (ex) {
-            error('Failed to update vkey: %O', ex);
-        }
+    if (data.code !== 0) {
+        return false;
     }
-    return vkey;
+
+    if (file.size_320mp3) {
+        return getURL('M800', mid, data.key, guid);
+    }
+
+    if (file.size_128mp3) {
+        return getURL('M500', mid, data.key, guid);
+    }
 }
 
-function getURL(data) {
-    return `http://${baseUrl}/${data.prefix}${data.mid}.${data.type}?vkey=${vkey}&guid=${guid}&uin=0&fromtag=30`;
+async function genKey(mid) {
+    var response = await axios.get('http://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg', {
+        params: {
+            songmid: mid,
+            format: 'json',
+        },
+    });
+    var data = response.data;
+
+    if (data.code !== 0
+        || data.data.length === 0) {
+        return;
+    }
+
+    return data.data[0]['file'];
+}
+
+function getURL(perfix, mid, key, guid) {
+    return `http://dl.stream.qqmusic.qq.com/${perfix}${mid}.mp3?vkey=${key}&guid=${guid}&fromtag=30`;
 }
 
 export default async(keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use QQ library.`);
 
-    try {
-        await updateVkey();
-    } catch (ex) {
-        error('Failed to initialize QQ plugin: %O', ex);
-        throw ex;
-    }
-
-    var response = await axios.get(`${baseApi}/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(keyword)}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`);
+    var response = await axios.get('http://c.y.qq.com/soso/fcgi-bin/search_cp', {
+        params: {
+            w: keyword,
+            p: 1,
+            n: 100,
+            aggr: 1,
+            lossless: 1,
+            cr: 1,
+            format: 'json',
+            inCharset: 'utf8',
+            outCharset: 'utf-8'
+        }
+    });
     var data = response.data;
 
     if (data.code !== 0
         || data.data.song.list.length === 0) {
+        error('Nothing.');
         return;
     }
 
     for (let e of data.data.song.list) {
-        let list = e.file;
         let song = {};
 
         // Match the artists
-        if (e.singer.findIndex(e => artists.indexOf(e.name) === -1)) {
+        if (e.singer.find(e => artists.indexOf(e.name) === -1)) {
             continue;
         }
 
-        if (list.size_128 > 0) {
-            song.src = getURL({
-                mid: list.media_mid,
-                prefix: 'M500',
-                type: 'mp3',
-            });
-        }
+        debug('Got a result \n"%O"', e);
 
-        if (list.size_320 > 0) {
-            song.src = getURL({
-                mid: list.media_mid,
-                prefix: 'M800',
-                type: 'mp3',
-            });
+        try {
+            song.src = await getSong(e.media_mid);
+        } catch (ex) {
+            error('Failed to get song: %O', ex);
         }
 
         return song;
