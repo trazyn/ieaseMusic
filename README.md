@@ -13,8 +13,7 @@
 
 > Built by Electron, React, MobX, JSS
 
-
-不吹不黑这大概是目前最好的网易云音乐客户端了吧，精力有限没有适配`Windows`和 `Linux`。目前 `API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供(可能会自己重造轮子，全姿势解锁)。
+`API` 由 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 提供。
 
 
 ## Preview
@@ -34,7 +33,7 @@
 - Modern UI design
 - High quality music(FLAC)
 - Track your listen to Last.fm
-- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music and Kugou music, need more)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music and Kugou music, fixed some bug, update on v1.0.7, basically all the songs can be played 🙊)
 - 就这些吧，编不下去了
 
 ## 海外党网解锁请参考
@@ -48,27 +47,27 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.6/ieaseMusic-1.0.6-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.7/ieaseMusic-1.0.7-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.6/ieaseMusic-1.0.6-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.7/ieaseMusic-1.0.7-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.0.6-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.6/ieaseMusic-1.0.6-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.0.6-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.0.7-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.6/iease-music-1.0.6-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.7/ieaseMusic-1.0.7-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.0.6-x86_64.AppImage
-$ ./iease-music-1.0.6-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.0.7-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.0.7/iease-music-1.0.7-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.0.7-x86_64.AppImage
+$ ./iease-music-1.0.7-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
@@ -139,12 +138,6 @@ export default async(keyword, artists) => {
 
 曲库导出一个方法，接受2个参数，`歌曲名称`和`歌手名称`（多个名称以逗号分隔，eg：`王心凌,罗志祥`），返回一个`Promise`，对于搜索结果应使用`歌手名称`来匹配正确曲目，返回对象中`src`为歌曲链接。
 
-## Question
-
-目前接口上面~~收藏歌单和 `Follow` 用户暂时没有~~`(DONE)`，界面部分搜索和**评论**(貌似很多人不喜欢这个)没做，DJ界面不打算做，感觉内容质量较差，~~这部分旅游结束后进行~~。
-
-~~对于灰色版权受限的资源，想问下大佬们哪里能找到相关资源去爬取？~~
-
 ## TODO:
 - [x] Home
 - [x] Playlist
@@ -170,6 +163,7 @@ export default async(keyword, artists) => {
   [YongHaoWu/NeteaseCloudMusicFlac](https://github.com/YongHaoWu/NeteaseCloudMusicFlac)
 - 添加其他曲库，解决死链问题
   [ITJesse/UnblockNeteaseMusic](https://github.com/ITJesse/UnblockNeteaseMusic)
+  修复了第三方曲库搜索BUG，基本上没有什么歌曲不能播放了👽
 
 ## License
 还是 MIT 吧，懒得改了
