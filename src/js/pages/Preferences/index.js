@@ -198,7 +198,7 @@ class Preferences extends Component {
                     </label>
 
                     <h3>
-                        Connet to Last.fm
+                        Connect to Last.fm
                         <small>Track what you listen to, whenever you listen.</small>
                     </h3>
                     <div className={classes.field}>
@@ -213,7 +213,7 @@ class Preferences extends Component {
                     </div>
 
                     <div className={classes.field}>
-                        <span>Username</span>
+                        <span>Password</span>
                         <input
                             className={classes.textInput}
                             defaultValue={lastfm.password}
@@ -232,18 +232,18 @@ class Preferences extends Component {
                             connecting ? (
                                 <span>
                                     <i className="ion-ios-loop" />
-                                    Conneting to Last.fm
+                                    Connecting to Last.fm
                                 </span>
                             ) : (
                                 this.isConnected() ? (
                                     <span>
                                         <i className="ion-android-done" />
-                                        Conneted to Last.fm
+                                        Connected to Last.fm
                                     </span>
                                 ) : (
                                     <span>
                                         <i className="ion-flash" />
-                                        Connet to Last.fm
+                                        Connect to Last.fm
                                     </span>
                                 )
                             )
