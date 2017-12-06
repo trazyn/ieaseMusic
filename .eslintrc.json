@@ -16,6 +16,7 @@
     "rules": {
         "semi": [2, "always"],
         "new-cap": [0],
+        "prefer-promise-reject-errors": [0],
         "indent": [2, 4, { "SwitchCase": 1 }],
         "comma-dangle": [2, "only-multiline"],
         "space-before-function-paren": [2, "never"],
