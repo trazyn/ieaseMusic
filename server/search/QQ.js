@@ -20,7 +20,7 @@ async function getSong(mid) {
     });
 
     if (response.code !== 0) {
-        return false;
+        return Promise.reject();
     }
 
     if (file.size_320mp3) {
@@ -45,7 +45,8 @@ async function genKey(mid) {
 
     if (response.code !== 0
         || data.length === 0) {
-        return;
+        debug('Nothing.');
+        return Promise.reject();
     }
 
     return data[0]['file'];
@@ -79,7 +80,7 @@ export default async(keyword, artists) => {
     if (response.code !== 0
         || data.song.list.length === 0) {
         debug('Nothing.');
-        return;
+        return Promise.reject();
     }
 
     for (let e of data.song.list) {
@@ -96,7 +97,10 @@ export default async(keyword, artists) => {
             song.src = await getSong(e.media_mid);
         } catch (ex) {
             error('Failed to get song: %O', ex);
+            return Promise.reject();
         }
+
+        debug('%O', song);
 
         return song;
     }
