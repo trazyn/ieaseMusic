@@ -17,7 +17,7 @@ async function getURL(hash) {
     if (response.error
         || response.status !== 1) {
         debug('Nothing.');
-        return null;
+        return Promise.reject();
     } else {
         return response.url;
     }
@@ -43,7 +43,7 @@ export default async(keyword, artists) => {
     if (response.status !== 1
         || data.info.length === 0) {
         error('Nothing.');
-        return;
+        return Promise.reject();
     }
 
     for (let e of data.info) {
@@ -53,11 +53,15 @@ export default async(keyword, artists) => {
 
         debug('Got a result \n"%O"', e);
         try {
-            return {
+            let song = {
                 src: await getURL(e['320hash'] || e['hash'])
             };
+
+            debug('%O', song);
+            return song;
         } catch (ex) {
             error('Failed to get song: %O', ex);
+            return Promise.reject();
         }
     }
 };

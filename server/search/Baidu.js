@@ -17,12 +17,12 @@ export default async(keyword, artists) => {
         },
         json: true,
     });
-    var songs = response.data.song;
-    var song = songs.find(e => artists.indexOf(e.artistname) > -1);
+    var songs = (response.data || {}).song;
+    var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
 
     if (!song) {
         debug('Nothing.');
-        return false;
+        return Promise.reject();
     }
     response = await request({
         uri: 'http://music.baidu.com/data/music/fmlink',
@@ -39,11 +39,15 @@ export default async(keyword, artists) => {
             src: response.data.songList[0].songLink,
         };
 
-        debug('Got a result \n"%O"', song);
+        if (!song.src) {
+            return Promise.reject();
+        } else {
+            debug('Got a result \n"%O"', song);
+        }
     } catch (ex) {
         // Anti-warnning
         error('Failed to get song: %O', ex);
-        song = false;
+        return Promise.reject();
     }
 
     return song;

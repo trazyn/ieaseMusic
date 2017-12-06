@@ -248,8 +248,6 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             // Search from other source
             debug('Search: %s, %s', name, artists);
             song = await search(name, artists);
-
-            debug('PLAYING:\n%O', song);
         } catch (ex) {
             error('Failed to search third party music library:\n%O', ex);
             error(ex[0].config.headers);
