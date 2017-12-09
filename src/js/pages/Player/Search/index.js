@@ -11,6 +11,12 @@ class Search extends Component {
         close: PropTypes.func.isRequired,
     };
 
+    pressEscExit(e) {
+        if (e.keyCode === 27) {
+            this.props.close();
+        }
+    }
+
     render() {
         var { classes, show, close, filter, children } = this.props;
 
@@ -19,7 +25,9 @@ class Search extends Component {
         }
 
         return (
-            <div className={classes.container}>
+            <div
+                className={classes.container}
+                onKeyUp={e => this.pressEscExit(e)}>
                 <header>
                     <input
                         autoFocus={true}
