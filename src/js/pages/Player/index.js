@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
+import Search from './Search';
 import helper from 'utils/helper';
 import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
@@ -17,12 +18,18 @@ import Controller from 'components/Controller';
     loading: stores.player.loading,
     showLoading: () => stores.player.toggleLoading(true),
     hideLoading: () => setTimeout(() => stores.player.toggleLoading(false), 500),
+    searching: stores.player.searching,
+    keywords: stores.player.keywords,
+    showSearch: () => stores.player.toggleSearch(true),
+    hideSearch: () => stores.player.toggleSearch(false),
     meta: stores.player.meta,
     getList: async args => {
         var { id, type } = args;
         await stores.player.getDetail(type, id);
     },
     list: stores.player.songs,
+    filter: stores.player.filter,
+    filtered: stores.player.filtered,
     recommend: stores.player.recommend,
     artists: stores.player.artists,
     users: stores.player.users,
@@ -110,7 +117,8 @@ class Player extends Component {
     }
 
     componentDidUpdate() {
-        var playing = this.refs.list.querySelector(`.${this.props.classes.active}`);
+        var { classes, searching } = this.props;
+        var playing = (searching ? this.refs.searching : this.refs.list).querySelector(`.${classes.active}`);
 
         if (playing) {
             playing.scrollIntoViewIfNeeded();
@@ -181,10 +189,24 @@ class Player extends Component {
     }
 
     renderList() {
-        var { classes, playing, canitoggle, song } = this.props;
+        var { classes, playing, canitoggle, song, searching, keywords, list, filtered } = this.props;
         var sameToPlaylist = canitoggle();
 
-        return this.props.list.map((e, index) => {
+        list = (searching && keywords) ? filtered : list;
+
+        if (list.length === 0) {
+            return (
+                <div
+                    className={classes.nothing}
+                    style={{
+                        height: '100%',
+                    }}>
+                    Nothing ...
+                </div>
+            );
+        }
+
+        return list.map((e, index) => {
             return (
                 <li
                     key={index}
@@ -220,7 +242,7 @@ class Player extends Component {
     }
 
     render() {
-        var { classes, loading, meta, playing, recommend, canifav } = this.props;
+        var { classes, loading, meta, playing, recommend, canifav, searching, showSearch, hideSearch, filter } = this.props;
         var heroBackgroundColor = helper.pureColor(meta.pallet);
         var headerIconColor = meta.pallet[0].join();
 
@@ -316,8 +338,8 @@ class Player extends Component {
 
                         <div className={classes.list}>
                             <header>
-                                <span>
-                                    Track
+                                <span onClick={showSearch}>
+                                    Track / SEARCH
                                 </span>
 
                                 <span>
@@ -329,6 +351,21 @@ class Player extends Component {
                             </ul>
                         </div>
                     </div>
+
+                    <Search {...{
+                        filter,
+                        show: searching,
+                        close: () => {
+                            hideSearch();
+                            filter();
+                        },
+                    }}>
+                        <div className={classes.list}>
+                            <ul ref="searching">
+                                {this.renderList()}
+                            </ul>
+                        </div>
+                    </Search>
                 </section>
 
                 <Controller />
