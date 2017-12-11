@@ -1,7 +1,8 @@
 
-import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
+import { autoUpdater } from 'electron-updater';
 import axios from 'axios';
 import _debug from 'debug';
 
@@ -11,6 +12,8 @@ import api from './server/api';
 
 let debug = _debug('dev:main');
 let forceQuit = false;
+let downloading = false;
+let autoUpdaterInit = false;
 let menu;
 let tray;
 let mainWindow;
@@ -44,6 +47,13 @@ let mainMenu = [
             },
             {
                 type: 'separator'
+            },
+            {
+                label: 'Check for updates',
+                accelerator: 'Cmd+U',
+                click() {
+                    checkForUpdates();
+                }
             },
             {
                 label: 'Quit',
@@ -302,6 +312,13 @@ let trayMenu = [
         type: 'separator'
     },
     {
+        label: 'Check for updates',
+        accelerator: 'Cmd+U',
+        click() {
+            checkForUpdates();
+        }
+    },
+    {
         label: 'Fork me on Github',
         click() {
             shell.openExternal('https://github.com/trazyn/ieaseMusic');
@@ -366,6 +383,22 @@ let dockMenu = [
         }
     },
 ];
+
+function checkForUpdates() {
+    if (downloading) {
+        dialog.showMessageBox({
+            type: 'info',
+            buttons: ['OK'],
+            title: pkg.name,
+            message: `Downloading...`,
+            detail: `Please leave the app open, the new version is downloading. You'll receive a new dialog when downloading is finished.`
+        });
+
+        return;
+    }
+
+    autoUpdater.checkForUpdates();
+}
 
 function updateMenu(playing) {
     if (!isOsx) {
@@ -594,3 +627,60 @@ storage.get('preferences', (err, data) => {
         debug(`API server is running with port ${port} 👊`);
     });
 });
+
+autoUpdater.on('update-not-available', e => {
+    if (!autoUpdaterInit) {
+        autoUpdaterInit = true;
+        return;
+    }
+
+    dialog.showMessageBox({
+        type: 'info',
+        buttons: ['OK'],
+        title: pkg.name,
+        message: `${pkg.name} is up to date :)`,
+        detail: `${pkg.name} ${pkg.version} is currently the newest version available, It looks like you're already rocking the latest version!`
+    });
+});
+
+autoUpdater.on('update-available', e => {
+    downloading = true;
+    checkForUpdates();
+});
+
+autoUpdater.on('error', err => {
+    dialog.showMessageBox({
+        type: 'error',
+        buttons: ['Cancel update'],
+        title: pkg.name,
+        message: `Failed to update ${pkg.name} :(`,
+        detail: `An error occurred in retrieving update information, Please try again later.`,
+    });
+
+    downloading = false;
+    console.error(err);
+});
+
+autoUpdater.on('update-downloaded', info => {
+    var { releaseNotes, releaseName } = info;
+    var index = dialog.showMessageBox({
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: pkg.name,
+        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
+        detail: `${releaseName}\n\n${releaseNotes}`
+    });
+    downloading = false;
+
+    if (index === 1) {
+        return;
+    }
+
+    autoUpdater.quitAndInstall();
+    setTimeout(() => {
+        mainWindow = null;
+        app.quit();
+    });
+});
+
+autoUpdater.checkForUpdates();
