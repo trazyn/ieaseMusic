@@ -1,10 +1,20 @@
 
 import API from 'simple-lastfm';
+import axios from 'axios';
 
 const API_KEY = 'c1f9a819c03a17083eba0fe9ee41119e';
 const SECRET = '3742198243c490bf333d0aa615e5d117';
 
 var lastfm;
+
+async function counter() {
+    try {
+        var response = await axios.post('/count');
+        return response;
+    } catch (ex) {
+        // Anti warnning
+    }
+}
 
 async function getSession() {
     var success = await new Promise((resolve, reject) => {
@@ -43,6 +53,8 @@ async function initialize(username, password) {
 async function scrobble(song) {
     var session = await getSession();
 
+    await counter();
+
     if (!session) {
         return;
     }
@@ -58,6 +70,8 @@ async function scrobble(song) {
 
 async function playing(song) {
     var session = await getSession();
+
+    await counter();
 
     if (!session) {
         return;
