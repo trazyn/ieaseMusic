@@ -1,4 +1,6 @@
 
+import colors from 'utils/colors';
+
 export default theme => ({
     container: {
         background: '#fff',
@@ -167,7 +169,14 @@ export default theme => ({
             },
 
             '& span:first-child': {
+                width: 120,
                 textAlign: 'right',
+                transition: '.2s',
+                cursor: 'pointer',
+
+                '&:hover': {
+                    color: colors.pallet.primary,
+                }
             },
 
             '& span:last-child': {
