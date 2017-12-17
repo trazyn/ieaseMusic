@@ -26,6 +26,8 @@ import Switch from 'ui/Switch';
         setHighquality,
         backgrounds,
         setBackgrounds,
+        autoupdate,
+        setAutoupdate,
         lastfm,
         setLastfm,
         connect,
@@ -49,6 +51,8 @@ import Switch from 'ui/Switch';
         setHighquality,
         backgrounds,
         setBackgrounds,
+        autoupdate,
+        setAutoupdate,
         lastfm,
         setLastfm,
         connect,
@@ -96,6 +100,8 @@ class Preferences extends Component {
             highquality,
             setHighquality,
             backgrounds,
+            autoupdate,
+            setAutoupdate,
             lastfm,
             connect,
             connecting,
@@ -176,6 +182,15 @@ class Preferences extends Component {
                             checked={highquality}
                             id="highquality"
                             onChange={e => setHighquality(+e.target.checked)} />
+                    </label>
+
+                    <label htmlFor="autoupdate">
+                        <h4>Auto update</h4>
+
+                        <Switch
+                            checked={autoupdate}
+                            id="autoupdate"
+                            onChange={e => setAutoupdate(+e.target.checked)} />
                     </label>
 
                     <label

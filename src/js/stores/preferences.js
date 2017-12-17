@@ -18,6 +18,7 @@ class Preferences {
     @observable volume = 1;
     @observable port = config.api.port;
     @observable highquality = 1;
+    @observable autoupdate = false;
     @observable lastfm = {
         username: '', // Your last.fm username
         password: '', // Your last.fm password
@@ -36,6 +37,7 @@ class Preferences {
             volume = self.volume,
             highquality = self.highquality,
             backgrounds = theme.playlist.backgrounds,
+            autoupdate = self.autoupdate,
             lastfm = self.lastfm,
         } = preferences;
 
@@ -48,6 +50,7 @@ class Preferences {
         self.volume = +volume || 1;
         self.highquality = +highquality || 0;
         self.backgrounds = backgrounds;
+        self.autoupdate = autoupdate;
         self.lastfm = lastfm;
 
         // Save preferences
@@ -58,7 +61,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, lastfm } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, lastfm } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -70,6 +73,7 @@ class Preferences {
             volume,
             highquality,
             backgrounds,
+            autoupdate,
             lastfm,
         });
 
@@ -122,6 +126,11 @@ class Preferences {
 
     @action setHighquality(highquality) {
         self.highquality = highquality;
+        self.save();
+    }
+
+    @action setAutoupdate(autoupdate) {
+        self.autoupdate = autoupdate;
         self.save();
     }
 
