@@ -618,6 +618,12 @@ storage.get('preferences', (err, data) => {
 
     if (!err) {
         port = data.port || port;
+
+        if (data.autoupdate) {
+            autoUpdater.checkForUpdates();
+        } else {
+            autoUpdaterInit = true;
+        }
     }
 
     axios.defaults.baseURL = `http://localhost:${port}`;
@@ -682,5 +688,3 @@ autoUpdater.on('update-downloaded', info => {
         app.quit();
     });
 });
-
-autoUpdater.checkForUpdates();
