@@ -113,7 +113,7 @@ app.use('/mv', require('../NeteaseCloudMusicApi/router/mv'));
 app.use('/personal_fm', require('../NeteaseCloudMusicApi/router/personal_fm'));
 
 // 推荐歌单
-app.use('/personalized', require('../NeteaseCloudMusicApi/router/personalized'));
+app.use('/personalized', cache('120 minutes', onlyStatus200), require('../NeteaseCloudMusicApi/router/personalized'));
 
 // 推荐dj
 app.use('/personalized/djprogram', require('../NeteaseCloudMusicApi/router/personalized_djprogram'));
@@ -144,10 +144,10 @@ app.use('/playlist/catlist', require('../NeteaseCloudMusicApi/router/playlist_ca
 app.use('/program/recommend', require('../NeteaseCloudMusicApi/router/program_recommend'));
 
 // 获取每日推荐歌曲
-app.use('/recommend/songs', require('../NeteaseCloudMusicApi/router/recommend_songs'));
+app.use('/recommend/songs', cache('120 minutes', onlyStatus200), require('../NeteaseCloudMusicApi/router/recommend_songs'));
 
 // 获取每日推荐歌单
-app.use('/recommend/resource', require('../NeteaseCloudMusicApi/router/recommend_resource'));
+app.use('/recommend/resource', cache('120 minutes', onlyStatus200), require('../NeteaseCloudMusicApi/router/recommend_resource'));
 
 // 取消推荐
 app.use('/recommend/dislike', require('../NeteaseCloudMusicApi/router/recommend_dislike'));
@@ -247,7 +247,7 @@ app.use('/login/cellphone', require('./api/loginCellphone'));
 app.use('/login', require('./api/login'));
 app.use('/count', require('./api/count'));
 
-app.use('/api/home', cache('5 minutes', onlyStatus200), require('./router/home'));
+app.use('/api/home', require('./router/home'));
 app.use('/api/player', require('./router/player'));
 app.use('/api/user', require('./router/user'));
 app.use('/api/artist', require('./router/artist'));
@@ -256,7 +256,7 @@ app.use('/api/playlist', cache('10 minutes', onlyStatus200), require('./router/p
 app.use('/api/fm', require('./router/fm'));
 app.use('/api/search', require('./router/search'));
 app.use('/api/comments', require('./router/comments'));
-app.use('/api/lyrics', require('./router/lyrics'));
+app.use('/api/lyrics', cache('360 minutes'), require('./router/lyrics'));
 
 if (process.env.AUTORUN) {
     console.log(`API Server run with port: ${port}`);
@@ -264,3 +264,4 @@ if (process.env.AUTORUN) {
 }
 
 export default app;
+
