@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
     data,
     cookie,
     (music_req, cookie) => {
-      // console.log(music_req)
+      cookie = cookie.map(x => x.replace("Domain=.music.163.com", ""))
       res.set({
         'Set-Cookie': cookie
       })
