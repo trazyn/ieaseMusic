@@ -16,10 +16,15 @@ router.get('/', (req, res) => {
     data,
     cookie,
     (music_req, cookie) => {
-      cookie = (cookie || []).map(x => x.replace("Domain=.music.163.com", ""))
-      res.set({
-        'Set-Cookie': cookie
-      })
+      if (cookie) {
+        cookie = cookie.filter(x => !x.startsWith('MUSIC_U="";'))
+        cookie = cookie.map(x => x.replace("Domain=.music.163.com", ""))
+
+        res.set({
+          'Set-Cookie': cookie
+        })
+      }
+
       res.send(music_req)
     },
     err => res.status(502).send('fetch error')
