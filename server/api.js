@@ -88,9 +88,6 @@ app.use('/like', require('../NeteaseCloudMusicApi/router/like'));
 
 app.use('/likelist', require('../NeteaseCloudMusicApi/router/likelist'));
 
-// 登录刷新
-app.use('/login/refresh', cache('1 hour', onlyStatus200), require('../NeteaseCloudMusicApi/router/login_refresh'));
-
 // 不明 api
 app.use('/log/web', require('../NeteaseCloudMusicApi/router/logWeb'));
 
@@ -244,6 +241,7 @@ app.use('/unfollow', require('./api/unfollow'));
 app.use('/sub', require('./api/sub'));
 app.use('/unsub', require('./api/unsub'));
 app.use('/login/cellphone', require('./api/loginCellphone'));
+app.use('/login/refresh', cache('1 hour', onlyStatus200), require('./api/login_refresh'));
 app.use('/login', require('./api/login'));
 app.use('/count', require('./api/count'));
 
