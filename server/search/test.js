@@ -4,7 +4,7 @@ import search from './index';
 async function test() {
     var res = {};
     try {
-        res = await search('未接来电', '杨乃文');
+        res = await search('体面', '于文文');
         console.log(res);
     } catch (ex) {
         console.error(ex);

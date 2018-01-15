@@ -23,12 +23,23 @@ async function getSong(mid) {
         return Promise.reject();
     }
 
+    if (file.size_flac) {
+        return {
+            isFlac: true,
+            src: getURL(`F000${mid}.flac`, response.key, guid),
+        };
+    }
+
     if (file.size_320mp3) {
-        return getURL('M800', mid, response.key, guid);
+        return {
+            src: getURL(`M800${mid}.mp3`, response.key, guid),
+        };
     }
 
     if (file.size_128mp3) {
-        return getURL('M500', mid, response.key, guid);
+        return {
+            src: getURL(`M500${mid}.mp3`, response.key, guid),
+        };
     }
 }
 
@@ -52,8 +63,8 @@ async function genKey(mid) {
     return data[0]['file'];
 }
 
-function getURL(perfix, mid, key, guid) {
-    return `http://dl.stream.qqmusic.qq.com/${perfix}${mid}.mp3?vkey=${key}&guid=${guid}&fromtag=30`;
+function getURL(filename, key, guid) {
+    return `http://dl.stream.qqmusic.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
 }
 
 export default async(keyword, artists) => {
@@ -94,7 +105,7 @@ export default async(keyword, artists) => {
         debug('Got a result \n"%O"', e);
 
         try {
-            song.src = await getSong(e.media_mid);
+            song = await getSong(e.media_mid);
         } catch (ex) {
             error('Failed to get song: %O', ex);
             return Promise.reject();
