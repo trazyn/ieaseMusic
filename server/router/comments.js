@@ -7,25 +7,24 @@ const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
 
-router.get('/like/:id/:songid/:liked', async(req, res) => {
+router.get('/like/:id/:songid/:like', async(req, res) => {
     debug('Handle request for /comments/like');
 
     var result = { success: false };
     var id = req.params.id;
     var songid = req.params.songid;
-    var liked = req.params.liked;
+    var like = req.params.like;
 
     debug('Params \'id\': %s', id);
     debug('Params \'songid\': %s', songid);
-    debug('Params \'liked\': %s', liked);
+    debug('Params \'liked\': %s', like);
 
     try {
-        var response = await axios.get(`/comment/like`, {
+        var response = await axios.get(`/thumbsup`, {
             params: {
-                id: songid,
                 cid: id,
-                t: liked,
-                type: 0,
+                tid: `R_SO_4_${songid}`,
+                like: like,
             }
         });
         var data = response.data;
@@ -35,7 +34,7 @@ router.get('/like/:id/:songid/:liked', async(req, res) => {
         } else {
             result = {
                 success: true,
-                liked: !!+liked,
+                liked: !!+like,
             };
         }
     } catch (ex) {
