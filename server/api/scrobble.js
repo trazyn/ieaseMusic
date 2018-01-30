@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
             download: 0,
             end: 'playend',
             id: +songid,
-            source: 'list',
             sourceId: sourceid.toString(),
             time,
             type: 'song',
@@ -25,8 +24,6 @@ router.get('/', (req, res) => {
         }
     }])
   }
-
-  console.log(data)
 
   createWebAPIRequest(
     'music.163.com',
