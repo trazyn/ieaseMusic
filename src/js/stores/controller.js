@@ -216,6 +216,20 @@ class Controller {
             }
         }
     }
+
+    @action async scrobble() {
+        var songid = self.song.id;
+        var sourceid = self.playlist.id;
+        var time = self.song.duration;
+
+        lastfm.scrobble(self.song);
+
+        try {
+            await axios.get(`/api/player/scrobble/${songid}/${sourceid}/${Math.ceil(time / 1000)}`);
+        } catch (ex) {
+            // Anti warnning
+        }
+    }
 }
 
 const self = new Controller();
