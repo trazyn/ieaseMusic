@@ -285,6 +285,42 @@ router.get('/related/:songid/:artistid', cache('10 minutes', onlyStatus200), asy
     });
 });
 
+router.get('/scrobble/:songid/:sourceid/:time', async(req, res) => {
+    debug('Handle request for /player/scrobbler');
+
+    var success = false;
+    var songid = req.params.songid;
+    var sourceid = req.params.sourceid;
+    var time = req.params.time;
+
+    debug('Params \'songid\': %s', songid);
+    debug('Params \'sourceid\': %s', sourceid);
+    debug('Params \'time\': %s', time);
+
+    try {
+        let response = await axios.get('/scrobbler', {
+            params: {
+                songid,
+                sourceid,
+                time,
+            }
+        });
+        let data = response.data;
+
+        success = data.code === 200;
+
+        if (data.code !== 200) {
+            throw data;
+        }
+    } catch (ex) {
+        error('Failed to scrobbler: %O', ex);
+    }
+
+    res.send({
+        success,
+    });
+});
+
 router.get('/:type/:id', async(req, res) => {
     debug('Handle request for /player');
 

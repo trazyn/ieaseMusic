@@ -4,10 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { ipcRenderer } from 'electron';
 
 import helper from 'utils/helper';
-import lastfm from 'utils/lastfm';
 
 @inject(stores => ({
     song: stores.controller.song,
+    scrobble: stores.controller.scrobble,
     next: stores.controller.next,
     play: () => stores.controller.play(stores.controller.song.id),
     playing: stores.controller.playing,
@@ -138,7 +138,7 @@ export default class AudioPlayer extends Component {
                     this.passed = 0, this.progress();
                 }}
                 onEnded={e => {
-                    lastfm.scrobble(song);
+                    this.props.scrobble();
                     this.passed = 0, this.props.next(true);
                 }}
                 onError={e => console.log(e)}

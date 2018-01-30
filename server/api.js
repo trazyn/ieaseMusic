@@ -241,7 +241,7 @@ app.use('/unsub', require('./api/unsub'));
 app.use('/login/cellphone', require('./api/loginCellphone'));
 app.use('/login/refresh', cache('1 hour', onlyStatus200), require('./api/login_refresh'));
 app.use('/login', require('./api/login'));
-app.use('/count', require('./api/count'));
+app.use('/scrobble', require('./api/scrobble'));
 
 app.use('/api/home', require('./router/home'));
 app.use('/api/player', require('./router/player'));
