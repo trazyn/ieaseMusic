@@ -286,7 +286,7 @@ router.get('/related/:songid/:artistid', cache('10 minutes', onlyStatus200), asy
 });
 
 router.get('/scrobble/:songid/:sourceid/:time', async(req, res) => {
-    debug('Handle request for /player/scrobbler');
+    debug('Handle request for /player/scrobble');
 
     var success = false;
     var songid = req.params.songid;
@@ -298,7 +298,7 @@ router.get('/scrobble/:songid/:sourceid/:time', async(req, res) => {
     debug('Params \'time\': %s', time);
 
     try {
-        let response = await axios.get('/scrobbler', {
+        let response = await axios.get('/scrobble', {
             params: {
                 songid,
                 sourceid,
