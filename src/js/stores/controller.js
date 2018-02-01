@@ -224,6 +224,10 @@ class Controller {
 
         lastfm.scrobble(self.song);
 
+        if (!preferences.scrobble) {
+            return;
+        }
+
         try {
             await axios.get(`/api/player/scrobble/${songid}/${sourceid}/${Math.ceil(time / 1000)}`);
         } catch (ex) {
