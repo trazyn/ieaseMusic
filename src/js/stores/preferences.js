@@ -24,6 +24,7 @@ class Preferences {
         password: '', // Your last.fm password
     };
     @observable connecting = false;
+    @observable scrobble = true;
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -38,6 +39,7 @@ class Preferences {
             highquality = self.highquality,
             backgrounds = theme.playlist.backgrounds,
             autoupdate = self.autoupdate,
+            scrobble = self.scrobble,
             lastfm = self.lastfm,
         } = preferences;
 
@@ -51,6 +53,7 @@ class Preferences {
         self.highquality = +highquality || 0;
         self.backgrounds = backgrounds;
         self.autoupdate = autoupdate;
+        self.scrobble = scrobble;
         self.lastfm = lastfm;
 
         // Save preferences
@@ -61,7 +64,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, lastfm } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -74,6 +77,7 @@ class Preferences {
             highquality,
             backgrounds,
             autoupdate,
+            scrobble,
             lastfm,
         });
 
@@ -126,6 +130,11 @@ class Preferences {
 
     @action setHighquality(highquality) {
         self.highquality = highquality;
+        self.save();
+    }
+
+    @action setScrobble(scrobble) {
+        self.scrobble = scrobble;
         self.save();
     }
 

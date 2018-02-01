@@ -28,6 +28,8 @@ import Switch from 'ui/Switch';
         setBackgrounds,
         autoupdate,
         setAutoupdate,
+        scrobble,
+        setScrobble,
         lastfm,
         setLastfm,
         connect,
@@ -53,6 +55,8 @@ import Switch from 'ui/Switch';
         setBackgrounds,
         autoupdate,
         setAutoupdate,
+        scrobble,
+        setScrobble,
         lastfm,
         setLastfm,
         connect,
@@ -102,6 +106,8 @@ class Preferences extends Component {
             backgrounds,
             autoupdate,
             setAutoupdate,
+            scrobble,
+            setScrobble,
             lastfm,
             connect,
             connecting,
@@ -191,6 +197,15 @@ class Preferences extends Component {
                             checked={autoupdate}
                             id="autoupdate"
                             onChange={e => setAutoupdate(+e.target.checked)} />
+                    </label>
+
+                    <label htmlFor="scrobble">
+                        <h4>Scrobble to NeteaseCloud Music</h4>
+
+                        <Switch
+                            checked={scrobble}
+                            id="scrobble"
+                            onChange={e => setScrobble(+e.target.checked)} />
                     </label>
 
                     <label
