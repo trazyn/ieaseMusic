@@ -1,7 +1,7 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import MinifyPlugin from 'babel-minify-webpack-plugin';
+import MinifyPlugin from 'uglifyjs-webpack-plugin';
 import config from './index';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';

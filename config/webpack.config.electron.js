@@ -1,6 +1,6 @@
 
 import webpack from 'webpack';
-import MinifyPlugin from 'babel-minify-webpack-plugin';
+import MinifyPlugin from 'uglifyjs-webpack-plugin';
 import config from './index';
 import baseConfig from './webpack.config.base';
 
