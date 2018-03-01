@@ -25,6 +25,12 @@ class Preferences {
     };
     @observable connecting = false;
     @observable scrobble = true;
+    @observable enginers = {
+        'QQ': true,
+        'Xiami': true,
+        'Kugou': false,
+        'Baidu': true,
+    };
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -41,6 +47,7 @@ class Preferences {
             autoupdate = self.autoupdate,
             scrobble = self.scrobble,
             lastfm = self.lastfm,
+            enginers = self.enginers,
         } = preferences;
 
         self.showTray = !!showTray;
@@ -55,6 +62,7 @@ class Preferences {
         self.autoupdate = autoupdate;
         self.scrobble = scrobble;
         self.lastfm = lastfm;
+        self.enginers = enginers;
 
         // Save preferences
         self.save();
@@ -64,7 +72,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -79,6 +87,7 @@ class Preferences {
             autoupdate,
             scrobble,
             lastfm,
+            enginers,
         });
 
         ipcRenderer.send('update-preferences', {
@@ -169,6 +178,11 @@ class Preferences {
         }
 
         self.connecting = false;
+    }
+
+    @action async setEnginers(enginers) {
+        self.enginers = enginers;
+        self.save();
     }
 }
 

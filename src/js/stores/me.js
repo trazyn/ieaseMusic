@@ -20,18 +20,20 @@ class Me {
         var profile = await storage.get('profile');
 
         if (!profile) {
-            self.profile = {};
-            self.initialized = true;
-            return false;
-        }
+            profile = {};
+        } else {
+            // Cookie expired
+            let response = await axios.get('/login/refresh?' + +Date.now());
 
-        await axios.get('/login/refresh');
+            if (response.data.code === 301) {
+                profile = {};
+                await storage.remove('profile');
+            }
+        }
 
         // App has been initialized
         self.profile = profile;
         self.initialized = true;
-
-        return true;
     }
 
     @action async login(phone, password) {
