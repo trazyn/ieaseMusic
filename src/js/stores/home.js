@@ -16,10 +16,18 @@ class Home {
         if (me.hasLogin()) {
             res = await axios.get(`/api/home/${me.profile.userId}`);
 
+            let favorite = res.data.list[0];
+            let recommend = res.data.list[1];
+
             // Save the songs of red heart
-            me.rocking(res.data.list[0]);
-            // Play the recommend songs
-            controller.setup(res.data.list[1]);
+            me.rocking(favorite);
+
+            if (recommend.length) {
+                // Play the recommend songs
+                controller.setup(recommend);
+            } else {
+                controller.setup(favorite);
+            }
         } else {
             res = await axios.get(`/api/home`);
             controller.setup(res.data.list[0]);

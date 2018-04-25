@@ -119,7 +119,7 @@ async function getLiked(id) {
                 updateTime: liked.updateTime,
                 publishTime: liked.publishTime,
                 link: `/player/0/${liked.id}`,
-                songs: songs.map(e => e.id),
+                songs,
             }];
         }
     } catch (ex) {
