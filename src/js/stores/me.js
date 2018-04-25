@@ -73,7 +73,7 @@ class Me {
         mapping.set('id', likes.id.toString());
 
         likes.songs.map(e => {
-            mapping.set(e, true);
+            mapping.set(e.id, true);
         });
 
         self.likes.replace(mapping);

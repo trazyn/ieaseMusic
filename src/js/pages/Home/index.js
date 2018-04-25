@@ -145,6 +145,10 @@ class Home extends Component {
                         var isLiked = logined && index === 0;
                         var isDaily = logined && index === 1;
 
+                        if (isDaily && e.songs.length === 0) {
+                            return false;
+                        }
+
                         return (
                             <div
                                 className={clazz('clearfix', classes.item)}
