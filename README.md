@@ -33,7 +33,7 @@
 - Modern UI design
 - High quality music(FLAC)
 - Track your listen to Last.fm
-- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music and Kugou music, fixed some bug, update on v1.1.4, basically all the songs can be played 🙊)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music and Kugou music, fixed some bug, update on v1.1.5, basically all the songs can be played 🙊)
 - 就这些吧，编不下去了
 
 ## 海外党网解锁请参考
@@ -47,27 +47,27 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.4/ieaseMusic-1.1.4-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.5/ieaseMusic-1.1.5-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.4/ieaseMusic-1.1.4-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.5/ieaseMusic-1.1.5-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.1.4-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.4/ieaseMusic-1.1.4-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.1.4-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.1.5-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.4/iease-music-1.1.4-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.5/ieaseMusic-1.1.5-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.1.4-x86_64.AppImage
-$ ./iease-music-1.1.4-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.1.5-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.5/iease-music-1.1.5-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.1.5-x86_64.AppImage
+$ ./iease-music-1.1.5-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
