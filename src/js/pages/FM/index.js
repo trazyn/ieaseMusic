@@ -11,6 +11,7 @@ import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
 import ProgressImage from 'ui/ProgressImage';
 import Header from 'components/Header';
+import Controller from 'components/Controller';
 
 @inject(stores => ({
     loading: stores.fm.loading,
@@ -75,12 +76,30 @@ class FM extends Component {
     }
 
     render() {
-        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, song, next, showComments, comments } = this.props;
+        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, songs, song, next, showComments, comments } = this.props;
         var liked = false;
 
         if (loading) {
             return (
                 <Loader show={true} />
+            );
+        }
+
+        if (songs.length === 0) {
+            return (
+                <div>
+                    <div className={classes.unavailable}>
+                        <p>
+                            Oops, Personal FM only available on mainland.
+                        </p>
+
+                        <Link to="/">
+                            Discover Music
+                        </Link>
+                    </div>
+
+                    <Controller />
+                </div>
             );
         }
 
