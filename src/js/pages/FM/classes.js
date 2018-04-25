@@ -8,6 +8,36 @@ export default theme => {
 
         },
 
+        unavailable: {
+            display: 'flex',
+            width: '100vw',
+            height: 'calc(100vh - 50px)',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: 'black',
+
+            '& p': {
+                fontWeight: 100,
+                fontSize: 24,
+                color: colors.pallet.dribbble
+            },
+
+            '& a': {
+                marginTop: 20,
+                padding: '8px 12px',
+                border: 0,
+                fontSize: 14,
+                fontWeight: 'lighter',
+                color: 'white',
+                background: 'transparent',
+                letterSpacing: .5,
+                textTransform: 'uppercase',
+                borderBottom: 'thin solid white',
+                outline: 0,
+            }
+        },
+
         covers: {
             ...perdido.utils.clearFix,
             position: 'fixed',
