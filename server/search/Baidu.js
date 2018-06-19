@@ -24,17 +24,25 @@ export default async(keyword, artists) => {
         debug('Nothing.');
         return Promise.reject();
     }
+
     response = await request({
         uri: 'http://music.baidu.com/data/music/fmlink',
         qs: {
             songIds: song.songid,
             type: 'mp3',
-            rate: '320',
         },
         json: true,
     });
 
     try {
+        if (
+            false
+            || +response.errorCode !== 22000
+            || !response.data.data.songList
+        ) {
+            return Promise.reject();
+        }
+
         song = {
             src: response.data.songList[0].songLink,
         };
