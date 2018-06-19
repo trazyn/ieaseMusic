@@ -1,5 +1,4 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin:Xiami');
@@ -10,7 +9,7 @@ const headers = {
     user_agent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36',
 };
 
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Xiami library.`);
 
     var response = await request({

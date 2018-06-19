@@ -1,11 +1,10 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin:Baidu');
 const error = _debug('dev:plugin:Baidu:error');
 
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Baidu library.`);
 
     var response = await request({
@@ -35,10 +34,10 @@ export default async(keyword, artists) => {
     });
 
     try {
+        debug('%o', response);
         if (
             false
             || +response.errorCode !== 22000
-            || !response.data.data.songList
         ) {
             return Promise.reject();
         }

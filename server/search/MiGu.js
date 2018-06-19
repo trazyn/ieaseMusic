@@ -1,50 +1,29 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin:MiGu');
 const error = _debug('dev:plugin:MiGu:error');
 
-async function getURL(id) {
-    var response = await request({
-        uri: 'http://m.music.migu.cn/music-h5/player/findSong.json',
-        qs: {
-            copyrightId: id
-        },
-        json: true,
-    });
-
-    if (+response.resultCode !== 200) {
-        debug('Nothing.');
-        return Promise.reject();
-    } else {
-        return response.data.mp3;
-    }
-}
-
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use MiGu library.`);
 
     var response = await request({
-        uri: 'http://m.music.migu.cn/music-h5/search/searchAll.json',
+        uri: 'http://m.10086.cn/migu/remoting/scr_search_tag',
         qs: {
-            keyWord: [keyword].concat(artists.split(',')).join('+'),
-            type: 'song',
-            pageNo: 1,
-            pageSize: 20,
+            keyword: [keyword].concat(artists.split(',')).join('+'),
+            type: 2,
+            rows: 20,
+            pgc: 1,
         },
         json: true,
     });
 
-    var data = response.data || {};
-
-    if (+response.resultCode !== 200
-        || +data.count === 0) {
+    if (response.success !== true || response.musics.length === 0) {
         error('Nothing.');
         return Promise.reject();
     }
 
-    for (let e of data.list) {
+    for (let e of response.musics) {
         if (artists.split(',').find(artist => e.singerName.indexOf(artist)) === -1) {
             continue;
         }
@@ -52,7 +31,7 @@ export default async(keyword, artists) => {
         debug('Got a result \n"%O"', e);
         try {
             let song = {
-                src: await getURL(e.fullSongCopyrightId)
+                src: e.mp3
             };
 
             debug('%O', song);

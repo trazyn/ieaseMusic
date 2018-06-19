@@ -1,15 +1,16 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin:QQ');
 const error = _debug('dev:plugin:QQ:error');
 
+let rp;
+
 async function getSong(mid) {
     var currentMs = (new Date()).getUTCMilliseconds();
     var guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
     var file = await genKey(mid);
-    var response = await request({
+    var response = await rp({
         uri: 'https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg',
         qs: {
             json: 3,
@@ -44,7 +45,7 @@ async function getSong(mid) {
 }
 
 async function genKey(mid) {
-    var response = await request({
+    var response = await rp({
         uri: 'http://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg',
         qs: {
             songmid: mid,
@@ -67,10 +68,12 @@ function getURL(filename, key, guid) {
     return `http://dl.stream.qqmusic.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
 }
 
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use QQ library.`);
 
-    var response = await request({
+    rp = request;
+
+    var response = await rp({
         uri: 'http://c.y.qq.com/soso/fcgi-bin/search_cp',
         qs: {
             w: [keyword].concat(artists.split(',')).join('+'),

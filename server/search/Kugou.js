@@ -1,15 +1,16 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 import md5 from 'md5';
 
 const debug = _debug('dev:plugin:Kugou');
 const error = _debug('dev:plugin:Kugou:error');
 
+let rp;
+
 async function getURL(hash) {
     var key = md5(`${hash}kgcloud`);
 
-    var response = await request({
+    var response = await rp({
         url: `http://trackercdn.kugou.com/i/?acceptMp3=1&cmd=4&pid=6&hash=${hash}&key=${key}`,
         json: true,
     });
@@ -23,10 +24,12 @@ async function getURL(hash) {
     }
 }
 
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Kugou library.`);
 
-    var response = await request({
+    rp = request;
+
+    var response = await rp({
         uri: 'http://mobilecdn.kugou.com/api/v3/search/song',
         qs: {
             format: 'json',
