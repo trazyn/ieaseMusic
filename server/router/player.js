@@ -125,6 +125,11 @@ async function getFlac(name, artists) {
             from: 0,
         }
     });
+
+    if (response.data.errno) {
+        return false;
+    }
+
     var songs = response.data.data.song;
     var song = songs.find(e => artists.indexOf(e.artistname) > -1);
 
@@ -137,6 +142,10 @@ async function getFlac(name, artists) {
             type: 'flac',
         },
     });
+
+    if (!response.data.data.songList) {
+        return false;
+    }
 
     debug('FLAC: %O', response.data.data.songList);
     return response.data.data.songList[0].songLink;
@@ -249,8 +258,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             debug('Search: %s, %s', name, artists);
             song = await search(name, artists);
         } catch (ex) {
-            error('Failed to search third party music library:\n%O', ex);
-            error(ex[0].config.headers);
+            error('404 - "%s - %s"\n<<<<<<\n\r', name, artists);
         }
     }
 
