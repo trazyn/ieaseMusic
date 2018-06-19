@@ -27,7 +27,8 @@ class Preferences {
     @observable scrobble = true;
     @observable enginers = {
         'QQ': true,
-        'Xiami': true,
+        'MiGu': true,
+        'Xiami': false,
         'Kugou': false,
         'Baidu': true,
     };
