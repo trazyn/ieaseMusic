@@ -250,6 +250,14 @@ class Preferences extends Component {
                                 id="enginerOfQQ"
                                 onChange={e => this.setEnginers({ 'QQ': e.target.checked })} />
                         </label>
+                        <label htmlFor="enginerOfMiGu">
+                            <h4>咪咕音乐</h4>
+
+                            <Switch
+                                checked={enginers['MiGu']}
+                                id="enginerOfMiGu"
+                                onChange={e => this.setEnginers({ 'MiGu': e.target.checked })} />
+                        </label>
                         <label htmlFor="enginerOfXiami">
                             <h4>虾米音乐</h4>
 
