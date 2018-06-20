@@ -11,36 +11,70 @@ async function getSong(mid) {
     var guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
     var file = await genKey(mid);
     var response = await rp({
-        uri: 'https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg',
+        uri: 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',
         qs: {
-            json: 3,
+            cid: '205361747',
+            uin: 0,
+            songmid: mid,
+            filename: genFilename(file, mid),
             format: 'json',
             guid: guid.toString(),
-        }
+        },
     });
 
-    if (response.code !== 0) {
+    if (
+        false
+        || response.code !== 0
+        || response.data.items.length === 0
+    ) {
+        return Promise.reject();
+    }
+
+    const key = response.data.items[0].vkey;
+
+    if (!key) {
+        error('Invalid key.');
         return Promise.reject();
     }
 
     if (file.size_flac) {
         return {
             isFlac: true,
-            src: getURL(`F000${mid}.flac`, response.key, guid),
+            src: getURL(`F000${mid}.flac`, key, guid),
         };
     }
 
     if (file.size_320mp3) {
         return {
-            src: getURL(`M800${mid}.mp3`, response.key, guid),
+            src: getURL(`M800${mid}.mp3`, key, guid),
         };
     }
 
     if (file.size_128mp3) {
         return {
-            src: getURL(`M500${mid}.mp3`, response.key, guid),
+            src: getURL(`M500${mid}.mp3`, key, guid),
         };
     }
+}
+
+function genFilename(file, mid) {
+    var prefix = 'C400';
+
+    switch (true) {
+        case file.size_flac:
+            prefix = 'F000';
+            break;
+
+        case file.size_320mp3:
+            prefix = 'M800';
+            break;
+
+        case file.size_128mp3:
+            prefix = 'M500';
+            break;
+    }
+
+    return `${prefix}${mid}.m4a`;
 }
 
 async function genKey(mid) {
@@ -49,7 +83,7 @@ async function genKey(mid) {
         qs: {
             songmid: mid,
             format: 'json',
-        }
+        },
     });
     var data = response.data;
 
@@ -83,7 +117,7 @@ export default async(request, keyword, artists) => {
             format: 'json',
             inCharset: 'utf8',
             outCharset: 'utf-8'
-        }
+        },
     });
 
     var data = response.data;
@@ -98,11 +132,7 @@ export default async(request, keyword, artists) => {
         let song = {};
 
         // Match the artists
-        if (
-            e.singer.findIndex(
-                e => artists.indexOf(e.name) !== -1
-            ) === -1
-        ) {
+        if (e.singer.find(e => artists.indexOf(e.name) === -1)) {
             continue;
         }
 
