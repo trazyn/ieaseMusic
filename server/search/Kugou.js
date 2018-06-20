@@ -1,5 +1,6 @@
 
 import _debug from 'debug';
+import chalk from 'chalk';
 import md5 from 'md5';
 
 const debug = _debug('dev:plugin:Kugou');
@@ -16,7 +17,7 @@ async function getURL(hash) {
 
     if (response.error
         || +response.status !== 1) {
-        debug('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return false;
     } else {
         return response;
@@ -24,7 +25,7 @@ async function getURL(hash) {
 }
 
 export default async(request, keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use Kugou library.`);
+    debug(chalk.black.bgGreen('💊  Loaded Kugou music.'));
 
     rp = request;
 
@@ -43,7 +44,7 @@ export default async(request, keyword, artists) => {
 
     if (response.status !== 1
         || data.info.length === 0) {
-        error('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -56,7 +57,9 @@ export default async(request, keyword, artists) => {
             continue;
         }
 
-        debug('Got a result \n"%O"', e);
+        debug(chalk.black.bgGreen('🚚  Result >>>'));
+        debug(e);
+        debug(chalk.black.bgGreen('🚚  <<<'));
         try {
             let song = await getURL(e['320hash'] || e['hash']);
 
@@ -71,5 +74,6 @@ export default async(request, keyword, artists) => {
         }
     }
 
+    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject();
 };

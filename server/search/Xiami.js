@@ -1,5 +1,6 @@
 
 import _debug from 'debug';
+import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:Xiami');
 const error = _debug('dev:plugin:Xiami:error');
@@ -10,7 +11,7 @@ const headers = {
 };
 
 export default async(request, keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use Xiami library.`);
+    debug(chalk.black.bgGreen('💊  Loaded Xiami music.'));
 
     var response = await request({
         uri: 'http://api.xiami.com/web',
@@ -30,7 +31,7 @@ export default async(request, keyword, artists) => {
 
     if (response.state !== 0
         || data.songs.length === 0) {
-        error('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -50,10 +51,14 @@ export default async(request, keyword, artists) => {
         if (!song.src) {
             return Promise.reject();
         } else {
-            debug('Got a result \n"%O"', e);
+            debug(chalk.black.bgGreen('🚚  Result >>>'));
+            debug(e);
+            debug(chalk.black.bgGreen('🚚  <<<'));
+
             return song;
         }
     }
 
+    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject();
 };
