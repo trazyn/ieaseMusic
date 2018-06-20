@@ -8,31 +8,31 @@ const error = _debug('dev:plugin:Baidu:error');
 export default async(request, keyword, artists) => {
     debug(chalk.black.bgGreen('💊  Loaded Baidu music.'));
 
-    var response = await request({
-        uri: 'http://sug.music.baidu.com/info/suggestion',
-        qs: {
-            word: [keyword].concat(artists.split(',')).join('+'),
-            version: 2,
-            from: 0,
-        },
-    });
-    var songs = (response.data || {}).song;
-    var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
-
-    if (!song) {
-        error(chalk.black.bgRed('🚧  Nothing.'));
-        return Promise.reject();
-    }
-
-    response = await request({
-        uri: 'http://music.taihe.com/data/music/fmlink',
-        qs: {
-            songIds: song.songid,
-            type: 'mp3',
-        },
-    });
-
     try {
+        var response = await request({
+            uri: 'http://sug.music.baidu.com/info/suggestion',
+            qs: {
+                word: [keyword].concat(artists.split(',')).join('+'),
+                version: 2,
+                from: 0,
+            },
+        });
+        var songs = (response.data || {}).song;
+        var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
+
+        if (!song) {
+            error(chalk.black.bgRed('🚧  Nothing.'));
+            return Promise.reject();
+        }
+
+        response = await request({
+            uri: 'http://music.taihe.com/data/music/fmlink',
+            qs: {
+                songIds: song.songid,
+                type: 'mp3',
+            },
+        });
+
         if (
             false
             || +response.errorCode !== 22000
@@ -50,7 +50,7 @@ export default async(request, keyword, artists) => {
             return Promise.reject();
         } else {
             debug(chalk.black.bgGreen('🚚  Result >>>'));
-            debug(response);
+            debug(response.data.songList[0]);
             debug(chalk.black.bgGreen('🚚  <<<'));
         }
     } catch (ex) {
