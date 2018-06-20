@@ -1,11 +1,10 @@
 
-import request from 'request-promise-native';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin:Baidu');
 const error = _debug('dev:plugin:Baidu:error');
 
-export default async(keyword, artists) => {
+export default async(request, keyword, artists) => {
     debug(`Search '${keyword} - ${artists}' use Baidu library.`);
 
     var response = await request({
@@ -15,7 +14,6 @@ export default async(keyword, artists) => {
             version: 2,
             from: 0,
         },
-        json: true,
     });
     var songs = (response.data || {}).song;
     var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
@@ -24,17 +22,24 @@ export default async(keyword, artists) => {
         debug('Nothing.');
         return Promise.reject();
     }
+
     response = await request({
-        uri: 'http://music.baidu.com/data/music/fmlink',
+        uri: 'http://music.taihe.com/data/music/fmlink',
         qs: {
             songIds: song.songid,
             type: 'mp3',
-            rate: '320',
         },
-        json: true,
     });
 
     try {
+        if (
+            false
+            || +response.errorCode !== 22000
+            || response.data.songList.length === 0
+        ) {
+            return Promise.reject();
+        }
+
         song = {
             src: response.data.songList[0].songLink,
         };

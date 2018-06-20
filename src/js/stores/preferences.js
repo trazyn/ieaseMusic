@@ -27,10 +27,12 @@ class Preferences {
     @observable scrobble = true;
     @observable enginers = {
         'QQ': true,
-        'Xiami': true,
+        'MiGu': true,
+        'Xiami': false,
         'Kugou': false,
         'Baidu': true,
     };
+    @observable proxy = '';
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -48,6 +50,7 @@ class Preferences {
             scrobble = self.scrobble,
             lastfm = self.lastfm,
             enginers = self.enginers,
+            proxy = self.proxy,
         } = preferences;
 
         self.showTray = !!showTray;
@@ -63,6 +66,7 @@ class Preferences {
         self.scrobble = scrobble;
         self.lastfm = lastfm;
         self.enginers = enginers;
+        self.proxy = proxy;
 
         // Save preferences
         self.save();
@@ -72,7 +76,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -88,12 +92,14 @@ class Preferences {
             scrobble,
             lastfm,
             enginers,
+            proxy,
         });
 
         ipcRenderer.send('update-preferences', {
             playing: controller.playing,
             showTray,
             alwaysOnTop,
+            proxy,
         });
     }
 
@@ -159,6 +165,15 @@ class Preferences {
         }
 
         self.port = port;
+        self.save();
+    }
+
+    @action setProxy(proxy) {
+        if (!/^http(s)?:\/\/\w+/i.test(proxy)) {
+            proxy = '';
+        }
+
+        self.proxy = proxy;
         self.save();
     }
 

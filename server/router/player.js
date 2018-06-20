@@ -4,6 +4,7 @@ import express from 'express';
 import apicache from 'apicache'
 import axios from 'axios';
 import _debug from 'debug';
+import chalk from 'chalk';
 import search from '../search';
 /* eslint-enable */
 
@@ -118,28 +119,46 @@ async function getAlbumBySong(id) {
 }
 
 async function getFlac(name, artists) {
-    var response = await axios.get('http://sug.music.baidu.com/info/suggestion', {
-        params: {
-            word: [name].concat(artists.split(',')).join('+'),
-            version: 2,
-            from: 0,
+    var response = await axios.get(
+        'http://sug.music.baidu.com/info/suggestion',
+        {
+            params: {
+                word: [name].concat(artists.split(',')).join('+'),
+                version: 2,
+                from: 0,
+            }
         }
-    });
+    );
+
+    if (response.data.errno) {
+        return false;
+    }
+
     var songs = response.data.data.song;
     var song = songs.find(e => artists.indexOf(e.artistname) > -1);
 
     if (!song) {
         return false;
     }
-    response = await axios.get('http://music.baidu.com/data/music/fmlink', {
-        params: {
-            songIds: song.songid,
-            type: 'flac',
-        },
-    });
 
-    debug('FLAC: %O', response.data.data.songList);
-    return response.data.data.songList[0].songLink;
+    var rp = require('request-promise-native');
+
+    response = await rp(
+        {
+            uri: 'http://music.taihe.com/data/music/fmlink',
+            qs: {
+                songIds: song.songid,
+                type: 'flac',
+            },
+            json: true,
+        }
+    );
+
+    if (+response.errorCode !== 22000 || !response.data.songList) {
+        return false;
+    }
+
+    return response.data.songList[0].songLink;
 }
 
 router.get('/subscribe/:id', async(req, res) => {
@@ -246,19 +265,16 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
     } catch (ex) {
         try {
             // Search from other source
-            debug('Search: %s, %s', name, artists);
+            debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
             song = await search(name, artists);
         } catch (ex) {
-            error('Failed to search third party music library:\n%O', ex);
-            error(ex[0].config.headers);
+            debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
         }
     }
 
-    debug('Resolve song: %O', song);
-
-    res.send({
-        song,
-    });
+    song = song || {};
+    debug(chalk.blue.underline.bold(`⚡  Playing: ${song.src}`));
+    res.send({ song });
 });
 
 router.get('/related/:songid/:artistid', cache('10 minutes', onlyStatus200), async(req, res) => {
