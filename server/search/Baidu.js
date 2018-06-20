@@ -14,7 +14,6 @@ export default async(request, keyword, artists) => {
             version: 2,
             from: 0,
         },
-        json: true,
     });
     var songs = (response.data || {}).song;
     var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
@@ -25,19 +24,18 @@ export default async(request, keyword, artists) => {
     }
 
     response = await request({
-        uri: 'http://music.baidu.com/data/music/fmlink',
+        uri: 'http://music.taihe.com/data/music/fmlink',
         qs: {
             songIds: song.songid,
             type: 'mp3',
         },
-        json: true,
     });
 
     try {
-        debug('%o', response);
         if (
             false
             || +response.errorCode !== 22000
+            || response.data.songList.length === 0
         ) {
             return Promise.reject();
         }
