@@ -11,6 +11,7 @@ import config from './config';
 import api from './server/api';
 
 let debug = _debug('dev:main');
+let error = _debug('dev:main:error');
 let forceQuit = false;
 let downloading = false;
 let autoUpdaterInit = false;
@@ -543,8 +544,15 @@ const createMainWindow = () => {
     });
 
     // Show/Hide menu icon
-    ipcMain.on('update-preferences', (event, args) => {
+    ipcMain.on('update-preferences', (event, args = {}) => {
         mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
+        mainWindow.webContents.session.setProxy(
+            {
+                proxyRules: args.proxy,
+                proxyBypassRules: 'localhost'
+            },
+            () => debug('Apply proxy: %s', args.proxy)
+        );
 
         if (!args.showTray) {
             if (tray) {
@@ -664,7 +672,7 @@ autoUpdater.on('error', err => {
     });
 
     downloading = false;
-    console.error(err);
+    error(err);
 });
 
 autoUpdater.on('update-downloaded', info => {

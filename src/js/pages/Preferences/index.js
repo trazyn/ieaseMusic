@@ -36,6 +36,8 @@ import Switch from 'ui/Switch';
         connecting,
         enginers,
         setEnginers,
+        proxy,
+        setProxy,
     } = stores.preferences;
 
     return {
@@ -65,6 +67,8 @@ import Switch from 'ui/Switch';
         connecting,
         enginers,
         setEnginers,
+        proxy,
+        setProxy,
     };
 })
 @observer
@@ -120,6 +124,8 @@ class Preferences extends Component {
             connect,
             connecting,
             enginers,
+            proxy,
+            setProxy,
         } = this.props;
 
         return (
@@ -235,6 +241,23 @@ class Preferences extends Component {
                                 onBlur={ev => setPort(+ev.target.value)}
                                 placeholder="1000 ~ 65535"
                                 type="number" />
+                        </label>
+
+                        <label
+                            style={{
+                                display: 'block',
+                            }}>
+                            <div>
+                                <h4>HTTP proxy</h4>
+                                <p>Need restart app.</p>
+                            </div>
+
+                            <input
+                                className={classes.textInput}
+                                defaultValue={proxy}
+                                onBlur={ev => setProxy(ev.target.value)}
+                                placeholder="http://your.proxy.com:port"
+                            />
                         </label>
                     </article>
 
