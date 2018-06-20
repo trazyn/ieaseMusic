@@ -5,9 +5,6 @@ import MiGu from './MiGu';
 import Kugou from './Kugou';
 import Baidu from './Baidu';
 import Xiami from './Xiami';
-import _debug from 'debug';
-
-const debug = _debug('dev:plugin');
 
 async function getPreferences() {
     return new Promise(resolve => {
@@ -21,7 +18,7 @@ export default async(keyword, artists) => {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
     var rpOptions = {
-        timeout: 3000,
+        timeout: 5000,
         json: true,
     };
     var plugins = [];
@@ -41,34 +38,28 @@ export default async(keyword, artists) => {
             rpOptions,
             {
                 proxy: preferences.proxy,
-                strictSSL: false
             }
         );
     }
 
     if (enginers['QQ']) {
         plugins.push(QQ);
-        debug('Loaded plugin QQ');
     }
 
     if (enginers['MiGu']) {
         plugins.push(MiGu);
-        debug('Loaded plugin MiGu');
     }
 
     if (enginers['Xiami']) {
         plugins.push(Xiami);
-        debug('Loaded plugin Xiami');
     }
 
     if (enginers['Kugou']) {
         plugins.push(Kugou);
-        debug('Loaded plugin Kugou');
     }
 
     if (enginers['Baidu']) {
         plugins.push(Baidu);
-        debug('Loaded plugin Baidu');
     }
 
     var rp = require('request-promise-native').defaults(rpOptions);
