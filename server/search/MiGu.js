@@ -14,8 +14,7 @@ export default async(request, keyword, artists) => {
             type: 2,
             rows: 20,
             pgc: 1,
-        },
-        json: true,
+        }
     });
 
     if (response.success !== true || response.musics.length === 0) {
@@ -24,21 +23,18 @@ export default async(request, keyword, artists) => {
     }
 
     for (let e of response.musics) {
-        if (artists.split(',').find(artist => e.singerName.indexOf(artist)) === -1) {
-            continue;
-        }
+        if (
+            artists.split(',').find(
+                artist => e.singerName.indexOf(artist) !== -1
+            )
+        ) {
+            debug('Got a result \n"%O"', e);
 
-        debug('Got a result \n"%O"', e);
-        try {
-            let song = {
+            return {
                 src: e.mp3
             };
-
-            debug('%O', song);
-            return song;
-        } catch (ex) {
-            error('Failed to get song: %O', ex);
-            return Promise.reject();
         }
     }
+
+    return Promise.reject();
 };
