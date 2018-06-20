@@ -36,6 +36,8 @@ import Switch from 'ui/Switch';
         connecting,
         enginers,
         setEnginers,
+        proxy,
+        setProxy,
     } = stores.preferences;
 
     return {
@@ -65,6 +67,8 @@ import Switch from 'ui/Switch';
         connecting,
         enginers,
         setEnginers,
+        proxy,
+        setProxy,
     };
 })
 @observer
@@ -120,6 +124,8 @@ class Preferences extends Component {
             connect,
             connecting,
             enginers,
+            proxy,
+            setProxy,
         } = this.props;
 
         return (
@@ -236,6 +242,23 @@ class Preferences extends Component {
                                 placeholder="1000 ~ 65535"
                                 type="number" />
                         </label>
+
+                        <label
+                            style={{
+                                display: 'block',
+                            }}>
+                            <div>
+                                <h4>HTTP proxy</h4>
+                                <p>Need restart app.</p>
+                            </div>
+
+                            <input
+                                className={classes.textInput}
+                                defaultValue={proxy}
+                                onBlur={ev => setProxy(ev.target.value)}
+                                placeholder="http://your.proxy.com:port"
+                            />
+                        </label>
                     </article>
 
                     <article>
@@ -249,6 +272,14 @@ class Preferences extends Component {
                                 checked={enginers['QQ']}
                                 id="enginerOfQQ"
                                 onChange={e => this.setEnginers({ 'QQ': e.target.checked })} />
+                        </label>
+                        <label htmlFor="enginerOfMiGu">
+                            <h4>咪咕音乐</h4>
+
+                            <Switch
+                                checked={enginers['MiGu']}
+                                id="enginerOfMiGu"
+                                onChange={e => this.setEnginers({ 'MiGu': e.target.checked })} />
                         </label>
                         <label htmlFor="enginerOfXiami">
                             <h4>虾米音乐</h4>
