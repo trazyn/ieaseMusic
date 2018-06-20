@@ -8,9 +8,6 @@ import Xiami from './Xiami';
 import _debug from 'debug';
 
 const debug = _debug('dev:plugin');
-const _rpOptions = {
-    timeout: 3000,
-};
 
 async function getPreferences() {
     return new Promise(resolve => {
@@ -23,8 +20,11 @@ async function getPreferences() {
 export default async(keyword, artists) => {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
+    var rpOptions = {
+        timeout: 3000,
+        json: true,
+    };
     var plugins = [];
-    var rpOptions = {};
 
     if (!enginers) {
         enginers = {
@@ -36,12 +36,11 @@ export default async(keyword, artists) => {
         };
     }
 
-    if (!preferences.proxy) {
-        rpOptions = Object.assign(
-            {},
-            _rpOptions,
+    if (preferences.proxy) {
+        Object.assign(
+            rpOptions,
             {
-                proxy: 'http://127.0.0.1:1087',
+                proxy: preferences.proxy,
                 strictSSL: false
             }
         );
@@ -71,8 +70,6 @@ export default async(keyword, artists) => {
         plugins.push(Baidu);
         debug('Loaded plugin Baidu');
     }
-
-    debug('Plugin has loaded, search: \'%s\', \'%s\'', keyword, artists);
 
     var rp = require('request-promise-native').defaults(rpOptions);
 

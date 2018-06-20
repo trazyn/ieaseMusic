@@ -15,11 +15,11 @@ async function getURL(hash) {
     });
 
     if (response.error
-        || response.status !== 1) {
+        || +response.status !== 1) {
         debug('Nothing.');
-        return Promise.reject();
+        return false;
     } else {
-        return response.url;
+        return response;
     }
 }
 
@@ -58,11 +58,13 @@ export default async(request, keyword, artists) => {
 
         debug('Got a result \n"%O"', e);
         try {
-            let song = {
-                src: await getURL(e['320hash'] || e['hash'])
-            };
+            let song = await getURL(e['320hash'] || e['hash']);
 
-            return song;
+            if (song) {
+                return {
+                    src: song.url
+                };
+            }
         } catch (ex) {
             error('Failed to get song: %O', ex);
             return Promise.reject();
