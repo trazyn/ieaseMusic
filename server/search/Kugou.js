@@ -29,38 +29,39 @@ export default async(request, keyword, artists) => {
 
     rp = request;
 
-    var response = await rp({
-        uri: 'http://mobilecdn.kugou.com/api/v3/search/song',
-        qs: {
-            format: 'json',
-            keyword: [keyword].concat(artists.split(',')).join('+'),
-            page: 1,
-            pagesize: 1,
-            showtype: 1,
-        },
-    });
+    try {
+        var response = await rp({
+            uri: 'http://mobilecdn.kugou.com/api/v3/search/song',
+            qs: {
+                format: 'json',
+                keyword: [keyword].concat(artists.split(',')).join('+'),
+                page: 1,
+                pagesize: 1,
+                showtype: 1,
+            },
+        });
 
-    var data = response.data;
+        var data = response.data;
 
-    if (response.status !== 1
-        || data.info.length === 0) {
-        error(chalk.black.bgRed('🚧  Nothing.'));
-        return Promise.reject();
-    }
-
-    for (let e of data.info) {
-        if (
-            artists.split(',').findIndex(
-                artist => e.singername.indexOf(artist) > -1
-            ) === -1
-        ) {
-            continue;
+        if (response.status !== 1
+            || data.info.length === 0) {
+            error(chalk.black.bgRed('🚧  Nothing.'));
+            return Promise.reject();
         }
 
-        debug(chalk.black.bgGreen('🚚  Result >>>'));
-        debug(e);
-        debug(chalk.black.bgGreen('🚚  <<<'));
-        try {
+        for (let e of data.info) {
+            if (
+                artists.split(',').findIndex(
+                    artist => e.singername.indexOf(artist) > -1
+                ) === -1
+            ) {
+                continue;
+            }
+
+            debug(chalk.black.bgGreen('🚚  Result >>>'));
+            debug(e);
+            debug(chalk.black.bgGreen('🚚  <<<'));
+
             let song = await getURL(e['320hash'] || e['hash']);
 
             if (song) {
@@ -68,10 +69,10 @@ export default async(request, keyword, artists) => {
                     src: song.url
                 };
             }
-        } catch (ex) {
-            error('Failed to get song: %O', ex);
-            return Promise.reject();
         }
+    } catch (ex) {
+        error('Failed to get song: %O', ex);
+        return Promise.reject();
     }
 
     error(chalk.black.bgRed('🈚  Not Matched.'));
