@@ -1,11 +1,12 @@
 
 import _debug from 'debug';
+import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:Baidu');
 const error = _debug('dev:plugin:Baidu:error');
 
 export default async(request, keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use Baidu library.`);
+    debug(chalk.black.bgGreen('💊  Loaded Baidu music.'));
 
     var response = await request({
         uri: 'http://sug.music.baidu.com/info/suggestion',
@@ -19,7 +20,7 @@ export default async(request, keyword, artists) => {
     var song = (songs || []).find(e => artists.indexOf(e.artistname) > -1);
 
     if (!song) {
-        debug('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -37,6 +38,7 @@ export default async(request, keyword, artists) => {
             || +response.errorCode !== 22000
             || response.data.songList.length === 0
         ) {
+            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject();
         }
 
@@ -47,7 +49,9 @@ export default async(request, keyword, artists) => {
         if (!song.src) {
             return Promise.reject();
         } else {
-            debug('Got a result \n"%O"', song);
+            debug(chalk.black.bgGreen('🚚  Result >>>'));
+            debug(response);
+            debug(chalk.black.bgGreen('🚚  <<<'));
         }
     } catch (ex) {
         // Anti-warnning

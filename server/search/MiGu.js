@@ -1,11 +1,12 @@
 
 import _debug from 'debug';
+import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:MiGu');
 const error = _debug('dev:plugin:MiGu:error');
 
 export default async(request, keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use MiGu library.`);
+    debug(chalk.black.bgGreen('💊  Loaded MiGu music.'));
 
     var response = await request({
         uri: 'http://m.10086.cn/migu/remoting/scr_search_tag',
@@ -18,7 +19,7 @@ export default async(request, keyword, artists) => {
     });
 
     if (response.success !== true || response.musics.length === 0) {
-        error('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -28,7 +29,9 @@ export default async(request, keyword, artists) => {
                 artist => e.singerName.indexOf(artist) !== -1
             )
         ) {
-            debug('Got a result \n"%O"', e);
+            debug(chalk.black.bgGreen('🚚  Result >>>'));
+            debug(e);
+            debug(chalk.black.bgGreen('🚚  <<<'));
 
             return {
                 src: e.mp3
@@ -36,5 +39,6 @@ export default async(request, keyword, artists) => {
         }
     }
 
+    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject();
 };

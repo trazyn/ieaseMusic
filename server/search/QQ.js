@@ -1,5 +1,6 @@
 
 import _debug from 'debug';
+import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:QQ');
 const error = _debug('dev:plugin:QQ:error');
@@ -33,7 +34,7 @@ async function getSong(mid) {
     const key = response.data.items[0].vkey;
 
     if (!key) {
-        error('Invalid key.');
+        error(chalk.black.bgRed('🚧 Invalid Key.'));
         return Promise.reject();
     }
 
@@ -89,7 +90,7 @@ async function genKey(mid) {
 
     if (response.code !== 0
         || data.length === 0) {
-        debug('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -101,7 +102,7 @@ function getURL(filename, key, guid) {
 }
 
 export default async(request, keyword, artists) => {
-    debug(`Search '${keyword} - ${artists}' use QQ library.`);
+    debug(chalk.black.bgGreen('💊  Loaded QQ music.'));
 
     rp = request;
 
@@ -124,7 +125,7 @@ export default async(request, keyword, artists) => {
 
     if (response.code !== 0
         || data.song.list.length === 0) {
-        debug('Nothing.');
+        error(chalk.black.bgRed('🚧  Nothing.'));
         return Promise.reject();
     }
 
@@ -136,17 +137,20 @@ export default async(request, keyword, artists) => {
             continue;
         }
 
-        debug('Got a result \n"%O"', e);
-
         try {
             song = await getSong(e.media_mid);
+
+            debug(chalk.black.bgGreen('🚚  Result >>>'));
+            debug(e);
+            debug(chalk.black.bgGreen('🚚  <<<'));
         } catch (ex) {
             error('Failed to get song: %O', ex);
             return Promise.reject();
         }
 
-        debug('%O', song);
-
         return song;
     }
+
+    error(chalk.black.bgRed('🈚  Not Matched.'));
+    return Promise.reject();
 };
