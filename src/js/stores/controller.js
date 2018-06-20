@@ -13,6 +13,9 @@ const PLAYER_SHUFFLE = 0;
 const PLAYER_REPEAT = 1;
 const PLAYER_LOOP = 2;
 const MODES = [PLAYER_SHUFFLE, PLAYER_REPEAT, PLAYER_LOOP];
+const CancelToken = axios.CancelToken;
+
+let cancel;
 
 class Controller {
     @observable playing = false;
@@ -93,14 +96,29 @@ class Controller {
     }
 
     @action async resolveSong() {
-        var song = self.song;
-        var response = await axios.get(
-            `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date()
-        );
-        var data = response.data.song;
+        // Cancel the previous request
+        cancel && cancel();
+        self.stop();
 
-        if (!data.src) {
-            console.error('Bad audio src.');
+        var song = self.song;
+
+        try {
+            var response = await axios.get(
+                `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date(),
+                {
+                    timeout: 5000,
+                    cancelToken: new CancelToken(c => {
+                        // An executor function receives a cancel function as a parameter
+                        cancel = c;
+                    })
+                }
+            );
+            var data = response.data.song;
+
+            if (!data.src) {
+                throw Error('Bad audio src.');
+            }
+        } catch (ex) {
             self.next();
             return;
         }
@@ -201,6 +219,15 @@ class Controller {
             playing: self.playing,
             song: self.song,
         });
+    }
+
+    @action stop() {
+        var audio = document.querySelector('audio');
+
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
     }
 
     @action changeMode(mode = PLAYER_REPEAT) {

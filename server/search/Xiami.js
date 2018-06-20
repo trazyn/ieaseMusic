@@ -13,50 +13,55 @@ const headers = {
 export default async(request, keyword, artists) => {
     debug(chalk.black.bgGreen('💊  Loaded Xiami music.'));
 
-    var response = await request({
-        uri: 'http://api.xiami.com/web',
-        qs: {
-            v: '2.0',
-            key: [keyword].concat(artists.split(',')).join('+'),
-            limit: 100,
-            page: 1,
-            r: 'search/songs',
-            app_key: 1,
-        },
-        json: true,
-        headers,
-    });
+    try {
+        var response = await request({
+            uri: 'http://api.xiami.com/web',
+            qs: {
+                v: '2.0',
+                key: [keyword].concat(artists.split(',')).join('+'),
+                limit: 100,
+                page: 1,
+                r: 'search/songs',
+                app_key: 1,
+            },
+            json: true,
+            headers,
+        });
 
-    var data = response.data;
+        var data = response.data;
 
-    if (response.state !== 0
-        || data.songs.length === 0) {
-        error(chalk.black.bgRed('🚧  Nothing.'));
-        return Promise.reject();
-    }
-
-    for (let e of data.songs) {
-        if (
-            artists.split(',').findIndex(
-                artist => e.artist_name.indexOf(artist) !== -1
-            ) === -1
-        ) {
-            continue;
-        }
-
-        let song = {
-            src: e.listen_file,
-        };
-
-        if (!song.src) {
+        if (response.state !== 0
+            || data.songs.length === 0) {
+            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject();
-        } else {
-            debug(chalk.black.bgGreen('🚚  Result >>>'));
-            debug(e);
-            debug(chalk.black.bgGreen('🚚  <<<'));
-
-            return song;
         }
+
+        for (let e of data.songs) {
+            if (
+                artists.split(',').findIndex(
+                    artist => e.artist_name.indexOf(artist) !== -1
+                ) === -1
+            ) {
+                continue;
+            }
+
+            let song = {
+                src: e.listen_file,
+            };
+
+            if (!song.src) {
+                return Promise.reject();
+            } else {
+                debug(chalk.black.bgGreen('🚚  Result >>>'));
+                debug(e);
+                debug(chalk.black.bgGreen('🚚  <<<'));
+
+                return song;
+            }
+        }
+    } catch (ex) {
+        error('Failed to get song: %O', ex);
+        return Promise.reject();
     }
 
     error(chalk.black.bgRed('🈚  Not Matched.'));
