@@ -16,8 +16,7 @@ async function getSong(mid) {
             json: 3,
             format: 'json',
             guid: guid.toString(),
-        },
-        json: true,
+        }
     });
 
     if (response.code !== 0) {
@@ -50,8 +49,7 @@ async function genKey(mid) {
         qs: {
             songmid: mid,
             format: 'json',
-        },
-        json: true,
+        }
     });
     var data = response.data;
 
@@ -85,8 +83,7 @@ export default async(request, keyword, artists) => {
             format: 'json',
             inCharset: 'utf8',
             outCharset: 'utf-8'
-        },
-        json: true,
+        }
     });
 
     var data = response.data;
@@ -101,7 +98,11 @@ export default async(request, keyword, artists) => {
         let song = {};
 
         // Match the artists
-        if (e.singer.find(e => artists.indexOf(e.name) === -1)) {
+        if (
+            e.singer.findIndex(
+                e => artists.indexOf(e.name) !== -1
+            ) === -1
+        ) {
             continue;
         }
 

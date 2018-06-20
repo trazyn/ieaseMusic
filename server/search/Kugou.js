@@ -12,7 +12,6 @@ async function getURL(hash) {
 
     var response = await rp({
         url: `http://trackercdn.kugou.com/i/?acceptMp3=1&cmd=4&pid=6&hash=${hash}&key=${key}`,
-        json: true,
     });
 
     if (response.error
@@ -38,7 +37,6 @@ export default async(request, keyword, artists) => {
             pagesize: 1,
             showtype: 1,
         },
-        json: true,
     });
 
     var data = response.data;
@@ -50,7 +48,11 @@ export default async(request, keyword, artists) => {
     }
 
     for (let e of data.info) {
-        if (artists.split(',').find(artist => e.singername.indexOf(artist)) === -1) {
+        if (
+            artists.split(',').findIndex(
+                artist => e.singername.indexOf(artist) > -1
+            ) === -1
+        ) {
             continue;
         }
 
@@ -60,11 +62,12 @@ export default async(request, keyword, artists) => {
                 src: await getURL(e['320hash'] || e['hash'])
             };
 
-            debug('%O', song);
             return song;
         } catch (ex) {
             error('Failed to get song: %O', ex);
             return Promise.reject();
         }
     }
+
+    return Promise.reject();
 };

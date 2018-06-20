@@ -35,7 +35,11 @@ export default async(request, keyword, artists) => {
     }
 
     for (let e of data.songs) {
-        if (artists.split(',').find(artist => e.artist_name.indexOf(artist)) === -1) {
+        if (
+            artists.split(',').findIndex(
+                artist => e.artist_name.indexOf(artist) !== -1
+            ) === -1
+        ) {
             continue;
         }
 
@@ -46,8 +50,10 @@ export default async(request, keyword, artists) => {
         if (!song.src) {
             return Promise.reject();
         } else {
-            debug('Got a result \n"%O"', song);
+            debug('Got a result \n"%O"', e);
             return song;
         }
     }
+
+    return Promise.reject();
 };
