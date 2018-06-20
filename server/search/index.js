@@ -41,7 +41,6 @@ export default async(keyword, artists) => {
             rpOptions,
             {
                 proxy: preferences.proxy,
-                strictSSL: false
             }
         );
     }
