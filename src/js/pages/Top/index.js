@@ -99,7 +99,7 @@ class Top extends Component {
 
                 <Scroller reverseScroll={!naturalScroll}>
                     {
-                        this.renderList()
+                        () => this.renderList()
                     }
                 </Scroller>
 

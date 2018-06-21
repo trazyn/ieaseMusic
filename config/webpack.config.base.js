@@ -5,10 +5,10 @@ import config from './index';
 export default {
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loader: ['babel-loader', 'eslint-loader'],
+                use: ['babel-loader', 'eslint-loader'],
                 exclude: /node_modules/,
             },
             {
@@ -19,20 +19,16 @@ export default {
                 ],
             },
             {
-                test: /\.json$/,
-                loader: 'json-loader',
-            },
-            {
                 test: /\.html/,
-                loader: 'html-loader',
+                use: 'html-loader',
             },
             {
                 test: /\.(png|jpg|jpeg|gif)$/,
-                loader: 'url-loader'
+                use: 'url-loader'
             },
             {
                 test: /\.(eot|woff|woff2|ttf)([?]?.*)$/,
-                use: [{
+                loader: [{
                     loader: 'url-loader',
                     options: {
                         name: 'fonts/[name].[ext]',
@@ -46,7 +42,7 @@ export default {
             },
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{
+                loader: [{
                     loader: 'url-loader',
                     options: {
                         mimetype: 'image/svg+xml',

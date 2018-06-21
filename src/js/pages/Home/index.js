@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import Scroller from 'react-scroll-horizontal';
+import HorizontalScroll from 'react-scroll-horizontal';
 import { Link } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
@@ -139,31 +139,36 @@ class Home extends Component {
         var logined = this.props.hasLogin();
 
         return (
-            <Scroller reverseScroll={!naturalScroll}>
+            <HorizontalScroll reverseScroll={!naturalScroll}>
                 {
-                    playlist.map((e, index) => {
-                        var isLiked = logined && index === 0;
-                        var isDaily = logined && index === 1;
+                    () => {
+                        return playlist.map(
+                            (e, index) => {
+                                var isLiked = logined && index === 0;
+                                var isDaily = logined && index === 1;
 
-                        if (isDaily && e.songs.length === 0) {
-                            return false;
-                        }
-
-                        return (
-                            <div
-                                className={clazz('clearfix', classes.item)}
-                                key={index}>
-                                {
-
-                                    isLiked
-                                        ? this.renderLiked(e)
-                                        : (isDaily ? this.renderDaily(e) : this.renderItem(e))
+                                if (isDaily && e.songs.length === 0) {
+                                    return false;
                                 }
-                            </div>
+
+                                return (
+                                    <div
+                                        className={clazz('clearfix', classes.item)}
+                                        key={index}
+                                    >
+                                        {
+
+                                            isLiked
+                                                ? this.renderLiked(e)
+                                                : (isDaily ? this.renderDaily(e) : this.renderItem(e))
+                                        }
+                                    </div>
+                                );
+                            }
                         );
-                    })
+                    }
                 }
-            </Scroller>
+            </HorizontalScroll>
         );
     }
 
