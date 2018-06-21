@@ -150,6 +150,7 @@
     "react-scroll-horizontal": "^1.4.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
-    "simple-lastfm": "^1.0.5"
+    "simple-lastfm": "^1.0.5",
+    "webpack-cli": "^3.0.8"
   }
 }
