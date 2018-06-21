@@ -621,7 +621,10 @@ app.on('activate', e => {
         mainWindow.show();
     }
 });
-app.on('quit', () => apiServer && apiServer.close());
+app.on('will-quit', () => {
+    apiServer && apiServer.close();
+    process.exit(0);
+});
 
 storage.get('preferences', (err, data) => {
     var port = config.api.port;
