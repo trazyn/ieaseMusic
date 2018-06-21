@@ -101,20 +101,24 @@ class Controller {
         self.stop();
 
         var song = self.song;
-        var response = await axios.get(
-            `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date(),
-            {
-                timeout: 5000,
-                cancelToken: new CancelToken(c => {
-                    // An executor function receives a cancel function as a parameter
-                    cancel = c;
-                })
-            }
-        );
-        var data = response.data.song;
 
-        if (!data.src) {
-            console.error('Bad audio src.');
+        try {
+            var response = await axios.get(
+                `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date(),
+                {
+                    timeout: 5000,
+                    cancelToken: new CancelToken(c => {
+                        // An executor function receives a cancel function as a parameter
+                        cancel = c;
+                    })
+                }
+            );
+            var data = response.data.song;
+
+            if (!data.src) {
+                throw Error('Bad audio src.');
+            }
+        } catch (ex) {
             self.next();
             return;
         }

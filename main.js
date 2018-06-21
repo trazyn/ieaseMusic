@@ -12,6 +12,7 @@ import api from './server/api';
 
 let debug = _debug('dev:main');
 let error = _debug('dev:main:error');
+let apiServer;
 let forceQuit = false;
 let downloading = false;
 let autoUpdaterInit = false;
@@ -620,6 +621,7 @@ app.on('activate', e => {
         mainWindow.show();
     }
 });
+app.on('quit', () => apiServer && apiServer.close());
 
 storage.get('preferences', (err, data) => {
     var port = config.api.port;
@@ -635,7 +637,8 @@ storage.get('preferences', (err, data) => {
     }
 
     axios.defaults.baseURL = `http://localhost:${port}`;
-    api.listen(port, (err) => {
+
+    apiServer = api.listen(port, (err) => {
         if (err) throw err;
 
         debug(`API server is running with port ${port} 👊`);
