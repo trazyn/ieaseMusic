@@ -11,6 +11,7 @@ export default theme => {
             height: 50,
             background: '#fff',
             color: '#000',
+            zIndex: 99,
 
             '& section': {
                 display: 'flex',
@@ -40,11 +41,11 @@ export default theme => {
 
             '&:hover': {
                 '&, & $playing, & $buffering': {
-                    height: 8,
+                    height: 16,
                 },
 
                 '& $playing:after': {
-                    bottom: 8,
+                    bottom: 16,
                 }
             },
 
