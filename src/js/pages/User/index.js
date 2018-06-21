@@ -43,30 +43,44 @@ class User extends Component {
         return (
             <Scroller reverseScroll={!naturalScroll}>
                 {
-                    playlists.map((e, index) => {
-                        return (
-                            <Link
-                                className={clazz('clearfix', classes.item, {
-                                    [classes.playing]: this.props.isPlaying(e.id)
-                                })}
-                                to={e.link}
-                                key={index}>
-                                <ProgressImage {...{
-                                    height: 120,
-                                    width: 120,
-                                    src: e.cover,
-                                }} />
-                                <div className={classes.meta}>
-                                    <p className={classes.name}>
-                                        <span>{e.name}</span>
-                                    </p>
-                                    <p className={classes.played}>
-                                        <span>{helper.humanNumber(e.played)} Played</span>
-                                    </p>
-                                </div>
-                            </Link>
-                        );
-                    })
+                    () => (
+                        playlists.map(
+                            (e, index) => {
+                                return (
+                                    <Link
+                                        className={
+                                            clazz(
+                                                'clearfix',
+                                                classes.item,
+                                                {
+                                                    [classes.playing]: this.props.isPlaying(e.id)
+                                                }
+                                            )
+                                        }
+                                        to={e.link}
+                                        key={index}
+                                    >
+                                        <ProgressImage
+                                            {...{
+                                                height: 120,
+                                                width: 120,
+                                                src: e.cover,
+                                            }}
+                                        />
+
+                                        <div className={classes.meta}>
+                                            <p className={classes.name}>
+                                                <span>{e.name}</span>
+                                            </p>
+                                            <p className={classes.played}>
+                                                <span>{helper.humanNumber(e.played)} Played</span>
+                                            </p>
+                                        </div>
+                                    </Link>
+                                );
+                            }
+                        )
+                    )
                 }
             </Scroller>
         );

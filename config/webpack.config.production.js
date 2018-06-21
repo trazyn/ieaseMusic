@@ -11,6 +11,7 @@ export default {
 
     ...baseConfig,
 
+    mode: 'production',
     devtool: false,
 
     entry: [
