@@ -239,11 +239,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
                 return;
             }
         }
-    } catch (ex) {
-        error('Failed to get flac file: %O', ex);
-    }
 
-    try {
         let response = await axios.get(`/music/url?id=${id}`);
         let data = response.data;
 

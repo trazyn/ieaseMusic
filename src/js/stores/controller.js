@@ -119,7 +119,16 @@ class Controller {
                 throw Error('Bad audio src.');
             }
         } catch (ex) {
-            self.next();
+            console.error(ex);
+
+            if (
+                [
+                    'Bad audio src.',
+                    'timeout of 5000ms exceeded'
+                ].includes(ex.message)
+            ) {
+                self.next();
+            }
             return;
         }
 
