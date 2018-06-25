@@ -14,6 +14,7 @@ let debug = _debug('dev:main');
 let error = _debug('dev:main:error');
 let apiServer;
 let forceQuit = false;
+let quitting = false;
 let downloading = false;
 let autoUpdaterInit = false;
 let menu;
@@ -63,7 +64,6 @@ let mainMenu = [
                 selector: 'terminate:',
                 click() {
                     forceQuit = true;
-                    mainWindow = null;
                     app.quit();
                 }
             }
@@ -346,7 +346,6 @@ let trayMenu = [
         selector: 'terminate:',
         click() {
             forceQuit = true;
-            mainWindow = null;
             app.quit();
         }
     }
@@ -487,7 +486,6 @@ const createMainWindow = () => {
 
     mainWindow.on('close', e => {
         if (forceQuit) {
-            mainWindow = null;
             app.quit();
         } else {
             e.preventDefault();
@@ -581,7 +579,6 @@ const createMainWindow = () => {
     // Quit app
     ipcMain.on('goodbye', (event) => {
         forceQuit = true;
-        mainWindow = null;
         app.quit();
     });
 
@@ -612,16 +609,23 @@ const createMainWindow = () => {
 app.setName('ieaseMusic');
 
 app.on('ready', createMainWindow);
-app.on('before-quit', () => {
-    // Fix issues #14
-    forceQuit = true;
-});
 app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
     }
 });
-app.on('will-quit', () => {
+app.on('before-quit', e => {
+    if (quitting) {
+        e.preventDefault();
+        return;
+    }
+
+    // Fix issues #14
+    forceQuit = true;
+    quitting = true;
+});
+app.on('quit', () => {
+    mainWindow = null;
     apiServer && apiServer.close();
     process.exit(0);
 });
