@@ -35,7 +35,7 @@ class Header extends Component {
         color: '#654b58',
     };
 
-    goBack = () => this._reactInternalInstance._context.router.goBack();
+    goBack = () => window.history.back()
 
     renderBack() {
         var { showBack, color } = this.props;
