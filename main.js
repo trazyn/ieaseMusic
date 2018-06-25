@@ -485,6 +485,11 @@ const createMainWindow = () => {
     });
 
     mainWindow.on('close', e => {
+        if (process.platform === 'linux') {
+            app.quit();
+            return;
+        }
+
         if (forceQuit) {
             app.quit();
         } else {
