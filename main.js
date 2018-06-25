@@ -1,4 +1,5 @@
 
+import path from 'path';
 import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
@@ -10,16 +11,20 @@ import pkg from './package.json';
 import config from './config';
 import api from './server/api';
 
+const _PLATFORM = process.platform;
+
 let debug = _debug('dev:main');
 let error = _debug('dev:main:error');
 let apiServer;
 let forceQuit = false;
+let quitting = false;
 let downloading = false;
 let autoUpdaterInit = false;
 let menu;
 let tray;
 let mainWindow;
-let isOsx = process.platform === 'darwin';
+let isOsx = _PLATFORM === 'darwin';
+let isLinux = _PLATFORM === 'linux';
 let mainMenu = [
     {
         label: 'ieaseMusic',
@@ -63,7 +68,6 @@ let mainMenu = [
                 selector: 'terminate:',
                 click() {
                     forceQuit = true;
-                    mainWindow = null;
                     app.quit();
                 }
             }
@@ -346,7 +350,6 @@ let trayMenu = [
         selector: 'terminate:',
         click() {
             forceQuit = true;
-            mainWindow = null;
             app.quit();
         }
     }
@@ -471,6 +474,14 @@ const createMainWindow = () => {
         frame: !isOsx,
     });
 
+    if (isLinux) {
+        mainWindow.setIcon(
+            path.join(__dirname, '/resource/128x128.png')
+        );
+        // Disable default menu bar
+        mainWindow.setMenu(null);
+    }
+
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -486,8 +497,12 @@ const createMainWindow = () => {
     });
 
     mainWindow.on('close', e => {
+        if (isLinux) {
+            app.quit();
+            return;
+        }
+
         if (forceQuit) {
-            mainWindow = null;
             app.quit();
         } else {
             e.preventDefault();
@@ -581,7 +596,6 @@ const createMainWindow = () => {
     // Quit app
     ipcMain.on('goodbye', (event) => {
         forceQuit = true;
-        mainWindow = null;
         app.quit();
     });
 
@@ -612,16 +626,23 @@ const createMainWindow = () => {
 app.setName('ieaseMusic');
 
 app.on('ready', createMainWindow);
-app.on('before-quit', () => {
-    // Fix issues #14
-    forceQuit = true;
-});
 app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
     }
 });
-app.on('will-quit', () => {
+app.on('before-quit', e => {
+    if (quitting) {
+        e.preventDefault();
+        return;
+    }
+
+    // Fix issues #14
+    forceQuit = true;
+    quitting = true;
+});
+app.on('quit', () => {
+    mainWindow = null;
     apiServer && apiServer.close();
     process.exit(0);
 });
