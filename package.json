@@ -58,7 +58,8 @@
         "AppImage"
       ],
       "icon": "../resource",
-      "category": "Music"
+      "category": "Music",
+      "executableName": "ieaseMusic"
     },
     "win": {
       "target": "nsis",
