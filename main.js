@@ -478,6 +478,8 @@ const createMainWindow = () => {
         mainWindow.setIcon(
             path.join(__dirname, '/resource/128x128.png')
         );
+        // Disable default menu bar
+        mainWindow.setMenu(null);
     }
 
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
