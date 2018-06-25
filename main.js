@@ -476,7 +476,7 @@ const createMainWindow = () => {
 
     if (isLinux) {
         mainWindow.setIcon(
-            path.join(__dirname, '/resource/128x128.png')
+            path.join(__dirname, 'src/assets/dock.png')
         );
         // Disable default menu bar
         mainWindow.setMenu(null);
@@ -503,6 +503,7 @@ const createMainWindow = () => {
         }
 
         if (forceQuit) {
+            console.log('Is closed...');
             app.quit();
         } else {
             e.preventDefault();
@@ -595,6 +596,7 @@ const createMainWindow = () => {
 
     // Quit app
     ipcMain.on('goodbye', (event) => {
+        console.log('Close...');
         forceQuit = true;
         app.quit();
     });
@@ -632,18 +634,22 @@ app.on('activate', e => {
     }
 });
 app.on('before-quit', e => {
+    e.preventDefault();
+
+    console.log('Before quit...');
+
     if (quitting) {
-        e.preventDefault();
         return;
     }
+
+    apiServer && apiServer.close();
 
     // Fix issues #14
     forceQuit = true;
     quitting = true;
-});
-app.on('quit', () => {
     mainWindow = null;
-    apiServer && apiServer.close();
+
+    app.exit(0);
     process.exit(0);
 });
 
