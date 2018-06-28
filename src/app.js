@@ -1,16 +1,14 @@
 
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Router, hashHistory } from 'react-router';
+import { hot } from 'react-hot-loader';
+import { HashRouter } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import { ipcRenderer, remote, shell } from 'electron';
-import { ThemeProvider } from 'react-jss';
 import 'ionicons201/css/ionicons.css';
 
 import './global.css';
 import 'utils/albumColors';
 import { PLAYER_REPEAT, PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
-import theme from './theme';
 import getRoutes from './js/routes';
 import stores from './js/stores';
 
@@ -291,19 +289,12 @@ class App extends Component {
     render() {
         return (
             <Provider {...stores}>
-                <Router
-                    history={hashHistory}
-                    ref="navigator">
+                <HashRouter ref="navigator">
                     {getRoutes()}
-                </Router>
+                </HashRouter>
             </Provider>
         );
     }
 }
 
-render(
-    <ThemeProvider theme={theme}>
-        <App />
-    </ThemeProvider>,
-    document.getElementById('root')
-);
+export default hot(module)(App);

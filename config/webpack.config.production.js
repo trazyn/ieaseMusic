@@ -16,7 +16,7 @@ export default {
 
     entry: [
         'babel-polyfill',
-        `${config.client}/app.js`,
+        `${config.client}/index.js`,
     ],
 
     output: {
@@ -32,12 +32,6 @@ export default {
         // https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
         // https://github.com/webpack/webpack/issues/864
         new webpack.optimize.OccurrenceOrderPlugin(),
-
-        // NODE_ENV should be production so that modules do not perform certain development checks
-        new webpack.DefinePlugin({
-            DEBUG: false,
-            'process.env.NODE_ENV': JSON.stringify('production')
-        }),
 
         new CopyWebpackPlugin([
             {

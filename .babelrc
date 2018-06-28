@@ -6,13 +6,10 @@
 // within webpack helps prevent unexpected errors.
 {
   "presets": ['es2015', "react", "stage-0"],
-  "plugins": ["babel-polyfill", "transform-decorators-legacy"],
+  "plugins": ["babel-polyfill", "transform-decorators-legacy", "react-hot-loader/babel"],
   "env": {
       "production": {
           "presets": ["react-optimize"]
-      },
-      "development": {
-          "presets": ["react-hmre"]
-      },
+      }
   },
 }

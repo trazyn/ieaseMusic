@@ -15,7 +15,7 @@ export default {
     entry: [
         `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,
         'babel-polyfill',
-        `${config.client}/app.js`,
+        `${config.client}/index.js`,
     ],
 
     output: {
@@ -30,11 +30,6 @@ export default {
 
         // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
         new webpack.HotModuleReplacementPlugin(),
-
-        // NODE_ENV should be production so that modules do not perform certain development checks
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
-        }),
     ],
 
     // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works

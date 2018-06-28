@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import { withRouter, Route } from 'react-router-dom';
 
 import Layout from './pages/Layout';
 import Home from './pages/Home';
@@ -22,18 +22,22 @@ function requireAuth(nextState, replace) {
     }
 }
 
+const Main = withRouter(props => <Layout {...props} />);
+
 export default () => {
     return (
-        <Route path="/" component={Layout}>
-            <IndexRoute component={Home} />
-            <Route path="/login/:fm" component={Login} />
-            <Route path="/player/:type/:id" component={Player} />
-            <Route path="/user/:id" component={User} />
-            <Route path="/artist/:id" component={Artist} />
-            <Route path="/top" component={Top} />
-            <Route path="/playlist/:type" component={Playlist} />
-            <Route path="/fm" component={FM} onEnter={requireAuth} />
-            <Route path="/preferences" component={Preferences} />
-        </Route>
+        /* eslint-disable */
+        <Main>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login/:fm" component={Login} />
+            <Route exact path="/player/:type/:id" component={Player} />
+            <Route exact path="/user/:id" component={User} />
+            <Route exact path="/artist/:id" component={Artist} />
+            <Route exact path="/top" component={Top} />
+            <Route exact path="/playlist/:type" component={Playlist} />
+            <Route exact path="/fm" component={FM} onEnter={requireAuth} />
+            <Route exact path="/preferences" component={Preferences} />
+        </Main>
+        /* eslint-enable */
     );
 };

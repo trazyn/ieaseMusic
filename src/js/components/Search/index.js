@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import moment from 'moment';
 import clazz from 'classname';

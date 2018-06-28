@@ -8,7 +8,10 @@ export default {
         rules: [
             {
                 test: /\.jsx?$/,
-                use: ['babel-loader', 'eslint-loader'],
+                use: [
+                    'babel-loader',
+                    'eslint-loader'
+                ],
                 exclude: /node_modules/,
             },
             {

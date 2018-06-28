@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { remote } from 'electron';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
