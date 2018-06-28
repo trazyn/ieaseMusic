@@ -114,13 +114,13 @@ class Menu extends Component {
                                 </Link>
                             </p>
                             <p>
-                                <Link
+                                <a
                                     onClick={() => {
                                         showSearch();
                                         close();
                                     }}>
                                     Search
-                                </Link>
+                                </a>
                             </p>
                             <p>
                                 <Link
