@@ -37,7 +37,7 @@ class Login extends Component {
 
         if (await this.props.login(phone, password)) {
             // Login success
-            this.props.router.replace(+this.props.match.params.fm ? '/fm' : '/');
+            this.props.history.replace(+this.props.match.params.fm ? '/fm' : '/');
             return;
         }
 
