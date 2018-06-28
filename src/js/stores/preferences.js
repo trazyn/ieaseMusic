@@ -10,6 +10,7 @@ import storage from 'utils/storage';
 import lastfm from 'utils/lastfm';
 
 class Preferences {
+    @observable show = false;
     @observable showTray = true;
     @observable alwaysOnTop = true;
     @observable showNotification = true;

@@ -10,8 +10,15 @@ export default theme => {
             overflow: 'hidden',
             overflowY: 'auto',
             height: '100vh',
+            width: '100vw',
 
             '& header': {
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 24,
+                paddingBottom: 0,
                 fontFamily: 'HelveticaNeue-UltraLight',
                 fontSize: 24,
                 fontWeight: '100',
@@ -67,10 +74,7 @@ export default theme => {
         },
 
         close: {
-            position: 'absolute',
             height: 32,
-            top: 32,
-            right: 32,
             cursor: 'pointer',
         },
 

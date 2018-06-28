@@ -6,12 +6,12 @@ import classes from './classes';
 
 class Switch extends Component {
     render() {
-        var { classes, id, checked, onChange } = this.props;
+        var { classes, id, defaultChecked, onChange } = this.props;
 
         return (
             <span className={classes.container}>
                 <input
-                    checked={checked}
+                    defaultChecked={defaultChecked}
                     id={id}
                     type="checkbox"
                     onChange={onChange} />

@@ -7,6 +7,7 @@ import clazz from 'classname';
 import Offline from 'ui/Offline';
 import Loader from 'ui/Loader';
 import lastfm from 'utils/lastfm';
+import Preferences from 'components/Preferences';
 import AudioPlayer from 'components/AudioPlayer';
 import Search from 'components/Search';
 import Menu from 'components/Menu';
@@ -85,8 +86,9 @@ class Layout extends Component {
 
         return (
             <div
+                ref="container"
                 className={classes.container}
-                ref="container">
+            >
                 <div className={clazz({
                     [classes.mask]: searching,
                 })}>
@@ -101,6 +103,7 @@ class Layout extends Component {
                     showLyrics && <Lyrics />
                 }
 
+                <Preferences />
                 <Menu />
                 <Search />
                 <VolumeUpDown />

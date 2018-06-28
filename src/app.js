@@ -14,9 +14,13 @@ import stores from './js/stores';
 
 class App extends Component {
     componentDidMount() {
-        var { controller, fm, me, menu, playing, search, comments, lyrics } = stores;
+        var { preferences, controller, fm, me, menu, playing, search, comments, lyrics } = stores;
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
+
+        function togglePreferences() {
+            preferences.show = !preferences.show;
+        }
 
         // Player play
         ipcRenderer.on('player-play', (e, args) => {
@@ -94,7 +98,7 @@ class App extends Component {
 
         // Show preferences screen
         ipcRenderer.on('show-preferences', () => {
-            navigator.history.push('/preferences');
+            togglePreferences();
         });
 
         // SHow slide menu panel
@@ -194,7 +198,7 @@ class App extends Component {
                 {
                     label: 'Preferences...',
                     click: () => {
-                        navigator.history.push('/preferences');
+                        togglePreferences();
                     },
                 },
                 {

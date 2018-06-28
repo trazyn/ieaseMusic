@@ -143,7 +143,7 @@
     "perdido": "^2.0.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
-    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.3",
     "react-jss": "^8.5.1",

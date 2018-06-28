@@ -11,7 +11,6 @@ import Artist from './pages/Artist';
 import Top from './pages/Top';
 import Playlist from './pages/Playlist';
 import FM from './pages/FM';
-import Preferences from './pages/Preferences';
 import stores from 'stores';
 
 function requireAuth(nextState, replace) {
@@ -36,7 +35,6 @@ export default () => {
             <Route exact path="/top" component={Top} />
             <Route exact path="/playlist/:type" component={Playlist} />
             <Route exact path="/fm" component={FM} onEnter={requireAuth} />
-            <Route exact path="/preferences" component={Preferences} />
         </Main>
         /* eslint-enable */
     );

@@ -1,106 +1,45 @@
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
 import Switch from 'ui/Switch';
 
-@inject(stores => {
-    var {
-        showTray,
-        setShowTray,
-        showNotification,
-        setShowNotification,
-        autoPlay,
-        setAutoPlay,
-        alwaysOnTop,
-        setAlwaysOnTop,
-        naturalScroll,
-        setNaturalScroll,
-        port,
-        setPort,
-        highquality,
-        setHighquality,
-        backgrounds,
-        setBackgrounds,
-        autoupdate,
-        setAutoupdate,
-        scrobble,
-        setScrobble,
-        lastfm,
-        setLastfm,
-        connect,
-        connecting,
-        enginers,
-        setEnginers,
-        proxy,
-        setProxy,
-    } = stores.preferences;
-
-    return {
-        showTray,
-        setShowTray,
-        showNotification,
-        setShowNotification,
-        autoPlay,
-        setAutoPlay,
-        alwaysOnTop,
-        setAlwaysOnTop,
-        naturalScroll,
-        setNaturalScroll,
-        port,
-        setPort,
-        highquality,
-        setHighquality,
-        backgrounds,
-        setBackgrounds,
-        autoupdate,
-        setAutoupdate,
-        scrobble,
-        setScrobble,
-        lastfm,
-        setLastfm,
-        connect,
-        connecting,
-        enginers,
-        setEnginers,
-        proxy,
-        setProxy,
-    };
-})
-@observer
-class Preferences extends Component {
+class Options extends Component {
     saveBackground(index, background) {
-        var backgrounds = this.props.backgrounds;
+        var { preferences } = this.props;
+        var backgrounds = preferences.backgrounds;
 
         backgrounds[index] = background;
-        this.props.setBackgrounds(backgrounds);
+        preferences.setBackgrounds(backgrounds);
     }
 
     saveLastfm() {
-        this.props.setLastfm({
+        var { preferences } = this.props;
+
+        preferences.setLastfm({
             username: this.refs.username.value,
             password: this.refs.password.value,
-            connected: this.props.lastfm.connected,
+            connected: preferences.lastfm.connected,
         });
     }
 
     setEnginers(value) {
-        this.props.setEnginers(Object.assign({}, this.props.enginers, value));
+        var { preferences } = this.props;
+
+        preferences.setEnginers(Object.assign({}, preferences.enginers, value));
     }
 
     isConnected() {
-        var { username, password, connected } = this.props.lastfm;
+        var { username, password, connected } = this.props.preferences.lastfm;
 
         return connected && `${username}:${password}` === connected;
     }
 
     render() {
+        var { classes, preferences, close } = this.props;
         var {
-            classes,
             showTray,
             setShowTray,
             alwaysOnTop,
@@ -126,19 +65,24 @@ class Preferences extends Component {
             enginers,
             proxy,
             setProxy,
-        } = this.props;
+        } = preferences;
 
         return (
             <div className={classes.container}>
                 <header>
-                    Preferences...
+                    <span>
+                        Preferences...
+                    </span>
 
-                    <Link to="/">
+                    <i
+                        className={classes.close}
+                        onClick={() => close()}
+                    >
                         <img
                             alt="Close Menus"
                             className={classes.close}
                             src="assets/close.png" />
-                    </Link>
+                    </i>
                 </header>
 
                 <section>
@@ -150,7 +94,7 @@ class Preferences extends Component {
                             </div>
 
                             <Switch
-                                checked={alwaysOnTop}
+                                defaultChecked={alwaysOnTop}
                                 id="alwaysOnTop"
                                 onChange={e => setAlwaysOnTop(e.target.checked)} />
                         </label>
@@ -162,7 +106,7 @@ class Preferences extends Component {
                             </div>
 
                             <Switch
-                                checked={showTray}
+                                defaultChecked={showTray}
                                 id="showTray"
                                 onChange={e => setShowTray(e.target.checked)} />
                         </label>
@@ -171,7 +115,7 @@ class Preferences extends Component {
                             <h4>Auto play at started</h4>
 
                             <Switch
-                                checked={autoPlay}
+                                defaultChecked={autoPlay}
                                 id="autoPlay"
                                 onChange={e => setAutoPlay(e.target.checked)} />
                         </label>
@@ -180,7 +124,7 @@ class Preferences extends Component {
                             <h4>Show desktop notifications</h4>
 
                             <Switch
-                                checked={showNotification}
+                                defaultChecked={showNotification}
                                 id="showNotification"
                                 onChange={e => setShowNotification(e.target.checked)} />
                         </label>
@@ -192,7 +136,7 @@ class Preferences extends Component {
                             </div>
 
                             <Switch
-                                checked={naturalScroll}
+                                defaultChecked={naturalScroll}
                                 id="naturalScroll"
                                 onChange={e => setNaturalScroll(e.target.checked)} />
                         </label>
@@ -201,7 +145,7 @@ class Preferences extends Component {
                             <h4>High Quality Music</h4>
 
                             <Switch
-                                checked={highquality}
+                                defaultChecked={highquality}
                                 id="highquality"
                                 onChange={e => setHighquality(+e.target.checked)} />
                         </label>
@@ -210,7 +154,7 @@ class Preferences extends Component {
                             <h4>Auto update</h4>
 
                             <Switch
-                                checked={autoupdate}
+                                defaultChecked={autoupdate}
                                 id="autoupdate"
                                 onChange={e => setAutoupdate(+e.target.checked)} />
                         </label>
@@ -219,7 +163,7 @@ class Preferences extends Component {
                             <h4>Scrobble to NeteaseCloud Music</h4>
 
                             <Switch
-                                checked={scrobble}
+                                defaultChecked={scrobble}
                                 id="scrobble"
                                 onChange={e => setScrobble(+e.target.checked)} />
                         </label>
@@ -269,7 +213,7 @@ class Preferences extends Component {
                             <h4>QQ 音乐</h4>
 
                             <Switch
-                                checked={enginers['QQ']}
+                                defaultChecked={enginers['QQ']}
                                 id="enginerOfQQ"
                                 onChange={e => this.setEnginers({ 'QQ': e.target.checked })} />
                         </label>
@@ -277,7 +221,7 @@ class Preferences extends Component {
                             <h4>咪咕音乐</h4>
 
                             <Switch
-                                checked={enginers['MiGu']}
+                                defaultChecked={enginers['MiGu']}
                                 id="enginerOfMiGu"
                                 onChange={e => this.setEnginers({ 'MiGu': e.target.checked })} />
                         </label>
@@ -285,7 +229,7 @@ class Preferences extends Component {
                             <h4>虾米音乐</h4>
 
                             <Switch
-                                checked={enginers['Xiami']}
+                                defaultChecked={enginers['Xiami']}
                                 id="enginerOfXiami"
                                 onChange={e => this.setEnginers({ 'Xiami': e.target.checked })} />
                         </label>
@@ -293,7 +237,7 @@ class Preferences extends Component {
                             <h4>酷狗音乐</h4>
 
                             <Switch
-                                checked={enginers['Kugou']}
+                                defaultChecked={enginers['Kugou']}
                                 id="enginerOfKugou"
                                 onChange={e => this.setEnginers({ 'Kugou': e.target.checked })} />
                         </label>
@@ -301,7 +245,7 @@ class Preferences extends Component {
                             <h4>百度音乐</h4>
 
                             <Switch
-                                checked={enginers['Baidu']}
+                                defaultChecked={enginers['Baidu']}
                                 id="enginerOfBaidu"
                                 onChange={e => this.setEnginers({ 'Baidu': e.target.checked })} />
                         </label>
@@ -391,4 +335,4 @@ class Preferences extends Component {
     }
 }
 
-export default injectSheet(classes)(Preferences);
+export default injectSheet(classes)(Options);
