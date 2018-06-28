@@ -71,11 +71,11 @@ import Header from 'components/Header';
 }))
 @observer
 class Artist extends Component {
-    componentWillMount = () => this.props.getArtist(this.props.params.id);
+    componentWillMount = () => this.props.getArtist(this.props.match.params.id);
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.id !== this.props.params.id) {
-            nextProps.getArtist(nextProps.params.id);
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            nextProps.getArtist(nextProps.match.params.id);
         }
     }
 

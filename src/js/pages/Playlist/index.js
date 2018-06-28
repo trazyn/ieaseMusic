@@ -25,12 +25,12 @@ import Controller from 'components/Controller';
 @observer
 class Playlist extends Component {
     componentWillMount() {
-        this.props.getList(encodeURIComponent(this.props.params.type));
+        this.props.getList(encodeURIComponent(this.props.match.params.type));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.params.type !== nextProps.params.type) {
-            nextProps.getList(encodeURIComponent(nextProps.params.type));
+        if (this.props.match.params.type !== nextProps.match.params.type) {
+            nextProps.getList(encodeURIComponent(nextProps.match.params.type));
         }
     }
 
@@ -84,7 +84,7 @@ class Playlist extends Component {
     }
 
     render() {
-        var { classes, loading, types, params, list } = this.props;
+        var { classes, loading, types, match: { params }, list } = this.props;
 
         return (
             <div

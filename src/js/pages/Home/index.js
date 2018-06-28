@@ -53,7 +53,8 @@ class Home extends Component {
                 to={item.link}
                 className={clazz('clearfix', {
                     [classes.playing]: isPlaying(item.id),
-                })}>
+                })}
+            >
                 <img src={item.cover} />
 
                 <div className={classes.info}>

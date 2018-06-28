@@ -69,7 +69,7 @@ class App extends Component {
 
         // Go the home screen
         ipcRenderer.on('show-home', () => {
-            navigator.router.push('/');
+            navigator.history.push('/');
         });
 
         // Search
@@ -79,22 +79,22 @@ class App extends Component {
 
         // Show the Ranking list
         ipcRenderer.on('show-top', () => {
-            navigator.router.push('/top');
+            navigator.history.push('/top');
         });
 
         // All playlists
         ipcRenderer.on('show-playlist', () => {
-            navigator.router.push('/playlist/全部');
+            navigator.history.push('/playlist/全部');
         });
 
         // Show personal FM channel
         ipcRenderer.on('show-fm', () => {
-            navigator.router.push('/fm');
+            navigator.history.push('/fm');
         });
 
         // Show preferences screen
         ipcRenderer.on('show-preferences', () => {
-            navigator.router.push('/preferences');
+            navigator.history.push('/preferences');
         });
 
         // SHow slide menu panel
@@ -194,7 +194,7 @@ class App extends Component {
                 {
                     label: 'Preferences...',
                     click: () => {
-                        navigator.router.push('/preferences');
+                        navigator.history.push('/preferences');
                     },
                 },
                 {
@@ -203,7 +203,7 @@ class App extends Component {
                 {
                     label: 'Home',
                     click: () => {
-                        navigator.router.push('/');
+                        navigator.history.push('/');
                     }
                 },
                 {
@@ -215,13 +215,13 @@ class App extends Component {
                 {
                     label: 'Playlist',
                     click: () => {
-                        navigator.router.push('/playlist/全部');
+                        navigator.history.push('/playlist/全部');
                     }
                 },
                 {
                     label: 'FM',
                     click: () => {
-                        navigator.router.push('/fm');
+                        navigator.history.push('/fm');
                     }
                 },
                 {

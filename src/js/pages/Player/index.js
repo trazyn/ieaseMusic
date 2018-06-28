@@ -95,7 +95,7 @@ import Controller from 'components/Controller';
 @observer
 class Player extends Component {
     async load(props) {
-        var { showLoading, hideLoading, getList, getRelated, params, song } = props;
+        var { showLoading, hideLoading, getList, getRelated, match: { params }, song } = props;
 
         showLoading();
         await getList(params);
@@ -106,7 +106,7 @@ class Player extends Component {
     componentWillMount = () => this.load(this.props);
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.id !== this.props.params.id) {
+        if (nextProps.match.params.id !== this.props.match.params.id) {
             this.load(nextProps);
             return;
         }

@@ -29,11 +29,11 @@ import Header from 'components/Header';
 }))
 @observer
 class User extends Component {
-    componentWillMount = () => this.props.getUser(this.props.params.id);
+    componentWillMount = () => this.props.getUser(this.props.match.params.id);
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.id !== this.props.params.id) {
-            nextProps.getUser(nextProps.params.id);
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            nextProps.getUser(nextProps.match.params.id);
         }
     }
 
