@@ -16,7 +16,6 @@
 
 ## Preview
 
-![preview](https://gÏithub.com/trazyn/ieaseMusic/blob/master/screenshots/preview.gif)
 ![2017-10-13 10 26 13](https://user-images.githubusercontent.com/1774898/31527631-3aab6178-b001-11e7-8633-c2cbb7b4af2a.gif)
 
 ## Feature
@@ -31,41 +30,34 @@
 - Modern UI design
 - High quality music(FLAC)
 - Track your listen to Last.fm
-- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music and Kugou music, fixed some bug, update on v1.1.7, basically all the songs can be played 🙊)
-- 就这些吧，编不下去了
-
-## 海外党网解锁请参考
-
-[fengjueming/unblock-NeteastMusic](https://github.com/fengjueming/unblock-NeteastMusic)
-
-解锁后播放音乐存在延时过高问题可以参考 [#4](https://github.com/trazyn/ieaseMusic/issues/4)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
 
 ## Install
 
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.7/ieaseMusic-1.1.5-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.8/ieaseMusic-1.1.8-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.7/ieaseMusic-1.1.7-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.8/ieaseMusic-1.1.8-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.1.5-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.7/ieaseMusic-1.1.7-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.1.5-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.1.8-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.7/iease-music-1.1.7-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.8/ieaseMusic-1.1.8-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.1.5-x86_64.AppImage
-$ ./iease-music-1.1.5-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.1.8-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.1.8/iease-music-1.1.8-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.1.8-x86_64.AppImage
+$ ./iease-music-1.1.8-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
@@ -120,22 +112,6 @@ Description            | Keys
 其实这些在鼠标右键菜单上面都有，上面这些看看就好，我也没记住
 ![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/contextmenu.png)
 
-## 贡献曲库
-请参考
-- [server/search/index.js](https://github.com/trazyn/ieaseMusic/blob/master/server/search/index.js)
-- [server/search/Kugou.js](https://github.com/trazyn/ieaseMusic/blob/master/server/search/Kugou.js)
-
-```
-export default async(keyword, artists) => {
-    // Your code
-    return {
-        src: 'Music link'
-    };
-};
-```
-
-曲库导出一个方法，接受2个参数，`歌曲名称`和`歌手名称`（多个名称以逗号分隔，eg：`王心凌,罗志祥`），返回一个`Promise`，对于搜索结果应使用`歌手名称`来匹配正确曲目，返回对象中`src`为歌曲链接。
-
 ## TODO:
 - [x] Home
 - [x] Playlist
@@ -154,14 +130,14 @@ export default async(keyword, artists) => {
 - [x] Comment（Read only）
 - [x] Lyrics
 - [x] Auto update
-- [ ] Website
+- [ ] Remove express（New API implementation, and proxy）
+- [ ] Resize window（New UI）
 
 ## 参考列表
 - 高品质音乐
   [YongHaoWu/NeteaseCloudMusicFlac](https://github.com/YongHaoWu/NeteaseCloudMusicFlac)
 - 添加其他曲库，解决死链问题
   [ITJesse/UnblockNeteaseMusic](https://github.com/ITJesse/UnblockNeteaseMusic)
-  修复了第三方曲库搜索BUG，基本上没有什么歌曲不能播放了👽
 
 ## License
 还是 MIT 吧，懒得改了
