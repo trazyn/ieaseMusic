@@ -67,19 +67,22 @@ export default class AudioPlayer extends Component {
 
         clearTimeout(this.timer);
 
-        this.timer = setTimeout(() => {
-            var ele = document.querySelector('#progress');
+        this.timer = setTimeout(
+            () => {
+                var ele = document.querySelector('#progress');
 
-            if (ele) {
-                let percent = (currentTime * 1000) / duration;
+                // I FM screen progress bar not visible
+                if (ele) {
+                    let percent = (currentTime * 1000) / duration;
 
-                ele = ele.firstElementChild;
-                ele.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
-                ele.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(duration)}`);
+                    this.setPosition(percent, ele);
+                    this.buffering();
 
-                this.buffering();
-            }
-        }, 450);
+                    ele.firstElementChild.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(duration)}`);
+                }
+            },
+            450
+        );
 
         this.passed = currentTime * 1000;
     }
@@ -106,6 +109,13 @@ export default class AudioPlayer extends Component {
         }
     }
 
+    setPosition(percent, ele = document.querySelector('#progress')) {
+        if (!ele) return;
+
+        ele = ele.firstElementChild;
+        ele.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
+    }
+
     buffering() {
         var ele = document.querySelector('#progress');
         var player = this.refs.player;
@@ -124,36 +134,53 @@ export default class AudioPlayer extends Component {
     }
 
     resetProgress() {
+        clearTimeout(this.timer);
         this.passed = 0;
+        this.setPosition(0);
     }
 
     render() {
         var song = this.props.song;
 
-        /* eslint-disable */
         return (
             <audio
-                autoPlay={true}
-                onAbort={e => {
-                    this.passed = 0, this.progress();
-                }}
-                onEnded={e => {
-                    this.props.scrobble();
-                    this.passed = 0, this.props.next(true);
-                }}
-                onError={e => console.log(e)}
-                onProgress={e => this.buffering(e)}
-                onSeeked={e => this.resetProgress()}
-                onTimeUpdate={e => {
-                    this.progress(e.target.currentTime);
-                    this.scrollerLyrics(e.target.currentTime);
-                }}
                 ref="player"
-                src={(song.data || {}).src}
                 style={{
                     display: 'none'
-                }} />
+                }}
+                src={(song.data || {}).src}
+                autoPlay={true}
+                onAbort={
+                    e => {
+                        this.resetProgress();
+                    }
+                }
+                onEnded={
+                    e => {
+                        this.props.scrobble();
+                        this.resetProgress();
+                        this.props.next(true);
+                    }
+                }
+                onError={
+                    e => {
+                        this.resetProgress();
+                    }
+                }
+                onProgress={e => this.buffering(e)}
+                onSeeked={
+                    e => {
+                        // Reset passed 0, avoid indicator can not go back
+                        this.passed = 0;
+                    }
+                }
+                onTimeUpdate={
+                    e => {
+                        this.progress(e.target.currentTime);
+                        this.scrollerLyrics(e.target.currentTime);
+                    }
+                }
+            />
         );
-        /* eslint-enable */
     }
 }

@@ -235,6 +235,7 @@ class Controller {
 
         if (audio) {
             audio.pause();
+            audio.src = '';
             audio.currentTime = 0;
         }
     }
