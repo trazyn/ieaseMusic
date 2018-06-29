@@ -7,6 +7,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import FadeImage from 'ui/FadeImage';
+import Indicator from 'ui/Indicator';
 import colors from 'utils/colors';
 
 @inject(stores => ({
@@ -43,7 +44,7 @@ class Playing extends Component {
     highlight(offset) {
         var list = this.refs.list;
         var classes = this.props.classes;
-        var songs = Array.from(list.querySelectorAll('li[data-id]'));
+        var songs = Array.from(list.querySelectorAll('[data-id]'));
         var index = songs.findIndex(e => e.classList.contains(classes.active));
 
         if (index > -1) {
@@ -99,56 +100,77 @@ class Playing extends Component {
         var list = songs;
 
         // Show the search result
-        if (this.refs.search
-            && this.refs.search.value.trim()) {
+        if (true
+            && this.refs.search
+            && this.refs.search.value.trim()
+        ) {
             list = filtered;
         }
 
         if (list.length === 0) {
             return (
-                <li className={classes.nothing}>
+                <div className={classes.nothing}>
                     Nothing ...
-                </li>
+                </div>
             );
         }
 
         return list.map((e, index) => {
+            var playing = e.id === song.id;
+
             return (
                 <li
-                    className={clazz(classes.song, {
-                        [classes.playing]: e.id === song.id,
-                    })}
-                    data-id={e.id}
                     key={index}
-                    onClick={() => {
-                        play(e.id);
-                        close();
-                    }}>
-                    <Link to={e.album.link}>
-                        <FadeImage src={e.album.cover} />
-                    </Link>
-                    <aside>
-                        <p className={classes.title}>{e.name}</p>
-                        <p className={classes.author}>
-                            {
-                                e.artists.map((e, index) => {
-                                    return (
-                                        <Link
-                                            key={index}
-                                            to={e.link}>
-                                            {e.name}
-                                        </Link>
-                                    );
-                                })
-                            }
-                        </p>
-                    </aside>
+                >
+                    <div className={classes.actions}>
+                        {
+                            playing
+                                ? (<Indicator />)
+                                : false
+                        }
+                    </div>
 
-                    <div
-                        className={classes.mask}
-                        style={{
-                            background: colors.randomGradient(),
-                        }} />
+                    <aside
+                        className={clazz(classes.song, {
+                            [classes.playing]: playing
+                        })}
+                        data-id={e.id}
+                        onClick={
+                            () => {
+                                play(e.id);
+                                close();
+                            }
+                        }
+                    >
+                        <Link to={e.album.link}>
+                            <FadeImage src={e.album.cover} />
+                        </Link>
+
+                        <aside>
+                            <p className={classes.title}>{e.name}</p>
+                            <p className={classes.author}>
+                                {
+                                    e.artists.map((e, index) => {
+                                        return (
+                                            <Link
+                                                key={index}
+                                                to={e.link}
+                                            >
+                                                {e.name}
+                                            </Link>
+                                        );
+                                    })
+                                }
+                            </p>
+                        </aside>
+
+                        <div
+                            className={classes.mask}
+                            style={{
+                                background: colors.randomGradient(),
+                            }}
+                        />
+                    </aside>
                 </li>
             );
         });
@@ -166,10 +188,19 @@ class Playing extends Component {
                 className={classes.container}
                 onKeyUp={e => this.pressEscExit(e)}
                 ref="container"
-                tabIndex="-1">
+                tabIndex="-1"
+            >
                 <div
                     className={classes.overlay}
-                    onClick={close} />
+                    onClick={close}
+                />
+
+                <img
+                    alt="Close"
+                    className={classes.close}
+                    onClick={close}
+                    src="assets/close.png"
+                />
 
                 <section>
                     <header>
@@ -179,18 +210,14 @@ class Playing extends Component {
                             onKeyUp={e => this.navigation(e)}
                             placeholder="Search..."
                             ref="search"
-                            type="text" />
-
-                        <img
-                            alt="Close"
-                            className={classes.close}
-                            onClick={close}
-                            src="assets/close.png" />
+                            type="text"
+                        />
                     </header>
 
                     <ul
                         className={classes.list}
-                        ref="list">
+                        ref="list"
+                    >
                         {this.renderList()}
                     </ul>
                 </section>
