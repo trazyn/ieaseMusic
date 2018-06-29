@@ -9,8 +9,7 @@ BEGIN {
 while (<>) {
   next if $seen{$_};
   next if /(ing.98k\@gmail.com)/;
-  next if /(trazyn)/;
-  next if /(tn.razy\@gmail.com)/;
+  next if /衣带渐宽人渐悔/;
   $seen{$_} = push @authors, "- ", $_;
 }
 END {
