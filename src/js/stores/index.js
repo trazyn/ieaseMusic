@@ -14,6 +14,7 @@ import search from './search';
 import comments from './comments';
 import lyrics from './lyrics';
 import preferences from './preferences';
+import upnext from './upnext';
 
 const stores = {
     me,
@@ -31,6 +32,7 @@ const stores = {
     comments,
     lyrics,
     preferences,
+    upnext,
 };
 
 export default stores;

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import fm from './fm';
 import comments from './comments';
+import upnext from './upnext';
 import preferences from './preferences';
 import lastfm from 'utils/lastfm';
 import helper from 'utils/helper';
@@ -127,7 +128,15 @@ class Controller {
                     'timeout of 5000ms exceeded'
                 ].includes(ex.message)
             ) {
-                self.next();
+                var next = await self.next(false, false);
+
+                if (next.id === self.song.id) {
+                    // Break dead loop
+                    self.playing = false;
+                    return;
+                }
+
+                upnext.toggle(next);
             }
             return;
         }
@@ -135,16 +144,16 @@ class Controller {
         self.song = Object.assign({}, self.song, { data });
     }
 
-    @action async next(loop = false) {
+    async next(loop = false, autoPlay = true) {
         var songs = self.playlist.songs;
         var history = self.history;
         var index = history.indexOf(self.song.id);
         var next;
 
         switch (true) {
+            // In the loop mode, manual shuffle immediate play the next song
             case loop === true
                     && self.mode === PLAYER_LOOP:
-                // Fix https://github.com/trazyn/ieaseMusic/issues/68
                 next = self.song.id;
                 break;
 
@@ -183,10 +192,14 @@ class Controller {
                 }
         }
 
-        await self.play(next);
+        if (autoPlay) {
+            await self.play(next);
+        }
+
+        return self.playlist.songs.find(e => e.id === next);
     }
 
-    @action async prev() {
+    async prev() {
         var history = self.history;
         var index = history.indexOf(self.song.id);
 
@@ -230,7 +243,7 @@ class Controller {
         });
     }
 
-    @action stop() {
+    stop() {
         var audio = document.querySelector('audio');
 
         if (audio) {
@@ -254,7 +267,7 @@ class Controller {
         }
     }
 
-    @action async scrobble() {
+    async scrobble() {
         var songid = self.song.id;
         var sourceid = self.playlist.id;
         var time = self.song.duration;
