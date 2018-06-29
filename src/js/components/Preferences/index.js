@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Modal, ModalBody } from 'ui/Modal';
+import { Modal, ModalBody, ModalHeader } from 'ui/Modal';
 import injectSheet, { ThemeProvider } from 'react-jss';
 import theme from 'app/theme';
 
@@ -23,6 +23,22 @@ class Preferences extends Component {
                 show={preferences.show}
                 onCancel={() => this.close()}
             >
+                <ModalHeader
+                    className={classes.header}
+                >
+                    Preferences...
+
+                    <i
+                        className={classes.close}
+                        onClick={() => this.close()}
+                    >
+                        <img
+                            alt="Close Menus"
+                            className={classes.close}
+                            src="assets/close.png" />
+                    </i>
+                </ModalHeader>
+
                 <ModalBody
                     className={classes.modal}
                 >

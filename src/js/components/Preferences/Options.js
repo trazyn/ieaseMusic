@@ -38,7 +38,7 @@ class Options extends Component {
     }
 
     render() {
-        var { classes, preferences, close } = this.props;
+        var { classes, preferences } = this.props;
         var {
             showTray,
             setShowTray,
@@ -69,22 +69,6 @@ class Options extends Component {
 
         return (
             <div className={classes.container}>
-                <header>
-                    <span>
-                        Preferences...
-                    </span>
-
-                    <i
-                        className={classes.close}
-                        onClick={() => close()}
-                    >
-                        <img
-                            alt="Close Menus"
-                            className={classes.close}
-                            src="assets/close.png" />
-                    </i>
-                </header>
-
                 <section>
                     <article>
                         <label htmlFor="alwaysOnTop">

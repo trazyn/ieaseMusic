@@ -3,28 +3,33 @@ import colors from 'utils/colors';
 
 export default theme => {
     return {
+        modal: {
+            height: 'calc(100vh - 56px)',
+        },
+
+        header: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 24,
+            paddingBottom: 0,
+            fontFamily: 'HelveticaNeue-UltraLight',
+            fontSize: 24,
+            fontWeight: '100',
+            color: '#000',
+            letterSpacing: 1,
+            wordSpacing: 3,
+            backgroundColor: 'white',
+        },
+
         container: {
             background: '#fff',
             color: '#333',
             overflow: 'hidden',
             overflowY: 'auto',
-            height: '100vh',
+            height: '100%',
             width: '100vw',
-
-            '& header': {
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 24,
-                paddingBottom: 0,
-                fontFamily: 'HelveticaNeue-UltraLight',
-                fontSize: 24,
-                fontWeight: '100',
-                color: '#000',
-                letterSpacing: 1,
-                wordSpacing: 3,
-            },
 
             '& h4': {
                 margin: 0,
@@ -62,6 +67,7 @@ export default theme => {
                 fontFamily: 'Roboto',
                 fontSize: 14,
                 padding: 32,
+                paddingTop: 24,
             },
 
             '& label': {
