@@ -4,7 +4,6 @@ import colors from 'utils/colors';
 export default theme => {
     return {
         container: {
-            padding: 32,
             background: '#fff',
             color: '#333',
             overflow: 'hidden',

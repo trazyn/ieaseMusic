@@ -31,7 +31,7 @@
 .Modal-overlay-leave {
     opacity: 1;
     visibility: visible;
-    transition: .2s;
+    transition: .3s;
 }
 
 .Modal-overlay-leave.Modal-overlay-leave-active {
@@ -40,20 +40,20 @@
 }
 
 .Modal-body-enter {
-    transform: translate(-50%, -50%) scale(.8);
+    transform: translate(-50%, -40%);
     opacity: 0;
-    transition: .2s cubic-bezier(0.500, -0.550, 0.400, 1.550);
+    transition: .2s;
 }
 
 .Modal-body-enter.Modal-body-enter-active {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%);
     opacity: 1;
 }
 
 .Modal-body-leave {
     transform: translate(-50%, -50%);
     opacity: 1;
-    transition: .14s;
+    transition: .3s;
 }
 
 .Modal-body-leave.Modal-body-leave-active {
