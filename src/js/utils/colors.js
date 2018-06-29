@@ -32,5 +32,28 @@ export default {
 
     randomGradient() {
         return gradients[Math.floor(Math.random() * gradients.length)];
+    },
+
+    randomColor() {
+        var colors = [];
+
+        Object.keys(pallet).map(
+            e => colors.push(pallet[e])
+        );
+
+        gradients.map(
+            e => {
+                var matched = e.match(/#(?:[0-9a-fA-F]{3}){1,2}/g);
+
+                if (matched) {
+                    colors = [
+                        ...matched,
+                        ...colors,
+                    ];
+                }
+            }
+        );
+
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 };

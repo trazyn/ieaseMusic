@@ -2,9 +2,9 @@
 export default theme => ({
     container: {
         position: 'fixed',
-        right: 0,
+        left: 0,
         top: 0,
-        width: '45vw',
+        width: 'calc(40vw + 78px)',
         color: '#4a4a4a',
         background: '#fff',
         boxShadow: '0 30px 80px 0 rgba(97, 45, 45, .25)',
@@ -18,7 +18,7 @@ export default theme => ({
         },
 
         '& header': {
-            padding: '40px 24px 0',
+            padding: '40px 78px 20px',
         },
 
         '& input': {
@@ -45,7 +45,7 @@ export default theme => ({
         position: 'absolute',
         height: 32,
         top: 16,
-        right: 16,
+        left: 16,
         cursor: 'pointer',
     },
 
@@ -56,11 +56,19 @@ export default theme => ({
         margin: 0,
         overflow: 'hidden',
         overflowY: 'auto',
+
+        '& li': {
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'row',
+        }
     },
 
     song: {
         position: 'relative',
         display: 'flex',
+        width: 'calc(100% - 78px)',
         justifyContent: 'flex-start',
         alignItems: 'center',
         padding: '24px 0',
@@ -82,6 +90,14 @@ export default theme => ({
         '&$active $mask, &:hover $mask': {
             opacity: 1,
         }
+    },
+
+    actions: {
+        display: 'flex',
+        width: 78,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
     },
 
     active: {},
