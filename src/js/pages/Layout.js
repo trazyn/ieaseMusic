@@ -18,6 +18,7 @@ import VolumeUpDown from 'components/Ripple/VolumeUpDown';
 import PlayerNavigation from 'components/Ripple/PlayerNavigation';
 import PlayerMode from 'components/Ripple/PlayerMode';
 import PlayerStatus from 'components/Ripple/PlayerStatus';
+import UpNext from 'components/UpNext';
 
 const classes = {
     container: {
@@ -103,6 +104,7 @@ class Layout extends Component {
                     showLyrics && <Lyrics />
                 }
 
+                <UpNext />
                 <Preferences />
                 <Menu />
                 <Search />

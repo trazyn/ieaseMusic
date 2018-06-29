@@ -51,7 +51,7 @@ export default theme => ({
 
     list: {
         listStyle: 'none',
-        height: 'calc(100vh - 80px)',
+        height: 'calc(100vh - 102px)',
         padding: 0,
         margin: 0,
         overflow: 'hidden',
