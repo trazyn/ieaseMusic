@@ -92,7 +92,9 @@ class UpNext extends Component {
                 <button
                     onClick={
                         () => {
-                            this.close();
+                            // Stop the player and mark current song as
+                            // canceled, when resume replay
+                            upnext.cancel();
                             controller.playing = false;
                         }
                     }
@@ -118,7 +120,7 @@ class UpNext extends Component {
                         {
                             this.renderContent()
                         }
-                    </ThemeProvider>,
+                    </ThemeProvider>
                 </ModalBody>
             </Modal>
         );
