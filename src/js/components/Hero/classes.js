@@ -12,7 +12,9 @@ export default theme => ({
         overflow: 'hidden',
 
         '& header': {
+            display: 'flex',
             justifyContent: 'space-between',
+            alignItems: 'center',
             padding: '24px',
             fontSize: 24,
             fontFamily: 'HelveticaNeue-UltraLight',
@@ -54,7 +56,7 @@ export default theme => ({
             display: 'block',
             width: '100%',
             height: '20vh',
-            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(216, 216, 216, .6))',
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(216, 216, 216, .9))',
         },
 
         '& section p': {
@@ -129,5 +131,13 @@ export default theme => ({
             fontSize: '18px !important',
             color: `${colors.pallet.dribbble} !important`,
         }
-    }
+    },
+
+    playing: {
+        transform: 'translateY(-3px)',
+
+        '& span': {
+            background: `${colors.pallet.dribbble} !important`
+        }
+    },
 });

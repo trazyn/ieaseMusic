@@ -11,6 +11,7 @@ import Artist from './pages/Artist';
 import Top from './pages/Top';
 import Playlist from './pages/Playlist';
 import FM from './pages/FM';
+import Singleton from './pages/Singleton';
 import stores from 'stores';
 
 function requireAuth(component, props) {
@@ -42,6 +43,7 @@ export default () => {
                 <Route exact path="/artist/:id" component={Artist} />
                 <Route exact path="/top" component={Top} />
                 <Route exact path="/playlist/:type" component={Playlist} />
+                <Route exact path="/singleton" component={Singleton} />
                 <Route
                     exact
                     path="/fm"
