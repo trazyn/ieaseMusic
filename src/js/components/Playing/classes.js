@@ -47,6 +47,7 @@ export default theme => ({
         top: 16,
         left: 16,
         cursor: 'pointer',
+        zIndex: 9,
     },
 
     list: {
