@@ -21,6 +21,13 @@ import colors from 'utils/colors';
 }))
 @observer
 class Playing extends Component {
+    componentWillReceiveProps(nextProps) {
+        // When filter result has been changed, reset the list viewport
+        if (this.props.filtered.length !== nextProps.filtered.length) {
+            this.refs.list.scrollTop = 0;
+        }
+    }
+
     componentDidUpdate() {
         var { show, song } = this.props;
 

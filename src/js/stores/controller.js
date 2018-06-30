@@ -53,6 +53,11 @@ class Controller {
         var songs = self.playlist.songs;
         var song;
 
+        if (!(upnext.canceled && upnext.canceled.id === songid)) {
+            // Keep upnext modal singleton
+            upnext.show = false;
+        }
+
         if (songid) {
             song = songs.find(e => e.id === songid);
         }
@@ -234,8 +239,15 @@ class Controller {
         self.playing = false;
     }
 
-    @action toggle() {
+    @action async toggle() {
         self.playing = !self.playing;
+
+        // When player resume try to play the canceled song
+        if (self.playing && upnext.canceled) {
+            await self.play(upnext.canceled.id, false);
+            // Reset the canceled item
+            upnext.cancel(null);
+        }
 
         ipcRenderer.send('update-status', {
             playing: self.playing,
