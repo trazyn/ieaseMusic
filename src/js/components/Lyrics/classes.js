@@ -21,13 +21,12 @@ export default theme => ({
             letterSpacing: 1,
             wordSpacing: 2,
         },
-
     },
 
     close: {
         position: 'absolute',
         height: 32,
-        top: 16,
+        top: 22,
         right: 16,
         cursor: 'pointer',
         zIndex: 9,

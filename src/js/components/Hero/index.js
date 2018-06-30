@@ -8,6 +8,7 @@ import injectSheet from 'react-jss';
 import classes from './classes';
 import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
+import Indicator from 'ui/Indicator';
 
 @inject(stores => ({
     like: stores.me.like,
@@ -34,45 +35,63 @@ class Hero extends Component {
 
         return (
             <div className={classes.container}>
-                <ProgressImage {...{
-                    height: window.innerHeight,
-                    width: window.innerHeight,
-                    src: song.album.cover.replace(/100y100$/, '500y500'),
-                }} />
+                <ProgressImage
+                    {...{
+                        height: window.innerHeight,
+                        width: window.innerHeight,
+                        src: song.album.cover.replace(/100y100$/, '500y500'),
+                    }}
+                />
 
                 <header>
-                    <i
-                        className={clazz('ion-ios-heart', {
-                            [classes.liked]: liked,
-                        })}
-                        onClick={e => liked ? unlike(song) : like(song)}
-                        style={{
-                            cursor: 'pointer',
-                        }} />
+                    <aside>
+                        <i
+                            className={clazz('ion-ios-heart', {
+                                [classes.liked]: liked,
+                            })}
+                            onClick={e => liked ? unlike(song) : like(song)}
+                            style={{
+                                cursor: 'pointer',
+                            }}
+                        />
 
-                    {
-                        (song.data && song.data.isFlac) && (
-                            <span
-                                className={classes.highquality}
-                                title="High Quality Music">
-                                SQ
-                            </span>
-                        )
-                    }
+                        {
+                            (song.data && song.data.isFlac) && (
+                                <span
+                                    className={classes.highquality}
+                                    title="High Quality Music"
+                                >
+                                    SQ
+                                </span>
+                            )
+                        }
+                    </aside>
+
+                    <Link
+                        onClick={() => close()}
+                        to="/singleton"
+                        className={classes.playing}
+                    >
+                        <Indicator />
+                    </Link>
                 </header>
 
                 <section>
-                    <p className={clazz({
-                        [classes.active]: isShowComments,
-                    })}>
+                    <p
+                        className={clazz({
+                            [classes.active]: isShowComments,
+                        })}
+                    >
                         <span onClick={e => showComments()}>
                             {helper.humanNumber(comments)} Comments
                         </span>
                     </p>
 
-                    <p className={clazz({
-                        [classes.active]: isShowLyrics,
-                    })}>
+                    <p
+                        className={clazz({
+                            [classes.active]: isShowLyrics,
+                        })}
+                    >
                         <span onClick={e => showLyrics()}>
                             Lyrics
                         </span>
@@ -83,17 +102,20 @@ class Hero extends Component {
                     <h3>{song.name}</h3>
                     <p className={classes.author}>
                         {
-                            song.artists.map((e, index) => {
+                            song.artists.map(
+                                (e, index) => {
                                 // Show the artist
-                                return (
-                                    <Link
-                                        key={index}
-                                        onClick={close}
-                                        to={e.link}>
-                                        {e.name}
-                                    </Link>
-                                );
-                            })
+                                    return (
+                                        <Link
+                                            key={index}
+                                            onClick={close}
+                                            to={e.link}
+                                        >
+                                            {e.name}
+                                        </Link>
+                                    );
+                                }
+                            )
                         }
                     </p>
                 </footer>
