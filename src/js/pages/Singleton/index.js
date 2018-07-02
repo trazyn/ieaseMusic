@@ -85,7 +85,7 @@ class Singleton extends Component {
                             {...{
                                 width: 260,
                                 height: 260,
-                                src: song.album.cover.replace(/\?.*$/, ''),
+                                src: song.album.cover.replace(/\?.*$/, '') + '?param=200y200',
                             }}
                         />
                     </div>
