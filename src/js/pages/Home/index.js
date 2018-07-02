@@ -13,46 +13,42 @@ import Loader from 'ui/Loader';
 import Header from 'components/Header';
 import Controller from 'components/Controller';
 
-@inject(stores => ({
-    hasLogin: stores.me.hasLogin,
-    playlist: stores.home.list,
-    getPlaylist: stores.home.getList,
-    loading: stores.home.loading,
-    play: (playlist) => {
-        var controller = stores.controller;
-
-        controller.setup(playlist);
-        controller.play();
-    },
-    toggle: stores.controller.toggle,
-    isPlaying: (id) => {
-        var controller = stores.controller;
+@inject('me', 'controller', 'preferences', 'home')
+@observer
+class Home extends Component {
+    isPlaying(id) {
+        var controller = this.props.controller;
 
         // Now is playing
         return controller.playing
             // And the same song
             && controller.playlist.id === id;
-    },
-    canitoggle: (id) => {
-        // Should has same id
-        return stores.controller.playlist.id === id;
-    },
-    naturalScroll: stores.preferences.naturalScroll,
-}))
-@observer
-class Home extends Component {
-    componentDidMount() {
-        this.props.getPlaylist();
     }
 
-    renderItem(item) {
-        var { classes, isPlaying } = this.props;
+    canitoggle(id) {
+        // Should has same id
+        return this.props.controller.playlist.id === id;
+    }
+
+    play(playlist) {
+        var controller = this.props.controller;
+
+        controller.setup(playlist);
+        controller.play();
+    }
+
+    componentDidMount() {
+        this.props.home.getList();
+    }
+
+    renderItem(item, playing) {
+        var { classes } = this.props;
 
         return (
             <Link
                 to={item.link}
                 className={clazz('clearfix', {
-                    [classes.playing]: isPlaying(item.id),
+                    [classes.playing]: playing,
                 })}
             >
                 <img src={item.cover} />
@@ -74,13 +70,13 @@ class Home extends Component {
         );
     }
 
-    renderLiked(item) {
-        var { classes, isPlaying } = this.props;
+    renderLiked(item, playing) {
+        var { classes } = this.props;
 
         return (
             <Link
                 className={clazz('clearfix', classes.liked, {
-                    [classes.playing]: isPlaying(item.id),
+                    [classes.playing]: playing,
                 })}
                 to={item.link}>
                 <div className={classes.cover}>
@@ -105,9 +101,8 @@ class Home extends Component {
         );
     }
 
-    renderDaily(item) {
-        var { classes, isPlaying, canitoggle, toggle, play } = this.props;
-        var playing = isPlaying(item.id);
+    renderDaily(item, playing) {
+        var { classes, controller } = this.props;
 
         return (
             <div
@@ -116,7 +111,7 @@ class Home extends Component {
                 })}
                 onClick={
                     e => {
-                        canitoggle(item.id) ? toggle() : play(item);
+                        this.canitoggle(item.id) ? controller.toggle() : this.play(item);
                         this.forceUpdate();
                     }
                 }
@@ -142,17 +137,20 @@ class Home extends Component {
     }
 
     renderPlaylist() {
-        var { classes, playlist, naturalScroll } = this.props;
-        var logined = this.props.hasLogin();
+        var { classes, me, preferences, controller, home } = this.props;
+        var logined = me.hasLogin();
 
         return (
-            <HorizontalScroll reverseScroll={!naturalScroll}>
+            <HorizontalScroll reverseScroll={!preferences.naturalScroll}>
                 {
                     () => {
-                        return playlist.map(
+                        return home.list.map(
                             (e, index) => {
                                 var isLiked = logined && index === 0;
                                 var isDaily = logined && index === 1;
+                                var playing = controller.playing
+                                    // Has same song
+                                    && controller.playlist.id === e.id;
 
                                 if (isDaily && e.songs.length === 0) {
                                     return false;
@@ -166,8 +164,8 @@ class Home extends Component {
                                         {
 
                                             isLiked
-                                                ? this.renderLiked(e)
-                                                : (isDaily ? this.renderDaily(e) : this.renderItem(e))
+                                                ? this.renderLiked(e, playing)
+                                                : (isDaily ? this.renderDaily(e, playing) : this.renderItem(e, playing))
                                         }
                                     </div>
                                 );
@@ -180,14 +178,12 @@ class Home extends Component {
     }
 
     render() {
-        var { classes, loading } = this.props;
+        var { classes, controller, home } = this.props;
 
         return (
-            <div
-                className={classes.container}
-                ref="container">
+            <div className={classes.container}>
                 <Loader
-                    show={loading}
+                    show={home.loading}
                     text="Please Wait ..." />
                 <Header {...{
                     showBack: false,
@@ -208,9 +204,13 @@ class Home extends Component {
                             </svg>
                         `}} />
 
-                    <div style={{
-                        marginTop: 20,
-                    }}>
+                    <div
+                        // Force re-rerender the list
+                        key={controller.playing}
+                        style={{
+                            marginTop: 20,
+                        }}
+                    >
                         {
                             this.renderPlaylist()
                         }
