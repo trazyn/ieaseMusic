@@ -57,6 +57,7 @@ class UpNext extends Component {
 
                         <ProgressImage
                             {...{
+                                className: classes.cover,
                                 height: 140,
                                 width: 140,
                                 src: song.album.cover,
