@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
+import clazz from 'classname';
 
 import classes from './classes';
 
@@ -44,7 +45,7 @@ class ProgressImage extends Component {
     }
 
     render() {
-        var { classes, src, thumb, height, width } = this.props;
+        var { classes, className, src, thumb, height, width } = this.props;
 
         if (!src) return false;
 
@@ -55,7 +56,7 @@ class ProgressImage extends Component {
 
         return (
             <figure
-                className={classes.container}
+                className={clazz(classes.container, className)}
                 ref="container"
                 style={{
                     height,

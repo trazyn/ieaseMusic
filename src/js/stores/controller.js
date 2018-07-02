@@ -105,6 +105,7 @@ class Controller {
         // Cancel the previous request
         cancel && cancel();
         self.stop();
+        self.song.waiting = true;
 
         var song = self.song;
 
@@ -133,20 +134,24 @@ class Controller {
                     'timeout of 5000ms exceeded'
                 ].includes(ex.message)
             ) {
-                var next = await self.next(false, false);
-
-                if (next.id === self.song.id) {
-                    // Break dead loop
-                    self.playing = false;
-                    return;
-                }
-
-                upnext.toggle(next);
+                self.tryTheNext();
             }
             return;
         }
 
-        self.song = Object.assign({}, self.song, { data });
+        self.song = Object.assign({}, self.song, { data }, { waiting: false });
+    }
+
+    async tryTheNext() {
+        var next = await self.next(false, false);
+
+        if (next.id === self.song.id) {
+            // Break dead loop
+            self.playing = false;
+            return;
+        }
+
+        upnext.toggle(next);
     }
 
     async next(loop = false, autoPlay = true) {

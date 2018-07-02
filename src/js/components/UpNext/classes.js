@@ -70,6 +70,13 @@ export default theme => {
             zIndex: 9,
         },
 
+        cover: {
+            height: 140,
+            width: 140,
+            borderRadius: 140,
+            overflow: 'hidden'
+        },
+
         play: {
             position: 'absolute',
             left: '50%',

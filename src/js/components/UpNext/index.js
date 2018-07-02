@@ -39,8 +39,6 @@ class UpNext extends Component {
                             height: 140,
                             width: 140,
                             borderRadius: 140,
-                            border: '4px solid #eee',
-                            boxSizing: 'border-box',
                             overflow: 'hidden',
                         }}
                     >
@@ -57,6 +55,7 @@ class UpNext extends Component {
 
                         <ProgressImage
                             {...{
+                                className: classes.cover,
                                 height: 140,
                                 width: 140,
                                 src: song.album.cover,
