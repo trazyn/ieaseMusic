@@ -10,6 +10,7 @@ import helper from 'utils/helper';
     scrobble: stores.controller.scrobble,
     next: stores.controller.next,
     play: () => stores.controller.play(stores.controller.song.id),
+    tryTheNext: stores.controller.tryTheNext,
     playing: stores.controller.playing,
     volume: stores.preferences.volume,
     setVolume: stores.preferences.setVolume,
@@ -140,7 +141,7 @@ export default class AudioPlayer extends Component {
     }
 
     render() {
-        var song = this.props.song;
+        var { song, tryTheNext } = this.props;
 
         return (
             <audio
@@ -164,7 +165,11 @@ export default class AudioPlayer extends Component {
                 }
                 onError={
                     e => {
+                        if (song.waiting) return;
+
+                        console.log('Break by %s', e);
                         this.resetProgress();
+                        tryTheNext();
                     }
                 }
                 onProgress={e => this.buffering(e)}
