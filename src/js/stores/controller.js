@@ -113,7 +113,7 @@ class Controller {
             var response = await axios.get(
                 `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date(),
                 {
-                    timeout: 5000,
+                    timeout: 10000,
                     cancelToken: new CancelToken(c => {
                         // An executor function receives a cancel function as a parameter
                         cancel = c;
@@ -131,7 +131,7 @@ class Controller {
             if (
                 [
                     'Bad audio src.',
-                    'timeout of 5000ms exceeded'
+                    'timeout of 10000ms exceeded'
                 ].includes(ex.message)
             ) {
                 self.tryTheNext();
