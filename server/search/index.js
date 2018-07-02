@@ -18,7 +18,7 @@ export default async(keyword, artists) => {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
     var rpOptions = {
-        timeout: 5000,
+        timeout: 10000,
         json: true,
     };
     var plugins = [];
