@@ -22,7 +22,7 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
     like: stores.me.like,
     unlike: stores.me.unlike,
     getPlayerLink: () => {
-        return stores.controller.playlist.link;
+        return stores.controller.playlist.link || '/';
     },
     getPlaylistName: () => {
         return `🎉 ${stores.controller.playlist.name}`;
@@ -81,7 +81,15 @@ class Controller extends Component {
                     <Link
                         className="tooltip"
                         data-text={getPlaylistName()}
-                        to={getPlayerLink()}>
+                        to={getPlayerLink()}
+                        onClick={
+                            e => {
+                                if (e.currentTarget.href.endsWith('#/')) {
+                                    e.preventDefault();
+                                }
+                            }
+                        }
+                    >
                         <ProgressImage {...{
                             height: 50,
                             width: 50,

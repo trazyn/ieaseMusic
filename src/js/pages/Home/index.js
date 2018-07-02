@@ -114,7 +114,13 @@ class Home extends Component {
                 className={clazz('clearfix', classes.daily, {
                     [classes.playing]: playing,
                 })}
-                onClick={e => canitoggle(item.id) ? toggle() : play(item)}>
+                onClick={
+                    e => {
+                        canitoggle(item.id) ? toggle() : play(item);
+                        this.forceUpdate();
+                    }
+                }
+            >
                 <div className={classes.mask}>
                     {
                         playing
