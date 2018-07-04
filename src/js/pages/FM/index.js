@@ -107,10 +107,13 @@ class FM extends Component {
 
         return (
             <div className={classes.container}>
-                <Header {...{
-                    color: 'white',
-                    showBack: true,
-                }} />
+                <Header
+                    {...{
+                        showBack: true,
+                        className: classes.header
+                    }}
+                />
+
                 {this.renderBG()}
 
                 <section className={classes.main}>

@@ -25,8 +25,12 @@ class Loader extends Component {
                     [classes.show]: this.props.show,
                 })}
             >
-                // Square loader
-                // https://codepen.io/tashfene/pen/raEqrJ?editors=1100
+                {
+                    /**
+                    Square loader
+                    https://codepen.io/tashfene/pen/raEqrJ?editors=1100
+                     * */
+                }
                 <div
                     className={
                         clazz(classes.loader, classes.animationLoader)

@@ -41,15 +41,6 @@ export default theme => ({
         background: 'rgba(255, 255, 255, .3)',
     },
 
-    close: {
-        position: 'absolute',
-        height: 32,
-        top: 16,
-        left: 16,
-        cursor: 'pointer',
-        zIndex: 9,
-    },
-
     list: {
         listStyle: 'none',
         height: 'calc(100vh - 102px)',

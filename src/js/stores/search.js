@@ -4,7 +4,6 @@ import axios from 'axios';
 
 class Search {
     @observable loading = false;
-    @observable show = false;
     @observable playlists = [];
     @observable albums = [];
     @observable artists = [];
@@ -118,10 +117,6 @@ class Search {
 
         self.users.push(...data.users);
         self.nextHref4users = data.nextHref;
-    }
-
-    @action toggle(show = !self.show) {
-        self.show = show;
     }
 }
 

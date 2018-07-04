@@ -15,6 +15,7 @@ import Header from 'components/Header';
 @inject(stores => ({
     loading: stores.user.loading,
     getUser: stores.user.getUser,
+    song: stores.controller.song,
     profile: stores.user.profile,
     playlists: stores.user.playlists,
     follow: stores.user.follow,
@@ -87,7 +88,8 @@ class User extends Component {
     }
 
     render() {
-        var { classes, loading, profile, isme, follow } = this.props;
+        var { classes, loading, song, profile, isme, follow } = this.props;
+        var followed = profile.followed;
 
         // Force rerender all, let image progressively load
         if (loading) {
@@ -96,20 +98,72 @@ class User extends Component {
 
         return (
             <div className={classes.container}>
-                <Header {...{
-                    follow,
-                    followed: profile.followed,
-                    showBack: true,
-                    showFollow: !isme(),
-                    showPlaylist: true,
-                }} />
+                <Header
+                    {...{
+                        showBack: true,
+                        showPlaylist: true,
+                    }}
+                />
+
+                <button
+                    style={{
+                        display: isme() ? 'none' : 'block'
+                    }}
+                    className={
+                        clazz(classes.follow, {
+                            [classes.followed]: followed,
+                        })
+                    }
+                    onClick={e => follow(followed)}
+                >
+                    {
+                        followed ? 'Followed' : 'Follow'
+                    }
+                </button>
+
+                {
+                    song.id
+                        ? (
+                            <figure
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 0,
+                                    height: '100%',
+                                    width: '100%',
+                                    padding: 0,
+                                    margin: 0,
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <figcaption
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        width: window.innerWidth,
+                                        height: window.innerWidth,
+                                        padding: 0,
+                                        margin: 0,
+                                        backgroundImage: `url(${song.album.cover.replace(/\?param=.*/, '') + '?param=800y800'})`,
+                                        backgroundSize: `${window.innerWidth}px ${window.innerWidth}px`,
+                                        filter: 'blur(10px)',
+                                        zIndex: -1,
+                                    }}
+                                />
+                            </figure>
+                        )
+                        : false
+                }
 
                 <div className={classes.hero}>
-                    <ProgressImage {...{
-                        height: 260,
-                        width: 260,
-                        src: profile.avatar,
-                    }} />
+                    <ProgressImage
+                        {...{
+                            height: 260,
+                            width: 260,
+                            src: profile.avatar,
+                        }}
+                    />
 
                     <div className={classes.info}>
                         <p className={classes.username}>

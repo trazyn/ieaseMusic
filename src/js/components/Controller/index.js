@@ -7,6 +7,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import helper from 'utils/helper';
+import colors from 'utils/colors';
 import ProgressImage from 'ui/ProgressImage';
 import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
 
@@ -28,8 +29,6 @@ import { PLAYER_LOOP, PLAYER_SHUFFLE, PLAYER_REPEAT } from 'stores/controller';
         return `🎉 ${stores.controller.playlist.name}`;
     },
     hasLogin: stores.me.hasLogin,
-    showComments: () => stores.comments.toggle(true),
-    showLyrics: () => stores.lyrics.toggle(true),
     comments: stores.comments.total,
 }))
 @observer
@@ -56,9 +55,7 @@ class Controller extends Component {
             playing,
             getPlayerLink,
             getPlaylistName,
-            showComments,
             comments,
-            showLyrics,
         } = this.props;
         var liked = isLiked(song.id);
 
@@ -67,11 +64,56 @@ class Controller extends Component {
         }
 
         return (
-            <div className={classes.container}>
+            <div
+                className={classes.container}
+                ref={
+                    ele => {
+                        if (!ele) return;
+
+                        ele.style.backgroundColor = song.id ? 'none' : 'white';
+                    }
+                }
+            >
+                {
+                    song.id
+                        ? (
+                            <figure
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 0,
+                                    height: '100%',
+                                    width: '100%',
+                                    padding: 0,
+                                    margin: 0,
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <figcaption
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: -470,
+                                        width: window.innerWidth,
+                                        height: window.innerWidth,
+                                        padding: 0,
+                                        margin: 0,
+                                        backgroundImage: `url(${song.album.cover.replace(/\?param=.*/, '') + '?param=800y800'})`,
+                                        backgroundSize: `${window.innerWidth}px ${window.innerWidth}px`,
+                                        filter: 'blur(10px)',
+                                        zIndex: -1,
+                                    }}
+                                />
+                            </figure>
+                        )
+                        : false
+                }
+
                 <div
-                    className={classes.bar}
                     id="progress"
-                    onClick={e => this.seek(e)}>
+                    className={classes.bar}
+                    onClick={e => this.seek(e)}
+                >
                     <div className={classes.playing} />
                     <div className={classes.buffering} />
                 </div>
@@ -79,8 +121,15 @@ class Controller extends Component {
                 <section>
                     {/* Click the cover show the player screen */}
                     <Link
-                        className="tooltip"
                         data-text={getPlaylistName()}
+                        className="tooltip"
+                        style={{
+                            display: 'flex',
+                            height: 50,
+                            width: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                         to={getPlayerLink()}
                         onClick={
                             e => {
@@ -90,18 +139,25 @@ class Controller extends Component {
                             }
                         }
                     >
-                        <ProgressImage {...{
-                            height: 50,
-                            width: 50,
-                            src: song.album.cover,
-                        }} />
+                        <ProgressImage
+                            {...{
+                                height: 32,
+                                width: 32,
+                                src: song.album.cover,
+                                style: {
+                                    filter: `drop-shadow(3mm 2mm 4mm ${colors.randomColor()})`,
+                                },
+                                className: classes.cover,
+                            }}
+                        />
                     </Link>
 
                     <aside>
                         <div className={classes.info}>
                             <p
                                 className={classes.title}
-                                title={song.name}>
+                                title={song.name}
+                            >
                                 {/* Click the song name show the album screen */}
                                 <Link to={song.album.link}>
                                     {song.name}
@@ -110,43 +166,55 @@ class Controller extends Component {
 
                             <p className={classes.author}>
                                 {
-                                    song.artists.map((e, index) => {
-                                        // Show the artist
-                                        return (
-                                            <Link
-                                                key={index}
-                                                title={e.name}
-                                                to={e.link}>
-                                                {e.name}
-                                            </Link>
-                                        );
-                                    })
+                                    song.artists.map(
+                                        (e, index) => {
+                                            // Show the artist
+                                            return (
+                                                <Link
+                                                    key={index}
+                                                    to={e.link}
+                                                    title={e.name}
+                                                >
+                                                    {
+                                                        e.name
+                                                    }
+                                                </Link>
+                                            );
+                                        }
+                                    )
                                 }
                             </p>
                         </div>
 
                         <div className={classes.action}>
                             {
-                                (song.data && song.data.isFlac) && (
-                                    <span
-                                        className={classes.highquality}
-                                        title="High Quality Music">
-                                        SQ
-                                    </span>
-                                )
+                                (song.data && song.data.isFlac)
+                                    ? (
+                                        <span
+                                            className={classes.highquality}
+                                            title="High Quality Music">
+                                            SQ
+                                        </span>
+                                    )
+                                    : false
                             }
 
-                            <span
+                            <Link
                                 className={classes.text}
-                                onClick={e => showLyrics()}>
+                                to="/lyrics"
+                            >
                                 LRC
-                            </span>
+                            </Link>
 
-                            <span
+                            <Link
                                 className={classes.text}
-                                onClick={e => showComments()}>
-                                {helper.humanNumber(comments)} Comments
-                            </span>
+                                to="/comments"
+                            >
+                                {
+                                    helper.humanNumber(comments)
+                                }
+                                Comments
+                            </Link>
 
                             {
                                 hasLogin() && (
@@ -154,7 +222,8 @@ class Controller extends Component {
                                         className={clazz('ion-ios-heart', {
                                             [classes.liked]: liked,
                                         })}
-                                        onClick={e => liked ? unlike(song) : like(song)} />
+                                        onClick={e => liked ? unlike(song) : like(song)}
+                                    />
                                 )
                             }
 
@@ -164,12 +233,14 @@ class Controller extends Component {
                                     'ion-ios-infinite': mode === PLAYER_REPEAT,
                                     'ion-ios-loop-strong': mode === PLAYER_LOOP,
                                 })}
-                                onClick={this.props.changeMode} />
+                                onClick={this.props.changeMode}
+                            />
 
                             <div className={classes.controls}>
                                 <i
                                     className="ion-ios-rewind"
-                                    onClick={prev} />
+                                    onClick={prev}
+                                />
 
                                 <span
                                     className={classes.toggle}
@@ -177,11 +248,14 @@ class Controller extends Component {
                                     {
                                         playing
                                             ? <i className="ion-ios-pause" />
-                                            : <i
-                                                className="ion-ios-play"
-                                                style={{
-                                                    color: 'inherit'
-                                                }} />
+                                            : (
+                                                <i
+                                                    className="ion-ios-play"
+                                                    style={{
+                                                        color: 'inherit'
+                                                    }}
+                                                />
+                                            )
                                     }
                                 </span>
 
@@ -190,7 +264,8 @@ class Controller extends Component {
                                     onClick={next}
                                     style={{
                                         marginRight: 0,
-                                    }} />
+                                    }}
+                                />
                             </div>
                         </div>
                     </aside>

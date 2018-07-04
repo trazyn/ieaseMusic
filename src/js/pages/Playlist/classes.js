@@ -21,6 +21,7 @@ function getBackgrounds(theme) {
 
 export default theme => ({
     container: {
+        marginTop: 40,
         background: colors.randomGradient(),
 
         ...getBackgrounds(theme.playlist.backgrounds),
@@ -50,11 +51,10 @@ export default theme => ({
     },
 
     navs: {
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         padding: 0,
         margin: 0,
         width: 180,
-        marginTop: 30,
         paddingTop: 20,
         listStyle: 'none',
         color: '#fff',
@@ -110,9 +110,8 @@ export default theme => ({
     list: {
         ...perdido.utils.clearFix,
         width: 'calc(100vw - 200px)',
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         paddingLeft: 20,
-        marginTop: 30,
         paddingTop: 20,
         overflow: 'hidden',
         overflowY: 'auto',

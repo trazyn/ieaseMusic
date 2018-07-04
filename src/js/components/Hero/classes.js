@@ -11,13 +11,34 @@ export default theme => ({
         height: '100vh',
         overflow: 'hidden',
 
-        '& header': {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+        '& aside': {
             padding: '24px',
+            paddingTop: 60,
             fontSize: 24,
-            fontFamily: 'HelveticaNeue-UltraLight',
+        },
+
+        '& summary': {
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            padding: '24px',
+            paddingTop: 64,
+            fontSize: 24,
+            zIndex: 9,
+        },
+
+        '& nav': {
+            position: 'absolute',
+            top: '45vh',
+            left: 0,
+        },
+
+        '& nav i': {
+            color: '#fff',
+            fontSize: 20,
+            width: 32,
+            textAlign: 'center',
+            cursor: 'pointer',
         },
 
         '& footer': {
@@ -25,7 +46,7 @@ export default theme => ({
             padding: '12px 24px',
         },
 
-        '& p': {
+        '& article': {
             padding: 0,
             margin: 0,
         },
@@ -59,25 +80,24 @@ export default theme => ({
             background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(216, 216, 216, .9))',
         },
 
-        '& section p': {
+        '& nav article': {
             color: '#fff',
         },
 
-        '& section span': {
+        '& nav a': {
             display: 'inline-block',
             padding: '12px 24px',
-            marginBottom: 20,
             fontSize: 12,
             color: '#fff',
             background: '#000',
             textTransform: 'uppercase',
+            transition: '.2s',
             cursor: 'pointer',
-        }
-    },
+        },
 
-    liked: {
-        color: colors.pallet.grape,
-        textShadow: `0 0 24px ${colors.pallet.grape}`,
+        '& nav a:hover': {
+            color: colors.pallet.dribbble,
+        },
     },
 
     author: {
@@ -111,10 +131,15 @@ export default theme => ({
         }
     },
 
-    highquality: {
-        display: 'inline-block',
-        padding: '6px 8px',
-        marginLeft: 30,
+    liked: {
+        color: colors.pallet.grape,
+        textShadow: `0 0 24px ${colors.pallet.grape}`,
+    },
+
+    badge: {
+        display: 'table',
+        padding: '6px 12px',
+        marginTop: 24,
         letterSpacing: 1,
         textTransform: 'uppercase',
         fontFamily: 'Roboto',
@@ -122,22 +147,6 @@ export default theme => ({
         color: '#fff',
         background: colors.pallet.dribbble,
         boxShadow: `0 0 24px ${colors.pallet.dribbble}`,
-        transform: 'translateY(-6px)',
         zoom: .8,
-    },
-
-    active: {
-        '& span': {
-            fontSize: '18px !important',
-            color: `${colors.pallet.dribbble} !important`,
-        }
-    },
-
-    playing: {
-        transform: 'translateY(-3px)',
-
-        '& span': {
-            background: `${colors.pallet.dribbble} !important`
-        }
     },
 });

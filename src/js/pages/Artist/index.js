@@ -241,16 +241,14 @@ class Artist extends Component {
     render() {
         var { classes, loading, profile, isPlaying, follow } = this.props;
         var size = profile.size || {};
+        var followed = profile.followed;
 
         return (
             <div className={classes.container}>
                 <Loader show={loading} />
 
                 <Header {...{
-                    follow,
-                    followed: profile.followed,
                     showBack: true,
-                    showFollow: true,
                     showPlaylist: true,
                 }} />
                 <div className={classes.hero}>
@@ -293,6 +291,15 @@ class Artist extends Component {
                         </p>
 
                         <div className={classes.meta}>
+                            <button
+                                className={clazz(classes.follow, {
+                                    [classes.followed]: followed,
+                                })}
+                                onClick={e => follow(followed)}
+                            >
+                                { followed ? 'Followed' : 'Follow' }
+                            </button>
+
                             <span>
                                 {size.song} Tracks
                             </span>

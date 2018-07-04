@@ -6,7 +6,6 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
-import FadeImage from 'ui/FadeImage';
 
 @inject(stores => ({
     login: stores.me.login,
@@ -60,10 +59,6 @@ class Login extends Component {
 
         return (
             <div className={classes.container}>
-                <FadeImage
-                    className={classes.background}
-                    src="https://source.unsplash.com/random" />
-
                 <Link
                     className={classes.back}
                     to="/">

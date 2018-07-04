@@ -244,14 +244,14 @@ class Player extends Component {
     render() {
         var { classes, loading, meta, playing, recommend, canifav, searching, showSearch, hideSearch, filter } = this.props;
         var heroBackgroundColor = helper.pureColor(meta.pallet);
-        var headerIconColor = meta.pallet[0].join();
 
         return (
             <div className={classes.container}>
                 <Loader show={loading} />
+
                 <Header
-                    color={`rgb(${headerIconColor})`}
-                    showFav={canifav()} />
+                    showFav={canifav()}
+                />
 
                 <section>
                     <div

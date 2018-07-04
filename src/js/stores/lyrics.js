@@ -6,12 +6,7 @@ import controller from './controller';
 
 class Lyrics {
     @observable loading = true;
-    @observable show = false;
     @observable list = {};
-
-    @action toggle(show = !self.show) {
-        self.show = show;
-    }
 
     @action async getLyrics() {
         self.loading = true;

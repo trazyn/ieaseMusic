@@ -6,7 +6,6 @@ import controller from './controller';
 
 class Comments {
     @observable loading = true;
-    @observable show = false;
     @observable hotList = [];
     @observable newestList = [];
     @observable total = 0;
@@ -16,10 +15,6 @@ class Comments {
     };
 
     nextHref = '';
-
-    @action toggle(show = !self.show) {
-        self.show = show;
-    }
 
     @action async getList(song) {
         self.loading = true;

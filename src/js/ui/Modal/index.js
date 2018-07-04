@@ -126,10 +126,7 @@ class Modal extends Component {
         document.body.style.overflow = this.props.show ? 'hidden' : null;
 
         return (
-            <div
-                ref="node"
-                className={clazz('Modal', this.props.className)}
-            >
+            <div>
                 <Transition
                     transitionName="Modal-overlay"
                     transitionEnterTimeout={200}

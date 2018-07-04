@@ -4,7 +4,7 @@ import colors from 'utils/colors';
 export default theme => {
     return {
         modal: {
-            height: 'calc(100vh - 56px)',
+            height: 'calc(100vh - 140px)',
         },
 
         header: {
@@ -29,7 +29,7 @@ export default theme => {
             overflow: 'hidden',
             overflowY: 'auto',
             height: '100%',
-            width: '100vw',
+            width: '80vw',
 
             '& h4': {
                 margin: 0,

@@ -4,22 +4,28 @@ import colors from 'utils/colors';
 export default theme => ({
     container: {
         position: 'absolute',
-        left: 16,
-        top: 16,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: 'calc(100vw - 32px)',
-        height: 32,
-        lineHeight: '32px',
+        left: 0,
+        top: 0,
         zIndex: 99,
+
+        '& section': {
+            position: 'relative',
+            background: 'rgba(0, 0, 0, .6)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: 40,
+            padding: '0 16px',
+            width: 'calc(100vw - 32px)',
+            zIndex: 1,
+        },
 
         '& i': {
             display: 'inline-block',
-            height: 32,
             width: 32,
             marginRight: 4,
             fontSize: 20,
+            color: '#eee',
             textAlign: 'center',
             cursor: 'pointer',
 
@@ -34,46 +40,18 @@ export default theme => ({
         }
     },
 
+    backward: {
+        height: 12,
+        width: 12,
+        borderRadius: 12,
+        border: 'thin solid #ddd',
+        marginLeft: 58,
+        background: '#eee',
+        transform: 'translateY(-1px)',
+        boxSizing: 'border-box',
+    },
+
     subscribed: {
         color: colors.pallet.sunflower,
     },
-
-    follow: {
-        position: 'relative',
-        width: 80,
-        height: 24,
-        padding: 0,
-        marginRight: 24,
-        lineHeight: '24px',
-        border: 'none',
-        borderRadius: 24,
-        backgroundImage: 'linear-gradient(280deg, rgb(47, 42, 41) 0%, rgb(47, 42, 41) 100%)',
-        textAlign: 'center',
-        fontSize: 12,
-        color: '#fff',
-        outline: 0,
-        transform: 'translateY(-4px)',
-        overflow: 'hidden',
-        cursor: 'pointer',
-
-        '&:before': {
-            position: 'absolute',
-            content: '""',
-            top: 0,
-            left: 0,
-            display: 'block',
-            height: '100%',
-            width: '100%',
-            backgroundImage: 'linear-gradient(225deg, rgb(255, 103, 0) 0%, rgb(255, 45, 240) 100%)',
-            opacity: 0,
-            zIndex: -1,
-            transition: '.4s',
-        },
-
-        '&$followed:before, &:hover:before': {
-            opacity: 1,
-        }
-    },
-
-    followed: {},
 });

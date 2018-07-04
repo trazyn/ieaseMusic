@@ -3,6 +3,7 @@ import colors from 'utils/colors';
 
 export default theme => ({
     container: {
+        marginTop: 40,
         background: '#fff',
     },
 
@@ -115,12 +116,12 @@ export default theme => ({
 
     body: {
         display: 'flex',
-        height: 'calc(100vh - 260px - 50px)'
+        height: 'calc(100vh - 260px - 90px)'
     },
 
     people: {
         display: 'flex',
-        height: 'calc(100vh - 50px - 260px)',
+        height: 'calc(100vh - 90px - 260px)',
         width: 240,
         justifyContent: 'space-around',
         flexDirection: 'column',
@@ -185,7 +186,7 @@ export default theme => ({
         },
 
         '& ul': {
-            height: 'calc(100vh - 260px - 90px)',
+            height: 'calc(100vh - 260px - 90px - 40px)',
             padding: 0,
             margin: 0,
             listStyle: 'none',

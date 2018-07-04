@@ -9,14 +9,17 @@ export default theme => {
             left: 0,
             width: '100vw',
             height: 50,
-            background: '#fff',
             color: '#000',
+            background: 'none',
             zIndex: 99,
 
             '& section': {
+                position: 'relative',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                backgroundColor: 'rgba(255, 255, 255, .5)',
+                zIndex: 1,
             },
 
             '& aside': {
@@ -31,7 +34,7 @@ export default theme => {
                     margin: 0,
                     padding: 0,
                 }
-            }
+            },
         },
 
         bar: {
@@ -94,6 +97,12 @@ export default theme => {
         playing: {},
         buffering: {},
 
+        cover: {
+            height: 32,
+            width: 32,
+            transition: '.2s',
+        },
+
         info: {
             display: 'flex',
             flexDirection: 'column',
@@ -134,7 +143,7 @@ export default theme => {
             whiteSpace: 'nowrap',
 
             '& a': {
-                color: '#4a4a4a',
+                color: '#000',
 
                 '&:after': {
                     content: '"/"',
@@ -156,7 +165,7 @@ export default theme => {
                 lineHeight: '24px',
                 marginRight: 16,
                 fontSize: 16,
-                color: '#4a4a4a',
+                color: '#000',
                 textAlign: 'center',
                 cursor: 'pointer',
                 transition: '.2s',
@@ -190,7 +199,7 @@ export default theme => {
         liked: { },
 
         mode: {
-            color: '#4a4a4a',
+            color: '#000',
         },
 
         text: {
@@ -200,6 +209,7 @@ export default theme => {
             borderTop: 'thin solid #333',
             borderBottom: 'thin solid #333',
             fontSize: 11,
+            color: 'inherit',
             textTransform: 'uppercase',
             transform: 'translateY(-2px)',
             cursor: 'pointer',
@@ -219,7 +229,7 @@ export default theme => {
 
         toggle: {
             '& i': {
-                color: '#9b9b9b',
+                color: 'rgba(0, 0, 0, .5)',
             }
         },
     };
