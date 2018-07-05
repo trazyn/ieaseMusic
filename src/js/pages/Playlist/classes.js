@@ -7,14 +7,16 @@ import preferences from 'stores/preferences';
 function getBackgrounds(theme) {
     var backgrounds = {};
 
-    theme.map((e, index) => {
-        var rule = `&[data-type="${encodeURIComponent(e.type)}"]:before`;
-        var custome = preferences.backgrounds[index].background;
+    theme.map(
+        (e, index) => {
+            var rule = `&[data-type="${encodeURIComponent(e.type)}"]:before`;
+            var background = preferences.backgrounds[index].background || e.background;
 
-        backgrounds[rule] = {
-            'background-image': `url(${custome || e.background})`,
-        };
-    });
+            backgrounds[rule] = {
+                'background-image': background ? `url(${background})` : 'none',
+            };
+        }
+    );
 
     return backgrounds;
 }
