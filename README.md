@@ -1,8 +1,10 @@
 # ieaseMusic
 
-[![Build Status](https://travis-ci.org/trazyn/ieaseMusic.svg?branch=master)](https://travis-ci.org/trazyn/ieaseMusic)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/LICENSE)
+[![Current Release](https://img.shields.io/github/release/trazyn/ieaseMusic.svg?style=flat-square)](https://github.com/trazyn/ieaseMusic/releases)
+![License](https://img.shields.io/github/license/trazyn/ieaseMusic.svg?style=flat-square)
+[![Travis CI status](https://img.shields.io/travis/trazyn/ieaseMusic/dev.svg?style=flat-square)](https://travis-ci.org/trazyn/ieaseMusic/branches)
+[![Dependencies Status](https://david-dm.org/trazyn/ieaseMusic/status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
 
 
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
