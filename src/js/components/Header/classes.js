@@ -40,6 +40,10 @@ export default theme => ({
         }
     },
 
+    transparent: {
+        background: 'transparent !important',
+    },
+
     backward: {
         height: 12,
         width: 12,

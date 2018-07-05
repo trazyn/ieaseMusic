@@ -18,12 +18,14 @@ import classes from './classes';
 @observer
 class Header extends Component {
     static propTypes = {
+        transparent: PropTypes.bool,
         showBack: PropTypes.bool,
         showFav: PropTypes.bool,
         showPlaylist: PropTypes.bool,
     };
 
     static defaultProps = {
+        transparent: true,
         showBack: true,
         showFav: false,
         showPlaylist: true,
@@ -95,7 +97,7 @@ class Header extends Component {
     }
 
     render() {
-        var { classes, song } = this.props;
+        var { classes, song, transparent } = this.props;
 
         return (
             <header
@@ -104,7 +106,7 @@ class Header extends Component {
                 }
             >
                 {
-                    song.id
+                    (song.id && transparent === false)
                         ? (
                             <figure
                                 style={{
@@ -138,7 +140,13 @@ class Header extends Component {
                         : false
                 }
 
-                <section>
+                <section
+                    className={
+                        clazz({
+                            [classes.transparent]: transparent
+                        })
+                    }
+                >
                     {
                         this.renderBack()
                     }
