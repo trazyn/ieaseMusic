@@ -120,7 +120,7 @@ const helper = {
     },
 
     getRate(song) {
-        if (!song.data) {
+        if (!song.data || !song.data.bitRate) {
             return 'Unknow kbps';
         }
 
