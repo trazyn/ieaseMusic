@@ -8,16 +8,6 @@ export default theme => {
 
         },
 
-        header: {
-            '& figure': {
-                display: 'none',
-            },
-
-            '& section': {
-                background: 'transparent',
-            },
-        },
-
         unavailable: {
             display: 'flex',
             width: '100vw',

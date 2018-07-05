@@ -109,8 +109,8 @@ class FM extends Component {
             <div className={classes.container}>
                 <Header
                     {...{
+                        transparent: true,
                         showBack: true,
-                        className: classes.header
                     }}
                 />
 

@@ -23,16 +23,6 @@ export default theme => ({
         },
     },
 
-    header: {
-        '& figure': {
-            display: 'none',
-        },
-
-        '& section': {
-            background: 'transparent',
-        },
-    },
-
     lyrics: {
         position: 'relative',
         width: '60vw',

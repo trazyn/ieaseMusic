@@ -68,16 +68,6 @@ export default theme => ({
         }
     },
 
-    header: {
-        '& figure': {
-            display: 'none',
-        },
-
-        '& section': {
-            background: 'transparent',
-        },
-    },
-
     selected: {
         '&:after': {
             background: `${colors.pallet.mint} !important`,

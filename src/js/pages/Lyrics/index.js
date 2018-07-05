@@ -69,8 +69,8 @@ class Lyrics extends Component {
         return (
             <div className={classes.container}>
                 <Header
+                    transparent={true}
                     showBack={true}
-                    className={classes.header}
                 />
 
                 <Hero location={this.props.location} />
