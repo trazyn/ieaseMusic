@@ -24,6 +24,7 @@ import Controller from 'components/Controller';
     ban: stores.fm.ban,
     unlike: stores.me.unlike,
     isLiked: stores.me.isLiked,
+    comments: stores.comments.total,
 
     isFMPlaying() {
         var { controller, fm } = stores;
@@ -36,9 +37,6 @@ import Controller from 'components/Controller';
         return controller.playing
             && controller.playlist.id === fm.playlist.id;
     },
-
-    showComments: () => stores.comments.toggle(true),
-    comments: stores.comments.total,
 }))
 @observer
 class FM extends Component {
@@ -76,7 +74,7 @@ class FM extends Component {
     }
 
     render() {
-        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, songs, song, next, showComments, comments } = this.props;
+        var { classes, loading, isFMPlaying, isLiked, like, unlike, ban, songs, song, next, comments } = this.props;
         var liked = false;
 
         if (loading) {
@@ -155,11 +153,13 @@ class FM extends Component {
                                 </span>
                             </p>
 
-                            <p
-                                className={classes.comments}
-                                onClick={e => showComments()}>
+                            <p className={classes.comments}>
                                 <span>
-                                    {helper.humanNumber(comments)} Comments
+                                    <Link
+                                        title={song.album.name}
+                                        to="/comments">
+                                        {helper.humanNumber(comments)} Comments
+                                    </Link>
                                 </span>
                             </p>
                         </aside>
