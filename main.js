@@ -465,6 +465,7 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
+        show: false,
         width: 800,
         height: 520,
         resizable: false,
@@ -494,6 +495,10 @@ const createMainWindow = () => {
     mainWindow.webContents.on('new-window', (event, url) => {
         event.preventDefault();
         shell.openExternal(url);
+    });
+
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
     });
 
     mainWindow.on('close', e => {
