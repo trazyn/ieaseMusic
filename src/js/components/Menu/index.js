@@ -41,7 +41,7 @@ class Menu extends Component {
         }
 
         return (
-            <artist className={classes.profile}>
+            <article className={classes.profile}>
                 <Link
                     className="clearfix"
                     onClick={close}
@@ -63,7 +63,7 @@ class Menu extends Component {
                         Logout
                     </a>
                 </div>
-            </artist>
+            </article>
         );
     }
 
