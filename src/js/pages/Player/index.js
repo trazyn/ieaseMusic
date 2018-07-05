@@ -258,8 +258,9 @@ class Player extends Component {
                     <div
                         className={classes.hero}
                         style={{
-                            background: colors.randomGradient()
-                        }}>
+                            backgroundImage: colors.randomGradient()
+                        }}
+                    >
                         <ProgressImage {...{
                             height: 260,
                             width: 260,

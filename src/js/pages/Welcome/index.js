@@ -328,17 +328,25 @@ class Welcome extends Component {
                         </nav>
                     </aside>
 
-                    <section className={classes.list}>
-                        {
-                            this.renderFavorite(list[0])
-                        }
-                        {
-                            this.renderRecommend(list[1])
-                        }
-                        {
-                            this.renderPlaylist(list.slice(2, list.length))
-                        }
-                    </section>
+                    {
+                        list.length
+                            ? (
+                                <section className={classes.list}>
+                                    {
+                                        this.renderFavorite(list[0])
+                                    }
+                                    {
+                                        this.renderRecommend(list[1])
+                                    }
+                                    {
+                                        this.renderPlaylist(list.slice(2, list.length))
+                                    }
+                                </section>
+                            )
+                            : (
+                                <div className={classes.placeholder} />
+                            )
+                    }
                 </main>
 
                 <Controller />

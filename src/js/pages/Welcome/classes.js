@@ -100,6 +100,15 @@ export default theme => ({
         }
     },
 
+    placeholder: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 360,
+        height: '100vh',
+        backgroundImage: 'linear-gradient(110deg, rgb(255, 103, 0) 0%, rgb(255, 45, 240) 100%)',
+    },
+
     list: {
         position: 'absolute',
         right: 0,
