@@ -1,7 +1,6 @@
 
 export default theme => ({
     container: {
-        marginTop: 40,
         height: '100vh',
         background: 'rgba(255, 255, 255, .3)',
     },
@@ -56,6 +55,10 @@ export default theme => ({
 
     followed: {},
 
+    info: {
+        paddingTop: 40,
+    },
+
     username: {
         fontSize: 14,
         transform: 'translateX(-20px)',
@@ -103,6 +106,10 @@ export default theme => ({
             '-webkit-box-orient': 'vertical',
 
         }
+    },
+
+    list: {
+        marginTop: 20,
     },
 
     item: {

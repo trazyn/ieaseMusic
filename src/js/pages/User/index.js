@@ -100,6 +100,7 @@ class User extends Component {
             <div className={classes.container}>
                 <Header
                     {...{
+                        transparent: true,
                         showBack: true,
                         showPlaylist: true,
                     }}
