@@ -41,6 +41,7 @@ class Singleton extends Component {
             <div className={classes.container}>
                 <Header
                     {...{
+                        transparent: true,
                         showBack: true,
                     }}
                 />
@@ -57,7 +58,7 @@ class Singleton extends Component {
                     />
 
                     {
-                        (song.data && song.data.isFlac)
+                        (song.data && !song.data.isFlac)
                             ? (
                                 <span
                                     className={classes.highquality}
