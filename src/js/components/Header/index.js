@@ -25,7 +25,7 @@ class Header extends Component {
     };
 
     static defaultProps = {
-        transparent: true,
+        transparent: false,
         showBack: true,
         showFav: false,
         showPlaylist: true,
