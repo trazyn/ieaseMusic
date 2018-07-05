@@ -255,11 +255,38 @@ class Welcome extends Component {
         );
     }
 
+    renderProfile() {
+        var { classes, me: { profile } } = this.props;
+        var link = `/user/${profile.userId}`;
+
+        return (
+            <article className={classes.profile}>
+                <Link
+                    className="clearfix"
+                    to={link}
+                >
+                    <FadeImage src={profile.avatarUrl} />
+                </Link>
+
+                <div className={classes.info}>
+                    <p title={profile.nickname}>
+                        <Link to={link}>
+                            {
+                                profile.nickname
+                            }
+                        </Link>
+                    </p>
+                    <span>
+                        {profile.signature || 'No signature~'}
+                    </span>
+                </div>
+            </article>
+        );
+    }
+
     render() {
         var { classes, controller, me, home } = this.props;
         var list = home.list;
-        var profile = me.profile;
-        var link = `/user/${profile.userId}`;
         var logined = me.hasLogin();
         var hasRecommend = logined && list.length && list[1].size;
 
@@ -269,27 +296,21 @@ class Welcome extends Component {
 
                 <main>
                     <aside className={classes.navs}>
-                        <article className={classes.profile}>
-                            <Link
-                                className="clearfix"
-                                to={link}
-                            >
-                                <FadeImage src={profile.avatarUrl} />
-                            </Link>
-
-                            <div className={classes.info}>
-                                <p title={profile.nickname}>
-                                    <Link to={link}>
-                                        {
-                                            profile.nickname
-                                        }
+                        {
+                            logined
+                                ? this.renderProfile()
+                                : (
+                                    <Link
+                                        to="/login/0"
+                                        style={{
+                                            fontSize: 14,
+                                            letterSpacing: 2,
+                                        }}
+                                    >
+                                        Sign in
                                     </Link>
-                                </p>
-                                <span>
-                                    {profile.signature || 'No signature~'}
-                                </span>
-                            </div>
-                        </article>
+                                )
+                        }
 
                         <nav className={classes.menu}>
                             <p>
