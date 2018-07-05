@@ -6,6 +6,7 @@ import clazz from 'classname';
 
 import classes from './classes';
 import colors from 'utils/colors';
+import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
 import Header from 'components/Header';
 
@@ -57,18 +58,13 @@ class Singleton extends Component {
                         }}
                     />
 
-                    {
-                        (song.data && !song.data.isFlac)
-                            ? (
-                                <span
-                                    className={classes.highquality}
-                                    title="High Quality Music"
-                                >
-                                    SQ
-                                </span>
-                            )
-                            : false
-                    }
+                    <span
+                        className={classes.highquality}
+                    >
+                        {
+                            helper.getRate(song)
+                        }
+                    </span>
                 </summary>
 
                 <main>

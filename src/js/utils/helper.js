@@ -117,6 +117,18 @@ const helper = {
         });
 
         return name;
+    },
+
+    getRate(song) {
+        if (!song.data) {
+            return 'Unknow kbps';
+        }
+
+        if (song.data.isFlac) {
+            return 'SQ';
+        }
+
+        return `${song.data.bitRate / 1000} Kbps`;
     }
 };
 

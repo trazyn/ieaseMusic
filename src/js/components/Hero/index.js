@@ -45,18 +45,13 @@ class Hero extends Component {
                         }}
                     />
 
-                    {
-                        (song.data && song.data.isFlac)
-                            ? (
-                                <span
-                                    className={classes.badge}
-                                    title="High Quality Music"
-                                >
-                                    SQ
-                                </span>
-                            )
-                            : false
-                    }
+                    <span
+                        className={classes.badge}
+                    >
+                        {
+                            helper.getRate(song)
+                        }
+                    </span>
 
                     <span className={classes.badge}>
                         {
