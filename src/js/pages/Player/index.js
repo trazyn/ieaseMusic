@@ -6,8 +6,9 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
-import Search from './Search';
 import helper from 'utils/helper';
+import colors from 'utils/colors';
+import Search from './Search';
 import Loader from 'ui/Loader';
 import FadeImage from 'ui/FadeImage';
 import ProgressImage from 'ui/ProgressImage';
@@ -243,13 +244,13 @@ class Player extends Component {
 
     render() {
         var { classes, loading, meta, playing, recommend, canifav, searching, showSearch, hideSearch, filter } = this.props;
-        var heroBackgroundColor = helper.pureColor(meta.pallet);
 
         return (
             <div className={classes.container}>
                 <Loader show={loading} />
 
                 <Header
+                    transparent={true}
                     showFav={canifav()}
                 />
 
@@ -257,7 +258,7 @@ class Player extends Component {
                     <div
                         className={classes.hero}
                         style={{
-                            background: heroBackgroundColor,
+                            background: colors.randomGradient()
                         }}>
                         <ProgressImage {...{
                             height: 260,
@@ -265,43 +266,54 @@ class Player extends Component {
                             src: meta.cover,
                         }} />
 
-                        <aside className={classes.info}>
-                            <div className={classes.text}>
-                                <p className={classes.title}>
-                                    <span>
-                                        {meta.name}
-                                    </span>
-                                </p>
+                        <summary className={classes.summary}>
+                            <p className={classes.title}>
+                                <span>
+                                    {meta.name}
+                                </span>
+                            </p>
 
-                                <p className={classes.author}>
-                                    <span>
-                                        {
-                                            meta.author.map((e, index) => {
-                                                return (
-                                                    <Link
-                                                        key={index}
-                                                        to={e.link}>
-                                                        {e.name}
-                                                    </Link>
-                                                );
-                                            })
-                                        }
-                                    </span>
-                                </p>
+                            <p className={classes.author}>
+                                <span>
+                                    {
+                                        meta.author.map((e, index) => {
+                                            return (
+                                                <Link
+                                                    key={index}
+                                                    to={e.link}>
+                                                    {e.name}
+                                                </Link>
+                                            );
+                                        })
+                                    }
+                                </span>
+                            </p>
 
-                                <p
-                                    className={classes.subtitle}
-                                    style={{
-                                        marginTop: 20,
-                                    }}>
-                                    <span>
-                                        {meta.company || `${helper.humanNumber(meta.played)} Played`}
-                                    </span>
-                                </p>
+                            <p
+                                className={classes.subtitle}
+                                style={{
+                                    marginTop: 20,
+                                }}>
+                                <span>
+                                    {meta.company || `${helper.humanNumber(meta.played)} Played`}
+                                </span>
+                            </p>
+                        </summary>
 
+                        <div className={classes.recommend}>
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    display: 'inline-block',
+                                    height: 260 / 3,
+                                    width: 260 / 3,
+                                    marginTop: -2,
+                                }}
+                            >
                                 <div
                                     className={classes.play}
-                                    onClick={() => this.props.play()}>
+                                    onClick={() => this.props.play()}
+                                >
                                     {
                                         (this.props.canitoggle() && playing)
                                             ? <i className="ion-ios-pause" />
@@ -309,24 +321,27 @@ class Player extends Component {
                                     }
                                 </div>
                             </div>
-                        </aside>
 
-                        <div className={classes.recommend}>
                             {
-                                recommend.map((e, index) => {
-                                    return (
-                                        <Link
-                                            className="clearfix"
-                                            key={index}
-                                            to={e.link}>
-                                            <ProgressImage {...{
-                                                height: 60,
-                                                width: 60,
-                                                src: e.cover,
-                                            }} />
-                                        </Link>
-                                    );
-                                })
+                                recommend.map(
+                                    (e, index) => {
+                                        return (
+                                            <Link
+                                                className="clearfix"
+                                                key={index}
+                                                to={e.link}
+                                            >
+                                                <ProgressImage
+                                                    {...{
+                                                        height: 260 / 3,
+                                                        width: 260 / 3,
+                                                        src: e.cover,
+                                                    }}
+                                                />
+                                            </Link>
+                                        );
+                                    }
+                                )
                             }
                         </div>
                     </div>

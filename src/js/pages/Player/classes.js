@@ -3,7 +3,6 @@ import colors from 'utils/colors';
 
 export default theme => ({
     container: {
-        marginTop: 40,
         background: '#fff',
     },
 
@@ -21,13 +20,11 @@ export default theme => ({
         width: 260,
     },
 
-    info: {
-        flex: 1,
-        marginBottom: 60,
-    },
-
-    text: {
-        display: 'inline-block',
+    summary: {
+        position: 'absolute',
+        right: 0,
+        top: 30,
+        textAlign: 'right',
 
         '& $title span, & $author span, & $subtitle span': {
             padding: '10px 20px',
@@ -42,7 +39,7 @@ export default theme => ({
 
         '& span': {
             display: '-webkit-box',
-            maxWidth: 280,
+            maxWidth: 240,
             lineHeight: '30px',
             whiteSpace: 'normal',
             overflow: 'hidden',
@@ -83,30 +80,44 @@ export default theme => ({
 
     play: {
         position: 'absolute',
-        bottom: 38,
-        right: 32,
+        top: '50%',
+        left: '50%',
         height: 44,
         width: 44,
+        marginTop: -22,
+        marginLeft: -22,
         lineHeight: '44px',
         borderRadius: 44,
-        boxShadow: '0 2px 4px 0 #9687a2',
-        background: '#e0daeb',
         textAlign: 'center',
-        color: '#654b58',
-        fontSize: 20,
-        zIndex: 9,
+        color: 'white',
+        fontSize: 24,
         cursor: 'pointer',
+        transition: '.2s',
+
+        '&:hover': {
+            color: colors.randomColor()
+        },
     },
 
     recommend: {
         position: 'absolute',
-        right: 0,
-        bottom: 0,
-        height: 60,
+        left: 260,
+        top: 0,
+        height: 260,
+        width: 260 / 3 * 3,
+        boxSizing: 'border-box',
+        zIndex: 99,
 
         '& img:first-of-type': {
             filter: 'grayscale(100%)',
             transition: '.3s ease-in-out',
+        },
+
+        '& a': {
+            padding: 0,
+            margin: 0,
+            boxSizing: 'border-box',
+            marginTop: -2,
         },
 
         '& a:hover img:first-of-type': {
@@ -116,29 +127,30 @@ export default theme => ({
 
     body: {
         display: 'flex',
-        height: 'calc(100vh - 260px - 90px)'
+        height: 'calc(100vh - 260px - 50px)'
     },
 
     people: {
         display: 'flex',
-        height: 'calc(100vh - 90px - 260px)',
+        height: 'calc(100% - 48px)',
         width: 240,
         justifyContent: 'space-around',
         flexDirection: 'column',
+        padding: '24px 0',
         paddingLeft: 20,
 
         '& img': {
-            width: 32,
-            height: 32,
-            marginRight: 16,
+            width: 36,
+            height: 36,
+            marginRight: 10,
             marginBottom: 4,
             borderRadius: 32,
         },
 
         '& h3': {
             marginTop: 0,
-            marginBottom: 8,
-            fontSize: 13,
+            marginBottom: 12,
+            fontSize: 14,
             fontFamily: 'Roboto',
             fontWeight: 'lighter',
             color: '#4a4a4a',
@@ -162,7 +174,7 @@ export default theme => ({
             borderBottom: 'thin solid #a2a2a2',
 
             '& span': {
-                width: 60,
+                width: 67.5,
                 borderBottom: '2px solid #000',
                 fontFamily: 'Roboto',
                 textTransform: 'uppercase',
@@ -186,7 +198,7 @@ export default theme => ({
         },
 
         '& ul': {
-            height: 'calc(100vh - 260px - 90px - 40px)',
+            height: 'calc(100vh - 260px - 50px - 40px)',
             padding: 0,
             margin: 0,
             listStyle: 'none',
@@ -253,7 +265,7 @@ export default theme => ({
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
-        maxWidth: 288,
+        maxWidth: 248,
     },
 
     nothing: {
