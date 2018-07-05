@@ -128,7 +128,7 @@ Description            | Keys
 查看榜单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>T</kbd>
 所有歌单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>P</kbd>
 我的电台               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>F</kbd>
-菜单                   | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
+菜单                   | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>L</kbd>
 播放列表               | <kbd>Cmd</kbd> <kbd>P</kbd>
 偏好设置               | <kbd>Cmd</kbd> <kbd>,</kbd>
 偏好设置               | <kbd>鼠标右键</kbd>

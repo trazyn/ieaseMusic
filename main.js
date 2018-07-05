@@ -217,7 +217,7 @@ let mainMenu = [
             },
             {
                 label: 'Menu',
-                accelerator: 'Cmd+Shift+M',
+                accelerator: 'Cmd+Shift+L',
                 click() {
                     mainWindow.webContents.send('show-menu');
                 }
