@@ -247,10 +247,14 @@ class Artist extends Component {
             <div className={classes.container}>
                 <Loader show={loading} />
 
-                <Header {...{
-                    showBack: true,
-                    showPlaylist: true,
-                }} />
+                <Header
+                    {...{
+                        transparent: true,
+                        showBack: true,
+                        showPlaylist: true,
+                    }}
+                />
+
                 <div className={classes.hero}>
                     <ProgressImage {...{
                         width: window.innerWidth,

@@ -2,9 +2,7 @@
 import perdido from 'perdido';
 
 export default theme => ({
-    container: {
-        marginTop: 40,
-    },
+    container: {},
 
     hero: {
         position: 'relative',
@@ -173,7 +171,7 @@ export default theme => ({
     },
 
     content: {
-        height: 'calc(100vh - 260px - 46px - 40px)',
+        height: 'calc(100vh - 260px - 46px)',
         overflow: 'hidden',
         overflowY: 'auto',
 
