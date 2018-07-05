@@ -97,7 +97,9 @@ class Welcome extends Component {
                                             if (!ele || !e.pallet) return;
 
                                             var dom = ReactDOM.findDOMNode(ele);
-                                            dom.style.boxShadow = `0 0 24px rgb(${e.pallet[0].join()})`;
+                                            setTimeout(
+                                                () => (dom.style.boxShadow = `0 0 24px rgb(${e.pallet[0].join()})`)
+                                            );
                                         }
                                     }
                                     {...{
@@ -131,11 +133,7 @@ class Welcome extends Component {
     }
 
     renderRecommend(recommend = {}) {
-        var { classes, controller, me } = this.props;
-
-        if (!me.hasLogin()) {
-            return false;
-        }
+        var { classes, controller } = this.props;
 
         return (
             <Link
@@ -192,11 +190,7 @@ class Welcome extends Component {
     }
 
     renderFavorite(favorite = {}) {
-        var { classes, controller, me } = this.props;
-
-        if (!me.hasLogin()) {
-            return false;
-        }
+        var { classes, controller } = this.props;
 
         return (
             <Link
@@ -262,9 +256,12 @@ class Welcome extends Component {
     }
 
     render() {
-        var { classes, controller, me: { profile }, home } = this.props;
+        var { classes, controller, me, home } = this.props;
         var list = home.list;
+        var profile = me.profile;
         var link = `/user/${profile.userId}`;
+        var logined = me.hasLogin();
+        var hasRecommend = logined && list.length && list[1].size;
 
         return (
             <div className={classes.container}>
@@ -333,13 +330,21 @@ class Welcome extends Component {
                             ? (
                                 <section className={classes.list}>
                                     {
-                                        this.renderFavorite(list[0])
+                                        logined
+                                            ? this.renderFavorite(list[0])
+                                            : false
                                     }
                                     {
-                                        this.renderRecommend(list[1])
+                                        hasRecommend
+                                            ? this.renderRecommend(list[1])
+                                            : false
                                     }
                                     {
-                                        this.renderPlaylist(list.slice(2, list.length))
+                                        this.renderPlaylist(
+                                            logined
+                                                ? list.slice(2, list.length)
+                                                : list.slice()
+                                        )
                                     }
                                 </section>
                             )

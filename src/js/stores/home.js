@@ -46,6 +46,8 @@ class Home {
 
         // Get the color pallets
         self.list.map(async(e, index) => {
+            if (!e.cover) return;
+
             var pallet = await helper.getPallet(e.cover.replace(/\?param=.*/, '') + '?param=20y20');
             e.pallet = pallet;
 

@@ -202,8 +202,12 @@ class Controller {
                 }
         }
 
-        if (autoPlay) {
-            await self.play(next);
+        try {
+            if (autoPlay) {
+                await self.play(next);
+            }
+        } catch (ex) {
+            // Anti-warnning
         }
 
         return self.playlist.songs.find(e => e.id === next);
