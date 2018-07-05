@@ -21,7 +21,7 @@ function getBackgrounds(theme) {
 
 export default theme => ({
     container: {
-        marginTop: 40,
+        paddingTop: 40,
         background: colors.randomGradient(),
 
         ...getBackgrounds(theme.playlist.backgrounds),
