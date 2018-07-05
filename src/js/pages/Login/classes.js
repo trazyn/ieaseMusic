@@ -68,7 +68,6 @@ export default theme => ({
             border: 'none',
             borderRadius: 1,
             backgroundImage: colors.randomGradient(),
-            fontFamily: 'Helvetica Neue',
             fontWeight: '300',
             color: '#fff',
             outline: 0,
@@ -120,24 +119,14 @@ export default theme => ({
         },
     },
 
-    background: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        display: 'block',
-        width: '100vw',
-        transform: 'translate(-50%, -50%)',
-        zIndex: -1,
-    },
-
     back: {
         position: 'fixed',
-        top: 16,
-        right: 32,
-        display: 'inline-block',
-        height: 24,
-        lineHeight: '24px',
+        top: 0,
+        right: 12,
+        height: 40,
+        lineHeight: '40px',
         fontSize: 12,
+        textTransform: 'uppercase',
         zIndex: 9,
         transition: '.2s',
 

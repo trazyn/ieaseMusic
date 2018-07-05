@@ -18,259 +18,259 @@ export default {
         backgrounds: [
             {
                 type: '全部',
-                background: 'https://source.unsplash.com/random?music'
+                background: '',
             },
             {
                 type: '华语',
-                background: 'https://source.unsplash.com/collection/263299',
+                background: '',
             },
             {
                 type: '欧美',
-                background: 'https://source.unsplash.com/collection/632279',
+                background: '',
             },
             {
                 type: '日语',
-                background: 'https://source.unsplash.com/random?japan'
+                background: '',
             },
             {
                 type: '韩语',
-                background: 'https://source.unsplash.com/random?korea'
+                background: '',
             },
             {
                 type: '粤语',
-                background: 'https://source.unsplash.com/random?hongkong'
+                background: '',
             },
             {
                 type: '小语种',
-                background: 'https://source.unsplash.com/collection/329545',
+                background: '',
             },
             {
                 type: '流行',
-                background: 'https://source.unsplash.com/random?pop-music'
+                background: '',
             },
             {
                 type: '摇滚',
-                background: 'https://source.unsplash.com/random?rock-music'
+                background: '',
             },
             {
                 type: '民谣',
-                background: 'https://source.unsplash.com/random?folk-music'
+                background: '',
             },
             {
                 type: '电子',
-                background: 'https://source.unsplash.com/random?electronic-music'
+                background: '',
             },
             {
                 type: '舞曲',
-                background: 'https://source.unsplash.com/random?dance-music'
+                background: '',
             },
             {
                 type: '说唱',
-                background: 'https://source.unsplash.com/random?rap-music'
+                background: '',
             },
             {
                 type: '轻音乐',
-                background: 'https://source.unsplash.com/random?light-music'
+                background: '',
             },
             {
                 type: '爵士',
-                background: 'https://source.unsplash.com/random?jazz-music'
+                background: '',
             },
             {
                 type: '乡村',
-                background: 'https://source.unsplash.com/collection/463058',
+                background: '',
             },
             {
                 type: 'R&B/Soul',
-                background: 'https://source.unsplash.com/collection/898648',
+                background: '',
             },
             {
                 type: '古典',
-                background: 'https://source.unsplash.com/random?classical-music'
+                background: '',
             },
             {
                 type: '金属',
-                background: 'https://source.unsplash.com/random?metal-music'
+                background: '',
             },
             {
                 type: '蓝调',
-                background: 'https://source.unsplash.com/random?blues-music'
+                background: '',
             },
             {
                 type: '古风',
-                background: 'https://source.unsplash.com/random?classical-music'
+                background: '',
             },
             {
                 type: '后摇',
-                background: 'https://source.unsplash.com/collection/613882',
+                background: '',
             },
             {
                 type: 'Bossa Nova',
-                background: 'https://source.unsplash.com/collection/1076132',
+                background: '',
             },
             {
                 type: '清晨',
-                background: 'https://source.unsplash.com/random?morning'
+                background: '',
             },
             {
                 type: '夜晚',
-                background: 'https://source.unsplash.com/random?night'
+                background: '',
             },
             {
                 type: '学习',
-                background: 'https://source.unsplash.com/collection/1046216',
+                background: '',
             },
             {
                 type: '工作',
-                background: 'https://source.unsplash.com/random?work'
+                background: '',
             },
             {
                 type: '午休',
-                background: 'https://source.unsplash.com/random?lunch'
+                background: '',
             },
             {
                 type: '下午茶',
-                background: 'https://source.unsplash.com/random?afternoon'
+                background: '',
             },
             {
                 type: '地铁',
-                background: 'https://source.unsplash.com/random?metro'
+                background: '',
             },
             {
                 type: '驾车',
-                background: 'https://source.unsplash.com/random?drive'
+                background: '',
             },
             {
                 type: '运动',
-                background: 'https://source.unsplash.com/random?sport'
+                background: '',
             },
             {
                 type: '旅行',
-                background: 'https://source.unsplash.com/random?travel'
+                background: '',
             },
             {
                 type: '散步',
-                background: 'https://source.unsplash.com/random?walk'
+                background: '',
             },
             {
                 type: '酒吧',
-                background: 'https://source.unsplash.com/random?bar'
+                background: '',
             },
             {
                 type: '怀旧',
-                background: 'https://source.unsplash.com/random?nostalgia'
+                background: '',
             },
             {
                 type: '清新',
-                background: 'https://source.unsplash.com/random?sweet'
+                background: '',
             },
             {
                 type: '浪漫',
-                background: 'https://source.unsplash.com/random?romantic'
+                background: '',
             },
             {
                 type: '性感',
-                background: 'https://source.unsplash.com/collection/854455',
+                background: '',
             },
             {
                 type: '伤感',
-                background: 'https://source.unsplash.com/random?sorrowful'
+                background: '',
             },
             {
                 type: '治愈',
-                background: 'https://source.unsplash.com/collection/938068',
+                background: '',
             },
             {
                 type: '放松',
-                background: 'https://source.unsplash.com/random?relax'
+                background: '',
             },
             {
                 type: '孤独',
-                background: 'https://source.unsplash.com/random?alone'
+                background: '',
             },
             {
                 type: '感动',
-                background: 'https://source.unsplash.com/random?touched'
+                background: '',
             },
             {
                 type: '兴奋',
-                background: 'https://source.unsplash.com/random?exciting'
+                background: '',
             },
             {
                 type: '快乐',
-                background: 'https://source.unsplash.com/random?happies'
+                background: '',
             },
             {
                 type: '安静',
-                background: 'https://source.unsplash.com/random?quiet'
+                background: '',
             },
             {
                 type: '思念',
-                background: 'https://source.unsplash.com/random?miss'
+                background: '',
             },
             {
                 type: '影视原声',
-                background: 'https://source.unsplash.com/random?tv-show'
+                background: '',
             },
             {
                 type: 'ACG',
-                background: 'https://source.unsplash.com/collection/991736',
+                background: '',
             },
             {
                 type: '校园',
-                background: 'https://source.unsplash.com/random?school'
+                background: '',
             },
             {
                 type: '游戏',
-                background: 'https://source.unsplash.com/random?gaming'
+                background: '',
             },
             {
                 type: '70后',
-                background: 'https://source.unsplash.com/collection/871887',
+                background: '',
             },
             {
                 type: '80后',
-                background: 'https://source.unsplash.com/collection/224509',
+                background: '',
             },
             {
                 type: '90后',
-                background: 'https://source.unsplash.com/collection/397606',
+                background: '',
             },
             {
                 type: '网络歌曲',
-                background: 'https://source.unsplash.com/random?music'
+                background: '',
             },
             {
                 type: 'KTV',
-                background: 'https://source.unsplash.com/random?house-music'
+                background: '',
             },
             {
                 type: '经典',
-                background: 'https://source.unsplash.com/collection/992168',
+                background: '',
             },
             {
                 type: '翻唱',
-                background: 'https://source.unsplash.com/random?singer'
+                background: '',
             },
             {
                 type: '吉他',
-                background: 'https://source.unsplash.com/random?guitar'
+                background: '',
             },
             {
                 type: '钢琴',
-                background: 'https://source.unsplash.com/random?piano'
+                background: '',
             },
             {
                 type: '器乐',
-                background: 'https://source.unsplash.com/random?instrumental-music'
+                background: '',
             },
             {
                 type: '儿童',
-                background: 'https://source.unsplash.com/collection/922840',
+                background: '',
             },
             {
                 type: '00后',
-                background: 'https://source.unsplash.com/collection/796942',
+                background: '',
             },
         ],
     },

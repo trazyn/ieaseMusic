@@ -2,9 +2,7 @@
 import perdido from 'perdido';
 
 export default theme => ({
-    container: {
-
-    },
+    container: {},
 
     hero: {
         position: 'relative',
@@ -27,7 +25,7 @@ export default theme => ({
         },
 
         '& canvas': {
-            transform: 'translateY(226px)',
+            transform: 'translateY(246px) translateX(4px)',
             zIndex: -1,
         }
     },
@@ -92,8 +90,47 @@ export default theme => ({
         }
     },
 
+    follow: {
+        position: 'relative',
+        width: 80,
+        padding: '5.5px 16px',
+        marginRight: 24,
+        border: 'none',
+        borderRadius: 24,
+        backgroundImage: 'linear-gradient(280deg, rgb(47, 42, 41) 0%, rgb(47, 42, 41) 100%)',
+        textAlign: 'center',
+        fontSize: 12,
+        color: '#fff',
+        outline: 0,
+        transform: 'translateY(0)',
+        overflow: 'hidden',
+        cursor: 'pointer',
+
+        '&:before': {
+            position: 'absolute',
+            content: '""',
+            top: 0,
+            left: 0,
+            display: 'block',
+            height: '100%',
+            width: '100%',
+            backgroundImage: 'linear-gradient(225deg, rgb(255, 103, 0) 0%, rgb(255, 45, 240) 100%)',
+            opacity: 0,
+            zIndex: -1,
+            transition: '.4s',
+        },
+
+        '&$followed:before, &:hover:before': {
+            opacity: 1,
+        }
+    },
+
+    followed: {},
+
     body: {
         color: '#333',
+        background: 'white',
+
         '& header': {
             margin: '0 32px',
             paddingTop: 8,
@@ -134,7 +171,7 @@ export default theme => ({
     },
 
     content: {
-        height: 'calc(100vh - 260px - 44px)',
+        height: 'calc(100vh - 260px - 46px)',
         overflow: 'hidden',
         overflowY: 'auto',
 

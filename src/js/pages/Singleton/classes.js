@@ -11,16 +11,14 @@ export default theme => {
             height: '100vh',
             width: '100vw',
 
-            '& header': {
+            '& summary': {
+                display: 'flex',
+                flexDirection: 'column',
                 position: 'relative',
                 padding: '24px',
+                paddingTop: 64,
                 fontSize: 24,
-                fontFamily: 'HelveticaNeue-UltraLight',
                 zIndex: 9,
-            },
-
-            '& figure': {
-                filter: 'blur(20px)',
             },
 
             '& main': {
@@ -33,24 +31,15 @@ export default theme => {
             },
         },
 
-        close: {
-            position: 'absolute',
-            top: 22,
-            right: 16,
-            height: 32,
-            cursor: 'pointer',
-            zIndex: 9,
-        },
-
         liked: {
             color: colors.pallet.grape,
             textShadow: `0 0 24px ${colors.pallet.grape}`,
         },
 
         highquality: {
-            display: 'inline-block',
-            padding: '6px 8px',
-            marginLeft: 30,
+            display: 'table',
+            padding: '6px 12px',
+            marginTop: 24,
             letterSpacing: 1,
             textTransform: 'uppercase',
             fontFamily: 'Roboto',
@@ -58,7 +47,6 @@ export default theme => {
             color: '#fff',
             background: colors.pallet.dribbble,
             boxShadow: `0 0 24px ${colors.pallet.dribbble}`,
-            transform: 'translateY(-6px)',
             zoom: .8,
         },
 
@@ -76,7 +64,6 @@ export default theme => {
             zIndex: 9,
 
             '& figure': {
-                filter: 'blur(0)',
                 animationName,
                 animationDuration: `${360 * .2}s`,
                 animationIterationCount: 'infinite',

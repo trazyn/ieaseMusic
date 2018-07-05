@@ -16,21 +16,12 @@ import Indicator from 'ui/Indicator';
     isLiked: stores.me.isLiked,
     song: stores.controller.song,
     comments: stores.comments.total,
-    isShowComments: stores.comments.show,
-    showComments: () => {
-        stores.comments.toggle(true);
-        stores.lyrics.toggle(false);
-    },
-    isShowLyrics: stores.lyrics.show,
-    showLyrics: () => {
-        stores.lyrics.toggle(true);
-        stores.comments.toggle(false);
-    },
 }))
 @observer
 class Hero extends Component {
     render() {
-        var { classes, song, close, isLiked, unlike, like, comments, showComments, showLyrics, isShowComments, isShowLyrics } = this.props;
+        var { classes, song, isLiked, unlike, like, comments } = this.props;
+        var pathname = this.props.location.pathname;
         var liked = isLiked(song.id);
 
         return (
@@ -43,63 +34,73 @@ class Hero extends Component {
                     }}
                 />
 
-                <header>
-                    <aside>
-                        <i
-                            className={clazz('ion-ios-heart', {
-                                [classes.liked]: liked,
-                            })}
-                            onClick={e => liked ? unlike(song) : like(song)}
-                            style={{
-                                cursor: 'pointer',
-                            }}
-                        />
+                <summary>
+                    <i
+                        className={clazz('ion-ios-heart', {
+                            [classes.liked]: liked,
+                        })}
+                        onClick={e => liked ? unlike(song) : like(song)}
+                        style={{
+                            cursor: 'pointer',
+                        }}
+                    />
 
+                    <span
+                        className={classes.badge}
+                    >
                         {
-                            (song.data && song.data.isFlac) && (
-                                <span
-                                    className={classes.highquality}
-                                    title="High Quality Music"
-                                >
-                                    SQ
-                                </span>
-                            )
+                            helper.getRate(song)
                         }
-                    </aside>
+                    </span>
 
-                    <Link
-                        onClick={() => close()}
-                        to="/singleton"
-                        className={classes.playing}
-                    >
-                        <Indicator />
-                    </Link>
-                </header>
+                    <span className={classes.badge}>
+                        {
+                            pathname === '/comments'
+                                ? `${helper.humanNumber(comments)} Comments`
+                                : 'Lyrics'
+                        }
+                    </span>
+                </summary>
 
-                <section>
-                    <p
-                        className={clazz({
-                            [classes.active]: isShowComments,
-                        })}
+                <nav>
+                    <article
+                        className={
+                            clazz({
+                                [classes.active]: pathname === '/lyrics',
+                            })
+                        }
                     >
-                        <span onClick={e => showComments()}>
-                            {helper.humanNumber(comments)} Comments
-                        </span>
-                    </p>
+                        <Link
+                            to={
+                                `/${pathname === '/comments' ? 'lyrics' : 'comments'}`
+                            }
+                        >
+                            {
+                                pathname === '/comments'
+                                    ? 'Lyrics'
+                                    : `${helper.humanNumber(comments)} Comments`
+                            }
+                        </Link>
+                    </article>
 
-                    <p
-                        className={clazz({
-                            [classes.active]: isShowLyrics,
-                        })}
-                    >
-                        <span onClick={e => showLyrics()}>
-                            Lyrics
-                        </span>
-                    </p>
-                </section>
+                    <article>
+                        <Link to="/singleton">
+                            Cover
+
+                            <Indicator
+                                style={{
+                                    marginLeft: 28,
+                                }}
+                            />
+                        </Link>
+                    </article>
+                </nav>
 
                 <footer>
-                    <h3>{song.name}</h3>
+                    <h3>
+                        {song.name}
+                    </h3>
+
                     <p className={classes.author}>
                         {
                             song.artists.map(
@@ -108,7 +109,6 @@ class Hero extends Component {
                                     return (
                                         <Link
                                             key={index}
-                                            onClick={close}
                                             to={e.link}
                                         >
                                             {e.name}

@@ -1,7 +1,8 @@
 
 export default theme => ({
     container: {
-
+        height: '100vh',
+        background: 'rgba(255, 255, 255, .3)',
     },
 
     hero: {
@@ -13,6 +14,49 @@ export default theme => ({
         '& figure': {
             boxShadow: '0 0 24px 0 #000',
         }
+    },
+
+    follow: {
+        position: 'absolute',
+        right: 24,
+        top: 56,
+        width: 80,
+        padding: '5.5px 16px',
+        border: 'none',
+        borderRadius: 24,
+        backgroundImage: 'linear-gradient(280deg, rgb(47, 42, 41) 0%, rgb(47, 42, 41) 100%)',
+        textAlign: 'center',
+        fontSize: 12,
+        color: '#fff',
+        outline: 0,
+        transform: 'translateY(0)',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        zIndex: 1,
+
+        '&:before': {
+            position: 'absolute',
+            content: '""',
+            top: 0,
+            left: 0,
+            display: 'block',
+            height: '100%',
+            width: '100%',
+            backgroundImage: 'linear-gradient(225deg, rgb(255, 103, 0) 0%, rgb(255, 45, 240) 100%)',
+            opacity: 0,
+            zIndex: -1,
+            transition: '.4s',
+        },
+
+        '&$followed:before, &:hover:before': {
+            opacity: 1,
+        }
+    },
+
+    followed: {},
+
+    info: {
+        paddingTop: 40,
     },
 
     username: {
@@ -62,6 +106,10 @@ export default theme => ({
             '-webkit-box-orient': 'vertical',
 
         }
+    },
+
+    list: {
+        marginTop: 20,
     },
 
     item: {

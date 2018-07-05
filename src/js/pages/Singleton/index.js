@@ -5,7 +5,10 @@ import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
+import colors from 'utils/colors';
+import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
+import Header from 'components/Header';
 
 @inject(stores => ({
     song: stores.controller.song,
@@ -37,7 +40,14 @@ class Singleton extends Component {
 
         return (
             <div className={classes.container}>
-                <header>
+                <Header
+                    {...{
+                        transparent: true,
+                        showBack: true,
+                    }}
+                />
+
+                <summary>
                     <i
                         className={clazz('ion-ios-heart', {
                             [classes.liked]: liked,
@@ -48,35 +58,23 @@ class Singleton extends Component {
                         }}
                     />
 
-                    {
-                        (song.data && song.data.isFlac) && (
-                            <span
-                                className={classes.highquality}
-                                title="High Quality Music"
-                            >
-                                SQ
-                            </span>
-                        )
-                    }
-                </header>
-
-                <img
-                    alt="Close"
-                    className={classes.close}
-                    onClick={() => window.history.back()}
-                    src="assets/close.png"
-                />
+                    <span
+                        className={classes.highquality}
+                    >
+                        {
+                            helper.getRate(song)
+                        }
+                    </span>
+                </summary>
 
                 <main>
-                    <ProgressImage
-                        {...{
-                            width: window.innerWidth,
-                            src: song.album.cover.replace(/\?.*$/, ''),
-                        }}
-                    />
-
                     <div
                         className={classes.circle}
+                        style={
+                            {
+                                filter: `drop-shadow(3mm 6mm 12mm ${colors.randomColor()})`,
+                            }
+                        }
                         ref={
                             ele => (this.circle = ele)
                         }

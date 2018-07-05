@@ -97,7 +97,7 @@ export default theme => {
                 display: 'flex',
                 width: 'calc(100vw - 160px)',
                 justifyContent: 'flex-start',
-                marginTop: 20,
+                marginTop: 70,
                 alignItems: 'center',
             },
 

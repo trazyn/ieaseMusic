@@ -7,20 +7,23 @@ import preferences from 'stores/preferences';
 function getBackgrounds(theme) {
     var backgrounds = {};
 
-    theme.map((e, index) => {
-        var rule = `&[data-type="${encodeURIComponent(e.type)}"]:before`;
-        var custome = preferences.backgrounds[index].background;
+    theme.map(
+        (e, index) => {
+            var rule = `&[data-type="${encodeURIComponent(e.type)}"]:before`;
+            var background = preferences.backgrounds[index].background || e.background;
 
-        backgrounds[rule] = {
-            'background-image': `url(${custome || e.background})`,
-        };
-    });
+            backgrounds[rule] = {
+                'background-image': background ? `url(${background})` : 'none',
+            };
+        }
+    );
 
     return backgrounds;
 }
 
 export default theme => ({
     container: {
+        paddingTop: 40,
         background: colors.randomGradient(),
 
         ...getBackgrounds(theme.playlist.backgrounds),
@@ -50,11 +53,10 @@ export default theme => ({
     },
 
     navs: {
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         padding: 0,
         margin: 0,
         width: 180,
-        marginTop: 30,
         paddingTop: 20,
         listStyle: 'none',
         color: '#fff',
@@ -110,9 +112,8 @@ export default theme => ({
     list: {
         ...perdido.utils.clearFix,
         width: 'calc(100vw - 200px)',
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         paddingLeft: 20,
-        marginTop: 30,
         paddingTop: 20,
         overflow: 'hidden',
         overflowY: 'auto',

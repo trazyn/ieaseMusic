@@ -45,7 +45,7 @@ class ProgressImage extends Component {
     }
 
     render() {
-        var { classes, className, src, thumb, height, width } = this.props;
+        var { classes, className, style, src, thumb, height, width } = this.props;
 
         if (!src) return false;
 
@@ -58,10 +58,16 @@ class ProgressImage extends Component {
             <figure
                 className={clazz(classes.container, className)}
                 ref="container"
-                style={{
-                    height,
-                    width,
-                }}>
+                style={
+                    Object.assign(
+                        {
+                            height,
+                            width,
+                        },
+                        style
+                    )
+                }
+            >
                 <img
                     className={classes.main}
                     onError={e => this.handleError(e)}
@@ -71,25 +77,30 @@ class ProgressImage extends Component {
                     style={{
                         height,
                         width,
-                    }} />
+                    }}
+                />
+
                 <div
                     className={classes.thumb}
                     ref="thumb"
                     style={{
                         // Use as placeholder, anti reflow
                         paddingBottom: (height / width) * 100 || 0,
-                    }}>
-                    <img {...{
-                        src: thumb,
-                        style: {
-                            height,
-                            width,
-                        },
-                        onLoad(e) {
-                            // Default show the gray background, When image has been loaded show the thumb
-                            e.target.classList.add(classes.loaded);
-                        },
-                    }} />
+                    }}
+                >
+                    <img
+                        {...{
+                            src: thumb,
+                            style: {
+                                height,
+                                width,
+                            },
+                            onLoad(e) {
+                                // Default show the gray background, When image has been loaded show the thumb
+                                e.target.classList.add(classes.loaded);
+                            },
+                        }}
+                    />
                 </div>
             </figure>
         );

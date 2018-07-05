@@ -15,7 +15,6 @@ import FadeImage from 'ui/FadeImage';
     profile: stores.me.profile,
     logout: stores.me.logout,
     close: () => stores.menu.toggle(false),
-    showSearch: () => stores.search.toggle(true),
 }))
 @observer
 class Menu extends Component {
@@ -42,7 +41,7 @@ class Menu extends Component {
         }
 
         return (
-            <artist className={classes.profile}>
+            <article className={classes.profile}>
                 <Link
                     className="clearfix"
                     onClick={close}
@@ -64,7 +63,7 @@ class Menu extends Component {
                         Logout
                     </a>
                 </div>
-            </artist>
+            </article>
         );
     }
 
@@ -77,7 +76,7 @@ class Menu extends Component {
     }
 
     render() {
-        var { classes, show, close, showSearch } = this.props;
+        var { classes, show, close } = this.props;
 
         if (!show) {
             return false;
@@ -94,12 +93,6 @@ class Menu extends Component {
                     className={classes.overlay}
                     onClick={this.props.close} />
                 <section className={classes.body}>
-                    <img
-                        alt="Close Menus"
-                        className={classes.close}
-                        onClick={close}
-                        src="assets/close.png" />
-
                     <div>
                         {
                             this.renderMe()
@@ -114,13 +107,11 @@ class Menu extends Component {
                                 </Link>
                             </p>
                             <p>
-                                <a
-                                    onClick={() => {
-                                        showSearch();
-                                        close();
-                                    }}>
+                                <Link
+                                    onClick={close}
+                                    to="/search">
                                     Search
-                                </a>
+                                </Link>
                             </p>
                             <p>
                                 <Link

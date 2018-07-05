@@ -89,13 +89,17 @@ class Playlist extends Component {
         return (
             <div
                 className={classes.container}
-                data-type={encodeURIComponent(params.type)}>
+                data-type={encodeURIComponent(params.type)}
+            >
+                <Header
+                    {...{
+                        transparent: true,
+                        showBack: true,
+                    }}
+                />
+
                 <div className={classes.inner}>
                     <Loader show={loading} />
-                    <Header {...{
-                        color: 'white',
-                        showBack: true,
-                    }} />
 
                     <ul className={classes.navs}>
                         {

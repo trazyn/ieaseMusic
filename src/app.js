@@ -14,7 +14,7 @@ import stores from './js/stores';
 
 class App extends Component {
     componentDidMount() {
-        var { preferences, controller, fm, me, menu, playing, search, comments, lyrics } = stores;
+        var { preferences, controller, fm, me, menu, playing } = stores;
         var navigator = this.refs.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
@@ -30,7 +30,7 @@ class App extends Component {
         // Toggle the player
         ipcRenderer.on('player-toggle', () => {
             // Ignore signal
-            if (search.show || playing.show) {
+            if (navigator.history.location.pathname === '/search' || playing.show) {
                 return;
             }
 
@@ -78,7 +78,7 @@ class App extends Component {
 
         // Search
         ipcRenderer.on('show-search', () => {
-            search.toggle(true);
+            navigator.history.push('/search');
         });
 
         // Show the Ranking list
@@ -213,7 +213,7 @@ class App extends Component {
                 {
                     label: 'Search',
                     click: () => {
-                        stores.search.toggle(true);
+                        navigator.history.push('/search');
                     }
                 },
                 {
@@ -234,13 +234,13 @@ class App extends Component {
                 {
                     label: 'Show Comments 💬',
                     click: () => {
-                        comments.toggle(true);
+                        navigator.history.push('/comments');
                     }
                 },
                 {
                     label: 'Show Lyrics 🎤',
                     click: () => {
-                        lyrics.toggle(true);
+                        navigator.history.push('/lyrics');
                     }
                 },
                 {

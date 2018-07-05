@@ -23,6 +23,7 @@ async function getNewest() {
                     name: e.name,
                     size: e.size,
                     cover: `${e.picUrl}?param=130y130`,
+                    background: `${e.artist.picUrl}?param=640y300`,
                     link: `/player/1/${e.id}`,
                 });
             });
@@ -50,6 +51,7 @@ async function getPersonalized() {
                     name: e.name,
                     played: e.playCount,
                     cover: `${e.picUrl}?param=130y130`,
+                    background: `${e.picUrl}?param=500y500`,
                     link: `/player/0/${e.id}`
                 });
             });
@@ -119,6 +121,8 @@ async function getLiked(id) {
                 updateTime: liked.updateTime,
                 publishTime: liked.publishTime,
                 link: `/player/0/${liked.id}`,
+                cover: liked.coverImgUrl,
+                background: liked.creator.backgroundUrl,
                 songs,
             }];
         }
@@ -164,6 +168,12 @@ async function getDaily() {
                     };
                 }),
             }];
+
+            let songs = list[0].songs;
+
+            if (songs && songs.length) {
+                list[0].cover = songs[0].album.cover;
+            }
         }
     } catch (ex) {
         error('Failed to get daily songs: %O', ex);
@@ -188,6 +198,7 @@ async function getRecommend() {
                     name: e.name,
                     played: e.playcount,
                     cover: `${e.picUrl}?param=130y130`,
+                    background: e.creator.backgroundUrl,
                     link: `/player/0/${e.id}`
                 });
             });

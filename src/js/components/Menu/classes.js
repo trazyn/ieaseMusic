@@ -34,14 +34,6 @@ export default theme => ({
         zIndex: 999,
     },
 
-    close: {
-        position: 'absolute',
-        height: 32,
-        top: 16,
-        left: 32,
-        cursor: 'pointer',
-    },
-
     navs: {
         '& a': {
             position: 'relative',

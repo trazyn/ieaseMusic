@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
-import { ipcRenderer } from 'electron';
 import injectSheet from 'react-jss';
 import clazz from 'classname';
 
 import classes from './classes';
 
 @inject(stores => ({
+    song: stores.controller.song,
     subscribed: stores.player.meta.subscribed,
     hasLogin: stores.me.hasLogin,
     subscribe: stores.player.subscribe,
@@ -18,75 +18,45 @@ import classes from './classes';
 @observer
 class Header extends Component {
     static propTypes = {
-        follow: PropTypes.func,
-        followed: PropTypes.bool,
+        transparent: PropTypes.bool,
         showBack: PropTypes.bool,
         showFav: PropTypes.bool,
         showPlaylist: PropTypes.bool,
-        showFollow: PropTypes.bool,
-        color: PropTypes.string,
     };
 
     static defaultProps = {
+        transparent: false,
         showBack: true,
         showFav: false,
         showPlaylist: true,
-        showFollow: false,
-        color: '#654b58',
     };
 
     goBack = () => window.history.back()
 
     renderBack() {
-        var { showBack, color } = this.props;
+        var { classes, showBack } = this.props;
 
         if (!showBack) {
             return false;
         }
 
         return (
-            <i
-                className="ion-android-arrow-back"
+            <span
+                className={classes.backward}
                 onClick={e => this.goBack()}
-                style={{
-                    color,
-                }} />
+            />
         );
     }
 
-    renderFollow() {
-        var { classes, hasLogin, showFollow, follow, followed } = this.props;
-
-        if (!hasLogin()) {
-            return false;
-        }
-
-        if (showFollow) {
-            return (
-                <button
-                    className={clazz(classes.follow, {
-                        [classes.followed]: followed,
-                    })}
-                    onClick={e => follow(followed)}>
-                    { followed ? 'Followed' : 'Follow' }
-                </button>
-            );
-        }
-
-        return false;
-    }
-
     renderPlaylist() {
-        var { showPlaylist, showPlaying, color } = this.props;
+        var { showPlaylist, showPlaying } = this.props;
 
         if (showPlaylist) {
             return (
                 <i
                     className="ion-stats-bars"
                     onClick={() => showPlaying()}
-                    style={{
-                        color,
-                    }} />
+                />
             );
         }
 
@@ -94,7 +64,7 @@ class Header extends Component {
     }
 
     renderFav() {
-        var { hasLogin, showFav, color, subscribed, subscribe } = this.props;
+        var { hasLogin, showFav, subscribed, subscribe } = this.props;
 
         if (!showFav
             || !hasLogin()) {
@@ -111,11 +81,9 @@ class Header extends Component {
 
         return (
             <i
-                className="ion-ios-star-outline"
-                style={{
-                    color,
-                }}
-                onClick={e => subscribe(true)} />
+                className="ion-ios-star"
+                onClick={e => subscribe(true)}
+            />
         );
     }
 
@@ -124,46 +92,77 @@ class Header extends Component {
             <i
                 className="ion-android-more-vertical"
                 onClick={() => this.props.showMenu()}
-                style={{
-                    color: this.props.color,
-                }} />
+            />
         );
     }
 
     render() {
-        var classes = this.props.classes;
+        var { classes, song, transparent } = this.props;
 
         return (
-            <header className={classes.container}>
-                <div>
+            <header
+                className={
+                    clazz(classes.container, this.props.className)
+                }
+            >
+                {
+                    (song.id && transparent === false)
+                        ? (
+                            <figure
+                                style={{
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 0,
+                                    height: '100%',
+                                    width: '100%',
+                                    padding: 0,
+                                    margin: 0,
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <figcaption
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 0,
+                                        width: window.innerWidth,
+                                        height: window.innerWidth,
+                                        padding: 0,
+                                        margin: 0,
+                                        backgroundImage: `url(${song.album.cover.replace(/\?param=.*/, '') + '?param=800y800'})`,
+                                        backgroundSize: `${window.innerWidth}px ${window.innerWidth}px`,
+                                        filter: 'blur(20px)',
+                                        zIndex: -1,
+                                    }}
+                                />
+                            </figure>
+                        )
+                        : false
+                }
+
+                <section
+                    className={
+                        clazz({
+                            [classes.transparent]: transparent
+                        })
+                    }
+                >
                     {
                         this.renderBack()
                     }
-                </div>
 
-                <div>
-                    {
-                        this.renderFollow()
-                    }
-                    {
-                        this.renderPlaylist()
-                    }
-
-                    {
-                        this.renderFav()
-                    }
-
-                    {
-                        this.renderMenu()
-                    }
-
-                    <i
-                        className="ion-ios-arrow-down"
-                        onClick={e => ipcRenderer.send('minimize')}
-                        style={{
-                            color: this.props.color,
-                        }} />
-                </div>
+                    <div>
+                        {
+                            this.renderFav()
+                        }
+                        {
+                            this.renderPlaylist()
+                        }
+                        {
+                            this.renderMenu()
+                        }
+                    </div>
+                </section>
             </header>
         );
     }

@@ -13,6 +13,7 @@ export default theme => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            marginTop: -40,
 
             '& h2': {
                 fontFamily: 'HelveticaNeue-UltraLight',

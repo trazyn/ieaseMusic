@@ -192,7 +192,7 @@ let mainMenu = [
                 }
             },
             {
-                label: 'TOP',
+                label: 'Top podcasts',
                 accelerator: 'Cmd+Shift+T',
                 click() {
                     mainWindow.webContents.send('show-top');
@@ -206,7 +206,7 @@ let mainMenu = [
                 }
             },
             {
-                label: 'FM',
+                label: 'Made For You',
                 accelerator: 'Cmd+Shift+F',
                 click() {
                     mainWindow.webContents.send('show-fm');
@@ -217,7 +217,7 @@ let mainMenu = [
             },
             {
                 label: 'Menu',
-                accelerator: 'Cmd+Shift+M',
+                accelerator: 'Cmd+Shift+L',
                 click() {
                     mainWindow.webContents.send('show-menu');
                 }
@@ -458,20 +458,20 @@ function registerGlobalShortcut() {
 
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
-        defaultWidth: 740,
-        defaultHeight: 480,
+        defaultWidth: 800,
+        defaultHeight: 520,
     });
 
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
-        width: 740,
-        height: 480,
+        width: 800,
+        height: 520,
         resizable: false,
-        vibrancy: 'medium-light',
-        backgroundColor: 'none',
-        // Headless
-        frame: !isOsx,
+        maximizable: false,
+        fullscreenable: false,
+        vibrancy: 'ultra-dark',
+        titleBarStyle: 'hiddenInset',
     });
 
     if (isLinux) {

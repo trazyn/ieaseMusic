@@ -94,7 +94,6 @@ class Top extends Component {
             <div className={classes.container}>
                 <Header {...{
                     showBack: true,
-                    color: 'white',
                 }} />
 
                 <Scroller reverseScroll={!naturalScroll}>

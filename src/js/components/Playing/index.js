@@ -202,13 +202,6 @@ class Playing extends Component {
                     onClick={close}
                 />
 
-                <img
-                    alt="Close"
-                    className={classes.close}
-                    onClick={close}
-                    src="assets/close.png"
-                />
-
                 <section>
                     <header>
                         <input

@@ -49,7 +49,7 @@ class Preferences extends Component {
                                 close: () => this.close()
                             }}
                         />
-                    </ThemeProvider>,
+                    </ThemeProvider>
                 </ModalBody>
             </Modal>
         );

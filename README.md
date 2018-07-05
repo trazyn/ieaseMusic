@@ -1,8 +1,10 @@
 # ieaseMusic
 
-[![Build Status](https://travis-ci.org/trazyn/ieaseMusic.svg?branch=master)](https://travis-ci.org/trazyn/ieaseMusic)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/LICENSE)
+[![Current Release](https://img.shields.io/github/release/trazyn/ieaseMusic.svg?style=flat-square)](https://github.com/trazyn/ieaseMusic/releases)
+![License](https://img.shields.io/github/license/trazyn/ieaseMusic.svg?style=flat-square)
+[![Travis CI status](https://img.shields.io/travis/trazyn/ieaseMusic/dev.svg?style=flat-square)](https://travis-ci.org/trazyn/ieaseMusic/branches)
+[![Dependencies Status](https://david-dm.org/trazyn/ieaseMusic/status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
 
 
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
@@ -16,7 +18,7 @@
 
 ## Preview
 
-![2017-10-13 10 26 13](https://user-images.githubusercontent.com/1774898/31527631-3aab6178-b001-11e7-8633-c2cbb7b4af2a.gif)
+![PREVIEW](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/preview.gif?raw=true)
 
 ## Feature
 - 帅
@@ -37,33 +39,32 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.0/ieaseMusic-1.2.0-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.0/ieaseMusic-1.2.0-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.2.0-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.0/ieaseMusic-1.2.0-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.2.0-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.2.1-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.0/iease-music-1.2.0-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.2.0-x86_64.AppImage
-$ ./iease-music-1.2.0-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.2.1-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/iease-music-1.2.1-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.2.1-x86_64.AppImage
+$ ./iease-music-1.2.1-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
 ```
 $ pacman -S iease-music
-
 ```
 or
 ```
@@ -72,14 +73,18 @@ $ pacman -S iease-music-git
 
 ## Screenshots
 
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/home.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/menu.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/nextup.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/player.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/artist.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/fm.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/playlist.png)
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/preferences.png)
+![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/home.png?raw=true)
+![FM](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/fm.png?raw=true)
+![PLAYER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player.png?raw=true)
+![ARTIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/artist.png?raw=true)
+![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Comments.png?raw=true)
+![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Lyrics.png?raw=true)
+![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Cover.png?raw=true)
+![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/CMD+P.png?raw=true)
+![MENU](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/menu.png?raw=true)
+![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Upnext.png?raw=true)
+![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/User.png?raw=true)
+![PLAYLIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/playlist.png?raw=true)
 
 ## Development
 ```
@@ -88,6 +93,26 @@ git submodule update --remote --merge
 $ npm install
 $ npm run dev
 ```
+
+## UNBLOCK
+修改`/etc/hosts`添加
+```
+158.199.142.239 music.163.com
+163.171.98.219  p1.music.126.net
+163.171.98.219  p3.music.126.net
+163.171.98.219  p4.music.126.net
+202.122.146.83  m10.music.126.net
+```
+
+关于优化`IP`地址，p开头的是图片CDN服务器，m开头的是音乐资源CDN服务器。可以通过
+```
+ping ws.acgvideo.com
+```
+来寻找最优的音乐资源CDN服务器。通过
+```
+ping cdnetworks.com
+```
+来寻找最优的图片资源CDN服务器。
 
 ## Keyboard shortcuts
 
@@ -105,12 +130,10 @@ Description            | Keys
 查看榜单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>T</kbd>
 所有歌单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>P</kbd>
 我的电台               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>F</kbd>
-菜单                   | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
+菜单                   | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>L</kbd>
 播放列表               | <kbd>Cmd</kbd> <kbd>P</kbd>
 偏好设置               | <kbd>Cmd</kbd> <kbd>,</kbd>
-
-其实这些在鼠标右键菜单上面都有，上面这些看看就好，我也没记住
-![preview](https://github.com/trazyn/ieaseMusic/blob/master/screenshots/contextmenu.png)
+偏好设置               | <kbd>鼠标右键</kbd>
 
 ## TODO:
 - [x] Home
@@ -134,6 +157,11 @@ Description            | Keys
 - [ ] Resize window（New UI）
 
 ## 参考列表
+- UNBLOCK
+
+  [fengjueming/unblock-NetEaseMusic](https://github.com/fengjueming/unblock-NetEaseMusic)
+  
+   [acgotaku/NetEaseMusicWorld](https://github.com/acgotaku/NetEaseMusicWorld)
 - 高品质音乐
   [YongHaoWu/NeteaseCloudMusicFlac](https://github.com/YongHaoWu/NeteaseCloudMusicFlac)
 - 添加其他曲库，解决死链问题

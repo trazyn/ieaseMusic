@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import Layout from './pages/Layout';
-import Home from './pages/Home';
+import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Player from './pages/Player';
 import User from './pages/User';
@@ -12,6 +12,9 @@ import Top from './pages/Top';
 import Playlist from './pages/Playlist';
 import FM from './pages/FM';
 import Singleton from './pages/Singleton';
+import Comments from './pages/Comments';
+import Lyrics from './pages/Lyrics';
+import Search from './pages/Search';
 import stores from 'stores';
 
 function requireAuth(component, props) {
@@ -36,7 +39,7 @@ export default () => {
         /* eslint-disable */
         <Main>
             <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" component={Welcome} />
                 <Route exact path="/login/:fm" component={Login} />
                 <Route exact path="/player/:type/:id" component={Player} />
                 <Route exact path="/user/:id" component={User} />
@@ -44,6 +47,10 @@ export default () => {
                 <Route exact path="/top" component={Top} />
                 <Route exact path="/playlist/:type" component={Playlist} />
                 <Route exact path="/singleton" component={Singleton} />
+                <Route exact path="/comments" component={Comments} />
+                <Route exact path="/lyrics" component={Lyrics} />
+                <Route exact path="/search" component={Search} />
+
                 <Route
                     exact
                     path="/fm"
