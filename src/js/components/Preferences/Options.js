@@ -225,6 +225,14 @@ class Options extends Component {
                                 id="enginerOfKugou"
                                 onChange={e => this.setEnginers({ 'Kugou': e.target.checked })} />
                         </label>
+                        <label htmlFor="enginerOfKuwo">
+                            <h4>酷我音乐</h4>
+
+                            <Switch
+                                defaultChecked={enginers['Kuwo']}
+                                id="enginerOfKuwo"
+                                onChange={e => this.setEnginers({ 'Kuwo': e.target.checked })} />
+                        </label>
                         <label htmlFor="enginerOfBaidu">
                             <h4>百度音乐</h4>
 

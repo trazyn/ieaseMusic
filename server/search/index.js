@@ -5,6 +5,7 @@ import MiGu from './MiGu';
 import Kugou from './Kugou';
 import Baidu from './Baidu';
 import Xiami from './Xiami';
+import Kuwo from './Kuwo';
 
 async function getPreferences() {
     return new Promise(resolve => {
@@ -27,7 +28,8 @@ export default async(keyword, artists) => {
         enginers = {
             'QQ': true,
             'MiGu': true,
-            'Xiami': true,
+            'Kuwo': true,
+            'Xiami': false,
             'Kugou': false,
             'Baidu': true,
         };
@@ -60,6 +62,10 @@ export default async(keyword, artists) => {
 
     if (enginers['Baidu']) {
         plugins.push(Baidu);
+    }
+
+    if (enginers['Kuwo']) {
+        plugins.push(Kuwo);
     }
 
     var rp = require('request-promise-native').defaults(rpOptions);
