@@ -10,7 +10,10 @@ export default async(request, keyword, artists) => {
 
     try {
         // Apply cookie
-        await request({ uri: 'http://www.kuwo.cn/' });
+        await request({
+            uri: 'http://www.kuwo.cn/',
+            method: 'HEAD',
+        });
 
         var response = await request({
             uri: 'http://search.kuwo.cn/r.s',
@@ -31,8 +34,10 @@ export default async(request, keyword, artists) => {
 
         var songs = response.abslist || [];
         var payload = songs.find(
-            e => artists.findIndex(artist => e.ARTIST.indexOf(artist)) !== -1
+            e => artists.findIndex(artist => e.ARTIST.indexOf(artist) !== -1) > -1
         );
+
+        console.log(payload);
 
         if (!payload) {
             error(chalk.black.bgRed('🚧  Nothing.'));

@@ -21,6 +21,7 @@ export default async(keyword, artists) => {
     var rpOptions = {
         timeout: 10000,
         json: true,
+        jar: true,
     };
     var plugins = [];
 
