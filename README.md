@@ -4,7 +4,8 @@
 ![License](https://img.shields.io/github/license/trazyn/ieaseMusic.svg?style=flat-square)
 [![Travis CI status](https://img.shields.io/travis/trazyn/ieaseMusic/dev.svg?style=flat-square)](https://travis-ci.org/trazyn/ieaseMusic/branches)
 [![Dependencies Status](https://david-dm.org/trazyn/ieaseMusic/status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
+[![DevDependencies Status](https://david-dm.org/trazyn/ieaseMusic/dev-status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic?type=dev)
+[![JS Standard Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
 
 
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
