@@ -11,8 +11,8 @@ import lastfm from 'utils/lastfm';
 
 class Preferences {
     @observable show = false;
-    @observable showTray = true;
-    @observable alwaysOnTop = true;
+    @observable showTray = false;
+    @observable alwaysOnTop = false;
     @observable showNotification = true;
     @observable autoPlay = true;
     @observable naturalScroll = true;
