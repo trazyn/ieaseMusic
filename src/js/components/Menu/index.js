@@ -132,7 +132,7 @@ class Menu extends Component {
                                 <Link
                                     onClick={close}
                                     to="/fm">
-                                    My FM
+                                    Made For You
                                 </Link>
                             </p>
                         </div>

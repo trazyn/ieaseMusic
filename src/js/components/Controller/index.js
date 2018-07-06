@@ -210,10 +210,7 @@ class Controller extends Component {
                                 className={classes.text}
                                 to="/comments"
                             >
-                                {
-                                    helper.humanNumber(comments)
-                                }
-                                Comments
+                                { helper.humanNumber(comments) } Comments
                             </Link>
 
                             {
