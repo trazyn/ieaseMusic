@@ -65,9 +65,8 @@ export default async(request, keyword, artists) => {
             let song = await getURL(e['320hash'] || e['hash']);
 
             if (song) {
-                return {
-                    src: song.url
-                };
+                song.src = song.url;
+                return song;
             }
         }
     } catch (ex) {

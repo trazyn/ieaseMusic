@@ -254,7 +254,7 @@ app.use('/api/search', require('./router/search'));
 app.use('/api/comments', require('./router/comments'));
 app.use('/api/lyrics', cache('360 minutes'), require('./router/lyrics'));
 
-if (process.env.AUTORUN) {
+if (process.env.APIONLY) {
     console.log(`API Server run with port: ${port}`);
     app.listen(port);
 }

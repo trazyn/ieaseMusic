@@ -45,9 +45,9 @@ export default async(request, keyword, artists) => {
                 continue;
             }
 
-            let song = {
-                src: e.listen_file,
-            };
+            let song = e;
+
+            song.src = e.listen_file;
 
             if (!song.src) {
                 return Promise.reject();

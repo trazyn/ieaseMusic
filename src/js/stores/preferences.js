@@ -32,6 +32,7 @@ class Preferences {
         'Xiami': false,
         'Kugou': false,
         'Baidu': true,
+        'kuwo': true,
     };
     @observable proxy = '';
 

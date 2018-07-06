@@ -5,7 +5,6 @@ import apicache from 'apicache'
 import axios from 'axios';
 import _debug from 'debug';
 import chalk from 'chalk';
-import search from '../search';
 /* eslint-enable */
 
 const debug = _debug('dev:api');
@@ -260,9 +259,11 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
         }
     } catch (ex) {
         try {
-            // Search from other source
-            debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
-            song = await search(name, artists);
+            if (!process.env.APIONLY) {
+                // Search from other source
+                debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
+                song = await require('../search').default(name, artists);
+            }
         } catch (ex) {
             debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
         }

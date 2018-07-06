@@ -42,9 +42,10 @@ export default async(request, keyword, artists) => {
             return Promise.reject();
         }
 
-        song = {
-            src: response.data.songList[0].songLink,
-        };
+        song = response.data.songList[0];
+
+        song.src = song.songLink;
+        song.bitRate = song.rate * 1000;
 
         if (!song.src) {
             return Promise.reject();
