@@ -1,16 +1,17 @@
 
-import search from './Baidu';
+import search from './Kuwo';
 
 async function test() {
     var res = {};
     var rp = require('request-promise-native').defaults({
-        proxy: 'http://127.0.0.1:1087',
-        strictSSL: false
+        strictSSL: true,
+        json: true,
     });
 
     try {
-        res = await search(rp, '尘埃', '王菲');
+        res = await search(rp, '演员', '薛之谦');
         console.log(res);
+        console.log(res.purview_roles);
     } catch (ex) {
         console.error(ex);
     }

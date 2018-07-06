@@ -34,9 +34,7 @@ export default async(request, keyword, artists) => {
                 debug(e);
                 debug(chalk.black.bgGreen('🚚  <<<'));
 
-                return {
-                    src: e.mp3
-                };
+                return Object.assign({}, e, { src: e.mp3 });
             }
         }
     } catch (ex) {

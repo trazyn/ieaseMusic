@@ -51,12 +51,14 @@ async function getSong(mid) {
 
     if (file.size_320mp3) {
         return {
+            bitRate: 320000,
             src: getURL(`M800${mid}.mp3`, key, guid),
         };
     }
 
     if (file.size_128mp3) {
         return {
+            bitRate: 128000,
             src: getURL(`M500${mid}.mp3`, key, guid),
         };
     }
