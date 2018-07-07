@@ -50,45 +50,50 @@ export default theme => {
 
         [`@keyframes ${animationLoader}`]: {
             '0%': {
-                transform: 'rotate(0deg)',
+                transform: 'rotate(0deg) translateZ(0)',
             },
 
             '25%': {
-                transform: 'rotate(180deg)',
+                transform: 'rotate(180deg) translateZ(0)',
             },
 
             '50%': {
-                transform: 'rotate(180deg)',
+                transform: 'rotate(180deg) translateZ(0)',
             },
 
             '75%': {
-                transform: 'rotate(360deg)',
+                transform: 'rotate(360deg) translateZ(0)',
             },
 
             '100%': {
-                transform: 'rotate(360deg)',
+                transform: 'rotate(360deg) translateZ(0)',
             },
         },
 
         [`@keyframes ${animationInner}`]: {
             '0%': {
                 height: '0%',
+                transform: 'translateZ(0)',
             },
 
             '25%': {
                 height: '0%',
+                transform: 'translateZ(0)',
             },
 
             '50%': {
                 height: '100%',
+                transform: 'translateZ(0)',
             },
 
             '75%': {
                 height: '100%',
+                transform: 'translateZ(0)',
             },
 
             '100%': {
                 height: '0%',
+                transform: 'translateZ(0)',
             },
         },
     };
