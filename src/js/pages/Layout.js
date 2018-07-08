@@ -57,6 +57,33 @@ const classes = {
     },
 };
 
+@inject(['controller'])
+@observer
+class _Background extends Component {
+    render() {
+        var { classes, controller: { song } } = this.props;
+
+        return (
+            <div className={classes.cover}>
+                {
+                    song.id
+                        ? (
+                            <ProgressImage
+                                className={classes.background}
+                                {...{
+                                    width: window.innerWidth,
+                                    src: song.album.cover.replace(/\?param=.*/, '') + '?param=800y800',
+                                }}
+                            />
+                        )
+                        : false
+                }
+            </div>
+        );
+    }
+}
+const Background = injectSheet(classes)(_Background);
+
 @inject(stores => ({
     initialized: stores.me.initialized,
     init: async() => {
@@ -67,10 +94,7 @@ const classes = {
 
         await lastfm.initialize(username, password);
     },
-    song: stores.controller.song,
-    hasLogin: stores.me.hasLogin,
 }))
-@observer
 class Layout extends Component {
     state = {
         offline: false,
@@ -95,7 +119,7 @@ class Layout extends Component {
     }
 
     render() {
-        var { classes, initialized, song } = this.props;
+        var { classes, initialized } = this.props;
 
         if (this.state.offline) {
             return <Offline show={true} />;
@@ -129,22 +153,7 @@ class Layout extends Component {
                 <PlayerNavigation />
                 <PlayerMode />
                 <PlayerStatus />
-
-                <div className={classes.cover}>
-                    {
-                        song.id
-                            ? (
-                                <ProgressImage
-                                    className={classes.background}
-                                    {...{
-                                        width: window.innerWidth,
-                                        src: song.album.cover.replace(/\?param=.*/, '') + '?param=800y800',
-                                    }}
-                                />
-                            )
-                            : false
-                    }
-                </div>
+                <Background />
             </div>
         );
     }

@@ -375,7 +375,7 @@ class Welcome extends Component {
                     }
                 </main>
 
-                <Controller />
+                <Controller key={controller.song.id} />
             </div>
         );
     }
