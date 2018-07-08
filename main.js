@@ -471,6 +471,8 @@ const createMainWindow = () => {
         resizable: false,
         maximizable: false,
         fullscreenable: false,
+        vibrancy: 'medium-light',
+        backgroundColor: 'none',
         titleBarStyle: 'hiddenInset',
     });
 
