@@ -1,6 +1,6 @@
 {
   "name": "iease-music",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "这应该是最好的网易云音乐播放器了，没有之一，如果有请打醒 🤘",
   "main": "main.js",
   "scripts": {
@@ -98,7 +98,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
-    "electron": "^2.0.4",
+    "electron": "^1.8.7",
     "electron-builder": "^20.19.2",
     "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
