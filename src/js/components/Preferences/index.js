@@ -8,7 +8,7 @@ import theme from 'app/theme';
 import classes from './classes';
 import Options from './Options';
 
-@inject(['preferences'])
+@inject('preferences')
 @observer
 class Preferences extends Component {
     close() {
