@@ -70,7 +70,7 @@ export default class AudioPlayer extends Component {
 
         this.timer = setTimeout(
             () => {
-                var ele = document.querySelector('#progress');
+                var ele = document.all.progress;
 
                 // I FM screen progress bar not visible
                 if (ele) {
@@ -89,7 +89,7 @@ export default class AudioPlayer extends Component {
     }
 
     scrollerLyrics(currentTime = 0) {
-        var ele = document.querySelector('#lyrics');
+        var ele = document.all.lyrics;
         var lyrics = this.props.lyrics;
 
         if (ele) {
@@ -110,7 +110,7 @@ export default class AudioPlayer extends Component {
         }
     }
 
-    setPosition(percent, ele = document.querySelector('#progress')) {
+    setPosition(percent, ele = document.all.progress) {
         if (!ele) return;
 
         ele = ele.firstElementChild;
@@ -118,7 +118,7 @@ export default class AudioPlayer extends Component {
     }
 
     buffering() {
-        var ele = document.querySelector('#progress');
+        var ele = document.all.progress;
         var player = this.refs.player;
 
         if (ele
