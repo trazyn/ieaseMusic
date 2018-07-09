@@ -22,12 +22,12 @@ export default class AudioPlayer extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.playing !== this.props.playing) {
             try {
-                if (!this.refs.player.src
+                if (!this.player.src
                     // Avoid init player duplicate play
                     && !this.props.autoPlay) {
                     this.props.play();
                 } else {
-                    this.refs.player[nextProps.playing ? 'play' : 'pause']();
+                    this.player[nextProps.playing ? 'play' : 'pause']();
                 }
             } catch (ex) {
                 // Anti warnning
@@ -41,7 +41,7 @@ export default class AudioPlayer extends Component {
     }
 
     componentDidMount() {
-        var player = this.refs.player;
+        var player = this.player;
         var { volume, setVolume } = this.props;
 
         ipcRenderer.on('player-volume-up', () => {
@@ -134,7 +134,7 @@ export default class AudioPlayer extends Component {
     }
 
     buffering(ele) {
-        var player = this.refs.player;
+        var player = this.player;
 
         if (
             true
@@ -165,7 +165,9 @@ export default class AudioPlayer extends Component {
 
         return (
             <audio
-                ref="player"
+                ref={
+                    ele => (this.player = ele)
+                }
                 style={{
                     display: 'none'
                 }}

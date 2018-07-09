@@ -20,11 +20,12 @@ class ProgressImage extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
+        var container = this.container;
         if (true
-            && this.refs.container
+            && container
             && nextProps.src !== this.props.src) {
             // Immediate render the new image
-            this.refs.container.classList.remove(this.props.classes.loaded);
+            container.classList.remove(this.props.classes.loaded);
         }
     }
 
@@ -33,8 +34,8 @@ class ProgressImage extends Component {
     }
 
     handleLoad(e) {
-        var ele = this.refs.container;
-        this.refs.thumb.style.paddingBottom = '0%';
+        var ele = this.container;
+        this.thumb.style.paddingBottom = '0%';
 
         // Fix bug, sometiems this dom has been destroyed
         if (ele) {
@@ -57,7 +58,9 @@ class ProgressImage extends Component {
         return (
             <figure
                 className={clazz(classes.container, className)}
-                ref="container"
+                ref={
+                    ele => (this.container = ele)
+                }
                 style={
                     Object.assign(
                         {
@@ -72,7 +75,6 @@ class ProgressImage extends Component {
                     className={classes.main}
                     onError={e => this.handleError(e)}
                     onLoad={e => this.handleLoad(e)}
-                    ref="image"
                     src={this.props.src}
                     style={{
                         height,
@@ -82,7 +84,9 @@ class ProgressImage extends Component {
 
                 <div
                     className={classes.thumb}
-                    ref="thumb"
+                    ref={
+                        ele => (this.thumb = ele)
+                    }
                     style={{
                         // Use as placeholder, anti reflow
                         paddingBottom: (height / width) * 100 || 0,

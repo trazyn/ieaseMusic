@@ -15,7 +15,7 @@ import stores from './js/stores';
 class App extends Component {
     componentDidMount() {
         var { preferences, controller, fm, me, menu, playing } = stores;
-        var navigator = this.refs.navigator;
+        var navigator = this.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
         function togglePreferences() {
@@ -293,7 +293,11 @@ class App extends Component {
     render() {
         return (
             <Provider {...stores}>
-                <HashRouter ref="navigator">
+                <HashRouter
+                    ref={
+                        ele => (this.navigator = ele)
+                    }
+                >
                     {getRoutes()}
                 </HashRouter>
             </Provider>

@@ -43,7 +43,7 @@ class Search extends Component {
         });
     }
 
-    search(e) {
+    doSearch(e) {
         if (e.keyCode !== 13) {
             return;
         }
@@ -235,7 +235,7 @@ class Search extends Component {
     }
 
     loadmore(e) {
-        var container = this.refs.list;
+        var container = this.list;
 
         if (this.props.loading) {
             return;
@@ -258,7 +258,7 @@ class Search extends Component {
     }
 
     selected(ele, state) {
-        var keywords = this.refs.search.value.trim();
+        var keywords = this.search.value.trim();
 
         if (ele.classList.contains(classes.selected)) {
             return;
@@ -287,11 +287,13 @@ class Search extends Component {
                 <main>
                     <summary>
                         <input
-                            autoFocus={true}
-                            onKeyUp={e => this.search(e)}
-                            placeholder="Search ..."
-                            ref="search"
+                            ref={
+                                ele => (this.search = ele)
+                            }
                             type="text"
+                            autoFocus={true}
+                            onKeyUp={e => this.doSearch(e)}
+                            placeholder="Search ..."
                         />
                     </summary>
 
@@ -334,7 +336,10 @@ class Search extends Component {
                     <section
                         className={classes.list}
                         onScroll={e => this.loadmore(e)}
-                        ref="list">
+                        ref={
+                            ele => (this.list = ele)
+                        }
+                    >
                         {
                             loading
                                 ? (

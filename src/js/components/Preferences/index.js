@@ -28,8 +28,8 @@ class Preferences extends Component {
         var { preferences } = this.props;
 
         preferences.setLastfm({
-            username: this.refs.username.value,
-            password: this.refs.password.value,
+            username: this.username.value,
+            password: this.password.value,
             connected: preferences.lastfm.connected,
         });
     }
@@ -264,7 +264,9 @@ class Preferences extends Component {
                                 defaultValue={lastfm.username}
                                 onBlur={ev => this.saveLastfm()}
                                 placeholder="Your last.fm username"
-                                ref="username"
+                                ref={
+                                    ele => (this.username = ele)
+                                }
                                 type="text" />
                         </div>
 
@@ -275,7 +277,9 @@ class Preferences extends Component {
                                 defaultValue={lastfm.password}
                                 onBlur={ev => this.saveLastfm()}
                                 placeholder="Your last.fm password"
-                                ref="password"
+                                ref={
+                                    ele => (this.password = ele)
+                                }
                                 type="password" />
                         </div>
                         <button
