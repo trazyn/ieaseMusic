@@ -57,7 +57,7 @@ const classes = {
     },
 };
 
-@inject(['controller'])
+@inject('controller')
 @observer
 class _Background extends Component {
     render() {
@@ -84,24 +84,22 @@ class _Background extends Component {
 }
 const Background = injectSheet(classes)(_Background);
 
-@inject(stores => ({
-    initialized: stores.me.initialized,
-    init: async() => {
-        await stores.preferences.init();
-        await stores.me.init();
-
-        var { username, password } = stores.preferences.lastfm;
-
-        await lastfm.initialize(username, password);
-    },
-}))
+@inject('me', 'preferences')
+@observer
 class Layout extends Component {
     state = {
         offline: false,
     };
 
     async componentWillMount() {
-        await this.props.init();
+        var { me, preferences } = this.props;
+
+        await preferences.init();
+        await me.init();
+
+        var { username, password } = preferences.lastfm;
+
+        await lastfm.initialize(username, password);
     }
 
     componentDidMount() {
@@ -119,7 +117,7 @@ class Layout extends Component {
     }
 
     render() {
-        var { classes, initialized } = this.props;
+        var { classes, me: { initialized } } = this.props;
 
         if (this.state.offline) {
             return <Offline show={true} />;
@@ -144,12 +142,12 @@ class Layout extends Component {
                     {this.props.children}
                 </main>
 
+                <AudioPlayer />
                 <UpNext />
                 <Preferences />
                 <Menu />
                 <VolumeUpDown />
                 <Playing />
-                <AudioPlayer />
                 <PlayerNavigation />
                 <PlayerMode />
                 <PlayerStatus />
