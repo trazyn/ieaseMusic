@@ -1,11 +1,11 @@
 {
     "parserOptions": {
-        "ecmaVersion": 6,
-            "sourceType": "module",
-            "ecmaFeatures": {
-                "impliedStrict": true,
-                "jsx": true
-            }
+        "ecmaVersion": 8,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true,
+            "jsx": true
+        }
     },
     "env": {
         "es6": true,
@@ -16,7 +16,7 @@
     "rules": {
         "semi": [2, "always"],
         "new-cap": [0],
-        "prefer-promise-reject-errors": [0],
+        "prefer-promise-reject-errors": [1],
         "indent": [2, 4, { "SwitchCase": 1 }],
         "comma-dangle": [2, "only-multiline"],
         "space-before-function-paren": [2, "never"],
