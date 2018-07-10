@@ -80,7 +80,7 @@ export default class AudioPlayer extends Component {
 
         this.timer = setTimeout(
             () => {
-                // I FM screen progress bar not visible
+                // Some screens progress bar not visible
                 if (ele) {
                     let percent = (currentTime * 1000) / duration;
 
@@ -171,7 +171,7 @@ export default class AudioPlayer extends Component {
                 style={{
                     display: 'none'
                 }}
-                src={(song.data || {}).src}
+                src={song.data ? song.data.src : null}
                 autoPlay={true}
                 onAbort={
                     e => {
@@ -187,9 +187,9 @@ export default class AudioPlayer extends Component {
                 }
                 onError={
                     e => {
-                        if (song.waiting) return;
+                        if (!e.target.src.startsWith('http') || song.waiting) return;
 
-                        console.log('Break by %s', e);
+                        console.log('Break by %o', e);
                         this.resetProgress();
                         tryTheNext();
                     }
