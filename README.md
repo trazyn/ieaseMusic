@@ -154,6 +154,7 @@ Description            | Keys
 - [x] Comment（Read only）
 - [x] Lyrics
 - [x] Auto update
+- [ ] Alfred supports
 - [ ] Remove express（New API implementation, and proxy）
 - [ ] Resize window（New UI）
 
