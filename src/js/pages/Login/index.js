@@ -18,8 +18,8 @@ class Login extends Component {
     }
 
     async doLogin() {
-        var phone = this.refs.phone.value;
-        var password = this.refs.password.value;
+        var phone = this.phone.value;
+        var password = this.password.value;
 
         // Test phone and password not empty
         if (!phone.trim() || !password.trim()) {
@@ -73,20 +73,27 @@ class Login extends Component {
 
                 <section>
                     <input
+                        ref={
+                            ele => (this.phone = ele)
+                        }
+                        type="text"
                         placeholder="Your phone number"
-                        ref="phone"
-                        type="text" />
+                    />
                     <input
                         onKeyPress={e => this.handleEnter(e)}
                         placeholder="Password"
-                        ref="password"
+                        ref={
+                            ele => (this.password = ele)
+                        }
                         type="password" />
 
                     <p
-                        className={clazz(classes.error, {
-                            [classes.show]: this.state.showError,
-                        })}
-                        ref="error">
+                        className={
+                            clazz(classes.error, {
+                                [classes.show]: this.state.showError,
+                            })
+                        }
+                    >
                         Invalid username or password, Please try again.
                     </p>
 

@@ -35,7 +35,7 @@ class Playlist extends Component {
     }
 
     async loadmore(e) {
-        var container = this.refs.list;
+        var container = this.list;
 
         // Drop the duplicate invoke
         if (container.classList.contains(classes.loadmore)) {
@@ -125,8 +125,11 @@ class Playlist extends Component {
 
                     <section
                         className={classes.list}
+                        ref={
+                            ele => (this.list = ele)
+                        }
                         onScroll={e => this.loadmore()}
-                        ref="list">
+                    >
                         {this.renderList()}
                     </section>
 

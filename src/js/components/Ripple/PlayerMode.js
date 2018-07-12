@@ -16,11 +16,11 @@ class PlayerMode extends Component {
     }
 
     componentDidUpdate() {
-        this.refs.container.classList.add(this.props.classes.animated);
+        this.container.classList.add(this.props.classes.animated);
     }
 
     animationDone() {
-        this.refs.container.classList.remove(this.props.classes.animated);
+        this.container.classList.remove(this.props.classes.animated);
     }
 
     renderIndicator(mode) {
@@ -43,7 +43,10 @@ class PlayerMode extends Component {
             <div
                 className={classes.container}
                 onAnimationEnd={() => this.animationDone()}
-                ref="container">
+                ref={
+                    ele => (this.container = ele)
+                }
+            >
                 {
                     this.renderIndicator(mode)
                 }

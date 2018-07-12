@@ -16,12 +16,12 @@ class PlayerNavigation extends Component {
     }
 
     componentDidUpdate() {
-        this.refs.container.classList.add(this.props.classes.animated);
+        this.container.classList.add(this.props.classes.animated);
     }
 
     animationDone() {
         this.shouldUpdate = false;
-        this.refs.container.classList.remove(this.props.classes.animated);
+        this.container.classList.remove(this.props.classes.animated);
     }
 
     shouldComponentUpdate() {
@@ -51,7 +51,10 @@ class PlayerNavigation extends Component {
             <div
                 className={classes.container}
                 onAnimationEnd={() => this.animationDone()}
-                ref="container">
+                ref={
+                    ele => (this.container = ele)
+                }
+            >
                 {
                     this.state.direction
                         ? <i className="ion-ios-rewind" />

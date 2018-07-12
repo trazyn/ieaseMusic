@@ -21,7 +21,7 @@ export default async(request, keyword, artists) => {
 
         if (response.success !== true || response.musics.length === 0) {
             error(chalk.black.bgRed('🚧  Nothing.'));
-            return Promise.reject();
+            return Promise.reject(Error(404));
         }
 
         for (let e of response.musics) {
@@ -39,9 +39,9 @@ export default async(request, keyword, artists) => {
         }
     } catch (ex) {
         error('Failed to get song: %O', ex);
-        return Promise.reject();
+        return Promise.reject(ex);
     }
 
     error(chalk.black.bgRed('🈚  Not Matched.'));
-    return Promise.reject();
+    return Promise.reject(Error(405));
 };

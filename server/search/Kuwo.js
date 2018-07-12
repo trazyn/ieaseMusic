@@ -41,7 +41,7 @@ export default async(request, keyword, artists) => {
 
         if (!payload) {
             error(chalk.black.bgRed('🚧  Nothing.'));
-            return Promise.reject();
+            return Promise.reject(Error(404));
         }
 
         response = await request({
@@ -56,7 +56,7 @@ export default async(request, keyword, artists) => {
 
         if (!response) {
             error(chalk.black.bgRed('🚧  Nothing.'));
-            return Promise.reject();
+            return Promise.reject(Error(404));
         }
 
         var song = {
@@ -70,7 +70,7 @@ export default async(request, keyword, artists) => {
     } catch (ex) {
         // Anti-warnning
         error('Failed to get song: %O', ex);
-        return Promise.reject();
+        return Promise.reject(ex);
     }
 
     return song;

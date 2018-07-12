@@ -81,20 +81,20 @@ class Artist extends Component {
 
     componentDidMount() {
         var classes = this.props.classes;
-        var navs = Array.from(this.refs.header.querySelectorAll('nav'));
+        var navs = Array.from(this.header.querySelectorAll('nav'));
 
-        delegate(this.refs.header, 'nav', 'click', e => {
+        delegate(this.header, 'nav', 'click', e => {
             navs.map(e => e.classList.remove(classes.selected));
             e.target.classList.add(classes.selected);
         });
 
-        sine.show(this.refs.canvas);
+        sine.show(this.canvas);
     }
 
     componentWillUnmount = () => sine.hide();
 
     componentDidUpdate() {
-        var list = this.refs.list;
+        var list = this.list;
 
         if (list) {
             let playing = list.querySelector(`.${this.props.classes.playing}`);
@@ -116,7 +116,10 @@ class Artist extends Component {
         return (
             <ul
                 className={classes.songs}
-                ref="list">
+                ref={
+                    ele => (this.list = ele)
+                }
+            >
                 {
                     playlist.songs.map((e, index) => {
                         return (
@@ -276,7 +279,11 @@ class Artist extends Component {
                             }
                         </div>
 
-                        <canvas ref="canvas" />
+                        <canvas
+                            ref={
+                                ele => (this.canvas = ele)
+                            }
+                        />
 
                         <p className={classes.name}>
                             {
@@ -320,7 +327,11 @@ class Artist extends Component {
                 </div>
 
                 <div className={classes.body}>
-                    <header ref="header">
+                    <header
+                        ref={
+                            ele => (this.header = ele)
+                        }
+                    >
                         <nav
                             onClick={e => this.setState({ renderTabContent: () => this.renderSongs() })}
                             className={classes.selected}>

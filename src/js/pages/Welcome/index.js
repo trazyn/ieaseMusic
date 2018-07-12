@@ -45,6 +45,10 @@ class Welcome extends Component {
     play(playlist) {
         var controller = this.props.controller;
 
+        if (controller.playlist.id === playlist.id) {
+            return controller.toggle();
+        }
+
         controller.setup(playlist);
         controller.play();
     }

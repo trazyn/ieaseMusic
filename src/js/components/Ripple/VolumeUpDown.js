@@ -21,11 +21,11 @@ class VolumeUpDown extends Component {
     }
 
     componentDidUpdate() {
-        this.refs.container.classList.add(this.props.classes.animated);
+        this.container.classList.add(this.props.classes.animated);
     }
 
     animationDone() {
-        this.refs.container.classList.remove(this.props.classes.animated);
+        this.container.classList.remove(this.props.classes.animated);
     }
 
     componentDidMount() {
@@ -49,7 +49,10 @@ class VolumeUpDown extends Component {
             <div
                 className={classes.container}
                 onAnimationEnd={() => this.animationDone()}
-                ref="container">
+                ref={
+                    ele => (this.container = ele)
+                }
+            >
                 {
                     isMuted()
                         ? <i
