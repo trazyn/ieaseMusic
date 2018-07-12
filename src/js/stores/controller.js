@@ -144,6 +144,9 @@ class Controller {
     async tryTheNext() {
         var next = await self.next(false, false);
 
+        // In FM mode the next song is null
+        if (!next) return;
+
         if (next.id === self.song.id) {
             // Break dead loop
             self.playing = false;
