@@ -87,7 +87,7 @@ $ pacman -S iease-music-git
 ![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cmd+p.png?raw=true)
 ![MENU](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/menu.png?raw=true)
 ![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/upnext.png?raw=true)
-![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/User.png?raw=true)
+![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/user.png?raw=true)
 ![PLAYLIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/playlist.png?raw=true)
 
 ## Development
