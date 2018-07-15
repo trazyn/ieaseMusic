@@ -23,11 +23,14 @@ class Home {
             // Save the songs of red heart
             me.rocking(favorite);
 
-            if (recommend.length) {
+            if (favorite.size) {
+                controller.setup(favorite);
+            } else if (recommend.size) {
                 // Play the recommend songs
                 controller.setup(recommend);
             } else {
-                controller.setup(favorite);
+                // Some user no favorite and recommend, set a fallback playlist
+                controller.setup(res.data.list[2]);
             }
         } else {
             res = await axios.get(`/api/home`);
