@@ -158,6 +158,7 @@ Description            | Keys
 - [x] Lyrics
 - [x] Auto update
 - [x] Alfred supports
+- [ ] Wechat QR code login
 - [ ] Remove express（New API implementation, and proxy）
 - [ ] Resize window（New UI）
 
