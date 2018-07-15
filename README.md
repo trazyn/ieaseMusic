@@ -34,6 +34,8 @@
 - High quality music(FLAC)
 - Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
+- Alfred 3 workflow
+  ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/alfred.png?raw=true)
 
 ## Install
 
@@ -78,12 +80,12 @@ $ pacman -S iease-music-git
 ![FM](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/fm.png?raw=true)
 ![PLAYER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player.png?raw=true)
 ![ARTIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/artist.png?raw=true)
-![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Comments.png?raw=true)
-![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Lyrics.png?raw=true)
-![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Cover.png?raw=true)
-![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/CMD+P.png?raw=true)
+![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/comments.png?raw=true)
+![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/lyrics.png?raw=true)
+![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cover.png?raw=true)
+![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cmd+p.png?raw=true)
 ![MENU](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/menu.png?raw=true)
-![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Upnext.png?raw=true)
+![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/upnext.png?raw=true)
 ![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/User.png?raw=true)
 ![PLAYLIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/playlist.png?raw=true)
 
@@ -154,7 +156,7 @@ Description            | Keys
 - [x] Comment（Read only）
 - [x] Lyrics
 - [x] Auto update
-- [ ] Alfred supports
+- [x] Alfred supports
 - [ ] Remove express（New API implementation, and proxy）
 - [ ] Resize window（New UI）
 
