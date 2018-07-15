@@ -34,7 +34,7 @@
 - High quality music(FLAC)
 - Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
-- Alfred 3 workflow
+- Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required v1.2.6+
 
   ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/alfred.png?raw=true)
 
