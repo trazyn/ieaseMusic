@@ -10,6 +10,7 @@ import _debug from 'debug';
 import pkg from './package.json';
 import config from './config';
 import api from './server/api';
+import usocket from './server/usocket';
 
 const _PLATFORM = process.platform;
 
@@ -25,6 +26,12 @@ let tray;
 let mainWindow;
 let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
+// Shared data to other applocation via a unix socket file
+let shared = {
+    track: {},
+    playing: false,
+    playlist: []
+};
 let mainMenu = [
     {
         label: 'ieaseMusic',
@@ -67,8 +74,7 @@ let mainMenu = [
                 accelerator: 'Command+Q',
                 selector: 'terminate:',
                 click() {
-                    forceQuit = true;
-                    app.quit();
+                    goodbye();
                 }
             }
         ]
@@ -349,8 +355,7 @@ let trayMenu = [
         accelerator: 'Command+Q',
         selector: 'terminate:',
         click() {
-            forceQuit = true;
-            app.quit();
+            goodbye();
         }
     }
 ];
@@ -456,6 +461,11 @@ function registerGlobalShortcut() {
     });
 }
 
+const goodbye = () => {
+    forceQuit = true;
+    app.quit();
+};
+
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
         defaultWidth: 800,
@@ -508,7 +518,6 @@ const createMainWindow = () => {
         }
 
         if (forceQuit) {
-            console.log('Is closed...');
             app.quit();
         } else {
             e.preventDefault();
@@ -551,6 +560,7 @@ const createMainWindow = () => {
             };
         });
 
+        shared.playlist = args.songs;
         playingMenu.submenu = submenu;
         updateMenu();
     });
@@ -562,6 +572,8 @@ const createMainWindow = () => {
         if (tray) {
             updateTray(playing, song);
         }
+        shared.track = song;
+        shared.playing = +playing;
         updateMenu(playing);
     });
 
@@ -600,11 +612,7 @@ const createMainWindow = () => {
     });
 
     // Quit app
-    ipcMain.on('goodbye', (event) => {
-        console.log('Close...');
-        forceQuit = true;
-        app.quit();
-    });
+    ipcMain.on('goodbye', () => goodbye());
 
     // App has suspend
     powerMonitor.on('suspend', () => {
@@ -624,8 +632,11 @@ const createMainWindow = () => {
         app.dock.setMenu(Menu.buildFromTemplate(dockMenu));
     }
 
+    mainWindow.goodbye = () => goodbye();
+
     updateMenu();
     registerGlobalShortcut();
+    usocket(shared, mainWindow);
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
 };
