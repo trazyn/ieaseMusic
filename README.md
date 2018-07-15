@@ -35,6 +35,7 @@
 - Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
 - Alfred 3 workflow
+
   ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/alfred.png?raw=true)
 
 ## Install
