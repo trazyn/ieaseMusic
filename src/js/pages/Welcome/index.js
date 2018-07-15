@@ -196,6 +196,10 @@ class Welcome extends Component {
     renderFavorite(favorite = {}) {
         var { classes, controller } = this.props;
 
+        if (favorite.size === 0) {
+            return false;
+        }
+
         return (
             <Link
                 className={classes.clearfix}
