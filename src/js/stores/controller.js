@@ -296,6 +296,8 @@ class Controller {
         var sourceid = self.playlist.id;
         var time = self.song.duration;
 
+        lastfm.scrobble(self.song);
+
         if (!preferences.scrobble) {
             return;
         }
