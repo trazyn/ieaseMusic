@@ -135,7 +135,10 @@ class Preferences extends Component {
                         </label>
 
                         <label htmlFor="highquality">
-                            <h4>High Quality Music</h4>
+                            <div>
+                                <h4>Only High Quality</h4>
+                                <p>Only the high quality track accepted, Usually you not need enable this option.</p>
+                            </div>
 
                             <Switch
                                 defaultChecked={highquality}

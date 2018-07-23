@@ -117,49 +117,6 @@ async function getAlbumBySong(id) {
     return albums;
 }
 
-async function getFlac(name, artists) {
-    var response = await axios.get(
-        'http://sug.music.baidu.com/info/suggestion',
-        {
-            params: {
-                word: [name].concat(artists.split(',')).join('+'),
-                version: 2,
-                from: 0,
-            }
-        }
-    );
-
-    if (response.data.errno) {
-        return false;
-    }
-
-    var songs = response.data.data.song;
-    var song = songs.find(e => artists.indexOf(e.artistname) > -1);
-
-    if (!song) {
-        return false;
-    }
-
-    var rp = require('request-promise-native');
-
-    response = await rp(
-        {
-            uri: 'http://music.taihe.com/data/music/fmlink',
-            qs: {
-                songIds: song.songid,
-                type: 'flac',
-            },
-            json: true,
-        }
-    );
-
-    if (+response.errorCode !== 22000 || !response.data.songList) {
-        return false;
-    }
-
-    return response.data.songList[0].songLink;
-}
-
 router.get('/subscribe/:id', async(req, res) => {
     debug('Handle request for /player/subscribe');
 
@@ -224,49 +181,26 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
     debug('Params \'id\': %s, \'name\': %s, \'artists\': %s, \'flac\': %s', id, name, artists, flac);
 
     try {
-        if (+flac) {
-            let src = await getFlac(name, artists);
+        if (!process.env.APIONLY) {
+            var selector = require('../search');
 
-            if (src) {
-                res.send({
-                    song: {
-                        src,
-                        isFlac: true,
-                    }
-                });
+            // Search from other source
+            debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
 
-                return;
+            // Get the highquality track
+            song = await selector.getFlac(name, artists, true);
+
+            if (!song.src) {
+                if (flac === 1) {
+                    // Only accept highquality
+                } else {
+                    // Try to get the normal quality track
+                    song = await selector.getMp3(name, artists, id);
+                }
             }
-        }
-
-        let response = await axios.get(`/music/url?id=${id}`);
-        let data = response.data;
-
-        if (data.code !== 200) {
-            throw data;
-        }
-
-        song = data.data[0];
-        song = {
-            id: song.id.toString(),
-            src: song.url,
-            md5: song.md5,
-            bitRate: song.br,
-        };
-
-        if (!song.src) {
-            throw new Error('No Copyright');
         }
     } catch (ex) {
-        try {
-            if (!process.env.APIONLY) {
-                // Search from other source
-                debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
-                song = await require('../search').default(name, artists);
-            }
-        } catch (ex) {
-            debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
-        }
+        debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
     }
 
     song = song || {};

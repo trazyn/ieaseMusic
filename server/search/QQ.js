@@ -7,7 +7,7 @@ const error = _debug('dev:plugin:QQ:error');
 
 let rp;
 
-async function getSong(mid) {
+async function getSong(mid, isFlac) {
     var currentMs = (new Date()).getUTCMilliseconds();
     var guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
     var file = await genKey(mid);
@@ -47,6 +47,11 @@ async function getSong(mid) {
             isFlac: true,
             src: getURL(`F000${mid}.flac`, key, guid),
         };
+    }
+
+    if (isFlac === true) {
+        // Not found flac track
+        return {};
     }
 
     if (file.size_320mp3) {
@@ -106,7 +111,7 @@ function getURL(filename, key, guid) {
     return `http://dl.stream.qqmusic.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
 }
 
-export default async(request, keyword, artists) => {
+export default async(request, keyword, artists, isFlac) => {
     debug(chalk.black.bgGreen('💊  Loaded QQ music.'));
 
     rp = request;
@@ -143,7 +148,7 @@ export default async(request, keyword, artists) => {
                 continue;
             }
 
-            song = await getSong(e.media_mid);
+            song = await getSong(e.media_mid, isFlac);
 
             if (!song.src) {
                 error(chalk.black.bgRed('🚧  Nothing.'));
