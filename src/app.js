@@ -71,6 +71,11 @@ class App extends Component {
             me.like(controller.song);
         });
 
+        // Change player mode
+        ipcRenderer.on('player-mode', (e, args) => {
+            controller.changeMode(args.mode);
+        });
+
         // Go the home screen
         ipcRenderer.on('show-home', () => {
             navigator.history.push('/');
