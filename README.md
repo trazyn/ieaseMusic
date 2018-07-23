@@ -36,7 +36,7 @@
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
 - Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
 
-  ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/alfred.png?raw=true)
+  ![Alfred](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/menu.png?raw=true)
 
 ## Install
 
