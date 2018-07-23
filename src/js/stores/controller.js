@@ -89,13 +89,9 @@ class Controller {
             };
         }
 
-        ipcRenderer.send('update-status', {
-            playing: true,
-            song,
-        });
-
         self.playing = true;
         self.song = song;
+        self.updateStatus();
         comments.getList(song);
         await self.resolveSong(song);
         await lastfm.playing(song);
@@ -261,10 +257,7 @@ class Controller {
             upnext.cancel(null);
         }
 
-        ipcRenderer.send('update-status', {
-            playing: self.playing,
-            song: self.song,
-        });
+        self.updateStatus();
     }
 
     stop() {
@@ -289,6 +282,8 @@ class Controller {
                 self.mode = PLAYER_SHUFFLE;
             }
         }
+
+        self.updateStatus();
     }
 
     scrobble() {
@@ -307,6 +302,21 @@ class Controller {
         } catch (ex) {
             // Anti warnning
         }
+    }
+
+    updateStatus() {
+        ipcRenderer.send('update-status', {
+            playing: self.playing,
+            song: self.song,
+            modes: MODES.map(
+                e => {
+                    return {
+                        mode: e,
+                        enabled: e === self.mode
+                    };
+                }
+            )
+        });
     }
 }
 

@@ -29,6 +29,12 @@ function handler(data, player) {
             });
             break;
 
+        case 'changeMode':
+            player.webContents.send('player-mode', {
+                mode: payload.mode,
+            });
+            break;
+
         case 'goodbye':
             player.goodbye();
             break;

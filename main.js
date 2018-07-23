@@ -28,6 +28,7 @@ let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
 // Shared data to other applocation via a unix socket file
 let shared = {
+    modes: [],
     track: {},
     playing: false,
     playlist: []
@@ -567,11 +568,13 @@ const createMainWindow = () => {
 
     // Update menu icon image and controls menu
     ipcMain.on('update-status', (event, args) => {
-        var { playing, song } = args;
+        var { playing, song, modes } = args;
 
         if (tray) {
             updateTray(playing, song);
         }
+
+        shared.modes = modes;
         shared.track = song;
         shared.playing = +playing;
         updateMenu(playing);
