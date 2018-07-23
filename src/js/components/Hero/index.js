@@ -42,6 +42,7 @@ class Hero extends Component {
                         onClick={e => liked ? unlike(song) : like(song)}
                         style={{
                             cursor: 'pointer',
+                            display: 'table',
                         }}
                     />
 
