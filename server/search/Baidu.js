@@ -5,7 +5,7 @@ import chalk from 'chalk';
 const debug = _debug('dev:plugin:Baidu');
 const error = _debug('dev:plugin:Baidu:error');
 
-export default async(request, keyword, artists) => {
+export default async(request, keyword, artists, isFlac) => {
     debug(chalk.black.bgGreen('💊  Loaded Baidu music.'));
 
     try {
@@ -29,7 +29,7 @@ export default async(request, keyword, artists) => {
             uri: 'http://music.taihe.com/data/music/fmlink',
             qs: {
                 songIds: song.songid,
-                type: 'mp3',
+                type: isFlac ? 'flac' : 'mp3',
             },
         });
 
@@ -53,6 +53,10 @@ export default async(request, keyword, artists) => {
             debug(chalk.black.bgGreen('🚚  Result >>>'));
             debug(response.data.songList[0]);
             debug(chalk.black.bgGreen('🚚  <<<'));
+
+            if (isFlac) {
+                song.isFlac = true;
+            }
         }
     } catch (ex) {
         // Anti-warnning

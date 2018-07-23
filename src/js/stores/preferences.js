@@ -18,7 +18,7 @@ class Preferences {
     @observable naturalScroll = true;
     @observable volume = 1;
     @observable port = config.api.port;
-    @observable highquality = 1;
+    @observable highquality = 0;
     @observable autoupdate = false;
     @observable lastfm = {
         username: '', // Your last.fm username
