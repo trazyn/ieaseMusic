@@ -1,5 +1,6 @@
 
 import storage from 'electron-json-storage';
+import Netease from './Netease';
 import QQ from './QQ';
 import MiGu from './MiGu';
 import Kugou from './Kugou';
@@ -15,7 +16,7 @@ async function getPreferences() {
     });
 }
 
-export default async(keyword, artists) => {
+export default async(keyword, artists, id /** This id is only work for netease music */) => {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
     var rpOptions = {
@@ -23,7 +24,7 @@ export default async(keyword, artists) => {
         json: true,
         jar: true,
     };
-    var plugins = [];
+    var plugins = [Netease];
 
     if (!enginers) {
         enginers = {
@@ -75,7 +76,7 @@ export default async(keyword, artists) => {
         plugins.map(e => {
             // If a request failed will keep waiting for other possible successes, if a request successed,
             // treat it as a rejection so Promise.all immediate break.
-            return e(rp, keyword, artists).then(
+            return e(rp, keyword, artists, id).then(
                 val => Promise.reject(val),
                 err => Promise.resolve(err)
             );

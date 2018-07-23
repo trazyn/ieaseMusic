@@ -239,34 +239,13 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             }
         }
 
-        let response = await axios.get(`/music/url?id=${id}`);
-        let data = response.data;
-
-        if (data.code !== 200) {
-            throw data;
-        }
-
-        song = data.data[0];
-        song = {
-            id: song.id.toString(),
-            src: song.url,
-            md5: song.md5,
-            bitRate: song.br,
-        };
-
-        if (!song.src) {
-            throw new Error('No Copyright');
+        if (!process.env.APIONLY) {
+            // Search from other source
+            debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
+            song = await require('../search').default(name, artists, id);
         }
     } catch (ex) {
-        try {
-            if (!process.env.APIONLY) {
-                // Search from other source
-                debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
-                song = await require('../search').default(name, artists);
-            }
-        } catch (ex) {
-            debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
-        }
+        debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
     }
 
     song = song || {};
