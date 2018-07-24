@@ -16,7 +16,8 @@
     "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
     "package-win": "npm run build && rm -rf release && build --win --ia32 --projectDir ./dist",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
-    "dd": "electron-builder --win --ia32 --projectDir ./dist"
+    "dd": "electron-builder --win --ia32 --projectDir ./dist",
+    "publish": "sh ./bin/publish.sh"
   },
   "author": {
     "name": "trazyn",
