@@ -199,7 +199,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
                     // Only accept highquality
                 } else {
                     // Try to get the normal quality track
-                    song = await selector.getMp3(name, artists, id);
+                    song = await selector.getTrack(name, artists, id);
                 }
             }
         }

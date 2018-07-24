@@ -50,10 +50,10 @@ async function exe(plugins, ...args) {
 }
 
 async function getFlac(keyword, artists) {
-    return exe([Baidu, QQ], keyword, artists, true);
+    return exe([QQ], keyword, artists, true);
 }
 
-async function getMp3(keyword, artists, id /** This id is only work for netease music */) {
+async function getTrack(keyword, artists, id /** This id is only work for netease music */) {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
     var plugins = [Netease];
@@ -98,5 +98,5 @@ async function getMp3(keyword, artists, id /** This id is only work for netease 
 
 export {
     getFlac,
-    getMp3,
+    getTrack,
 };
