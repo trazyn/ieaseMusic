@@ -174,6 +174,13 @@ class App extends Component {
                     }
                 },
                 {
+                    label: 'Download 🍭',
+                    enabled: logined,
+                    click: () => {
+                        ipcRenderer.send('download', { song: JSON.stringify(controller.song) });
+                    }
+                },
+                {
                     type: 'separator',
                 },
                 {
