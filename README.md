@@ -80,6 +80,7 @@ $ pacman -S iease-music-git
 ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/home.png?raw=true)
 ![FM](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/fm.png?raw=true)
 ![PLAYER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player.png?raw=true)
+![PLAYER2](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player-2.png?raw=true)
 ![ARTIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/artist.png?raw=true)
 ![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/comments.png?raw=true)
 ![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/lyrics.png?raw=true)
