@@ -8,7 +8,7 @@ import { autoUpdater } from 'electron-updater';
 import axios from 'axios';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
-import mkdirp from 'mkdirp';
+import mkdirp from 'node-mkdirp';
 import rp from 'request-promise-native';
 import _debug from 'debug';
 
