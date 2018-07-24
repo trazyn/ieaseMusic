@@ -37,8 +37,6 @@ export default async(request, keyword, artists) => {
             e => artists.findIndex(artist => e.ARTIST.indexOf(artist) !== -1) > -1
         );
 
-        console.log(payload);
-
         if (!payload) {
             error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
