@@ -551,7 +551,7 @@ async function download(song) {
         });
 
         notification.on('click', () => {
-            shell.showItemInFolder(_DOWNLOAD_DIR);
+            shell.showItemInFolder(trackfile);
         });
         notification.show();
     } catch (ex) {
