@@ -22,6 +22,16 @@ class App extends Component {
             preferences.show = !preferences.show;
         }
 
+        function toggleLike() {
+            var song = controller.song;
+
+            if (me.likes.get(song.id)) {
+                me.unlike(song);
+                return;
+            }
+            me.like(song);
+        }
+
         // Player play
         ipcRenderer.on('player-play', (e, args) => {
             controller.play(args.id);
@@ -61,15 +71,7 @@ class App extends Component {
         });
 
         // Like a song
-        ipcRenderer.on('player-like', () => {
-            var song = controller.song;
-
-            if (me.likes.get(song.id)) {
-                return;
-            }
-
-            me.like(controller.song);
-        });
+        ipcRenderer.on('player-like', () => toggleLike());
 
         // Change player mode
         ipcRenderer.on('player-mode', (e, args) => {
@@ -157,18 +159,13 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
-                    label: 'Like 💖',
+                    label: 'Like/Unlike 💖',
                     enabled: logined,
-                    click: () => {
-                        if (me.likes.get(controller.song.id)) {
-                            return;
-                        }
-                        me.like(controller.song);
-                    }
+                    click: () => toggleLike()
                 },
                 {
                     label: 'Ban 💩',
-                    enabled: logined,
+                    enabled: logined && controller.playlist.id === 'PERSONAL_FM',
                     click: () => {
                         fm.ban(controller.song.id);
                     }
@@ -235,7 +232,7 @@ class App extends Component {
                     }
                 },
                 {
-                    label: 'FM',
+                    label: 'Made For You',
                     click: () => {
                         navigator.history.push('/fm');
                     }
@@ -256,18 +253,9 @@ class App extends Component {
                     }
                 },
                 {
-                    type: 'separator',
-                },
-                {
-                    label: 'Bug report 🐛',
+                    label: 'Show Cover 💅',
                     click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
-                    }
-                },
-                {
-                    label: 'Fork me on Github 🚀',
-                    click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                        navigator.history.push('/cover');
                     }
                 },
                 {
@@ -287,6 +275,18 @@ class App extends Component {
                 },
                 {
                     type: 'separator',
+                },
+                {
+                    label: 'Bug report 🐛',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                    }
+                },
+                {
+                    label: 'Fork me on Github 🚀',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                    }
                 },
                 {
                     label: '💕 Follow me on Twitter 👏',
