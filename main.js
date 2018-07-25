@@ -1,10 +1,15 @@
 
+import fs from 'fs';
 import path from 'path';
-import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog, Notification } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
 import { autoUpdater } from 'electron-updater';
 import axios from 'axios';
+import nodeID3 from 'node-id3';
+import tmp from 'tmp-promise';
+import mkdirp from 'node-mkdirp';
+import rp from 'request-promise-native';
 import _debug from 'debug';
 
 import pkg from './package.json';
@@ -13,6 +18,7 @@ import api from './server/api';
 import usocket from './server/usocket';
 
 const _PLATFORM = process.platform;
+const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
 
 let debug = _debug('dev:main');
 let error = _debug('dev:main:error');
@@ -462,6 +468,104 @@ function registerGlobalShortcut() {
     });
 }
 
+async function getCookies() {
+    return new Promise((resolve, reject) => {
+        mainWindow.webContents.session.cookies.get(
+            {},
+            (err, cookies) => {
+                if (err) {
+                    return resolve();
+                }
+
+                resolve(cookies.map(e => `${e.name}=${e.value}`).join('; '));
+            }
+        );
+    });
+}
+
+async function writeFile(url, filepath) {
+    var cookies = await getCookies();
+    var file = fs.createWriteStream(filepath);
+
+    return new Promise((resolve, reject) => {
+        try {
+            rp({
+                url,
+                headers: {
+                    'Cookie': cookies,
+                    'Origin': 'http://music.163.com',
+                    'Referer': 'http://music.163.com/',
+                }
+            }).pipe(file);
+
+            file.on('finish', () => {
+                file.end();
+                resolve();
+            });
+            file.on('error', err => {
+                throw err;
+            });
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
+
+async function download(song) {
+    var src = song.data.src;
+    var imagefile = (await tmp.file()).path;
+    var trackfile = path.join(
+        _DOWNLOAD_DIR,
+        `${song.artists.map(e => e.name).join()} - ${song.name}.${src.match(/^http.*\.(.*)$/)[1]}`
+    );
+    var notificationOptions = {
+        subtitle: song.name,
+        body: song.artists.map(e => e.name).join(),
+        closeButtonText: 'Done'
+    };
+
+    try {
+        // Make sure the download directory already exists
+        if (fs.existsSync(_DOWNLOAD_DIR) === false) {
+            mkdirp.sync(_DOWNLOAD_DIR);
+        }
+
+        await writeFile(src, trackfile);
+        await writeFile(song.album.cover.replace(/\?.*/, ''), imagefile);
+
+        let tags = {
+            title: song.name,
+            artist: song.artists.map(e => e.name).join(),
+            album: song.album.name,
+            image: imagefile,
+        };
+        let success = nodeID3.write(tags, trackfile);
+
+        if (!success) {
+            throw Error('Failed to write ID3 tags: \'%s\'', trackfile);
+        }
+
+        let notification = new Notification({
+            title: '🍉 Download Success~',
+            ...notificationOptions,
+        });
+
+        notification.on('click', () => {
+            shell.showItemInFolder(trackfile);
+        });
+        notification.show();
+    } catch (ex) {
+        error(ex);
+        fs.unlink(trackfile);
+        fs.unlink(imagefile);
+
+        new Notification({
+            title: '😕 Download Failed~',
+            ...notificationOptions,
+        }).show();
+    }
+}
+
 const goodbye = () => {
     forceQuit = true;
     app.quit();
@@ -603,6 +707,11 @@ const createMainWindow = () => {
         updateTray(args.playing);
     });
 
+    // Download track
+    ipcMain.on('download', (event, args) => {
+        download(JSON.parse(args.song));
+    });
+
     // Show the main window
     ipcMain.on('show', event => {
         mainWindow.show();
@@ -654,8 +763,6 @@ app.on('activate', e => {
 });
 app.on('before-quit', e => {
     e.preventDefault();
-
-    console.log('Before quit...');
 
     if (quitting) {
         return;

@@ -35,6 +35,10 @@ export default async(request, keyword, artists, id) => {
             bitRate: song.br,
         };
 
+        if (!song.src) {
+            return Promise.reject(Error(404));
+        }
+
         debug(chalk.black.bgGreen('🚚  Result >>>'));
         debug(song);
         debug(chalk.black.bgGreen('🚚  <<<'));

@@ -43,27 +43,27 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.7/ieaseMusic-1.2.7-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.8/ieaseMusic-1.2.8-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.7/ieaseMusic-1.2.7-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.8/ieaseMusic-1.2.8-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.2.7-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.7/ieaseMusic-1.2.7-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.2.7-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.2.8-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.7/iease-music-1.2.7-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.8/ieaseMusic-1.2.8-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.2.7-x86_64.AppImage
-$ ./iease-music-1.2.7-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.2.8-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.8/iease-music-1.2.8-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.2.8-x86_64.AppImage
+$ ./iease-music-1.2.8-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
@@ -80,6 +80,7 @@ $ pacman -S iease-music-git
 ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/home.png?raw=true)
 ![FM](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/fm.png?raw=true)
 ![PLAYER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player.png?raw=true)
+![PLAYER2](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player-2.png?raw=true)
 ![ARTIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/artist.png?raw=true)
 ![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/comments.png?raw=true)
 ![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/lyrics.png?raw=true)
@@ -158,6 +159,7 @@ Description            | Keys
 - [x] Lyrics
 - [x] Auto update
 - [x] Alfred supports
+- [ ] Download manager
 - [ ] Wechat QR code login
 - [ ] Remove express（New API implementation, and proxy）
 - [ ] Resize window（New UI）

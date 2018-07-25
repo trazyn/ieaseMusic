@@ -10,7 +10,7 @@ export default async(request, keyword, artists) => {
 
     try {
         var response = await request({
-            uri: 'http://m.10086.cn/migu/remoting/scr_search_tag',
+            uri: 'http://m.music.migu.cn/migu/remoting/scr_search_tag',
             qs: {
                 keyword: [keyword].concat(artists.split(',')).join('+'),
                 type: 2,
