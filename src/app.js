@@ -165,7 +165,7 @@ class App extends Component {
                 },
                 {
                     label: 'Ban 💩',
-                    enabled: logined,
+                    enabled: logined && controller.playlist.id === 'PERSONAL_FM',
                     click: () => {
                         fm.ban(controller.song.id);
                     }
@@ -232,7 +232,7 @@ class App extends Component {
                     }
                 },
                 {
-                    label: 'FM',
+                    label: 'Made For You',
                     click: () => {
                         navigator.history.push('/fm');
                     }
@@ -253,18 +253,9 @@ class App extends Component {
                     }
                 },
                 {
-                    type: 'separator',
-                },
-                {
-                    label: 'Bug report 🐛',
+                    label: 'Show Cover 💅',
                     click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
-                    }
-                },
-                {
-                    label: 'Fork me on Github 🚀',
-                    click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                        navigator.history.push('/cover');
                     }
                 },
                 {
@@ -284,6 +275,18 @@ class App extends Component {
                 },
                 {
                     type: 'separator',
+                },
+                {
+                    label: 'Bug report 🐛',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                    }
+                },
+                {
+                    label: 'Fork me on Github 🚀',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                    }
                 },
                 {
                     label: '💕 Follow me on Twitter 👏',
