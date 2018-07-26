@@ -512,19 +512,19 @@ async function writeFile(url, filepath) {
 }
 
 async function download(song) {
-    var src = song.data.src;
-    var imagefile = (await tmp.file()).path;
-    var trackfile = path.join(
-        _DOWNLOAD_DIR,
-        `${song.artists.map(e => e.name).join()} - ${song.name}.${src.match(/^http.*\.(.*)$/)[1]}`
-    );
-    var notificationOptions = {
-        subtitle: song.name,
-        body: song.artists.map(e => e.name).join(),
-        closeButtonText: 'Done'
-    };
-
     try {
+        var src = song.data.src;
+        var imagefile = (await tmp.file()).path;
+        var trackfile = path.join(
+            _DOWNLOAD_DIR,
+            `${song.artists.map(e => e.name).join()} - ${song.name}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
+        );
+        var notificationOptions = {
+            subtitle: song.name,
+            body: song.artists.map(e => e.name).join(),
+            closeButtonText: 'Done'
+        };
+
         // Make sure the download directory already exists
         if (fs.existsSync(_DOWNLOAD_DIR) === false) {
             mkdirp.sync(_DOWNLOAD_DIR);
