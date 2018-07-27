@@ -8,10 +8,29 @@ import storage from 'utils/storage';
 import helper from 'utils/helper';
 import lastfm from 'utils/lastfm';
 
+const CancelToken = axios.CancelToken;
+
+// Only one canceler will be hit
+let cancelWaitQRCodeScan;
+let cancelWaitQRCodeConfirm;
+
+function getProfile(data) {
+    var ele = document.createElement('div');
+    var script = document.createElement('script');
+
+    ele.innerHTML = data;
+    // Remove the code of close window
+    script.text = ele.firstChild.innerText.replace(/try{.+/, '');
+    document.body.append(script);
+
+    return window._data.profile;
+}
+
 class Me {
     @observable initialized = false;
     @observable logining = false;
     @observable profile = {};
+    @observable scaner = {};
 
     // Store the liked song
     @observable likes = new Map();
@@ -34,6 +53,102 @@ class Me {
         // App has been initialized
         self.profile = profile;
         self.initialized = true;
+    }
+
+    @action async qrcode() {
+        cancelWaitQRCodeScan && cancelWaitQRCodeScan();
+        cancelWaitQRCodeConfirm && cancelWaitQRCodeConfirm();
+        self.scaner = {};
+
+        var response = await axios.get('/api/user/login/qrcode');
+
+        if (response.data.success === false) {
+            window.alert('Failed to login with QRCode, Please check your console(Press ⌘+⌥+I) and report it.');
+            return;
+        }
+
+        self.scaner = response.data;
+    }
+
+    async waitQRCodeConfirm(done) {
+        var response = await axios.get(
+            `${self.scaner.polling}&last=404&_${+new Date()}`,
+            {
+                cancelToken: new CancelToken(c => {
+                    cancelWaitQRCodeConfirm = c;
+                })
+            }
+        );
+
+        // eslint-disable-next-line
+        eval(response.data);
+
+        // Waiting
+        if (window.wx_errcode === 408) {
+            self.waitQRCodeConfirm();
+            return;
+        }
+
+        // Canceled by user
+        if (window.wx_errcode === 403) {
+            self.qrcode();
+            return;
+        }
+
+        // User press ok
+        if (window.wx_errcode === 405) {
+            self.logining = true;
+            let response = await axios.get(
+                `/api/user/login/qrcode/${window.wx_code}/${self.scaner.state}`,
+                {
+                    cancelToken: new CancelToken(c => {
+                        cancelWaitQRCodeConfirm = c;
+                    })
+                }
+            );
+
+            if (response.data.success === false) {
+                window.alert('Failed to login with QRCode, Please check your console(Press ⌘+⌥+I) and report it.');
+                return;
+            }
+
+            self.profile = getProfile(response.data);
+            done();
+            await home.load();
+            await storage.set('profile', self.profile);
+            self.logining = false;
+            return;
+        }
+
+        console.error(response);
+    }
+
+    async waitQRCodeScan(done) {
+        var response = await axios.get(
+            `${self.scaner.polling}&_${+new Date()}`,
+            {
+                cancelToken: new CancelToken(c => {
+                    cancelWaitQRCodeScan = c;
+                })
+            }
+        );
+
+        // eslint-disable-next-line
+        eval(response.data);
+
+        // Waiting user scan
+        if (window.wx_errcode === 408) {
+            self.waitQRCodeScan();
+            return;
+        }
+
+        // Wait user cofnirm
+        if (window.wx_errcode === 404) {
+            self.waitQRCodeConfirm(done);
+            return;
+        }
+
+        console.error(response);
     }
 
     @action async login(phone, password) {
@@ -103,7 +218,7 @@ class Me {
         var response = await axios.get('/like', {
             params: {
                 id: song.id,
-                like: truefalse
+                like: truefalse,
             }
         });
 
