@@ -1,10 +1,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog, Notification } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, Notification } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
-import { autoUpdater } from 'electron-updater';
 import axios from 'axios';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
@@ -16,6 +15,7 @@ import pkg from './package.json';
 import config from './config';
 import api from './server/api';
 import usocket from './server/usocket';
+import { installAutoUpdater, checkForUpdates } from './autoUpdater';
 
 const _PLATFORM = process.platform;
 const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
@@ -25,8 +25,6 @@ let error = _debug('dev:main:error');
 let apiServer;
 let forceQuit = false;
 let quitting = false;
-let downloading = false;
-let autoUpdaterInit = false;
 let menu;
 let tray;
 let mainWindow;
@@ -401,22 +399,6 @@ let dockMenu = [
     },
 ];
 
-function checkForUpdates() {
-    if (downloading) {
-        dialog.showMessageBox({
-            type: 'info',
-            buttons: ['OK'],
-            title: pkg.name,
-            message: `Downloading...`,
-            detail: `Please leave the app open, the new version is downloading. You'll receive a new dialog when downloading is finished.`
-        });
-
-        return;
-    }
-
-    autoUpdater.checkForUpdates();
-}
-
 function updateMenu(playing) {
     if (!isOsx) {
         return;
@@ -749,13 +731,13 @@ const createMainWindow = () => {
     updateMenu();
     registerGlobalShortcut();
     usocket(shared, mainWindow);
+    installAutoUpdater(() => goodbye());
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
 };
 
 app.setName('ieaseMusic');
 
-app.on('ready', createMainWindow);
 app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
@@ -778,80 +760,24 @@ app.on('before-quit', e => {
     app.exit(0);
     process.exit(0);
 });
+app.on('ready', () => {
+    createMainWindow();
 
-storage.get('preferences', (err, data) => {
-    var port = config.api.port;
+    storage.get('preferences', (err, data) => {
+        var port = config.api.port;
 
-    if (!err) {
-        port = data.port || port;
+        if (!err) {
+            port = data.port || port;
 
-        if (data.autoupdate) {
-            autoUpdater.checkForUpdates();
-        } else {
-            autoUpdaterInit = true;
+            checkForUpdates(data.autoupdate);
         }
-    }
 
-    axios.defaults.baseURL = `http://localhost:${port}`;
+        axios.defaults.baseURL = `http://localhost:${port}`;
 
-    apiServer = api.listen(port, (err) => {
-        if (err) throw err;
+        apiServer = api.listen(port, (err) => {
+            if (err) throw err;
 
-        debug(`API server is running with port ${port} 👊`);
-    });
-});
-
-autoUpdater.on('update-not-available', e => {
-    if (!autoUpdaterInit) {
-        autoUpdaterInit = true;
-        return;
-    }
-
-    dialog.showMessageBox({
-        type: 'info',
-        buttons: ['OK'],
-        title: pkg.name,
-        message: `${pkg.name} is up to date :)`,
-        detail: `${pkg.name} ${pkg.version} is currently the newest version available, It looks like you're already rocking the latest version!`
-    });
-});
-
-autoUpdater.on('update-available', e => {
-    downloading = true;
-    checkForUpdates();
-});
-
-autoUpdater.on('error', err => {
-    dialog.showMessageBox({
-        type: 'error',
-        buttons: ['Cancel update'],
-        title: pkg.name,
-        message: `Failed to update ${pkg.name} :(`,
-        detail: `An error occurred in retrieving update information, Please try again later.`,
-    });
-
-    downloading = false;
-    error(err);
-});
-
-autoUpdater.on('update-downloaded', info => {
-    var { releaseNotes, releaseName } = info;
-    var index = dialog.showMessageBox({
-        type: 'info',
-        buttons: ['Restart', 'Later'],
-        title: pkg.name,
-        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
-        detail: `${releaseName}\n\n${releaseNotes}`
-    });
-    downloading = false;
-
-    if (index === 1) {
-        return;
-    }
-
-    autoUpdater.quitAndInstall();
-    setTimeout(() => {
-        mainWindow = null;
-        app.quit();
+            debug(`API server is running with port ${port} 👊`);
+        });
     });
 });
