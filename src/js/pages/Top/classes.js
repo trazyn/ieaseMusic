@@ -1,14 +1,12 @@
 
 export default theme => ({
-    container: {
-        marginTop: 40,
-    },
+    container: {},
 
     item: {
         position: 'relative',
         display: 'flex',
-        height: 'calc((100vh - 90px) / 2)',
-        width: 'calc((100vh - 90px) / 2)',
+        height: 'calc((100vh - 50px) / 2)',
+        width: 'calc((100vh - 50px) / 2)',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
