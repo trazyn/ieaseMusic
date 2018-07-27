@@ -33,7 +33,8 @@
 - Modern UI design
 - High quality music(FLAC)
 - Track your listen to Last.fm
-- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, Kuwo music, MiGu music, Biadu music all in one)
+- Share music to Facebook, Twitter, Google+, WeChat
 - Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
 
   ![Alfred](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/menu.png?raw=true)
@@ -179,6 +180,7 @@ Description            | Keys
 还是 MIT 吧，懒得改了
 
 ## Donate
+![DONATE](https://github.com/trazyn/ieaseMusic/blob/dev/resource/donate.png?raw=true)
 - BTC wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
 - ETC wallet address: `0xb5cfdcb28ff387c52c3259114414c993006a2b4f`
 - USDT wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
