@@ -179,8 +179,4 @@ Description            | Keys
 ## License
 还是 MIT 吧，懒得改了
 
-## Donate
 ![DONATE](https://github.com/trazyn/ieaseMusic/blob/dev/resource/donate.png?raw=true)
-- BTC wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
-- ETC wallet address: `0xb5cfdcb28ff387c52c3259114414c993006a2b4f`
-- USDT wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
