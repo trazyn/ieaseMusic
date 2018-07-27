@@ -4,7 +4,6 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import Layout from './pages/Layout';
 import Welcome from './pages/Welcome';
-import Login from './pages/Login';
 import Player from './pages/Player';
 import User from './pages/User';
 import Artist from './pages/Artist';
@@ -15,6 +14,7 @@ import Singleton from './pages/Singleton';
 import Comments from './pages/Comments';
 import Lyrics from './pages/Lyrics';
 import Search from './pages/Search';
+import { Legacy as LoginByLegacy, QRCode as LoginByQrCode } from './pages/Login';
 import stores from 'stores';
 
 function requireAuth(component, props) {
@@ -40,7 +40,8 @@ export default () => {
         <Main>
             <Switch>
                 <Route exact path="/" component={Welcome} />
-                <Route exact path="/login/:fm" component={Login} />
+                <Route exact path="/login/:fm" component={LoginByLegacy} />
+                <Route exact path="/login/qrcode/:fm" component={LoginByQrCode} />
                 <Route exact path="/player/:type/:id" component={Player} />
                 <Route exact path="/user/:id" component={User} />
                 <Route exact path="/artist/:id" component={Artist} />

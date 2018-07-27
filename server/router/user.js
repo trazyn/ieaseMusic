@@ -1,6 +1,8 @@
 
 import express from 'express';
 import axios from 'axios';
+import rp from 'request-promise-native';
+import url from 'url';
 import _debug from 'debug';
 
 const debug = _debug('dev:api');
@@ -124,6 +126,81 @@ router.get('/follow/:id', async(req, res) => {
     res.send({
         success,
     });
+});
+
+router.get('/login/qrcode', async(req, res) => {
+    debug('Handle request for /user/login/qrcode');
+
+    try {
+        rp.get({
+            uri: 'https://music.163.com/api/sns/authorize?snsType=10&clientType=web2&callbackType=Login&forcelogin=true',
+            resolveWithFullResponse: true,
+        })
+            .then(response => {
+                let matched = response.body.match(/(\/connect\/qrcode\/[\w-_]+)/);
+                let q = url.parse(response.request.href, true);
+
+                if (!matched) {
+                    throw Error('Failed to get QRCode.');
+                } else {
+                    let uuid = matched[1].split('/')[3];
+                    res.send({
+                        qrcode: `${q.protocol}//${q.hostname}${matched[1]}`,
+                        polling: `${q.protocol}//long.${q.hostname}/connect/l/qrconnect?uuid=${uuid}`,
+                        state: q.query.state,
+                    });
+                }
+            });
+    } catch (ex) {
+        error('Failed to get QRCode: %O', ex);
+        res.send({
+            success: false,
+        });
+    }
+});
+
+router.get('/login/qrcode/:code/:state', async(req, res) => {
+    debug('Handle request for /user/login/qrcode/dologin');
+
+    var code = req.params.code;
+    var state = req.params.state;
+
+    debug('Params \'code\': %s', code);
+    debug('Params \'state\': %s', state);
+
+    try {
+        rp.get({
+            uri: 'https://music.163.com/back/weichat',
+            qs: {
+                code,
+                state
+            },
+            jar: true,
+            json: true,
+            resolveWithFullResponse: true,
+        })
+            .then(response => {
+                var cookies = response.request.headers.cookie;
+
+                if (cookies) {
+                    cookies.split(';').map(
+                        e => {
+                            var kv = e.trim().split('=');
+
+                            res.cookie(kv[0], kv[1]);
+                        }
+                    );
+                    res.send(response.body);
+                }
+
+                throw Error('No Cookie.');
+            });
+    } catch (ex) {
+        error('Failed to login via QRCode: %O', ex);
+        res.send({
+            success: false,
+        });
+    }
 });
 
 module.exports = router;

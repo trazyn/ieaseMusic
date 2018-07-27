@@ -67,7 +67,7 @@ export default theme => ({
             lineHeight: '40px',
             border: 'none',
             borderRadius: 1,
-            backgroundImage: colors.randomGradient(),
+            background: colors.pallet.google,
             fontWeight: '300',
             color: '#fff',
             outline: 0,
@@ -117,6 +117,13 @@ export default theme => ({
             width: '100vw',
             background: 'rgba(255, 255, 255, .9)',
         },
+
+        '& footer': {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+        }
     },
 
     back: {
@@ -156,4 +163,13 @@ export default theme => ({
     logining: {
         opacity: .5,
     },
+
+    wechat: {
+        display: 'block',
+        paddingBottom: 4,
+        marginTop: 20,
+        color: 'black',
+        zIndex: 1,
+        borderBottom: '2px solid #ddd',
+    }
 });

@@ -168,8 +168,8 @@ Description            | Keys
 - [x] Auto update
 - [x] Alfred supports
 - [ ] Download manager
-- [ ] Wechat QR code login
-- [ ] Remove express（New API implementation, and proxy）
+- [x] Wechat QR code login
+- [ ] Remove express
 - [ ] Resize window（New UI）
 
 ## 参考列表
