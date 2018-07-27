@@ -17,6 +17,7 @@ import PlayerNavigation from 'components/Ripple/PlayerNavigation';
 import PlayerMode from 'components/Ripple/PlayerMode';
 import PlayerStatus from 'components/Ripple/PlayerStatus';
 import UpNext from 'components/UpNext';
+import Share from 'components/Share';
 
 const classes = {
     container: {
@@ -144,6 +145,7 @@ class Layout extends Component {
 
                 <AudioPlayer />
                 <UpNext />
+                <Share />
                 <Preferences />
                 <Menu />
                 <VolumeUpDown />

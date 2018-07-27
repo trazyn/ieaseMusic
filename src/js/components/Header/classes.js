@@ -14,7 +14,7 @@ export default theme => ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: 40,
+            height: 38,
             padding: '0 16px',
             width: 'calc(100vw - 32px)',
             zIndex: 1,
@@ -51,7 +51,6 @@ export default theme => ({
         border: 'thin solid #ddd',
         marginLeft: 58,
         background: '#eee',
-        transform: 'translateY(-1px)',
         boxSizing: 'border-box',
     },
 

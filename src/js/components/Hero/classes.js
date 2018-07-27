@@ -100,6 +100,27 @@ export default theme => ({
         },
     },
 
+    share: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        height: 38,
+        width: 38,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+        fontSize: 16,
+        backgroundColor: 'transparent',
+        transition: '.2s',
+        zIndex: 99,
+
+        '&:hover': {
+            backgroundColor: 'black',
+            color: colors.pallet.dribbble,
+        }
+    },
+
     author: {
         marginTop: 2,
         fontSize: 11,
