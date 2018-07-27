@@ -18,6 +18,9 @@
 
             document.body.appendChild(script);
         }
+
+        document.addEventListener('dragover', e => e.preventDefault(), false);
+        document.addEventListener('drop', e => e.preventDefault(), false);
     </script>
 </body>
 </html>
