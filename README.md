@@ -110,6 +110,12 @@ $ npm run dev
 163.171.98.219  p4.music.126.net
 202.122.146.83  m10.music.126.net
 ```
+>上面是日本反代节点[fengjueming/unblock-NetEaseMusic](https://github.com/fengjueming/unblock-NetEaseMusic)
+>
+>新加坡节点（本屌太穷有需要还是尽量用上面的节点吧）
+>```
+>52.221.201.48 music.163.com
+>```
 
 关于优化`IP`地址，p开头的是图片CDN服务器，m开头的是音乐资源CDN服务器。可以通过
 ```
