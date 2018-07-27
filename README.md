@@ -86,6 +86,7 @@ $ pacman -S iease-music-git
 ![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/comments.png?raw=true)
 ![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/lyrics.png?raw=true)
 ![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cover.png?raw=true)
+![TOP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/top.png?raw=true)
 ![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cmd+p.png?raw=true)
 ![MENU](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/menu.png?raw=true)
 ![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/upnext.png?raw=true)
