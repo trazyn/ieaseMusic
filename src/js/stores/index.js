@@ -15,7 +15,7 @@ import comments from './comments';
 import lyrics from './lyrics';
 import preferences from './preferences';
 import upnext from './upnext';
-import share from './Share';
+import share from './share';
 
 const stores = {
     me,
