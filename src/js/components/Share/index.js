@@ -4,10 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { Modal, ModalBody } from 'ui/Modal';
 import { shell } from 'electron';
 import injectSheet, { ThemeProvider } from 'react-jss';
-import theme from 'app/theme';
 import qrcode from 'qrcode-js';
 
 import classes from './classes';
+import theme from 'config/theme';
 
 @inject('share', 'controller')
 @observer

@@ -4,9 +4,9 @@ import { ipcRenderer } from 'electron';
 import axios from 'axios';
 
 import controller from './controller';
-import theme from '../../theme.js';
-import config from '../../../config/index';
-import storage from 'utils/storage';
+import config from 'config/index';
+import theme from 'config/theme.js';
+import storage from 'common/storage';
 import lastfm from 'utils/lastfm';
 
 class Preferences {

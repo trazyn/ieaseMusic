@@ -12,11 +12,18 @@ export default {
     mode: 'development',
     devtool: 'cheap-module-eval-source-map',
 
-    entry: [
-        `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,
-        'babel-polyfill',
-        `${config.client}/index.js`,
-    ],
+    entry: {
+        main: [
+            `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr`,
+            'babel-polyfill',
+            `${config.client}/index.js`,
+        ],
+
+        downloader: [
+            'babel-polyfill',
+            `${config.submodules}/downloader/viewport/index.js`,
+        ]
+    },
 
     output: {
         ...baseConfig.output,
