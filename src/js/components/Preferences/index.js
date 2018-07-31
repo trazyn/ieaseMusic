@@ -4,10 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { Modal, ModalBody, ModalHeader } from 'ui/Modal';
 import injectSheet, { ThemeProvider } from 'react-jss';
 import clazz from 'classname';
-import theme from 'app/theme';
 
 import classes from './classes';
 import Switch from 'ui/Switch';
+import theme from 'config/theme';
 
 @inject('preferences')
 @observer

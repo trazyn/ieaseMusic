@@ -2,10 +2,10 @@
 import { dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import _debug from 'debug';
-import pkg from './package.json';
+import pkg from '../package.json';
 
-let debug = _debug('dev:autoUpdater');
-let error = _debug('dev:autoUpdater:error');
+let debug = _debug('dev:submodules:updater');
+let error = _debug('dev:submodules:updater:error');
 
 let downloading = false;
 let alreadyAutoupdate = false;
@@ -92,7 +92,7 @@ function installAutoUpdater(done) {
     });
 }
 
-export {
+export default {
     installAutoUpdater,
     checkForUpdates,
 };
