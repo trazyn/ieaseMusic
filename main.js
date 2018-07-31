@@ -15,7 +15,8 @@ import pkg from './package.json';
 import config from './config';
 import api from './server/api';
 import usocket from './server/usocket';
-import { installAutoUpdater, checkForUpdates } from './autoUpdater';
+import { installAutoUpdater, checkForUpdates } from './updater';
+import { createDownloader } from './downloader';
 
 const _PLATFORM = process.platform;
 const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
@@ -732,6 +733,7 @@ const createMainWindow = () => {
     registerGlobalShortcut();
     usocket(shared, mainWindow);
     installAutoUpdater(() => goodbye());
+    createDownloader();
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
 };
