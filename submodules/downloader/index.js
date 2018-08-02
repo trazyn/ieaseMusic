@@ -113,7 +113,7 @@ async function download(task) {
         var imagefile = (await tmp.file()).path;
         var trackfile = path.join(
             _DOWNLOAD_DIR,
-            `${song.artists.map(e => e.name).join()} - ${song.name}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
+            `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
         var notificationOptions = {
             subtitle: song.name,
