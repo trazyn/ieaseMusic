@@ -13,6 +13,7 @@ import _debug from 'debug';
 import pkg from '../../package.json';
 import storage from '../../common/storage';
 
+const KEY = 'downloaded';
 const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
 
 let debug = _debug('dev:submodules:downloader');
@@ -21,7 +22,7 @@ let downloader;
 
 async function syncDownloaded() {
     try {
-        var downloaded = await storage.get('tasks');
+        var downloaded = await storage.get(KEY);
 
         debug(downloaded);
 
@@ -49,10 +50,10 @@ async function syncDownloaded() {
             }
         );
 
-        storage.set('tasks', downloaded);
+        storage.set(KEY, downloaded);
     } catch (ex) {
         error(ex);
-        storage.remove('tasks');
+        storage.remove(KEY);
     }
 }
 
@@ -205,18 +206,31 @@ function createDownloader() {
 
     downloader.loadURL(`file://${__dirname}/viewport/index.html`);
 
-    downloader.once('ready-to-show', () => {
-        downloader.show();
-    });
+    downloader.once('ready-to-show', downloader.show);
 
     // Download track
-    ipcMain.on('download', (event, args) => {
-        var song = JSON.parse(args.song);
+    ipcMain.on('download',
+        (event, args) => {
+            var song = JSON.parse(args.song);
 
-        addTask(song);
-    });
+            addTask(song);
+        }
+    );
+
+    // Remove track
+    ipcMain.on('download-remove',
+        (event, args) => {
+            removeTask(JSON.parse(args.task));
+        })
+    ;
 
     syncDownloaded();
+}
+
+function removeTask(task) {
+    try {
+        fs.unlinkSync(task.path);
+    } catch (ex) {}
 }
 
 function failTask(task, err) {

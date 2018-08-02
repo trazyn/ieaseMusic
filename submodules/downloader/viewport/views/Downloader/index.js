@@ -9,6 +9,17 @@ import classes from './classes';
 import ProgressImage from 'ui/ProgressImage';
 import colors from 'utils/colors';
 
+function humanSize(size) {
+    var value = (size / 1024).toFixed(1);
+
+    if (size > (1024 << 10)) {
+        value = (value / 1024).toFixed(1);
+        return `${value} M`;
+    } else {
+        return `${value} KB`;
+    }
+};
+
 @inject('stores')
 @observer
 class Downloader extends Component {
@@ -67,6 +78,63 @@ class Downloader extends Component {
         load();
     }
 
+    renderDetail(item) {
+        var { classes, stores: { removeTask } } = this.props;
+        var song = item.payload;
+        var name = song.name;
+        var artists = song.artists.map((e, index) => e.name).join();
+
+        if (item.progress === 1) {
+            return (
+                <aside>
+                    <p className={classes.title}>
+                        {name}
+                    </p>
+
+                    <small>
+                        {artists}
+                    </small>
+
+                    <div className={classes.hovers}>
+                        {
+                            humanSize(item.size)
+                        }
+
+                        <a
+                            href=""
+                            onClick={
+                                e => {
+                                    e.preventDefault();
+                                    removeTask(item);
+                                    ipcRenderer.send('download-remove', { task: JSON.stringify(item) });
+                                }
+                            }
+                        >
+                            <i className="ion-trash-b" />
+                        </a>
+                    </div>
+                </aside>
+            );
+        }
+
+        return (
+            <aside>
+                <span className={classes.title}>
+                    {name} - {artists}
+                </span>
+
+                <div className={classes.progress}>
+                    <div
+                        className={classes.passed}
+                        style={{
+                            width: `${item.progress * 100}%`,
+                        }}
+                    />
+                </div>
+            </aside>
+        );
+    }
+
     render() {
         var { classes, stores: { tasks } } = this.props;
 
@@ -90,7 +158,6 @@ class Downloader extends Component {
                         tasks.map(
                             (e, index) => {
                                 var song = e.payload;
-                                var title = `${song.name} - ${song.artists.map((e, index) => e.name).join()}`;
 
                                 return (
                                     <div
@@ -108,20 +175,9 @@ class Downloader extends Component {
                                             }}
                                         />
 
-                                        <aside>
-                                            <span className={classes.title}>
-                                                {title}
-                                            </span>
-
-                                            <div className={classes.progress}>
-                                                <div
-                                                    className={classes.passed}
-                                                    style={{
-                                                        width: `${e.progress * 100}%`,
-                                                    }}
-                                                />
-                                            </div>
-                                        </aside>
+                                        {
+                                            this.renderDetail(e)
+                                        }
                                     </div>
                                 );
                             }

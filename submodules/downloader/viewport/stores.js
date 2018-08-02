@@ -2,6 +2,8 @@
 import { observable, action, autorun } from 'mobx';
 import storage from 'common/storage';
 
+const KEY = 'downloaded';
+
 class Stores {
     @observable tasks = [];
     @observable mapping = {};
@@ -20,17 +22,17 @@ class Stores {
 
                 this.tasks = tasks;
             },
-            { delay: 1000 }
+            { delay: 500 }
         );
     }
 
     @action.bound
     load = async() => {
         try {
-            var mapping = await storage.get('tasks');
+            var mapping = await storage.get(KEY);
             this.mapping = mapping;
         } catch (ex) {
-            storage.remove('tasks');
+            storage.remove(KEY);
             this.mapping = {};
         }
     }
@@ -56,12 +58,13 @@ class Stores {
 
         // Immediate modify the object without delay, then save to storage
         mapping[task.id] = task;
-        storage.set('tasks', mapping);
+        storage.set(KEY, mapping);
     }
 
     @action.bound
     removeTask = (item) => {
         delete this.mapping[item.id];
+        storage.set(KEY, this.mapping);
     }
 };
 
