@@ -102,6 +102,7 @@ export default theme => ({
 
     selected: {
         color: 'white',
+        backgroundColor: colors.pallet.google,
     },
 
     item: {

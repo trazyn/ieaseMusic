@@ -20,6 +20,7 @@ class Stores {
                     }
                 );
 
+                tasks.sort((a, b) => a.date < b.date);
                 this.tasks = tasks;
             },
             { delay: 500 }

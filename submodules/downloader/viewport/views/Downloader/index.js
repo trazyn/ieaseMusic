@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
 import delegate from 'delegate';
+import moment from 'moment';
 import { ipcRenderer } from 'electron';
 
 import classes from './classes';
 import ProgressImage from 'ui/ProgressImage';
-import colors from 'utils/colors';
 
 function humanSize(size) {
     var value = (size / 1024).toFixed(1);
@@ -37,12 +37,10 @@ class Downloader extends Component {
                 var key = e.dataset.index;
 
                 if (key !== selected) {
-                    e.style.background = '';
                     e.classList.remove(classes.selected);
                     return;
                 }
 
-                e.style.background = colors.randomGradient();
                 e.classList.add(classes.selected);
             }
         );
@@ -91,8 +89,14 @@ class Downloader extends Component {
                         {name}
                     </p>
 
-                    <small>
+                    <small style={{ marginTop: -6 }}>
                         {artists}
+                    </small>
+
+                    <small>
+                        {
+                            moment(item.date).fromNow()
+                        }
                     </small>
 
                     <div className={classes.hovers}>
