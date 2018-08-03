@@ -4,10 +4,12 @@ import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
 import delegate from 'delegate';
 import moment from 'moment';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 
 import classes from './classes';
+import Confirm from 'ui/Confirm';
 import ProgressImage from 'ui/ProgressImage';
+import storage from 'common/storage';
 
 function humanSize(size) {
     var value = (size / 1024).toFixed(1);
@@ -57,27 +59,52 @@ class Downloader extends Component {
             }
         );
 
-        ipcRenderer.on('download-begin', (e, args) => {
-            updateTask(args.task);
-        });
+        ipcRenderer.on('download-begin',
+            (e, args) => {
+                updateTask(args.task);
+            }
+        );
 
-        ipcRenderer.on('download-progress', (e, args) => {
-            updateTask(args.task);
-        });
+        ipcRenderer.on('download-progress',
+            (e, args) => {
+                updateTask(args.task);
+            }
+        );
 
-        ipcRenderer.on('download-success', (e, args) => {
-            doneTask(args.task);
-        });
+        ipcRenderer.on('download-success',
+            (e, args) => {
+                doneTask(args.task);
+            }
+        );
 
-        ipcRenderer.on('download-failure', (e, args) => {
-            failTask(args.task, args.err);
-        });
+        ipcRenderer.on('download-failure',
+            (e, args) => {
+                failTask(args.task, args.err);
+            }
+        );
 
         load();
     }
 
+    async openDownloads(e) {
+        e.preventDefault();
+
+        var preferences = await storage.get('preferences');
+        shell.openItem(preferences.downloads);
+    }
+
+    async clearAll() {
+        var { removeTasks, tasks } = this.props.stores;
+        var confirmed = await this.showConfirm();
+
+        if (confirmed) {
+            removeTasks(tasks);
+            ipcRenderer.send('download-remove', { tasks: JSON.stringify(tasks) });
+        }
+    }
+
     renderDetail(item) {
-        var { classes, stores: { removeTask } } = this.props;
+        var { classes, stores: { removeTasks } } = this.props;
         var song = item.payload;
         var name = song.name;
         var artists = song.artists.map((e, index) => e.name).join();
@@ -109,8 +136,8 @@ class Downloader extends Component {
                             onClick={
                                 e => {
                                     e.preventDefault();
-                                    removeTask(item);
-                                    ipcRenderer.send('download-remove', { task: JSON.stringify(item) });
+                                    removeTasks(item);
+                                    ipcRenderer.send('download-remove', { tasks: JSON.stringify(item) });
                                 }
                             }
                         >
@@ -159,74 +186,72 @@ class Downloader extends Component {
 
         return (
             <div className={classes.container}>
-                <nav
-                    ref={ele => {
-                        if (!ele) return;
+                <main>
+                    <nav
+                        ref={ele => {
+                            if (!ele) return;
 
-                        this.navs = ele;
-                        this.highlight();
-                    }}
-                >
-                    <a data-index="all">All</a>
-                    <a data-index="inProgress">In Progress</a>
-                    <a data-index="done">Done</a>
-                </nav>
+                            this.navs = ele;
+                            this.highlight();
+                        }}
+                    >
+                        <a data-index="all">All</a>
+                        <a data-index="inProgress">In Progress</a>
+                        <a data-index="done">Done</a>
+                    </nav>
 
-                <section>
-                    {
-                        tasks.map(
-                            (e, index) => {
-                                var song = e.payload;
+                    <section>
+                        {
+                            tasks.map(
+                                (e, index) => {
+                                    var song = e.payload;
 
-                                return (
-                                    <div
-                                        key={index}
-                                        className={classes.item}
-                                        style={{
-                                            marginBottom: index === tasks.length - 1 ? 24 : 0
-                                        }}
-                                    >
-                                        <ProgressImage
-                                            {...{
-                                                width: 64,
-                                                src: song.album.cover.replace(/\?.*/, ''),
-                                                className: classes.cover,
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={classes.item}
+                                            style={{
+                                                marginBottom: index === tasks.length - 1 ? 24 : 0
                                             }}
-                                        />
+                                        >
+                                            <ProgressImage
+                                                {...{
+                                                    width: 64,
+                                                    src: song.album.cover.replace(/\?.*/, ''),
+                                                    className: classes.cover,
+                                                }}
+                                            />
 
-                                        {
-                                            this.renderDetail(e)
-                                        }
-                                    </div>
-                                );
-                            }
-                        )
-                    }
-                </section>
-
-                <footer>
-                    <button
-                        onClick={
-                            e => {
-                                // TODO:
-                            }
+                                            {
+                                                this.renderDetail(e)
+                                            }
+                                        </div>
+                                    );
+                                }
+                            )
                         }
-                    >
-                        <i className="ion-android-open" />
-                        Open Folder
-                    </button>
+                    </section>
 
-                    <button
-                        onClick={
-                            e => {
-                                // TODO:
-                            }
-                        }
-                    >
-                        <i className="ion-ios-close" />
-                        Clear All
-                    </button>
-                </footer>
+                    <footer>
+                        <button
+                            onClick={e => this.openDownloads(e)}
+                        >
+                            <i className="ion-android-open" />
+                            Open Folder
+                        </button>
+
+                        <button
+                            onClick={e => this.clearAll()}
+                        >
+                            <i className="ion-ios-close" />
+                            Clear All
+                        </button>
+                    </footer>
+                </main>
+
+                <Confirm
+                    showConfirm={hook => (this.showConfirm = hook)}
+                />
             </div>
         );
     }

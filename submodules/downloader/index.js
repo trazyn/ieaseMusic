@@ -221,16 +221,25 @@ function createDownloader() {
     // Remove track
     ipcMain.on('download-remove',
         (event, args) => {
-            removeTask(JSON.parse(args.task));
-        })
-    ;
+            removeTasks(JSON.parse(args.tasks));
+        }
+    );
 
     syncDownloaded();
 }
 
-function removeTask(task) {
+function removeTasks(tasks) {
+    tasks = Array.isArray(tasks) ? tasks : [tasks];
+
+    debug(tasks);
+
     try {
-        fs.unlinkSync(task.path);
+        tasks.forEach(
+            e => {
+                debug('Remove file: %s:%s', e.id, e.path);
+                fs.unlinkSync(e.path);
+            }
+        );
     } catch (ex) {}
 }
 

@@ -63,8 +63,14 @@ class Stores {
     }
 
     @action.bound
-    removeTask = (item) => {
-        delete this.mapping[item.id];
+    removeTasks = (items) => {
+        items = Array.isArray(items) ? items : [items];
+
+        items.forEach(
+            e => {
+                delete this.mapping[e.id];
+            }
+        );
         storage.set(KEY, this.mapping);
     }
 };
