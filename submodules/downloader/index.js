@@ -19,6 +19,7 @@ const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
 let debug = _debug('dev:submodules:downloader');
 let error = _debug('dev:submodules:downloader:error');
 let downloader;
+let cancels = {};
 
 async function syncDownloaded() {
     try {
@@ -57,7 +58,7 @@ async function syncDownloaded() {
     }
 }
 
-async function writeFile(url, filepath, cb) {
+async function writeFile(url, filepath, cb, canceler) {
     debug('Write file: %s', filepath);
 
     var callback = state => {
@@ -73,17 +74,18 @@ async function writeFile(url, filepath, cb) {
 
     return new Promise((resolve, reject) => {
         try {
-            rp(
-                request({
-                    url,
-                    headers: {
-                        'Origin': 'http://music.163.com',
-                        'Referer': 'http://music.163.com/',
-                    }
-                })
-            )
+            var r = request({
+                url,
+                headers: {
+                    'Origin': 'http://music.163.com',
+                    'Referer': 'http://music.163.com/',
+                }
+            });
+
+            rp(r)
                 .on('error',
                     err => {
+                        delete cancels[canceler];
                         throw err;
                     }
                 )
@@ -96,10 +98,19 @@ async function writeFile(url, filepath, cb) {
                 .on('end',
                     // WTF? Why no state given??
                     // eslint-disable-next-line
-                    () => (callback(), resolve())
+                    () => {
+                        callback();
+                        resolve();
+
+                        delete cancels[canceler];
+                    }
                 )
                 .pipe(fs.createWriteStream(filepath))
             ;
+
+            if (canceler) {
+                cancels[canceler] = () => r.abort();
+            }
         } catch (ex) {
             reject(ex);
         }
@@ -124,6 +135,9 @@ async function download(task) {
 
         task.path = trackfile;
 
+        // Tell the render downlaod has started
+        updateTask(task);
+
         await writeFile(
             src,
             trackfile,
@@ -144,7 +158,8 @@ async function download(task) {
                 } else {
                     updateTask(task);
                 }
-            }
+            },
+            song.id
         );
         await writeFile(song.album.cover.replace(/\?.*/, ''), imagefile);
 
@@ -211,14 +226,21 @@ function createDownloader() {
 function removeTasks(tasks) {
     tasks = Array.isArray(tasks) ? tasks : [tasks];
 
-    try {
-        tasks.forEach(
-            e => {
-                debug('Remove file: %s:%s', e.id, e.path);
-                fs.unlinkSync(e.path);
+    tasks.forEach(
+        e => {
+            debug('Remove file: %s:%s', e.id, e.path);
+            var canceler = cancels[e.id];
+
+            // Kill the ongoing task
+            if (canceler instanceof Function) {
+                canceler();
             }
-        );
-    } catch (ex) {}
+
+            try {
+                fs.unlinkSync(e.path);
+            } catch (ex) {}
+        }
+    );
 }
 
 function failTask(task, err) {
