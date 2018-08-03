@@ -14,6 +14,7 @@ import Singleton from './pages/Singleton';
 import Comments from './pages/Comments';
 import Lyrics from './pages/Lyrics';
 import Search from './pages/Search';
+import Downloader from './pages/Downloader';
 import { Legacy as LoginByLegacy, QRCode as LoginByQrCode } from './pages/Login';
 import stores from 'stores';
 
@@ -51,6 +52,7 @@ export default () => {
                 <Route exact path="/comments" component={Comments} />
                 <Route exact path="/lyrics" component={Lyrics} />
                 <Route exact path="/search" component={Search} />
+                <Route exact path="/downloader" component={Downloader} />
 
                 <Route
                     exact
