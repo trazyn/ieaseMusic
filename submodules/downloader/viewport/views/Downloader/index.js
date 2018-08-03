@@ -227,33 +227,39 @@ class Downloader extends Component {
 
                     <section>
                         {
-                            tasks.map(
-                                (e, index) => {
-                                    var song = e.payload;
+                            tasks.length === 0
+                                ? (
+                                    <div className={classes.nothing}>
+                                        <span>Nothing ...</span>
+                                    </div>
+                                )
+                                : tasks.map(
+                                    (e, index) => {
+                                        var song = e.payload;
 
-                                    return (
-                                        <div
-                                            key={index}
-                                            className={classes.item}
-                                            style={{
-                                                marginBottom: index === tasks.length - 1 ? 24 : 0
-                                            }}
-                                        >
-                                            <ProgressImage
-                                                {...{
-                                                    width: 64,
-                                                    src: song.album.cover.replace(/\?.*/, ''),
-                                                    className: classes.cover,
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={classes.item}
+                                                style={{
+                                                    marginBottom: index === tasks.length - 1 ? 24 : 0
                                                 }}
-                                            />
+                                            >
+                                                <ProgressImage
+                                                    {...{
+                                                        width: 64,
+                                                        src: song.album.cover.replace(/\?.*/, ''),
+                                                        className: classes.cover,
+                                                    }}
+                                                />
 
-                                            {
-                                                this.renderDetail(e)
-                                            }
-                                        </div>
-                                    );
-                                }
-                            )
+                                                {
+                                                    this.renderDetail(e)
+                                                }
+                                            </div>
+                                        );
+                                    }
+                                )
                         }
                     </section>
 

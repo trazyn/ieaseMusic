@@ -176,4 +176,16 @@ export default theme => ({
             transform: 'translateX(0)',
         }
     },
+
+    nothing: {
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 32,
+        letterSpacing: 1,
+        wordSpacing: 3,
+        color: '#333',
+    },
 });
