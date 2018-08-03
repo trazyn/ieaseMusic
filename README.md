@@ -35,8 +35,8 @@
 - Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, Kuwo music, MiGu music, Biadu music all in one)
 - Share music to Facebook, Twitter, Google+, WeChat
+- WeChat scan to log in
 - Download music 🍭
-
   ![Downloader](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/downloader.png?raw=true)
 - Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
 
