@@ -37,7 +37,8 @@
 - Share music to Facebook, Twitter, Google+, WeChat
 - WeChat scan to log in
 - Download music 🍭
-  ![Downloader](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/screenshots/downloader.png)
+
+  ![Downloader](https://raw.githubusercontent.com/trazyn/ieaseMusic/dev/screenshots/downloader.png)
 - Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
 
   ![Alfred](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/menu.png?raw=true)
