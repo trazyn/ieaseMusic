@@ -46,6 +46,11 @@ class Preferences extends Component {
         return connected && `${username}:${password}` === connected;
     }
 
+    choiceDownloadDir(e) {
+        e.preventDefault();
+        this.downloads.click();
+    }
+
     renderOptions() {
         var { classes, preferences } = this.props;
         var {
@@ -74,6 +79,8 @@ class Preferences extends Component {
             enginers,
             proxy,
             setProxy,
+            downloads,
+            setDownloads,
         } = preferences;
 
         return (
@@ -198,6 +205,21 @@ class Preferences extends Component {
                                 onBlur={ev => setProxy(ev.target.value)}
                                 placeholder="http://your.proxy.com:port"
                             />
+                        </label>
+
+                        <label className={classes.downloads}>
+                            <aside>
+                                <input
+                                    webkitdirectory="true"
+                                    onChange={e => setDownloads(e.target.files[0])}
+                                    ref={ele => (this.downloads = ele)}
+                                    type="file"
+                                />
+                                <h4>Downloads</h4>
+                                <p onClick={e => this.choiceDownloadDir(e)}>{downloads}</p>
+                            </aside>
+
+                            <button onClick={e => this.choiceDownloadDir(e)}>Change</button>
                         </label>
                     </article>
 

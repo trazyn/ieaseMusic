@@ -217,6 +217,13 @@ let mainMenu = [
                 }
             },
             {
+                label: 'Downloads',
+                accelerator: 'Cmd+Shift+D',
+                click() {
+                    downloader.showDownloader();
+                }
+            },
+            {
                 type: 'separator',
             },
             {
@@ -475,6 +482,7 @@ const createMainWindow = () => {
         mainWindow.setMenu(null);
     }
 
+    mainWindowState.manage(mainWindow);
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 
     mainWindow.webContents.on('did-finish-load', () => {

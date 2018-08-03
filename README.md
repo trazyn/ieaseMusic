@@ -35,6 +35,9 @@
 - Track your listen to Last.fm
 - Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, Kuwo music, MiGu music, Biadu music all in one)
 - Share music to Facebook, Twitter, Google+, WeChat
+- WeChat scan to log in
+- Download music 🍭
+  ![Downloader](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/screenshots/downloader.png)
 - Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
 
   ![Alfred](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/menu.png?raw=true)
@@ -139,6 +142,7 @@ Description            | Keys
 喜欢歌曲               | <kbd>Cmd</kbd> <kbd>L</kbd>
 播放历史记录           | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
 搜索                   | <kbd>Cmd</kbd> <kbd>F</kbd>
+显示下载歌曲               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>D</kbd>
 跳转首页               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>H</kbd>
 查看榜单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>T</kbd>
 所有歌单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>P</kbd>
@@ -167,7 +171,7 @@ Description            | Keys
 - [x] Lyrics
 - [x] Auto update
 - [x] Alfred supports
-- [ ] Download manager
+- [x] Download manager
 - [x] Wechat QR code login
 - [ ] Remove express
 - [ ] Resize window（New UI）

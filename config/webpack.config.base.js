@@ -67,6 +67,7 @@ export default {
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
+            root: path.join(config.client, '../'),
             config: path.join(config.client, '../config'),
             common: path.join(config.client, '../common'),
             app: path.join(config.client, './'),

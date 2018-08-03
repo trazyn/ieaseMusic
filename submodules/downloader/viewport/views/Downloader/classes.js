@@ -42,12 +42,24 @@ export default theme => ({
         },
 
         '& aside': {
+            position: 'relative',
             display: 'flex',
             width: 235,
             justifyContent: 'space-around',
             flexDirection: 'column',
             height: 64,
             paddingLeft: 24,
+        },
+
+        '& small': {
+            color: '#666',
+        },
+
+        '& small, $title': {
+            maxWidth: 140,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
         },
 
         '& footer': {
@@ -90,6 +102,7 @@ export default theme => ({
 
     selected: {
         color: 'white',
+        backgroundColor: colors.pallet.google,
     },
 
     item: {
@@ -108,11 +121,8 @@ export default theme => ({
     },
 
     title: {
-        maxWidth: 200,
+        margin: 0,
         color: '#333',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
     },
 
     progress: {
@@ -129,5 +139,53 @@ export default theme => ({
         height: 4,
         backgroundColor: colors.pallet.google,
         boxShadow: `-5px 3px 24px 4px ${colors.pallet.google}`,
+    },
+
+    hovers: {
+        position: 'absolute',
+        bottom: 0,
+        right: -13,
+        height: 64,
+        width: 100,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#333',
+        fontWeight: '500',
+        fontFamily: 'Roboto',
+        cursor: 'pointer',
+
+        '& a': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: colors.pallet.grape,
+            color: '#fff',
+            fontSize: 20,
+            transform: 'translateX(100%)',
+            transition: '.3s',
+            zIndex: 1,
+        },
+
+        '&:hover a': {
+            transform: 'translateX(0)',
+        }
+    },
+
+    nothing: {
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: 'HelveticaNeue-UltraLight',
+        fontSize: 32,
+        letterSpacing: 1,
+        wordSpacing: 3,
+        color: '#333',
     },
 });

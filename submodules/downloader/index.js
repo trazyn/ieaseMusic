@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { app, BrowserWindow, ipcMain, Notification, shell } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
@@ -13,17 +13,17 @@ import _debug from 'debug';
 import pkg from '../../package.json';
 import storage from '../../common/storage';
 
+const KEY = 'downloaded';
 const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
 
 let debug = _debug('dev:submodules:downloader');
 let error = _debug('dev:submodules:downloader:error');
 let downloader;
+let cancels = {};
 
 async function syncDownloaded() {
     try {
-        var downloaded = await storage.get('tasks');
-
-        debug(downloaded);
+        var downloaded = await storage.get(KEY);
 
         if (!downloaded) {
             return;
@@ -31,31 +31,32 @@ async function syncDownloaded() {
 
         Object.keys(downloaded).forEach(
             e => {
-                debug('Check task: %s:%s', e.id, e.path);
+                var task = downloaded[e];
+                debug('Check task: %s:%s', task.id, task.path);
 
-                if (!e.id) {
+                if (!task.id) {
                     throw Error('Invailid storage');
                 }
 
                 if (
                     false
-                    || !e.path
-                    || fs.existsSync(e.path) === false
+                    || !task.path
+                    || fs.existsSync(task.path) === false
                 ) {
-                    debug('Remove dead link: %s:%s', e.id, e.path);
-                    delete downloaded[e.id];
+                    debug('Remove dead link: %s:%s', task.id, task.path);
+                    delete downloaded[task.id];
                 }
             }
         );
 
-        storage.set('tasks', downloaded);
+        storage.set(KEY, downloaded);
     } catch (ex) {
         error(ex);
-        storage.remove('tasks');
+        storage.remove(KEY);
     }
 }
 
-async function writeFile(url, filepath, cb) {
+async function writeFile(url, filepath, cb, canceler) {
     debug('Write file: %s', filepath);
 
     var callback = state => {
@@ -71,17 +72,18 @@ async function writeFile(url, filepath, cb) {
 
     return new Promise((resolve, reject) => {
         try {
-            rp(
-                request({
-                    url,
-                    headers: {
-                        'Origin': 'http://music.163.com',
-                        'Referer': 'http://music.163.com/',
-                    }
-                })
-            )
+            var r = request({
+                url,
+                headers: {
+                    'Origin': 'http://music.163.com',
+                    'Referer': 'http://music.163.com/',
+                }
+            });
+
+            rp(r)
                 .on('error',
                     err => {
+                        delete cancels[canceler];
                         throw err;
                     }
                 )
@@ -94,10 +96,19 @@ async function writeFile(url, filepath, cb) {
                 .on('end',
                     // WTF? Why no state given??
                     // eslint-disable-next-line
-                    () => (callback(), resolve())
+                    () => {
+                        callback();
+                        resolve();
+
+                        delete cancels[canceler];
+                    }
                 )
                 .pipe(fs.createWriteStream(filepath))
             ;
+
+            if (canceler) {
+                cancels[canceler] = () => r.abort();
+            }
         } catch (ex) {
             reject(ex);
         }
@@ -106,18 +117,14 @@ async function writeFile(url, filepath, cb) {
 
 async function download(task) {
     try {
+        var preferences = await storage.get('preferences');
         var song = task.payload;
         var src = song.data.src;
         var imagefile = (await tmp.file()).path;
         var trackfile = path.join(
-            _DOWNLOAD_DIR,
-            `${song.artists.map(e => e.name).join()} - ${song.name}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
+            preferences.downloads || _DOWNLOAD_DIR,
+            `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
-        var notificationOptions = {
-            subtitle: song.name,
-            body: song.artists.map(e => e.name).join(),
-            closeButtonText: 'Done'
-        };
 
         // Make sure the download directory already exists
         if (fs.existsSync(_DOWNLOAD_DIR) === false) {
@@ -125,6 +132,9 @@ async function download(task) {
         }
 
         task.path = trackfile;
+
+        // Tell the render downlaod has started
+        updateTask(task);
 
         await writeFile(
             src,
@@ -146,7 +156,8 @@ async function download(task) {
                 } else {
                     updateTask(task);
                 }
-            }
+            },
+            song.id
         );
         await writeFile(song.album.cover.replace(/\?.*/, ''), imagefile);
 
@@ -161,36 +172,30 @@ async function download(task) {
         if (!success) {
             throw Error('Failed to write ID3 tags: \'%s\'', trackfile);
         }
-
-        let notification = new Notification({
-            title: '🍉 Download Success~',
-            ...notificationOptions,
-        });
-
-        notification.on('click', () => {
-            shell.showItemInFolder(trackfile);
-        });
-        notification.show();
     } catch (ex) {
         error(ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
-
-        new Notification({
-            title: '😕 Download Failed~',
-            ...notificationOptions,
-        }).show();
     }
 }
 
+function showDownloader() {
+    downloader.show();
+    downloader.focus();
+}
+
 function createDownloader() {
+    if (downloader) {
+        showDownloader();
+    }
+
     var mainWindowState = windowStateKeeper({
-        defaultWidth: 800,
+        defaultWidth: 360,
         defaultHeight: 520,
     });
 
     downloader = new BrowserWindow({
-        x: mainWindowState.x,
+        x: mainWindowState.x + 800,
         y: mainWindowState.y,
         show: false,
         width: 360,
@@ -202,20 +207,56 @@ function createDownloader() {
         titleBarStyle: 'hiddenInset',
     });
 
+    downloader.on('close',
+        event => {
+            event.preventDefault();
+            downloader.hide();
+        }
+    );
     downloader.loadURL(`file://${__dirname}/viewport/index.html`);
 
-    downloader.once('ready-to-show', () => {
-        downloader.show();
-    });
-
     // Download track
-    ipcMain.on('download', (event, args) => {
-        var song = JSON.parse(args.song);
+    ipcMain.on('download',
+        (event, args) => {
+            var song = JSON.parse(args.song);
 
-        addTask(song);
-    });
+            addTask(song);
+        }
+    );
+
+    // Remove track
+    ipcMain.on('download-remove',
+        (event, args) => {
+            removeTasks(JSON.parse(args.tasks));
+        }
+    );
+
+    // Show the download window
+    ipcMain.on('download-show',
+        () => showDownloader()
+    );
 
     syncDownloaded();
+}
+
+function removeTasks(tasks) {
+    tasks = Array.isArray(tasks) ? tasks : [tasks];
+
+    tasks.forEach(
+        e => {
+            debug('Remove file: %s:%s', e.id, e.path);
+            var canceler = cancels[e.id];
+
+            // Kill the ongoing task
+            if (canceler instanceof Function) {
+                canceler();
+            }
+
+            try {
+                fs.unlinkSync(e.path);
+            } catch (ex) {}
+        }
+    );
 }
 
 function failTask(task, err) {
@@ -259,4 +300,5 @@ function addTask(item) {
 
 export default {
     createDownloader,
+    showDownloader,
 };
