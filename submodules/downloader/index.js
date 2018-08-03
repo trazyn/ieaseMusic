@@ -5,7 +5,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
-import mkdirp from 'node-mkdirp';
+import mkdirp from 'mkdirp';
 import request from 'request';
 import rp from 'request-progress';
 import _debug from 'debug';
@@ -125,14 +125,16 @@ async function download(task) {
         var song = task.payload;
         var src = song.data.src;
         var imagefile = (await tmp.file()).path;
+        var downloads = preferences.downloads || _DOWNLOAD_DIR;
         var trackfile = path.join(
-            preferences.downloads || _DOWNLOAD_DIR,
+            downloads,
             `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
 
         // Make sure the download directory already exists
-        if (fs.existsSync(_DOWNLOAD_DIR) === false) {
-            mkdirp.sync(_DOWNLOAD_DIR);
+        if (fs.existsSync(downloads) === false) {
+            debug('Ccreate download directory: %s', downloads);
+            mkdirp.sync(downloads);
         }
 
         task.path = trackfile;
