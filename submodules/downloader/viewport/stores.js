@@ -73,6 +73,12 @@ class Stores {
         );
         storage.set(KEY, this.mapping);
     }
+
+    @action.bound
+    failTask = (item) => {
+        delete this.mapping[item.id];
+        storage.set(KEY, this.mapping);
+    }
 };
 
 export default new Stores();

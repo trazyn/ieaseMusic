@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { app, BrowserWindow, ipcMain, Notification, shell } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
@@ -116,11 +116,6 @@ async function download(task) {
             preferences.downloads || _DOWNLOAD_DIR,
             `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
-        var notificationOptions = {
-            subtitle: song.name,
-            body: song.artists.map(e => e.name).join(),
-            closeButtonText: 'Done'
-        };
 
         // Make sure the download directory already exists
         if (fs.existsSync(_DOWNLOAD_DIR) === false) {
@@ -164,25 +159,10 @@ async function download(task) {
         if (!success) {
             throw Error('Failed to write ID3 tags: \'%s\'', trackfile);
         }
-
-        let notification = new Notification({
-            title: '🍉 Download Success~',
-            ...notificationOptions,
-        });
-
-        notification.on('click', () => {
-            shell.showItemInFolder(trackfile);
-        });
-        notification.show();
     } catch (ex) {
         error(ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
-
-        new Notification({
-            title: '😕 Download Failed~',
-            ...notificationOptions,
-        }).show();
     }
 }
 
@@ -230,8 +210,6 @@ function createDownloader() {
 
 function removeTasks(tasks) {
     tasks = Array.isArray(tasks) ? tasks : [tasks];
-
-    debug(tasks);
 
     try {
         tasks.forEach(

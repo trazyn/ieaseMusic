@@ -61,6 +61,15 @@ class Downloader extends Component {
 
         ipcRenderer.on('download-begin',
             (e, args) => {
+                let song = args.task.payload;
+                let notification = new window.Notification('🍭 Donwload Track', {
+                    icon: song.album.cover,
+                    body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
+                });
+
+                notification.onclick = () => {
+                    ipcRenderer.send('show-downloader');
+                };
                 updateTask(args.task);
             }
         );
@@ -73,12 +82,28 @@ class Downloader extends Component {
 
         ipcRenderer.on('download-success',
             (e, args) => {
+                let song = args.task.payload;
+                let notification = new window.Notification('🍉 Download Success~', {
+                    icon: song.album.cover,
+                    body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
+                });
+
+                notification.onclick = () => {
+                    shell.showItemInFolder(args.task.path);
+                };
                 doneTask(args.task);
             }
         );
 
         ipcRenderer.on('download-failure',
             (e, args) => {
+                let song = args.task.payload;
+
+                // eslint-disable-next-line
+                new window.Notification('😕 Download Failed~', {
+                    icon: song.album.cover,
+                    body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
+                });
                 failTask(args.task, args.err);
             }
         );
