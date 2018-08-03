@@ -259,6 +259,12 @@ class App extends Component {
                     }
                 },
                 {
+                    label: 'Show Downloads 🚚',
+                    click: () => {
+                        ipcRenderer.send('download-show');
+                    }
+                },
+                {
                     type: 'separator',
                 },
                 {

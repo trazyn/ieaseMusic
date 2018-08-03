@@ -25,8 +25,6 @@ async function syncDownloaded() {
     try {
         var downloaded = await storage.get(KEY);
 
-        debug(downloaded);
-
         if (!downloaded) {
             return;
         }
@@ -181,14 +179,23 @@ async function download(task) {
     }
 }
 
+function showDownloader() {
+    downloader.show();
+    downloader.focus();
+}
+
 function createDownloader() {
+    if (downloader) {
+        showDownloader();
+    }
+
     var mainWindowState = windowStateKeeper({
-        defaultWidth: 800,
+        defaultWidth: 360,
         defaultHeight: 520,
     });
 
     downloader = new BrowserWindow({
-        x: mainWindowState.x,
+        x: mainWindowState.x + 800,
         y: mainWindowState.y,
         show: false,
         width: 360,
@@ -200,9 +207,13 @@ function createDownloader() {
         titleBarStyle: 'hiddenInset',
     });
 
+    downloader.on('close',
+        event => {
+            event.preventDefault();
+            downloader.hide();
+        }
+    );
     downloader.loadURL(`file://${__dirname}/viewport/index.html`);
-
-    downloader.once('ready-to-show', downloader.show);
 
     // Download track
     ipcMain.on('download',
@@ -218,6 +229,11 @@ function createDownloader() {
         (event, args) => {
             removeTasks(JSON.parse(args.tasks));
         }
+    );
+
+    // Show the download window
+    ipcMain.on('download-show',
+        () => showDownloader()
     );
 
     syncDownloaded();
@@ -284,4 +300,5 @@ function addTask(item) {
 
 export default {
     createDownloader,
+    showDownloader,
 };

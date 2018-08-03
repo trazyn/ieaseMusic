@@ -68,7 +68,7 @@ class Downloader extends Component {
                 });
 
                 notification.onclick = () => {
-                    ipcRenderer.send('show-downloader');
+                    ipcRenderer.send('download-show');
                 };
                 updateTask(args.task);
             }
