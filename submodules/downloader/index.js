@@ -108,11 +108,12 @@ async function writeFile(url, filepath, cb) {
 
 async function download(task) {
     try {
+        var preferences = await storage.get('preferences');
         var song = task.payload;
         var src = song.data.src;
         var imagefile = (await tmp.file()).path;
         var trackfile = path.join(
-            _DOWNLOAD_DIR,
+            preferences.downloads || _DOWNLOAD_DIR,
             `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
         var notificationOptions = {
