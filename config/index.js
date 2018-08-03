@@ -12,6 +12,7 @@ const config = {
     },
 
     client: path.resolve(__dirname, '../src'),
+    submodules: path.resolve(__dirname, '../submodules'),
     assets: path.resolve(__dirname, '../src/assets'),
     dist: path.resolve(__dirname, '../dist'),
 };

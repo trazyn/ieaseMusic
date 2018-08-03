@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import player from './player';
 import home from './home';
-import storage from 'utils/storage';
+import storage from 'common/storage';
 import helper from 'utils/helper';
 import lastfm from 'utils/lastfm';
 

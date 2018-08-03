@@ -6,7 +6,7 @@ import { Provider } from 'mobx-react';
 import { ipcRenderer, remote, shell } from 'electron';
 import 'ionicons201/css/ionicons.css';
 
-import './global.css';
+import 'app/global.css';
 import 'utils/albumColors';
 import { PLAYER_REPEAT, PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
 import getRoutes from './js/routes';
@@ -256,6 +256,12 @@ class App extends Component {
                     label: 'Show Cover 💅',
                     click: () => {
                         navigator.history.push('/cover');
+                    }
+                },
+                {
+                    label: 'Show Downloads 🚚',
+                    click: () => {
+                        ipcRenderer.send('download-show');
                     }
                 },
                 {
