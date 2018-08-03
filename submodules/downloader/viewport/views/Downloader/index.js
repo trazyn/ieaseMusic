@@ -142,6 +142,21 @@ class Downloader extends Component {
     render() {
         var { classes, stores: { tasks } } = this.props;
 
+        tasks = tasks.filter(
+            e => {
+                switch (this.state.selected) {
+                    case 'all':
+                        return true;
+
+                    case 'inProgress':
+                        return e.progress !== 1;
+
+                    case 'done':
+                        return e.progress === 1;
+                }
+            }
+        );
+
         return (
             <div className={classes.container}>
                 <nav
