@@ -1,6 +1,5 @@
 
 import MinifyPlugin from 'uglifyjs-webpack-plugin';
-import config from './index';
 import baseConfig from './webpack.config.base';
 
 export default {
@@ -10,14 +9,15 @@ export default {
     mode: 'production',
     devtool: false,
 
-    entry: [
-        'babel-polyfill',
-        `./main.js`,
-    ],
-
-    output: {
-        path: config.dist,
-        filename: 'main.js'
+    entry: {
+        main: [
+            'babel-polyfill',
+            './main.js',
+        ],
+        downloader: [
+            'babel-polyfill',
+            './submodules/downloader/index.js',
+        ]
     },
 
     plugins: [

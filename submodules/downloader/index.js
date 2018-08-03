@@ -21,6 +21,10 @@ let error = _debug('dev:submodules:downloader:error');
 let downloader;
 let cancels = {};
 
+function isDev() {
+    return process.mainModule.filename.indexOf('app.asar') === -1;
+}
+
 async function syncDownloaded() {
     try {
         var downloaded = await storage.get(KEY);
@@ -213,7 +217,7 @@ function createDownloader() {
             downloader.hide();
         }
     );
-    downloader.loadURL(`file://${__dirname}/viewport/index.html`);
+    downloader.loadURL(`file://${__dirname}/${isDev() ? 'viewport/index.html' : 'src/downloader.html'}`);
 
     // Download track
     ipcMain.on('download',
