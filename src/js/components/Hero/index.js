@@ -16,11 +16,12 @@ import Indicator from 'ui/Indicator';
     isLiked: stores.me.isLiked,
     song: stores.controller.song,
     comments: stores.comments.total,
+    showShare: stores.share.toggle,
 }))
 @observer
 class Hero extends Component {
     render() {
-        var { classes, song, isLiked, unlike, like, comments } = this.props;
+        var { classes, song, isLiked, unlike, like, comments, showShare } = this.props;
         var pathname = this.props.location.pathname;
         var liked = isLiked(song.id);
 
@@ -34,6 +35,19 @@ class Hero extends Component {
                     }}
                 />
 
+                <a
+                    href=""
+                    className={classes.share}
+                    onClick={
+                        e => {
+                            e.preventDefault();
+                            showShare(true);
+                        }
+                    }
+                >
+                    <i className="ion-android-share-alt" />
+                </a>
+
                 <summary>
                     <i
                         className={clazz('ion-ios-heart', {
@@ -42,6 +56,7 @@ class Hero extends Component {
                         onClick={e => liked ? unlike(song) : like(song)}
                         style={{
                             cursor: 'pointer',
+                            display: 'table',
                         }}
                     />
 
@@ -105,7 +120,7 @@ class Hero extends Component {
                         {
                             song.artists.map(
                                 (e, index) => {
-                                // Show the artist
+                                    // Show the artist
                                     return (
                                         <Link
                                             key={index}

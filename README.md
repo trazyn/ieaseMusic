@@ -4,7 +4,8 @@
 ![License](https://img.shields.io/github/license/trazyn/ieaseMusic.svg?style=flat-square)
 [![Travis CI status](https://img.shields.io/travis/trazyn/ieaseMusic/dev.svg?style=flat-square)](https://travis-ci.org/trazyn/ieaseMusic/branches)
 [![Dependencies Status](https://david-dm.org/trazyn/ieaseMusic/status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
+[![DevDependencies Status](https://david-dm.org/trazyn/ieaseMusic/dev-status.svg?style=flat-square)](https://david-dm.org/trazyn/ieaseMusic?type=dev)
+[![JS Standard Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
 
 
 <img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/128x128.png" />
@@ -32,34 +33,41 @@
 - Modern UI design
 - High quality music(FLAC)
 - Track your listen to Last.fm
-- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, MiGu music, Biadu music all in one)
+- Fix dead music link [#3](https://github.com/trazyn/ieaseMusic/issues/3)(QQ music, Xiami music, Kugou music, Kuwo music, MiGu music, Biadu music all in one)
+- Share music to Facebook, Twitter, Google+, WeChat
+- WeChat scan to log in
+- Download music 🍭
+  ![Downloader](https://raw.githubusercontent.com/trazyn/ieaseMusic/master/screenshots/downloader.png)
+- Alfred 3 workflow([alfred-ieasemusic](https://github.com/trazyn/alfred-ieasemusic)), required [v1.2.6+](https://github.com/trazyn/ieaseMusic/releases/latest)
+
+  ![Alfred](https://github.com/trazyn/alfred-ieasemusic/raw/master/screenshots/menu.png?raw=true)
 
 ## Install
 
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.0/ieaseMusic-1.3.0-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.0/ieaseMusic-1.3.0-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.2.1-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/ieaseMusic-1.2.1-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.2.1-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.3.0-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.2.1/iease-music-1.2.1-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.0/ieaseMusic-1.3.0-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.2.1-x86_64.AppImage
-$ ./iease-music-1.2.1-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.3.0-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.0/iease-music-1.3.0-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.3.0-x86_64.AppImage
+$ ./iease-music-1.3.0-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
@@ -76,14 +84,16 @@ $ pacman -S iease-music-git
 ![Home](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/home.png?raw=true)
 ![FM](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/fm.png?raw=true)
 ![PLAYER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player.png?raw=true)
+![PLAYER2](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/player-2.png?raw=true)
 ![ARTIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/artist.png?raw=true)
-![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Comments.png?raw=true)
-![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Lyrics.png?raw=true)
-![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Cover.png?raw=true)
-![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/CMD+P.png?raw=true)
+![COMMENTS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/comments.png?raw=true)
+![LYRICS](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/lyrics.png?raw=true)
+![COVER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cover.png?raw=true)
+![TOP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/top.png?raw=true)
+![CMDP](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/cmd+p.png?raw=true)
 ![MENU](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/menu.png?raw=true)
-![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/Upnext.png?raw=true)
-![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/User.png?raw=true)
+![UPNEXT](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/upnext.png?raw=true)
+![USER](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/user.png?raw=true)
 ![PLAYLIST](https://github.com/trazyn/ieaseMusic/blob/dev/screenshots/playlist.png?raw=true)
 
 ## Development
@@ -103,6 +113,12 @@ $ npm run dev
 163.171.98.219  p4.music.126.net
 202.122.146.83  m10.music.126.net
 ```
+>上面是日本反代节点[fengjueming/unblock-NetEaseMusic](https://github.com/fengjueming/unblock-NetEaseMusic)
+>
+>新加坡节点（本屌太穷有需要还是尽量用上面的节点吧）
+>```
+>52.221.201.48 music.163.com
+>```
 
 关于优化`IP`地址，p开头的是图片CDN服务器，m开头的是音乐资源CDN服务器。可以通过
 ```
@@ -126,6 +142,7 @@ Description            | Keys
 喜欢歌曲               | <kbd>Cmd</kbd> <kbd>L</kbd>
 播放历史记录           | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
 搜索                   | <kbd>Cmd</kbd> <kbd>F</kbd>
+显示下载歌曲               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>D</kbd>
 跳转首页               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>H</kbd>
 查看榜单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>T</kbd>
 所有歌单               | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>P</kbd>
@@ -153,7 +170,10 @@ Description            | Keys
 - [x] Comment（Read only）
 - [x] Lyrics
 - [x] Auto update
-- [ ] Remove express（New API implementation, and proxy）
+- [x] Alfred supports
+- [x] Download manager
+- [x] Wechat QR code login
+- [ ] Remove express
 - [ ] Resize window（New UI）
 
 ## 参考列表
@@ -170,7 +190,4 @@ Description            | Keys
 ## License
 还是 MIT 吧，懒得改了
 
-## Donate
-- BTC wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
-- ETC wallet address: `0xb5cfdcb28ff387c52c3259114414c993006a2b4f`
-- USDT wallet address: `1KXKwNHCqmxf1rAV533hcZ49zko3GksKR1`
+![DONATE](https://github.com/trazyn/ieaseMusic/blob/dev/resource/donate.png?raw=true)

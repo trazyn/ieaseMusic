@@ -22,11 +22,11 @@ class PlayerStatus extends Component {
     }
 
     componentDidUpdate() {
-        this.refs.container.classList.add(this.props.classes.animated);
+        this.container.classList.add(this.props.classes.animated);
     }
 
     animationDone() {
-        this.refs.container.classList.remove(this.props.classes.animated);
+        this.container.classList.remove(this.props.classes.animated);
     }
 
     render() {
@@ -36,7 +36,10 @@ class PlayerStatus extends Component {
             <div
                 className={classes.container}
                 onAnimationEnd={() => this.animationDone()}
-                ref="container">
+                ref={
+                    ele => (this.container = ele)
+                }
+            >
                 {
                     playing
                         ? <i className="ion-ios-play" />

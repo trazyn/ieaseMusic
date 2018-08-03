@@ -50,7 +50,7 @@ class Controller {
     }
 
     @action async play(songid, forward = true) {
-        var songs = self.playlist.songs;
+        var songs = self.playlist.songs.slice();
         var song;
 
         if (!(upnext.canceled && upnext.canceled.id === songid)) {
@@ -69,7 +69,7 @@ class Controller {
             self.history[forward ? 'push' : 'unshift'](song.id);
 
             ipcRenderer.send('update-history', {
-                songs: self.playlist.songs.slice().filter(e => self.history.includes(e.id)),
+                songs: self.playlist.songs.filter(e => self.history.includes(e.id)),
             });
         }
 
@@ -89,15 +89,11 @@ class Controller {
             };
         }
 
-        ipcRenderer.send('update-status', {
-            playing: true,
-            song,
-        });
-
-        comments.getList(song);
-        self.song = song;
         self.playing = true;
-        await self.resolveSong();
+        self.song = song;
+        self.updateStatus();
+        comments.getList(song);
+        await self.resolveSong(song);
         await lastfm.playing(song);
     }
 
@@ -105,7 +101,6 @@ class Controller {
         // Cancel the previous request
         cancel && cancel();
         self.stop();
-        self.song.waiting = true;
 
         var song = self.song;
 
@@ -145,6 +140,9 @@ class Controller {
     async tryTheNext() {
         var next = await self.next(false, false);
 
+        // In FM mode the next song is null
+        if (!next) return;
+
         if (next.id === self.song.id) {
             // Break dead loop
             self.playing = false;
@@ -155,7 +153,7 @@ class Controller {
     }
 
     async next(loop = false, autoPlay = true) {
-        var songs = self.playlist.songs;
+        var songs = self.playlist.songs.slice();
         var history = self.history;
         var index = history.indexOf(self.song.id);
         var next;
@@ -204,13 +202,14 @@ class Controller {
 
         try {
             if (autoPlay) {
-                await self.play(next);
+                self.play(next);
+                return;
             }
         } catch (ex) {
             // Anti-warnning
         }
 
-        return self.playlist.songs.find(e => e.id === next);
+        return songs.find(e => e.id === next);
     }
 
     async prev() {
@@ -258,10 +257,7 @@ class Controller {
             upnext.cancel(null);
         }
 
-        ipcRenderer.send('update-status', {
-            playing: self.playing,
-            song: self.song,
-        });
+        self.updateStatus();
     }
 
     stop() {
@@ -286,9 +282,11 @@ class Controller {
                 self.mode = PLAYER_SHUFFLE;
             }
         }
+
+        self.updateStatus();
     }
 
-    async scrobble() {
+    scrobble() {
         var songid = self.song.id;
         var sourceid = self.playlist.id;
         var time = self.song.duration;
@@ -300,10 +298,25 @@ class Controller {
         }
 
         try {
-            await axios.get(`/api/player/scrobble/${songid}/${sourceid}/${Math.ceil(time / 1000)}`);
+            axios.get(`/api/player/scrobble/${songid}/${sourceid}/${Math.ceil(time / 1000)}`);
         } catch (ex) {
             // Anti warnning
         }
+    }
+
+    updateStatus() {
+        ipcRenderer.send('update-status', {
+            playing: self.playing,
+            song: self.song,
+            modes: MODES.map(
+                e => {
+                    return {
+                        mode: e,
+                        enabled: e === self.mode
+                    };
+                }
+            )
+        });
     }
 }
 

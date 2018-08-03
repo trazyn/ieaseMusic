@@ -4,10 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { Modal, ModalBody } from 'ui/Modal';
 import injectSheet, { ThemeProvider } from 'react-jss';
 import clazz from 'classname';
-import theme from 'app/theme';
 
 import classes from './classes';
 import ProgressImage from 'ui/ProgressImage';
+import theme from 'config/theme';
 
 @inject('upnext', 'controller')
 @observer

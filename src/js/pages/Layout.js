@@ -17,6 +17,7 @@ import PlayerNavigation from 'components/Ripple/PlayerNavigation';
 import PlayerMode from 'components/Ripple/PlayerMode';
 import PlayerStatus from 'components/Ripple/PlayerStatus';
 import UpNext from 'components/UpNext';
+import Share from 'components/Share';
 
 const classes = {
     container: {
@@ -57,19 +58,34 @@ const classes = {
     },
 };
 
-@inject(stores => ({
-    initialized: stores.me.initialized,
-    init: async() => {
-        await stores.preferences.init();
-        await stores.me.init();
+@inject('controller')
+@observer
+class _Background extends Component {
+    render() {
+        var { classes, controller: { song } } = this.props;
 
-        var { username, password } = stores.preferences.lastfm;
+        return (
+            <div className={classes.cover}>
+                {
+                    song.id
+                        ? (
+                            <ProgressImage
+                                className={classes.background}
+                                {...{
+                                    width: window.innerWidth,
+                                    src: song.album.cover.replace(/\?param=.*/, '') + '?param=800y800',
+                                }}
+                            />
+                        )
+                        : false
+                }
+            </div>
+        );
+    }
+}
+const Background = injectSheet(classes)(_Background);
 
-        await lastfm.initialize(username, password);
-    },
-    song: stores.controller.song,
-    hasLogin: stores.me.hasLogin,
-}))
+@inject('me', 'preferences')
 @observer
 class Layout extends Component {
     state = {
@@ -77,7 +93,14 @@ class Layout extends Component {
     };
 
     async componentWillMount() {
-        await this.props.init();
+        var { me, preferences } = this.props;
+
+        await preferences.init();
+        await me.init();
+
+        var { username, password } = preferences.lastfm;
+
+        await lastfm.initialize(username, password);
     }
 
     componentDidMount() {
@@ -95,7 +118,7 @@ class Layout extends Component {
     }
 
     render() {
-        var { classes, initialized, song } = this.props;
+        var { classes, me: { initialized } } = this.props;
 
         if (this.state.offline) {
             return <Offline show={true} />;
@@ -120,31 +143,17 @@ class Layout extends Component {
                     {this.props.children}
                 </main>
 
+                <AudioPlayer />
                 <UpNext />
+                <Share />
                 <Preferences />
                 <Menu />
                 <VolumeUpDown />
                 <Playing />
-                <AudioPlayer />
                 <PlayerNavigation />
                 <PlayerMode />
                 <PlayerStatus />
-
-                <div className={classes.cover}>
-                    {
-                        song.id
-                            ? (
-                                <ProgressImage
-                                    className={classes.background}
-                                    {...{
-                                        width: window.innerWidth,
-                                        src: song.album.cover.replace(/\?param=.*/, '') + '?param=800y800',
-                                    }}
-                                />
-                            )
-                            : false
-                    }
-                </div>
+                <Background />
             </div>
         );
     }

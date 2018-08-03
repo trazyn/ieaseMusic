@@ -19,6 +19,10 @@ class Loader extends Component {
     render() {
         var classes = this.props.classes;
 
+        if (!this.props.show) {
+            return false;
+        }
+
         return (
             <div
                 className={clazz(classes.container, {

@@ -22,21 +22,26 @@ export default class AudioPlayer extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.playing !== this.props.playing) {
             try {
-                if (!this.refs.player.src
+                if (!this.player.src
                     // Avoid init player duplicate play
                     && !this.props.autoPlay) {
                     this.props.play();
                 } else {
-                    this.refs.player[nextProps.playing ? 'play' : 'pause']();
+                    this.player[nextProps.playing ? 'play' : 'pause']();
                 }
             } catch (ex) {
                 // Anti warnning
             }
         }
+
+        if (this.props.song.id !== nextProps.song.id) {
+            // Re-calculations the buffering progress
+            this.bufferedDone = false;
+        }
     }
 
     componentDidMount() {
-        var player = this.refs.player;
+        var player = this.player;
         var { volume, setVolume } = this.props;
 
         ipcRenderer.on('player-volume-up', () => {
@@ -60,6 +65,11 @@ export default class AudioPlayer extends Component {
 
     progress(currentTime = 0) {
         var duration = this.props.song.duration;
+        var ele = this.progress.ele;
+
+        if (!ele || document.contains(ele) === false) {
+            this.progress.ele = ele = document.all.progress;
+        }
 
         // Reduce CPU usage, cancel the duplicate compution
         if (currentTime * 1000 - this.passed < 1000) {
@@ -70,14 +80,12 @@ export default class AudioPlayer extends Component {
 
         this.timer = setTimeout(
             () => {
-                var ele = document.querySelector('#progress');
-
-                // I FM screen progress bar not visible
+                // Some screens progress bar not visible
                 if (ele) {
                     let percent = (currentTime * 1000) / duration;
 
                     this.setPosition(percent, ele);
-                    this.buffering();
+                    this.buffering(ele.lastElementChild);
 
                     ele.firstElementChild.setAttribute('data-time', `${helper.getTime(currentTime * 1000)} / ${helper.getTime(duration)}`);
                 }
@@ -89,8 +97,16 @@ export default class AudioPlayer extends Component {
     }
 
     scrollerLyrics(currentTime = 0) {
-        var ele = document.querySelector('#lyrics');
         var lyrics = this.props.lyrics;
+        var ele = this.scrollerLyrics.ele;
+
+        if (window.location.hash !== '#/lyrics') {
+            return false;
+        }
+
+        if (!ele || document.contains(ele) === false) {
+            this.scrollerLyrics.ele = ele = document.all.lyrics;
+        }
 
         if (ele) {
             let key = helper.getLyricsKey(currentTime * 1000, lyrics);
@@ -110,27 +126,31 @@ export default class AudioPlayer extends Component {
         }
     }
 
-    setPosition(percent, ele = document.querySelector('#progress')) {
+    setPosition(percent, ele = document.all.progress) {
         if (!ele) return;
 
         ele = ele.firstElementChild;
         ele.style.transform = `translate3d(${-100 + percent * 100}%, 0, 0)`;
     }
 
-    buffering() {
-        var ele = document.querySelector('#progress');
-        var player = this.refs.player;
+    buffering(ele) {
+        var player = this.player;
 
-        if (ele
+        if (
+            true
+            && !this.bufferedDone
+            && ele
             // Player has started
-            && player.buffered.length) {
+            && player.buffered.length
+        ) {
             let buffered = player.buffered.end(player.buffered.length - 1);
 
             if (buffered >= 100) {
                 buffered = 100;
+                // Minimum reLayout
+                this.bufferedDone = true;
             }
-
-            ele.lastElementChild.style.transform = `translate3d(${-100 + buffered}%, 0, 0)`;
+            ele.style.transform = `translate3d(${-100 + buffered}%, 0, 0)`;
         }
     }
 
@@ -145,11 +165,13 @@ export default class AudioPlayer extends Component {
 
         return (
             <audio
-                ref="player"
+                ref={
+                    ele => (this.player = ele)
+                }
                 style={{
                     display: 'none'
                 }}
-                src={(song.data || {}).src}
+                src={song.data ? song.data.src : null}
                 autoPlay={true}
                 onAbort={
                     e => {
@@ -165,14 +187,13 @@ export default class AudioPlayer extends Component {
                 }
                 onError={
                     e => {
-                        if (song.waiting) return;
+                        if (!e.target.src.startsWith('http') || song.waiting) return;
 
-                        console.log('Break by %s', e);
+                        console.log('Break by %o', e);
                         this.resetProgress();
                         tryTheNext();
                     }
                 }
-                onProgress={e => this.buffering(e)}
                 onSeeked={
                     e => {
                         // Reset passed 0, avoid indicator can not go back

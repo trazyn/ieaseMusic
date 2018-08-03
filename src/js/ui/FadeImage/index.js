@@ -17,7 +17,7 @@ class FadeImage extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        var ele = this.refs.image;
+        var ele = this.image;
 
         if (ele
             && this.props.src !== nextProps.src) {
@@ -40,7 +40,9 @@ class FadeImage extends Component {
 
         return (
             <img
-                ref="image"
+                ref={
+                    ele => (this.image = ele)
+                }
                 src={this.props.src}
                 className={clazz(classes.fade, classes.fadein, this.props.className)}
                 onLoad={e => this.handleLoad(e)}

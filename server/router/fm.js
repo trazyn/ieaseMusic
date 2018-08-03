@@ -27,7 +27,7 @@ router.get('/', async(req, res) => {
 
     res.send({
         id: 'PERSONAL_FM',
-        name: 'My FM',
+        name: 'Made For You',
         link: '/fm',
         size: songs.length,
         songs: songs.map(e => {

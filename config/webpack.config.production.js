@@ -14,14 +14,21 @@ export default {
     mode: 'production',
     devtool: false,
 
-    entry: [
-        'babel-polyfill',
-        `${config.client}/index.js`,
-    ],
+    entry: {
+        main: [
+            'babel-polyfill',
+            `${config.client}/index.js`,
+        ],
+
+        downloader: [
+            'babel-polyfill',
+            `${config.submodules}/downloader/viewport/index.js`,
+        ]
+    },
 
     output: {
         path: config.dist,
-        filename: 'app.[hash].js'
+        filename: '[name].[hash].js'
     },
 
     plugins: [
@@ -49,9 +56,17 @@ export default {
             template: './src/index.html',
             inject: 'body',
             hash: true,
-            minify: {
-                collapseWhitespace: true
-            }
+            minify: true,
+            chunks: ['main']
+        }),
+
+        new HtmlWebpackPlugin({
+            filename: `${config.dist}/src/downloader.html`,
+            template: './submodules/downloader/viewport/index.html',
+            inject: 'body',
+            hash: true,
+            minify: true,
+            chunks: ['downloader']
         })
     ],
 

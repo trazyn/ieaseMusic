@@ -6,7 +6,7 @@ import { Provider } from 'mobx-react';
 import { ipcRenderer, remote, shell } from 'electron';
 import 'ionicons201/css/ionicons.css';
 
-import './global.css';
+import 'app/global.css';
 import 'utils/albumColors';
 import { PLAYER_REPEAT, PLAYER_SHUFFLE, PLAYER_LOOP } from 'stores/controller';
 import getRoutes from './js/routes';
@@ -15,11 +15,21 @@ import stores from './js/stores';
 class App extends Component {
     componentDidMount() {
         var { preferences, controller, fm, me, menu, playing } = stores;
-        var navigator = this.refs.navigator;
+        var navigator = this.navigator;
         var isFMPlaying = () => controller.playlist.id === fm.playlist.id;
 
         function togglePreferences() {
             preferences.show = !preferences.show;
+        }
+
+        function toggleLike() {
+            var song = controller.song;
+
+            if (me.likes.get(song.id)) {
+                me.unlike(song);
+                return;
+            }
+            me.like(song);
         }
 
         // Player play
@@ -61,14 +71,11 @@ class App extends Component {
         });
 
         // Like a song
-        ipcRenderer.on('player-like', () => {
-            var song = controller.song;
+        ipcRenderer.on('player-like', () => toggleLike());
 
-            if (me.likes.get(song.id)) {
-                return;
-            }
-
-            me.like(controller.song);
+        // Change player mode
+        ipcRenderer.on('player-mode', (e, args) => {
+            controller.changeMode(args.mode);
         });
 
         // Go the home screen
@@ -152,20 +159,22 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
-                    label: 'Like 💖',
+                    label: 'Like/Unlike 💖',
                     enabled: logined,
-                    click: () => {
-                        if (me.likes.get(controller.song.id)) {
-                            return;
-                        }
-                        me.like(controller.song);
-                    }
+                    click: () => toggleLike()
                 },
                 {
                     label: 'Ban 💩',
-                    enabled: logined,
+                    enabled: logined && controller.playlist.id === 'PERSONAL_FM',
                     click: () => {
                         fm.ban(controller.song.id);
+                    }
+                },
+                {
+                    label: 'Download 🍭',
+                    enabled: logined,
+                    click: () => {
+                        ipcRenderer.send('download', { song: JSON.stringify(controller.song) });
                     }
                 },
                 {
@@ -223,7 +232,7 @@ class App extends Component {
                     }
                 },
                 {
-                    label: 'FM',
+                    label: 'Made For You',
                     click: () => {
                         navigator.history.push('/fm');
                     }
@@ -244,18 +253,15 @@ class App extends Component {
                     }
                 },
                 {
-                    type: 'separator',
-                },
-                {
-                    label: 'Bug report 🐛',
+                    label: 'Show Cover 💅',
                     click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                        navigator.history.push('/cover');
                     }
                 },
                 {
-                    label: 'Fork me on Github 🚀',
+                    label: 'Show Downloads 🚚',
                     click: () => {
-                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                        ipcRenderer.send('download-show');
                     }
                 },
                 {
@@ -277,6 +283,18 @@ class App extends Component {
                     type: 'separator',
                 },
                 {
+                    label: 'Bug report 🐛',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic/issues');
+                    }
+                },
+                {
+                    label: 'Fork me on Github 🚀',
+                    click: () => {
+                        shell.openExternal('https://github.com/trazyn/ieaseMusic');
+                    }
+                },
+                {
                     label: '💕 Follow me on Twitter 👏',
                     click: () => {
                         shell.openExternal('https://twitter.com/var_darling');
@@ -293,7 +311,11 @@ class App extends Component {
     render() {
         return (
             <Provider {...stores}>
-                <HashRouter ref="navigator">
+                <HashRouter
+                    ref={
+                        ele => (this.navigator = ele)
+                    }
+                >
                     {getRoutes()}
                 </HashRouter>
             </Provider>

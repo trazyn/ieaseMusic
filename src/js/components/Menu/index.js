@@ -70,7 +70,7 @@ class Menu extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.show === true) {
             setTimeout(() => {
-                this.refs.container.focus();
+                this.container.focus();
             });
         }
     }
@@ -84,11 +84,14 @@ class Menu extends Component {
 
         return (
             <div
+                tabIndex="-1"
                 className={classes.container}
                 // Press ESC close menu
                 onKeyUp={e => e.keyCode === 27 && this.props.close()}
-                ref="container"
-                tabIndex="-1">
+                ref={
+                    ele => (this.container = ele)
+                }
+            >
                 <div
                     className={classes.overlay}
                     onClick={this.props.close} />
@@ -132,7 +135,7 @@ class Menu extends Component {
                                 <Link
                                     onClick={close}
                                     to="/fm">
-                                    My FM
+                                    Made For You
                                 </Link>
                             </p>
                         </div>

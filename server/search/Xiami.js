@@ -33,7 +33,7 @@ export default async(request, keyword, artists) => {
         if (response.state !== 0
             || data.songs.length === 0) {
             error(chalk.black.bgRed('🚧  Nothing.'));
-            return Promise.reject();
+            return Promise.reject(Error(404));
         }
 
         for (let e of data.songs) {
@@ -45,12 +45,12 @@ export default async(request, keyword, artists) => {
                 continue;
             }
 
-            let song = {
-                src: e.listen_file,
-            };
+            let song = e;
+
+            song.src = e.listen_file;
 
             if (!song.src) {
-                return Promise.reject();
+                return Promise.reject(Error(404));
             } else {
                 debug(chalk.black.bgGreen('🚚  Result >>>'));
                 debug(e);
@@ -61,9 +61,9 @@ export default async(request, keyword, artists) => {
         }
     } catch (ex) {
         error('Failed to get song: %O', ex);
-        return Promise.reject();
+        return Promise.reject(ex);
     }
 
     error(chalk.black.bgRed('🈚  Not Matched.'));
-    return Promise.reject();
+    return Promise.reject(Error(405));
 };

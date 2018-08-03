@@ -119,7 +119,7 @@ class Player extends Component {
 
     componentDidUpdate() {
         var { classes, searching } = this.props;
-        var playing = (searching ? this.refs.searching : this.refs.list).querySelector(`.${classes.active}`);
+        var playing = (searching ? this.searching : this.list).querySelector(`.${classes.active}`);
 
         if (playing) {
             playing.scrollIntoViewIfNeeded();
@@ -362,7 +362,11 @@ class Player extends Component {
                                     Time
                                 </span>
                             </header>
-                            <ul ref="list">
+                            <ul
+                                ref={
+                                    ele => (this.list = ele)
+                                }
+                            >
                                 {this.renderList()}
                             </ul>
                         </div>
@@ -377,7 +381,11 @@ class Player extends Component {
                         },
                     }}>
                         <div className={classes.list}>
-                            <ul ref="searching">
+                            <ul
+                                ref={
+                                    ele => (this.searching = ele)
+                                }
+                            >
                                 {this.renderList()}
                             </ul>
                         </div>

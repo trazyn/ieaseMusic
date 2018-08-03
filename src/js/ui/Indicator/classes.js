@@ -55,57 +55,57 @@ export default theme => {
 
         [`@keyframes ${animationLine1}`]: {
             '0%': {
-                transform: 'translateY(0)',
+                transform: 'translateY(0) translateZ(0)',
             },
 
             '50%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
 
             '100%': {
-                transform: 'translateY(0)',
+                transform: 'translateY(0) translateZ(0)',
             },
         },
 
         [`@keyframes ${animationLine2}`]: {
             '0%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
 
             '50%': {
-                transform: 'translateY(0)',
+                transform: 'translateY(0) translateZ(0)',
             },
 
             '100%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
         },
 
         [`@keyframes ${animationLine3}`]: {
             '0%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
 
             '50%': {
-                transform: 'translateY(0)',
+                transform: 'translateY(0) translateZ(0)',
             },
 
             '100%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
         },
 
         [`@keyframes ${animationLine4}`]: {
             '0%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
 
             '50%': {
-                transform: 'translateY(0)',
+                transform: 'translateY(0) translateZ(0)',
             },
 
             '100%': {
-                transform: 'translateY(10px)',
+                transform: 'translateY(10px) translateZ(0)',
             },
         },
     };

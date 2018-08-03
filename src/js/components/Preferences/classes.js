@@ -141,5 +141,31 @@ export default theme => {
         connected: {
             background: colors.pallet.mint,
         },
+
+        downloads: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+
+            '& input': {
+                display: 'none',
+            },
+
+            '& button': {
+                padding: '8px 12px',
+                textTransform: 'uppercase',
+                border: 0,
+                borderRadius: 1,
+                background: 'none',
+                color: 'rgb(117, 117, 117)',
+                cursor: 'pointer',
+                outline: 0,
+                transition: '.2s',
+            },
+
+            '& button:hover': {
+                background: 'rgba(0, 0, 0, .1)',
+            }
+        }
     };
 };

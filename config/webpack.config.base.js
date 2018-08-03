@@ -58,7 +58,7 @@ export default {
 
     output: {
         path: config.dist,
-        filename: 'bundle.js',
+        filename: '[name].js',
 
         // https://github.com/webpack/webpack/issues/1114
         libraryTarget: 'commonjs2'
@@ -67,6 +67,9 @@ export default {
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
+            root: path.join(config.client, '../'),
+            config: path.join(config.client, '../config'),
+            common: path.join(config.client, '../common'),
             app: path.join(config.client, './'),
             ui: path.join(config.client, 'js/ui/'),
             utils: path.join(config.client, 'js/utils/'),

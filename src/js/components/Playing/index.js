@@ -24,7 +24,7 @@ class Playing extends Component {
     componentWillReceiveProps(nextProps) {
         // When filter result has been changed, reset the list viewport
         if (this.props.filtered.length !== nextProps.filtered.length) {
-            this.refs.list.scrollTop = 0;
+            this.list.scrollTop = 0;
         }
     }
 
@@ -33,7 +33,7 @@ class Playing extends Component {
 
         if (show) {
             let playing = Array.from(
-                this.refs.list.querySelectorAll('[data-id]')
+                this.list.querySelectorAll('[data-id]')
             ).find(e => e.dataset.id === song.id);
 
             if (playing) {
@@ -49,7 +49,7 @@ class Playing extends Component {
     }
 
     highlight(offset) {
-        var list = this.refs.list;
+        var list = this.list;
         var classes = this.props.classes;
         var songs = Array.from(list.querySelectorAll('[data-id]'));
         var index = songs.findIndex(e => e.classList.contains(classes.active));
@@ -94,7 +94,7 @@ class Playing extends Component {
             return;
         }
 
-        var active = this.refs.list.querySelector(`.${this.props.classes.active}`);
+        var active = this.list.querySelector(`.${this.props.classes.active}`);
 
         if (active) {
             let songid = active.dataset.id;
@@ -108,8 +108,8 @@ class Playing extends Component {
 
         // Show the search result
         if (true
-            && this.refs.search
-            && this.refs.search.value.trim()
+            && this.search
+            && this.search.value.trim()
         ) {
             list = filtered;
         }
@@ -194,7 +194,9 @@ class Playing extends Component {
             <div
                 className={classes.container}
                 onKeyUp={e => this.pressEscExit(e)}
-                ref="container"
+                ref={
+                    ele => (this.container = ele)
+                }
                 tabIndex="-1"
             >
                 <div
@@ -209,14 +211,18 @@ class Playing extends Component {
                             onInput={e => search(e.target.value)}
                             onKeyUp={e => this.navigation(e)}
                             placeholder="Search..."
-                            ref="search"
+                            ref={
+                                ele => (this.search = ele)
+                            }
                             type="text"
                         />
                     </header>
 
                     <ul
                         className={classes.list}
-                        ref="list"
+                        ref={
+                            ele => (this.list = ele)
+                        }
                     >
                         {this.renderList()}
                     </ul>

@@ -45,6 +45,10 @@ class Welcome extends Component {
     play(playlist) {
         var controller = this.props.controller;
 
+        if (controller.playlist.id === playlist.id) {
+            return controller.toggle();
+        }
+
         controller.setup(playlist);
         controller.play();
     }
@@ -191,6 +195,10 @@ class Welcome extends Component {
 
     renderFavorite(favorite = {}) {
         var { classes, controller } = this.props;
+
+        if (favorite.size === 0) {
+            return false;
+        }
 
         return (
             <Link
@@ -375,7 +383,7 @@ class Welcome extends Component {
                     }
                 </main>
 
-                <Controller />
+                <Controller key={controller.song.id} />
             </div>
         );
     }

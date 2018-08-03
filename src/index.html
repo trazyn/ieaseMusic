@@ -14,10 +14,13 @@
             let port = process.env.PORT || 3001;
 
             script.async = '';
-            script.src = `http://localhost:${port}/dist/bundle.js`;
+            script.src = `http://localhost:${port}/dist/main.js`;
 
             document.body.appendChild(script);
         }
+
+        document.addEventListener('dragover', e => e.preventDefault(), false);
+        document.addEventListener('drop', e => e.preventDefault(), false);
     </script>
 </body>
 </html>

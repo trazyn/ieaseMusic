@@ -1,24 +1,26 @@
 
+import path from 'path';
 import { observable, action } from 'mobx';
-import { ipcRenderer } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import axios from 'axios';
 
+import pkg from 'root/package.json';
 import controller from './controller';
-import theme from '../../theme.js';
-import config from '../../../config/index';
-import storage from 'utils/storage';
+import config from 'config/index';
+import theme from 'config/theme.js';
+import storage from 'common/storage';
 import lastfm from 'utils/lastfm';
 
 class Preferences {
     @observable show = false;
-    @observable showTray = true;
-    @observable alwaysOnTop = true;
+    @observable showTray = false;
+    @observable alwaysOnTop = false;
     @observable showNotification = true;
     @observable autoPlay = true;
     @observable naturalScroll = true;
     @observable volume = 1;
     @observable port = config.api.port;
-    @observable highquality = 1;
+    @observable highquality = 0;
     @observable autoupdate = false;
     @observable lastfm = {
         username: '', // Your last.fm username
@@ -32,8 +34,10 @@ class Preferences {
         'Xiami': false,
         'Kugou': false,
         'Baidu': true,
+        'kuwo': true,
     };
     @observable proxy = '';
+    @observable downloads = path.join(remote.app.getPath('music'), pkg.name);
 
     @action async init() {
         var preferences = await storage.get('preferences');
@@ -52,6 +56,7 @@ class Preferences {
             lastfm = self.lastfm,
             enginers = self.enginers,
             proxy = self.proxy,
+            downloads = self.downloads,
         } = preferences;
 
         self.showTray = !!showTray;
@@ -68,6 +73,7 @@ class Preferences {
         self.lastfm = lastfm;
         self.enginers = enginers;
         self.proxy = proxy;
+        self.downloads = downloads;
 
         // Save preferences
         self.save();
@@ -77,7 +83,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy } = self;
+        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -94,6 +100,7 @@ class Preferences {
             lastfm,
             enginers,
             proxy,
+            downloads,
         });
 
         ipcRenderer.send('update-preferences', {
@@ -166,6 +173,11 @@ class Preferences {
         }
 
         self.port = port;
+        self.save();
+    }
+
+    @action setDownloads(downloads) {
+        self.downloads = downloads.path;
         self.save();
     }
 

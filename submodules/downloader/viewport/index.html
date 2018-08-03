@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Downloader</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        if (process.env.HOT) {
+            let script = document.createElement('script');
+            let port = process.env.PORT || 3001;
+
+            script.async = '';
+            script.src = `http://localhost:${port}/dist/downloader.js`;
+
+            document.body.appendChild(script);
+        }
+
+        var webFrame = require('electron').webFrame;
+        webFrame.setVisualZoomLevelLimits(1, 1);
+        webFrame.setLayoutZoomLevelLimits(0, 0);
+
+        document.addEventListener('dragover', e => e.preventDefault(), false);
+        document.addEventListener('drop', e => e.preventDefault(), false);
+    </script>
+</body>
+</html>
+

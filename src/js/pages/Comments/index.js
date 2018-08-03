@@ -29,7 +29,7 @@ class Comments extends Component {
     }
 
     async loadmore(e) {
-        var container = this.refs.list;
+        var container = this.list;
 
         // Drop the duplicate invoke
         if (container.classList.contains(classes.loadmore)) {
@@ -171,7 +171,9 @@ class Comments extends Component {
                 <Hero location={this.props.location} />
 
                 <aside
-                    ref="list"
+                    ref={
+                        ele => (this.list = ele)
+                    }
                     className={classes.list}
                     onScroll={e => this.loadmore()}
                 >

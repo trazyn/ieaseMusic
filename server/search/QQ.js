@@ -7,7 +7,7 @@ const error = _debug('dev:plugin:QQ:error');
 
 let rp;
 
-async function getSong(mid) {
+async function getSong(mid, isFlac) {
     var currentMs = (new Date()).getUTCMilliseconds();
     var guid = Math.round(2147483647 * Math.random()) * currentMs % 1e10;
     var file = await genKey(mid);
@@ -49,14 +49,21 @@ async function getSong(mid) {
         };
     }
 
+    if (isFlac === true) {
+        // Not found flac track
+        return {};
+    }
+
     if (file.size_320mp3) {
         return {
+            bitRate: 320000,
             src: getURL(`M800${mid}.mp3`, key, guid),
         };
     }
 
     if (file.size_128mp3) {
         return {
+            bitRate: 128000,
             src: getURL(`M500${mid}.mp3`, key, guid),
         };
     }
@@ -104,7 +111,7 @@ function getURL(filename, key, guid) {
     return `http://dl.stream.qqmusic.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
 }
 
-export default async(request, keyword, artists) => {
+export default async(request, keyword, artists, isFlac) => {
     debug(chalk.black.bgGreen('💊  Loaded QQ music.'));
 
     rp = request;
@@ -130,7 +137,7 @@ export default async(request, keyword, artists) => {
         if (response.code !== 0
             || data.song.list.length === 0) {
             error(chalk.black.bgRed('🚧  Nothing.'));
-            return Promise.reject();
+            return Promise.reject(Error(404));
         }
 
         for (let e of data.song.list) {
@@ -141,11 +148,11 @@ export default async(request, keyword, artists) => {
                 continue;
             }
 
-            song = await getSong(e.media_mid);
+            song = await getSong(e.media_mid, isFlac);
 
             if (!song.src) {
                 error(chalk.black.bgRed('🚧  Nothing.'));
-                return Promise.reject();
+                return Promise.reject(Error(404));
             }
 
             debug(chalk.black.bgGreen('🚚  Result >>>'));
@@ -156,9 +163,9 @@ export default async(request, keyword, artists) => {
         }
     } catch (ex) {
         error('Failed to get song: %O', ex);
-        return Promise.reject();
+        return Promise.reject(ex);
     }
 
     error(chalk.black.bgRed('🈚  Not Matched.'));
-    return Promise.reject();
+    return Promise.reject(Error(405));
 };

@@ -1,30 +1,35 @@
 
 import path from 'path';
-import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor, dialog } from 'electron';
+import { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, shell, powerMonitor } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import storage from 'electron-json-storage';
-import { autoUpdater } from 'electron-updater';
 import axios from 'axios';
 import _debug from 'debug';
 
 import pkg from './package.json';
 import config from './config';
 import api from './server/api';
+import usocket from './server/usocket';
+import { updater, downloader } from './submodules';
 
 const _PLATFORM = process.platform;
 
 let debug = _debug('dev:main');
-let error = _debug('dev:main:error');
 let apiServer;
 let forceQuit = false;
 let quitting = false;
-let downloading = false;
-let autoUpdaterInit = false;
 let menu;
 let tray;
 let mainWindow;
 let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
+// Shared data to other applocation via a unix socket file
+let shared = {
+    modes: [],
+    track: {},
+    playing: false,
+    playlist: []
+};
 let mainMenu = [
     {
         label: 'ieaseMusic',
@@ -59,7 +64,7 @@ let mainMenu = [
                 label: 'Check for updates',
                 accelerator: 'Cmd+U',
                 click() {
-                    checkForUpdates();
+                    updater.checkForUpdates();
                 }
             },
             {
@@ -67,8 +72,7 @@ let mainMenu = [
                 accelerator: 'Command+Q',
                 selector: 'terminate:',
                 click() {
-                    forceQuit = true;
-                    app.quit();
+                    goodbye();
                 }
             }
         ]
@@ -213,6 +217,13 @@ let mainMenu = [
                 }
             },
             {
+                label: 'Downloads',
+                accelerator: 'Cmd+Shift+D',
+                click() {
+                    downloader.showDownloader();
+                }
+            },
+            {
                 type: 'separator',
             },
             {
@@ -321,7 +332,7 @@ let trayMenu = [
         label: 'Check for updates',
         accelerator: 'Cmd+U',
         click() {
-            checkForUpdates();
+            updater.checkForUpdates();
         }
     },
     {
@@ -349,8 +360,7 @@ let trayMenu = [
         accelerator: 'Command+Q',
         selector: 'terminate:',
         click() {
-            forceQuit = true;
-            app.quit();
+            goodbye();
         }
     }
 ];
@@ -388,22 +398,6 @@ let dockMenu = [
         }
     },
 ];
-
-function checkForUpdates() {
-    if (downloading) {
-        dialog.showMessageBox({
-            type: 'info',
-            buttons: ['OK'],
-            title: pkg.name,
-            message: `Downloading...`,
-            detail: `Please leave the app open, the new version is downloading. You'll receive a new dialog when downloading is finished.`
-        });
-
-        return;
-    }
-
-    autoUpdater.checkForUpdates();
-}
 
 function updateMenu(playing) {
     if (!isOsx) {
@@ -456,6 +450,11 @@ function registerGlobalShortcut() {
     });
 }
 
+const goodbye = () => {
+    forceQuit = true;
+    app.quit();
+};
+
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
         defaultWidth: 800,
@@ -465,12 +464,13 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
+        show: false,
         width: 800,
         height: 520,
         resizable: false,
         maximizable: false,
         fullscreenable: false,
-        vibrancy: 'ultra-dark',
+        backgroundColor: 'none',
         titleBarStyle: 'hiddenInset',
     });
 
@@ -482,6 +482,7 @@ const createMainWindow = () => {
         mainWindow.setMenu(null);
     }
 
+    mainWindowState.manage(mainWindow);
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -496,6 +497,10 @@ const createMainWindow = () => {
         shell.openExternal(url);
     });
 
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    });
+
     mainWindow.on('close', e => {
         if (isLinux) {
             app.quit();
@@ -503,7 +508,6 @@ const createMainWindow = () => {
         }
 
         if (forceQuit) {
-            console.log('Is closed...');
             app.quit();
         } else {
             e.preventDefault();
@@ -546,17 +550,22 @@ const createMainWindow = () => {
             };
         });
 
+        shared.playlist = args.songs;
         playingMenu.submenu = submenu;
         updateMenu();
     });
 
     // Update menu icon image and controls menu
     ipcMain.on('update-status', (event, args) => {
-        var { playing, song } = args;
+        var { playing, song, modes } = args;
 
         if (tray) {
             updateTray(playing, song);
         }
+
+        shared.modes = modes;
+        shared.track = song;
+        shared.playing = +playing;
         updateMenu(playing);
     });
 
@@ -595,11 +604,7 @@ const createMainWindow = () => {
     });
 
     // Quit app
-    ipcMain.on('goodbye', (event) => {
-        console.log('Close...');
-        forceQuit = true;
-        app.quit();
-    });
+    ipcMain.on('goodbye', () => goodbye());
 
     // App has suspend
     powerMonitor.on('suspend', () => {
@@ -619,15 +624,19 @@ const createMainWindow = () => {
         app.dock.setMenu(Menu.buildFromTemplate(dockMenu));
     }
 
+    mainWindow.goodbye = () => goodbye();
+
     updateMenu();
     registerGlobalShortcut();
+    usocket(shared, mainWindow);
+    updater.installAutoUpdater(() => goodbye());
+    downloader.createDownloader();
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
     debug('Create main process success 🍻');
 };
 
 app.setName('ieaseMusic');
 
-app.on('ready', createMainWindow);
 app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
@@ -635,8 +644,6 @@ app.on('activate', e => {
 });
 app.on('before-quit', e => {
     e.preventDefault();
-
-    console.log('Before quit...');
 
     if (quitting) {
         return;
@@ -652,80 +659,24 @@ app.on('before-quit', e => {
     app.exit(0);
     process.exit(0);
 });
+app.on('ready', () => {
+    createMainWindow();
 
-storage.get('preferences', (err, data) => {
-    var port = config.api.port;
+    storage.get('preferences', (err, data) => {
+        var port = config.api.port;
 
-    if (!err) {
-        port = data.port || port;
+        if (!err) {
+            port = data.port || port;
 
-        if (data.autoupdate) {
-            autoUpdater.checkForUpdates();
-        } else {
-            autoUpdaterInit = true;
+            updater.checkForUpdates(data.autoupdate);
         }
-    }
 
-    axios.defaults.baseURL = `http://localhost:${port}`;
+        axios.defaults.baseURL = `http://localhost:${port}`;
 
-    apiServer = api.listen(port, (err) => {
-        if (err) throw err;
+        apiServer = api.listen(port, (err) => {
+            if (err) throw err;
 
-        debug(`API server is running with port ${port} 👊`);
-    });
-});
-
-autoUpdater.on('update-not-available', e => {
-    if (!autoUpdaterInit) {
-        autoUpdaterInit = true;
-        return;
-    }
-
-    dialog.showMessageBox({
-        type: 'info',
-        buttons: ['OK'],
-        title: pkg.name,
-        message: `${pkg.name} is up to date :)`,
-        detail: `${pkg.name} ${pkg.version} is currently the newest version available, It looks like you're already rocking the latest version!`
-    });
-});
-
-autoUpdater.on('update-available', e => {
-    downloading = true;
-    checkForUpdates();
-});
-
-autoUpdater.on('error', err => {
-    dialog.showMessageBox({
-        type: 'error',
-        buttons: ['Cancel update'],
-        title: pkg.name,
-        message: `Failed to update ${pkg.name} :(`,
-        detail: `An error occurred in retrieving update information, Please try again later.`,
-    });
-
-    downloading = false;
-    error(err);
-});
-
-autoUpdater.on('update-downloaded', info => {
-    var { releaseNotes, releaseName } = info;
-    var index = dialog.showMessageBox({
-        type: 'info',
-        buttons: ['Restart', 'Later'],
-        title: pkg.name,
-        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
-        detail: `${releaseName}\n\n${releaseNotes}`
-    });
-    downloading = false;
-
-    if (index === 1) {
-        return;
-    }
-
-    autoUpdater.quitAndInstall();
-    setTimeout(() => {
-        mainWindow = null;
-        app.quit();
+            debug(`API server is running with port ${port} 👊`);
+        });
     });
 });
