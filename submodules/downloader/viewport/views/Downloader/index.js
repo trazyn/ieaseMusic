@@ -9,7 +9,6 @@ import { ipcRenderer, shell } from 'electron';
 import classes from './classes';
 import Confirm from 'ui/Confirm';
 import ProgressImage from 'ui/ProgressImage';
-import storage from 'common/storage';
 
 function humanSize(size) {
     var value = (size / 1024).toFixed(1);
@@ -113,9 +112,7 @@ class Downloader extends Component {
 
     async openDownloads(e) {
         e.preventDefault();
-
-        var preferences = await storage.get('preferences');
-        shell.openItem(preferences.downloads);
+        ipcRenderer.send('download-open');
     }
 
     async clearAll() {

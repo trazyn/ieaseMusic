@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import nodeID3 from 'node-id3';
 import tmp from 'tmp-promise';
@@ -23,6 +23,19 @@ let cancels = {};
 
 function isDev() {
     return process.mainModule.filename.indexOf('app.asar') === -1;
+}
+
+async function getDownloads() {
+    var preferences = await storage.get('preferences');
+    var downloads = preferences.downloads || _DOWNLOAD_DIR;
+
+    // Make sure the download directory already exists
+    if (fs.existsSync(downloads) === false) {
+        debug('Ccreate download directory: %s', downloads);
+        mkdirp.sync(downloads);
+    }
+
+    return downloads;
 }
 
 async function syncDownloaded() {
@@ -121,21 +134,14 @@ async function writeFile(url, filepath, cb, canceler) {
 
 async function download(task) {
     try {
-        var preferences = await storage.get('preferences');
+        var downloads = await getDownloads();
         var song = task.payload;
         var src = song.data.src;
         var imagefile = (await tmp.file()).path;
-        var downloads = preferences.downloads || _DOWNLOAD_DIR;
         var trackfile = path.join(
             downloads,
             `${song.artists.map(e => e.name).join()} - ${song.name.replace(/\/|\\/g, '／')}.${src.replace(/\?.*/, '').match(/^http.*\.(.*)$/)[1]}`
         );
-
-        // Make sure the download directory already exists
-        if (fs.existsSync(downloads) === false) {
-            debug('Ccreate download directory: %s', downloads);
-            mkdirp.sync(downloads);
-        }
 
         task.path = trackfile;
 
@@ -240,6 +246,14 @@ function createDownloader() {
     // Show the download window
     ipcMain.on('download-show',
         () => showDownloader()
+    );
+
+    // Open the downloads
+    ipcMain.on('download-open',
+        async() => {
+            var downloads = await getDownloads();
+            shell.openItem(downloads);
+        }
     );
 
     syncDownloaded();
