@@ -295,7 +295,7 @@ function doneTask(task) {
 
 function updateTask(task) {
     downloader.webContents.send(
-        'download-begin',
+        'download-progress',
         { task }
     );
 }
