@@ -127,6 +127,7 @@ async function writeFile(url, filepath, cb, canceler) {
                 cancels[canceler] = () => r.abort();
             }
         } catch (ex) {
+            syncTask();
             reject(ex);
         }
     });
@@ -192,6 +193,7 @@ async function download(task) {
 }
 
 function showDownloader() {
+    syncTask();
     downloader.show();
     downloader.focus();
 }
@@ -277,6 +279,7 @@ function removeTasks(tasks) {
             } catch (ex) {}
         }
     );
+    syncTask();
 }
 
 function failTask(task, err) {
@@ -298,6 +301,11 @@ function updateTask(task) {
         'download-progress',
         { task }
     );
+}
+
+function syncTask(id) {
+    syncDownloaded();
+    downloader.webContents.send('download-sync', { id });
 }
 
 function addTask(item) {

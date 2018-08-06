@@ -58,6 +58,13 @@ class Downloader extends Component {
             }
         );
 
+        ipcRenderer.on('download-sync',
+            (e, args) => {
+                // Reload downloaded items from disk
+                load();
+            }
+        );
+
         ipcRenderer.on('download-begin',
             (e, args) => {
                 let song = args.task.payload;
