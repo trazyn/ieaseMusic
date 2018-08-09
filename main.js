@@ -571,12 +571,18 @@ const createMainWindow = () => {
 
     // Show/Hide menu icon
     ipcMain.on('update-preferences', (event, args = {}) => {
+        var proxyOptions = { proxyBypassRules: 'localhost' };
+        var proxy = args.proxy || '';
+
+        if (proxy.endsWith('.pac')) {
+            proxyOptions.pacScript = proxy;
+        } else {
+            proxyOptions.proxyRules = proxy;
+        }
+
         mainWindow.setAlwaysOnTop(!!args.alwaysOnTop);
         mainWindow.webContents.session.setProxy(
-            {
-                proxyRules: args.proxy,
-                proxyBypassRules: 'localhost'
-            },
+            proxyOptions,
             () => debug('Apply proxy: %s', args.proxy)
         );
 
