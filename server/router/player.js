@@ -182,7 +182,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
 
     try {
         if (!process.env.APIONLY) {
-            var selector = require('../search');
+            var selector = require('../provider');
 
             // Search from other source
             debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
