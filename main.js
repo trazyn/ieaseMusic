@@ -25,6 +25,7 @@ let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
 
 let showMenuBarOnLinux = false;
+let revertTrayIcon = false;
 
 // Shared data to other applocation via a unix socket file
 let shared = {
@@ -423,6 +424,13 @@ function updateTray(playing) {
         : `${__dirname}/src/assets/notplaying.png`
         ;
 
+    if (revertTrayIcon) {
+        icon = playing
+            ? `${__dirname}/src/assets/playing-dark-panel.png`
+            : `${__dirname}/src/assets/notplaying-dark-panel.png`
+        ;
+    }
+
     if (!tray) {
         // Init tray icon
         tray = new Tray(icon);
@@ -591,6 +599,9 @@ const createMainWindow = () => {
             () => debug('Apply proxy: %s', args.proxy)
         );
 
+        revertTrayIcon = args.revertTrayIcon;
+        debug(revertTrayIcon);
+
         if (!args.showTray) {
             if (tray) {
                 tray.destroy();
@@ -675,6 +686,7 @@ app.on('ready', () => {
         debug(data);
         if (!err && data) {
             showMenuBarOnLinux = data.showMenuBarOnLinux;
+            revertTrayIcon = data.revertTrayIcon;
         }
     });
 

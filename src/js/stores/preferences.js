@@ -15,6 +15,7 @@ class Preferences {
     @observable show = false;
     @observable showTray = false;
     @observable showMenuBarOnLinux = false;
+    @observable revertTrayIcon = false;
     @observable alwaysOnTop = false;
     @observable showNotification = true;
     @observable autoPlay = true;
@@ -45,6 +46,7 @@ class Preferences {
         var {
             showTray = self.showTray,
             showMenuBarOnLinux = self.showMenuBarOnLinux,
+            revertTrayIcon = self.revertTrayIcon,
             alwaysOnTop = self.alwaysOnTop,
             showNotification = self.showNotification,
             autoPlay = self.autoPlay,
@@ -63,6 +65,7 @@ class Preferences {
 
         self.showTray = !!showTray;
         self.showMenuBarOnLinux = !!showMenuBarOnLinux;
+        self.revertTrayIcon = !!revertTrayIcon;
         self.alwaysOnTop = !!alwaysOnTop;
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
@@ -86,11 +89,12 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, showMenuBarOnLinux, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
+        var { showTray, showMenuBarOnLinux, revertTrayIcon, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
 
         await storage.set('preferences', {
             showTray,
             showMenuBarOnLinux,
+            revertTrayIcon,
             alwaysOnTop,
             showNotification,
             autoPlay,
@@ -112,6 +116,7 @@ class Preferences {
             showTray,
             alwaysOnTop,
             proxy,
+            revertTrayIcon
         });
     }
 
@@ -122,6 +127,11 @@ class Preferences {
 
     @action setShowMenuBarOnLinux(showMenuBarOnLinux) {
         self.showMenuBarOnLinux = showMenuBarOnLinux;
+        self.save();
+    }
+
+    @action setRevertTrayIcon(revertTrayIcon) {
+        self.revertTrayIcon = revertTrayIcon;
         self.save();
     }
 

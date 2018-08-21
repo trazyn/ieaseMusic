@@ -58,6 +58,8 @@ class Preferences extends Component {
             setShowTray,
             showMenuBarOnLinux,
             setShowMenuBarOnLinux,
+            revertTrayIcon,
+            setRevertTrayIcon,
             alwaysOnTop,
             setAlwaysOnTop,
             autoPlay,
@@ -123,6 +125,17 @@ class Preferences extends Component {
                                 defaultChecked={showMenuBarOnLinux}
                                 id="showMenuBarOnLinux"
                                 onChange={e => setShowMenuBarOnLinux(e.target.checked)} />
+                        </label>
+
+                        <label htmlFor="revertTrayIcon">
+                            <div>
+                                <h4>Revert tray icon to fit dark panel</h4>
+                            </div>
+
+                            <Switch
+                                defaultChecked={revertTrayIcon}
+                                id="revertTrayIcon"
+                                onChange={e => setRevertTrayIcon(e.target.checked)} />
                         </label>
 
                         <label htmlFor="autoPlay">
