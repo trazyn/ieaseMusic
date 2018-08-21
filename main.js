@@ -23,6 +23,9 @@ let tray;
 let mainWindow;
 let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
+
+let showMenuBarOnLinux = false;
+
 // Shared data to other applocation via a unix socket file
 let shared = {
     modes: [],
@@ -400,7 +403,7 @@ let dockMenu = [
 ];
 
 function updateMenu(playing) {
-    if (!isOsx) {
+    if (!isOsx && !showMenuBarOnLinux) {
         return;
     }
 
@@ -479,7 +482,9 @@ const createMainWindow = () => {
             path.join(__dirname, 'src/assets/dock.png')
         );
         // Disable default menu bar
-        mainWindow.setMenu(null);
+        if (!showMenuBarOnLinux) {
+            mainWindow.setMenu(null);
+        }
     }
 
     mainWindowState.manage(mainWindow);
@@ -666,6 +671,13 @@ app.on('before-quit', e => {
     process.exit(0);
 });
 app.on('ready', () => {
+    storage.get('preferences', (err, data) => {
+        debug(data);
+        if (!err && data) {
+            showMenuBarOnLinux = data.showMenuBarOnLinux;
+        }
+    });
+
     createMainWindow();
 
     storage.get('preferences', (err, data) => {

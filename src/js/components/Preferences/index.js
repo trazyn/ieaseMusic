@@ -56,6 +56,8 @@ class Preferences extends Component {
         var {
             showTray,
             setShowTray,
+            showMenuBarOnLinux,
+            setShowMenuBarOnLinux,
             alwaysOnTop,
             setAlwaysOnTop,
             autoPlay,
@@ -109,6 +111,18 @@ class Preferences extends Component {
                                 defaultChecked={showTray}
                                 id="showTray"
                                 onChange={e => setShowTray(e.target.checked)} />
+                        </label>
+
+                        <label htmlFor="showMenuBarOnLinux">
+                            <div>
+                                <h4>Show menu bar on Linux</h4>
+                                <p>Only work on Linux. Restart needed.</p>
+                            </div>
+
+                            <Switch
+                                defaultChecked={showMenuBarOnLinux}
+                                id="showMenuBarOnLinux"
+                                onChange={e => setShowMenuBarOnLinux(e.target.checked)} />
                         </label>
 
                         <label htmlFor="autoPlay">

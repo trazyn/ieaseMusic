@@ -14,6 +14,7 @@ import lastfm from 'utils/lastfm';
 class Preferences {
     @observable show = false;
     @observable showTray = false;
+    @observable showMenuBarOnLinux = false;
     @observable alwaysOnTop = false;
     @observable showNotification = true;
     @observable autoPlay = true;
@@ -43,6 +44,7 @@ class Preferences {
         var preferences = await storage.get('preferences');
         var {
             showTray = self.showTray,
+            showMenuBarOnLinux = self.showMenuBarOnLinux,
             alwaysOnTop = self.alwaysOnTop,
             showNotification = self.showNotification,
             autoPlay = self.autoPlay,
@@ -60,6 +62,7 @@ class Preferences {
         } = preferences;
 
         self.showTray = !!showTray;
+        self.showMenuBarOnLinux = !!showMenuBarOnLinux;
         self.alwaysOnTop = !!alwaysOnTop;
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
@@ -83,10 +86,11 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
+        var { showTray, showMenuBarOnLinux, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
 
         await storage.set('preferences', {
             showTray,
+            showMenuBarOnLinux,
             alwaysOnTop,
             showNotification,
             autoPlay,
@@ -113,6 +117,11 @@ class Preferences {
 
     @action setShowTray(showTray) {
         self.showTray = showTray;
+        self.save();
+    }
+
+    @action setShowMenuBarOnLinux(showMenuBarOnLinux) {
+        self.showMenuBarOnLinux = showMenuBarOnLinux;
         self.save();
     }
 
