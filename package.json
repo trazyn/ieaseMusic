@@ -83,6 +83,7 @@
     ]
   },
   "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
