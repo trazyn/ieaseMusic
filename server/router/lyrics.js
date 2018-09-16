@@ -26,8 +26,12 @@ router.get('/:id', async(req, res) => {
         if (data.code !== 200) {
             throw data;
         } else {
+            if (data.lrc === undefined) {
+                // console.info(data.lrc);
+                return;
+            }
             let lyrics = data.lrc.lyric.split('\n');
-
+            // console.info(data);
             lyrics.map(e => {
                 let match = e.match(/\[.+\]/);
 
