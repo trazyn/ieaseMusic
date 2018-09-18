@@ -154,7 +154,6 @@ class Downloader extends Component {
                             moment(item.date).fromNow()
                         }
                     </small>
-
                     <div className={classes.hovers}>
                         {
                             humanSize(item.size)
@@ -190,6 +189,21 @@ class Downloader extends Component {
                             width: `${item.progress * 100}%`,
                         }}
                     />
+                </div>
+
+                <div className={classes.hovers}>
+                    <a
+                        href=""
+                        onClick={
+                            e => {
+                                e.preventDefault();
+                                removeTasks(item);
+                                ipcRenderer.send('download-remove', { tasks: JSON.stringify(item) });
+                            }
+                        }
+                    >
+                        <i className="ion-trash-b" />
+                    </a>
                 </div>
             </aside>
         );
