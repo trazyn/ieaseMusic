@@ -14,7 +14,8 @@ import pkg from '../../package.json';
 import storage from '../../common/storage';
 
 const KEY = 'downloaded';
-const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
+const MUSIC_DIR = app.getPath('music') || app.getPath('home');
+const DOWNLOAD_DIR = path.join(MUSIC_DIR, pkg.name);
 
 let debug = _debug('dev:submodules:downloader');
 let error = _debug('dev:submodules:downloader:error');
@@ -27,7 +28,7 @@ function isDev() {
 
 async function getDownloads() {
     var preferences = await storage.get('preferences');
-    var downloads = preferences.downloads || _DOWNLOAD_DIR;
+    var downloads = preferences.downloads || DOWNLOAD_DIR;
 
     // Make sure the download directory already exists
     if (fs.existsSync(downloads) === false) {

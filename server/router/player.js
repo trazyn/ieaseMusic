@@ -204,6 +204,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             }
         }
     } catch (ex) {
+        error(ex);
         debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
     }
 
