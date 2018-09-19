@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
+import { Link } from 'react-router-dom';
 import delegate from 'delegate';
 import moment from 'moment';
 import { ipcRenderer, shell } from 'electron';
@@ -67,16 +68,29 @@ class Downloader extends Component {
 
         ipcRenderer.on('download-begin',
             (e, args) => {
-                let song = args.task.payload;
-                let notification = new window.Notification('🍭 Donwload Track', {
-                    icon: song.album.cover,
-                    body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
-                });
+                let songs = args.tasks.map(
+                    e => {
+                        updateTask(e);
+                        return e.payload;
+                    }
+                );
 
-                notification.onclick = () => {
-                    ipcRenderer.send('download-show');
-                };
-                updateTask(args.task);
+                if (songs.length === 1) {
+                    let song = songs[0];
+
+                    let notification = new window.Notification('🍭 Donwload Track', {
+                        icon: song.album.cover,
+                        body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
+                    });
+
+                    notification.onclick = () => {
+                        ipcRenderer.send('download-show');
+                    };
+                } else {
+                    window.Notification('🍭 Donwload Track', {
+                        body: `${songs.length} download tasks in queue~`
+                    });
+                }
             }
         );
 
@@ -195,7 +209,7 @@ class Downloader extends Component {
                     </small>
                     <div className={classes.actions}>
                         <button
-                            onClick={e => ipcRenderer.send('download', { song: JSON.stringify(song) })}
+                            onClick={e => ipcRenderer.send('download', { songs: JSON.stringify(song) })}
                         >
                             Retry
                         </button>
@@ -301,19 +315,31 @@ class Downloader extends Component {
                     </section>
 
                     <footer>
-                        <button
-                            onClick={e => this.openDownloads(e)}
-                        >
-                            <i className="ion-android-open" />
-                            Open Folder
-                        </button>
+                        <aside>
+                            <button
+                                onClick={e => this.openDownloads(e)}
+                            >
+                                <i className="ion-android-open" />
+                                Open Folder
+                            </button>
 
-                        <button
-                            onClick={e => this.clearAll()}
+                            <button
+                                onClick={e => this.clearAll()}
+                            >
+                                <i className="ion-ios-close" />
+                                Clear All
+                            </button>
+                        </aside>
+
+                        <Link
+                            to="/list"
+                            style={{
+                                marginRight: 10,
+                                fontSize: 18,
+                            }}
                         >
-                            <i className="ion-ios-close" />
-                            Clear All
-                        </button>
+                            <i className="ion-ios-plus-outline" />
+                        </Link>
                     </footer>
                 </main>
 

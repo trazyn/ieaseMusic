@@ -35,7 +35,7 @@ export default theme => ({
             overflowX: 'hidden',
         },
 
-        '& aside': {
+        '& section aside': {
             position: 'relative',
             display: 'flex',
             width: 235,
@@ -63,11 +63,18 @@ export default theme => ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'space-between',
             width: '100vw',
             height: 40,
-            paddingLeft: 12,
             backgroundColor: 'white',
             boxShadow: '0 6px 24px rgba(0, 0, 0, .1)',
+        },
+
+        '& footer aside': {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
         },
 
         '& button': {

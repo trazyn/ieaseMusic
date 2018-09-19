@@ -1,12 +1,14 @@
 
 import { observable, action, autorun } from 'mobx';
 import storage from 'common/storage';
+import { ipcRenderer, remote } from 'electron';
 
 const KEY = 'downloaded';
 
 class Stores {
     @observable tasks = [];
     @observable mapping = {};
+    @observable playlist = [];
 
     constructor() {
         autorun(
@@ -78,6 +80,27 @@ class Stores {
     failTask = (task) => {
         this.mapping[task.id] = task;
         storage.set(KEY, this.mapping);
+    }
+
+    @action.bound
+    getPlaylist = () => {
+        return new Promise(
+            (resolve, reject) => {
+                var timer = setTimeout(
+                    () => resolve(false),
+                    5000
+                );
+
+                ipcRenderer.once('response-playlist', (e, data) => {
+                    clearTimeout(timer);
+                    data = JSON.parse(data);
+                    this.playlist = data.songs;
+                    resolve(true);
+                });
+
+                remote.getGlobal('mainWindow').webContents.send('request-playlist');
+            }
+        );
     }
 };
 

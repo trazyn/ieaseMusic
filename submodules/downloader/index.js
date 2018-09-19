@@ -12,6 +12,8 @@ import _debug from 'debug';
 
 import pkg from '../../package.json';
 import storage from '../../common/storage';
+import config from '../../config';
+import helper from '../../src/js/utils/helper';
 
 const KEY = 'downloaded';
 const MUSIC_DIR = app.getPath('music') || app.getPath('home');
@@ -21,6 +23,42 @@ let debug = _debug('dev:submodules:downloader');
 let error = _debug('dev:submodules:downloader:error');
 let downloader;
 let cancels = {};
+let queue = createQueue(2);
+
+function createQueue(max) {
+    var waitingGroup = [];
+    var mapping = {};
+    var queue = {
+        waiting(task) {
+            return new Promise(
+                (resolve, reject) => {
+                    // Save the resolve callback
+                    mapping[task.id] = () => resolve();
+                    // Add to queue
+                    waitingGroup.push(task);
+
+                    if (waitingGroup.length <= max) {
+                        resolve();
+                    }
+                }
+            );
+        },
+        done(task) {
+            mapping[task.id]();
+            delete mapping[task.id];
+
+            waitingGroup = waitingGroup.filter(e => e.id !== task.id);
+
+            // Resolve the next task
+            let next = waitingGroup.pop();
+            if (next) {
+                mapping[next.id]();
+            }
+        }
+    };
+
+    return queue;
+}
 
 function isDev() {
     return process.mainModule.filename.indexOf('app.asar') === -1;
@@ -37,6 +75,37 @@ async function getDownloads() {
     }
 
     return downloads;
+}
+
+async function getDownloadLink(song) {
+    var downloadLink = (song.data || {}).src;
+
+    return new Promise(
+        (resolve, reject) => {
+            if (downloadLink) {
+                resolve(downloadLink);
+                return;
+            }
+
+            var url = `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/1`;
+
+            request(
+                {
+                    url: `http://localhost:${config.api.port}${url}`,
+                    json: true,
+                    timeout: 10000,
+                },
+                (err, response, data) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    resolve(data.song.src);
+                }
+            );
+        }
+    );
 }
 
 async function syncDownloaded() {
@@ -100,7 +169,7 @@ async function writeFile(url, filepath, cb, canceler) {
                 'Origin': 'http://music.163.com',
                 'Referer': 'http://music.163.com/',
             },
-            timeout: 10 * 10000,
+            timeout: 10000,
         });
 
         rp(r)
@@ -136,10 +205,12 @@ async function writeFile(url, filepath, cb, canceler) {
 }
 
 async function download(task) {
+    await queue.waiting(task);
+
     try {
         var downloads = await getDownloads();
         var song = task.payload;
-        var src = song.data.src;
+        var src = await getDownloadLink(song);
         var imagefile = (await tmp.file()).path;
         var trackfile = path.join(
             downloads,
@@ -147,7 +218,6 @@ async function download(task) {
         );
 
         task.path = trackfile;
-
         // Tell the render downlaod has started
         updateTask(task);
 
@@ -184,6 +254,8 @@ async function download(task) {
         };
         let success = nodeID3.write(tags, trackfile);
 
+        queue.done(task);
+
         if (!success) {
             throw Error('Failed to write ID3 tags: \'%s\'', trackfile);
         }
@@ -192,6 +264,7 @@ async function download(task) {
         failTask(task, ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
+        queue.done(task);
     }
 }
 
@@ -235,9 +308,10 @@ function createDownloader() {
     // Download track
     ipcMain.on('download',
         (event, args) => {
-            var song = JSON.parse(args.song);
+            var songs = JSON.parse(args.songs);
 
-            addTask(song);
+            songs = Array.isArray(songs) ? songs : [songs];
+            addTasks(songs);
         }
     );
 
@@ -262,6 +336,7 @@ function createDownloader() {
     );
 
     syncDownloaded();
+    global.downloader = downloader;
 }
 
 function removeTasks(tasks) {
@@ -313,21 +388,30 @@ function syncTask(id) {
     downloader.webContents.send('download-sync', { id });
 }
 
-function addTask(item) {
-    debug('Download song: \'%s\'', item.id);
-    var task = {
-        id: item.id,
-        progress: 0,
-        date: +new Date(),
-        size: 0,
-        path: null,
-        payload: item,
-    };
+function addTasks(songs) {
+    var tasks = [];
 
-    download(task);
+    songs.map(
+        e => {
+            debug('Download song: \'%s\'', e.id);
+            var task = {
+                id: e.id,
+                progress: 0,
+                date: +new Date(),
+                size: 0,
+                path: null,
+                waiting: true,
+                payload: e,
+            };
+
+            tasks.push(task);
+            download(task);
+        }
+    );
+
     downloader.webContents.send(
         'download-begin',
-        { task }
+        { tasks }
     );
 }
 
