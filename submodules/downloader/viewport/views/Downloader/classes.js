@@ -27,12 +27,6 @@ export default theme => ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            transition: '.2s',
-        },
-
-        '& nav > a:hover': {
-            backgroundColor: colors.pallet.google,
-            color: 'white',
         },
 
         '& section': {

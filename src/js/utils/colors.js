@@ -7,7 +7,7 @@ const pallet = {
     mint: '#48cfad',
     dribbble: '#ea4c89',
     twitter: '#55acee',
-    google: '#039be5',
+    google: '#5090fb',
 };
 
 const gradients = [
