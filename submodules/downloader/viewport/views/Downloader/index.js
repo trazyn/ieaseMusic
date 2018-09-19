@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
+import { Link } from 'react-router-dom';
 import delegate from 'delegate';
 import moment from 'moment';
 import { ipcRenderer, shell } from 'electron';
@@ -301,19 +302,31 @@ class Downloader extends Component {
                     </section>
 
                     <footer>
-                        <button
-                            onClick={e => this.openDownloads(e)}
-                        >
-                            <i className="ion-android-open" />
-                            Open Folder
-                        </button>
+                        <aside>
+                            <button
+                                onClick={e => this.openDownloads(e)}
+                            >
+                                <i className="ion-android-open" />
+                                Open Folder
+                            </button>
 
-                        <button
-                            onClick={e => this.clearAll()}
+                            <button
+                                onClick={e => this.clearAll()}
+                            >
+                                <i className="ion-ios-close" />
+                                Clear All
+                            </button>
+                        </aside>
+
+                        <Link
+                            to="/list"
+                            style={{
+                                marginRight: 10,
+                                fontSize: 18,
+                            }}
                         >
-                            <i className="ion-ios-close" />
-                            Clear All
-                        </button>
+                            <i className="ion-ios-plus-outline" />
+                        </Link>
                     </footer>
                 </main>
 

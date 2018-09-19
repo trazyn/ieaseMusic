@@ -10,13 +10,15 @@ import 'app/global.css';
 import theme from 'config/theme';
 import stores from './stores';
 import Downloader from './views/Downloader';
+import List from './views/List';
 
 render(
     <ThemeProvider theme={theme}>
         <Provider stores={stores}>
             <HashRouter>
                 <Switch>
-                    <Route path="/" component={Downloader} />
+                    <Route path="/" component={List} />
+                    <Route path="/list" component={Downloader} />
                 </Switch>
             </HashRouter>
         </Provider>

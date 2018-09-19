@@ -118,6 +118,11 @@ class App extends Component {
             playing.toggle(true);
         });
 
+        // Get the playlist
+        ipcRenderer.on('request-playlist', () => {
+            ipcRenderer.send('response-playlist', JSON.stringify(controller.playlist));
+        });
+
         // Right click menu
         window.addEventListener('contextmenu', e => {
             let logined = me.hasLogin();
