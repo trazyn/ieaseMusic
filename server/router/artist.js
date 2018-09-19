@@ -105,7 +105,8 @@ async function getAlbums(id) {
                 id: e.id.toString(),
                 name: e.name,
                 cover: e.picUrl,
-                link: `/player/1/${e.id}`
+                link: `/player/1/${e.id}`,
+                publishTime: e.publishTime,
             }));
         }
     } catch (ex) {
