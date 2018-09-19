@@ -99,7 +99,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
-    "electron": "^3.0.0",
+    "electron": "^2.0.9",
     "electron-builder": "^20.19.2",
     "eslint": "^5.2.0",
     "eslint-config-standard": "^11.0.0",
