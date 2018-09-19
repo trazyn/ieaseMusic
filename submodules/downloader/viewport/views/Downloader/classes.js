@@ -171,6 +171,37 @@ export default theme => ({
         }
     },
 
+    actions: {
+        position: 'absolute',
+        bottom: 0,
+        right: -13,
+        height: 64,
+        width: 100,
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#333',
+        fontWeight: '500',
+        fontFamily: 'Roboto',
+
+        '& button': {
+            cursor: 'pointer',
+        },
+
+        '& button:first-child': {
+            color: colors.pallet.google,
+        },
+
+        '& button:last-child': {
+            color: colors.pallet.grape,
+        },
+
+        '& button:hover': {
+            color: 'inherit',
+        },
+    },
+
     nothing: {
         display: 'flex',
         height: '100%',

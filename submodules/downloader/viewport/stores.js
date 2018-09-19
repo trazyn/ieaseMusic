@@ -75,8 +75,8 @@ class Stores {
     }
 
     @action.bound
-    failTask = (item) => {
-        delete this.mapping[item.id];
+    failTask = (task) => {
+        this.mapping[task.id] = task;
         storage.set(KEY, this.mapping);
     }
 };

@@ -50,10 +50,15 @@ async function syncDownloaded() {
         Object.keys(downloaded).forEach(
             e => {
                 var task = downloaded[e];
-                debug('Check task: %s:%s', task.id, task.path);
+                debug('Check task: %s => %s', task.id, task.path);
 
                 if (!task.id) {
                     throw Error('Invailid storage');
+                }
+
+                // Keep the failed tasks
+                if (task.success === false) {
+                    return;
                 }
 
                 if (
@@ -89,47 +94,43 @@ async function writeFile(url, filepath, cb, canceler) {
     };
 
     return new Promise((resolve, reject) => {
-        try {
-            var r = request({
-                url,
-                headers: {
-                    'Origin': 'http://music.163.com',
-                    'Referer': 'http://music.163.com/',
+        var r = request({
+            url,
+            headers: {
+                'Origin': 'http://music.163.com',
+                'Referer': 'http://music.163.com/',
+            },
+            timeout: 10 * 10000,
+        });
+
+        rp(r)
+            .on('error',
+                err => {
+                    delete cancels[canceler];
+                    reject(err);
                 }
-            });
+            )
+            .on('progress',
+                state => {
+                    callback(state);
+                    callback.size = state.size;
+                }
+            )
+            .on('end',
+                // WTF? Why no state given??
+                // eslint-disable-next-line
+                () => {
+                    callback();
+                    resolve();
 
-            rp(r)
-                .on('error',
-                    err => {
-                        delete cancels[canceler];
-                        throw err;
-                    }
-                )
-                .on('progress',
-                    state => {
-                        callback(state);
-                        callback.size = state.size;
-                    }
-                )
-                .on('end',
-                    // WTF? Why no state given??
-                    // eslint-disable-next-line
-                    () => {
-                        callback();
-                        resolve();
+                    delete cancels[canceler];
+                }
+            )
+            .pipe(fs.createWriteStream(filepath))
+        ;
 
-                        delete cancels[canceler];
-                    }
-                )
-                .pipe(fs.createWriteStream(filepath))
-            ;
-
-            if (canceler) {
-                cancels[canceler] = () => r.abort();
-            }
-        } catch (ex) {
-            syncTask();
-            reject(ex);
+        if (canceler) {
+            cancels[canceler] = () => r.abort();
         }
     });
 }
@@ -188,6 +189,7 @@ async function download(task) {
         }
     } catch (ex) {
         error(ex);
+        failTask(task, ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
     }
@@ -284,13 +286,15 @@ function removeTasks(tasks) {
 }
 
 function failTask(task, err) {
+    task.success = false;
     downloader.webContents.send(
-        'download-failure',
+        'download-failed',
         { task, err }
     );
 }
 
 function doneTask(task) {
+    task.success = true;
     downloader.webContents.send(
         'download-success',
         { task }

@@ -101,7 +101,7 @@ class Downloader extends Component {
             }
         );
 
-        ipcRenderer.on('download-failure',
+        ipcRenderer.on('download-failed',
             (e, args) => {
                 let song = args.task.payload;
 
@@ -110,7 +110,8 @@ class Downloader extends Component {
                     icon: song.album.cover,
                     body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
                 });
-                failTask(args.task, args.err);
+                failTask(args.task);
+                updateTask(args.task);
             }
         );
 
@@ -176,6 +177,39 @@ class Downloader extends Component {
             );
         }
 
+        if (item.success === false) {
+            return (
+                <aside>
+                    <p className={classes.title}>
+                        {name}
+                    </p>
+
+                    <small style={{ marginTop: -6 }}>
+                        {artists}
+                    </small>
+
+                    <small>
+                        {
+                            moment(item.date).fromNow()
+                        }
+                    </small>
+                    <div className={classes.actions}>
+                        <button
+                            onClick={e => ipcRenderer.send('download', { song: JSON.stringify(song) })}
+                        >
+                            Retry
+                        </button>
+
+                        <button
+                            onClick={e => removeTasks(item)}
+                        >
+                            Remove
+                        </button>
+                    </div>
+                </aside>
+            );
+        }
+
         return (
             <aside>
                 <span className={classes.title}>
@@ -189,21 +223,6 @@ class Downloader extends Component {
                             width: `${item.progress * 100}%`,
                         }}
                     />
-                </div>
-
-                <div className={classes.hovers}>
-                    <a
-                        href=""
-                        onClick={
-                            e => {
-                                e.preventDefault();
-                                removeTasks(item);
-                                ipcRenderer.send('download-remove', { tasks: JSON.stringify(item) });
-                            }
-                        }
-                    >
-                        <i className="ion-trash-b" />
-                    </a>
                 </div>
             </aside>
         );
