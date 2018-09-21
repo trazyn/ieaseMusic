@@ -27,12 +27,6 @@ export default theme => ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            transition: '.2s',
-        },
-
-        '& nav > a:hover': {
-            backgroundColor: colors.pallet.google,
-            color: 'white',
         },
 
         '& section': {
@@ -41,7 +35,7 @@ export default theme => ({
             overflowX: 'hidden',
         },
 
-        '& aside': {
+        '& section aside': {
             position: 'relative',
             display: 'flex',
             width: 235,
@@ -69,11 +63,18 @@ export default theme => ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'space-between',
             width: '100vw',
             height: 40,
-            paddingLeft: 12,
             backgroundColor: 'white',
             boxShadow: '0 6px 24px rgba(0, 0, 0, .1)',
+        },
+
+        '& footer aside': {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
         },
 
         '& button': {
@@ -175,6 +176,37 @@ export default theme => ({
         '&:hover a': {
             transform: 'translateX(0)',
         }
+    },
+
+    actions: {
+        position: 'absolute',
+        bottom: 0,
+        right: -13,
+        height: 64,
+        width: 100,
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#333',
+        fontWeight: '500',
+        fontFamily: 'Roboto',
+
+        '& button': {
+            cursor: 'pointer',
+        },
+
+        '& button:first-child': {
+            color: colors.pallet.google,
+        },
+
+        '& button:last-child': {
+            color: colors.pallet.grape,
+        },
+
+        '& button:hover': {
+            color: 'inherit',
+        },
     },
 
     nothing: {
