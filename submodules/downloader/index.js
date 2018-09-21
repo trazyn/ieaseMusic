@@ -160,7 +160,7 @@ async function writeFile(url, filepath, cb, canceler) {
         if (!state) {
             callback.size.transferred = callback.size.total;
             // eslint-disable-next-line
-            return callback({ percent: 1, size: callback.size });
+            return callback({ percent: 1, size: callback.size || 0 });
         }
 
         var { percent, size } = state;
@@ -186,7 +186,7 @@ async function writeFile(url, filepath, cb, canceler) {
             )
             .on('progress',
                 state => {
-                    callback.size = state.size;
+                    callback.size = state.size || {};
                     callback(state);
                 }
             )
@@ -242,12 +242,7 @@ async function download(task) {
                 var { progress, size } = data;
 
                 task.progress = progress;
-
-                if (size) {
-                    task.size = size.total;
-                } else {
-                    task.size = 0;
-                }
+                task.size = size.total;
 
                 if (progress === 1) {
                     doneTask(task);
