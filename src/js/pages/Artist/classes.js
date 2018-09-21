@@ -25,7 +25,8 @@ export default theme => ({
         },
 
         '& canvas': {
-            transform: 'translateY(246px) translateX(4px)',
+            position: 'absolute',
+            top: -176,
             zIndex: -1,
         }
     },

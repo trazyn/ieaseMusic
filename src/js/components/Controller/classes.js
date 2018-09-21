@@ -49,6 +49,8 @@ export default theme => {
 
                 '& $playing:after': {
                     bottom: 16,
+                    opacity: 1,
+                    visibility: 'visible',
                 }
             },
 
@@ -75,6 +77,8 @@ export default theme => {
                 right: 0,
                 bottom: 2,
                 display: 'inline-block',
+                opacity: 0,
+                visibility: 'hidden',
                 padding: '10px 6px',
                 fontFamily: 'Roboto',
                 fontSize: 12,

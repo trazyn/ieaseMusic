@@ -52,7 +52,7 @@ export default async(request, keyword, artists) => {
             },
         });
 
-        if (!response) {
+        if (!response || response === 'IPDeny') {
             error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }

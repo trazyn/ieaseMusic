@@ -189,7 +189,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
 
             try {
                 // Get the highquality track
-                song = await selector.getFlac(name, artists, true);
+                song = await selector.loadFromLocal(id) || await selector.getFlac(name, artists, true);
             } catch (ex) {
                 error(ex);
             }
@@ -204,6 +204,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             }
         }
     } catch (ex) {
+        error(ex);
         debug(chalk.red.underline.bold(`💔  Not found: "${name} - ${artists}"`));
     }
 

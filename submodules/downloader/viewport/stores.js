@@ -1,65 +1,71 @@
 
-import { observable, action, autorun } from 'mobx';
+import { observable, action, transaction } from 'mobx';
 import storage from 'common/storage';
+import { ipcRenderer, remote } from 'electron';
 
 const KEY = 'downloaded';
 
 class Stores {
-    @observable tasks = [];
-    @observable mapping = {};
-
-    constructor() {
-        autorun(
-            () => {
-                var mapping = this.mapping;
-                var tasks = [];
-
-                tasks = Object.keys(mapping).map(
-                    (e, index) => {
-                        return mapping[e];
-                    }
-                );
-
-                tasks.sort((a, b) => a.date < b.date);
-                this.tasks = tasks;
-            },
-            { delay: 500 }
-        );
-    }
+    @observable tasks = new Map();
+    @observable playlist = [];
 
     @action.bound
     load = async() => {
         try {
-            var mapping = await storage.get(KEY);
-            this.mapping = mapping;
+            var persistence = await storage.get(KEY);
+
+            transaction(() => {
+                Object.keys(persistence).map(
+                    e => this.tasks.set(e, persistence[e])
+                );
+            });
         } catch (ex) {
             storage.remove(KEY);
-            this.mapping = {};
+            this.tasks.clear();
         }
+    }
+
+    save = () => {
+        var persistence = {};
+        var items = Array.from(this.tasks.entries());
+
+        items.map(
+            ([key, value]) => {
+                if (value.progress === 1 || value.success === false) {
+                    persistence[key] = value;
+                }
+            }
+        );
+        storage.set(KEY, persistence);
+    }
+
+    isPersistence = (task) => {
+        return (this.tasks.get(task.id) || {}).success;
     }
 
     @action.bound
     updateTask = (task) => {
-        this.mapping[task.id] = task;
+        // You can not repeat an inprogress task
+        var exists = this.tasks.get(task.id);
+        if (exists && task.waiting === true) {
+            return;
+        }
+        this.tasks.set(task.id, task);
+    }
+
+    @action.bound
+    batchTask = (tasks) => {
+        transaction(() => {
+            tasks.map(
+                task => this.updateTask(task)
+            );
+        });
     }
 
     @action.bound
     doneTask = (task) => {
-        var mapping = {};
-
         this.updateTask(task);
-
-        this.tasks.map(
-            e => {
-                if (e.progress === 1) {
-                    mapping[e.id] = e;
-                }
-            }
-        );
-
-        // Immediate modify the object without delay, then save to storage
-        mapping[task.id] = task;
-        storage.set(KEY, mapping);
+        this.save();
     }
 
     @action.bound
@@ -68,16 +74,31 @@ class Stores {
 
         items.forEach(
             e => {
-                delete this.mapping[e.id];
+                this.tasks.delete(e.id);
             }
         );
-        storage.set(KEY, this.mapping);
+        this.save();
     }
 
     @action.bound
-    failTask = (item) => {
-        delete this.mapping[item.id];
-        storage.set(KEY, this.mapping);
+    getPlaylist = () => {
+        return new Promise(
+            (resolve, reject) => {
+                var timer = setTimeout(
+                    () => resolve(false),
+                    5000
+                );
+
+                ipcRenderer.once('response-playlist', (e, data) => {
+                    clearTimeout(timer);
+                    data = JSON.parse(data);
+                    this.playlist = data.songs;
+                    resolve(true);
+                });
+
+                remote.getGlobal('mainWindow').webContents.send('request-playlist');
+            }
+        );
     }
 };
 

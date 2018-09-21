@@ -23,6 +23,10 @@ let tray;
 let mainWindow;
 let isOsx = _PLATFORM === 'darwin';
 let isLinux = _PLATFORM === 'linux';
+
+let showMenuBarOnLinux = false;
+let revertTrayIcon = false;
+
 // Shared data to other applocation via a unix socket file
 let shared = {
     modes: [],
@@ -400,7 +404,7 @@ let dockMenu = [
 ];
 
 function updateMenu(playing) {
-    if (!isOsx) {
+    if (!isOsx && !showMenuBarOnLinux) {
         return;
     }
 
@@ -419,6 +423,13 @@ function updateTray(playing) {
         ? `${__dirname}/src/assets/playing.png`
         : `${__dirname}/src/assets/notplaying.png`
         ;
+
+    if (revertTrayIcon) {
+        icon = playing
+            ? `${__dirname}/src/assets/playing-dark-panel.png`
+            : `${__dirname}/src/assets/notplaying-dark-panel.png`
+        ;
+    }
 
     if (!tray) {
         // Init tray icon
@@ -479,7 +490,9 @@ const createMainWindow = () => {
             path.join(__dirname, 'src/assets/dock.png')
         );
         // Disable default menu bar
-        mainWindow.setMenu(null);
+        if (!showMenuBarOnLinux) {
+            mainWindow.setMenu(null);
+        }
     }
 
     mainWindowState.manage(mainWindow);
@@ -586,6 +599,9 @@ const createMainWindow = () => {
             () => debug('Apply proxy: %s', args.proxy)
         );
 
+        revertTrayIcon = args.revertTrayIcon;
+        debug(revertTrayIcon);
+
         if (!args.showTray) {
             if (tray) {
                 tray.destroy();
@@ -638,6 +654,8 @@ const createMainWindow = () => {
     updater.installAutoUpdater(() => goodbye());
     downloader.createDownloader();
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+
+    global.mainWindow = mainWindow;
     debug('Create main process success 🍻');
 };
 
@@ -666,6 +684,14 @@ app.on('before-quit', e => {
     process.exit(0);
 });
 app.on('ready', () => {
+    storage.get('preferences', (err, data) => {
+        debug(data);
+        if (!err && data) {
+            showMenuBarOnLinux = data.showMenuBarOnLinux;
+            revertTrayIcon = data.revertTrayIcon;
+        }
+    });
+
     createMainWindow();
 
     storage.get('preferences', (err, data) => {

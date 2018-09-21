@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
+import { Link } from 'react-router-dom';
 import delegate from 'delegate';
 import moment from 'moment';
 import { ipcRenderer, shell } from 'electron';
@@ -48,7 +49,7 @@ class Downloader extends Component {
     }
 
     componentDidMount() {
-        var { stores: { load, updateTask, doneTask, failTask } } = this.props;
+        var { stores: { load, batchTask, updateTask, doneTask } } = this.props;
 
         delegate(
             this.navs, 'a[data-index]', 'click',
@@ -58,6 +59,7 @@ class Downloader extends Component {
             }
         );
 
+        ipcRenderer.removeAllListeners('download-sync');
         ipcRenderer.on('download-sync',
             (e, args) => {
                 // Reload downloaded items from disk
@@ -65,27 +67,42 @@ class Downloader extends Component {
             }
         );
 
+        ipcRenderer.removeAllListeners('download-begin');
         ipcRenderer.on('download-begin',
             (e, args) => {
-                let song = args.task.payload;
-                let notification = new window.Notification('🍭 Donwload Track', {
-                    icon: song.album.cover,
-                    body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
-                });
+                let songs = args.tasks.map(
+                    e => e.payload
+                );
+                batchTask(args.tasks);
 
-                notification.onclick = () => {
-                    ipcRenderer.send('download-show');
-                };
-                updateTask(args.task);
+                if (songs.length === 1) {
+                    let song = songs[0];
+
+                    let notification = new window.Notification('🍭 Donwload Track', {
+                        icon: song.album.cover,
+                        body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
+                    });
+
+                    notification.onclick = () => {
+                        ipcRenderer.send('download-show');
+                    };
+                } else {
+                    // eslint-disable-next-line
+                    new window.Notification('🍭 Donwload Track', {
+                        body: `${songs.length} download tasks in queue~`
+                    });
+                }
             }
         );
 
+        ipcRenderer.removeAllListeners('download-progress');
         ipcRenderer.on('download-progress',
             (e, args) => {
                 updateTask(args.task);
             }
         );
 
+        ipcRenderer.removeAllListeners('download-success');
         ipcRenderer.on('download-success',
             (e, args) => {
                 let song = args.task.payload;
@@ -101,7 +118,8 @@ class Downloader extends Component {
             }
         );
 
-        ipcRenderer.on('download-failure',
+        ipcRenderer.removeAllListeners('download-failed');
+        ipcRenderer.on('download-failed',
             (e, args) => {
                 let song = args.task.payload;
 
@@ -110,7 +128,8 @@ class Downloader extends Component {
                     icon: song.album.cover,
                     body: `${song.name} - ${song.artists.map(e => e.name).join(' / ')}`,
                 });
-                failTask(args.task, args.err);
+                doneTask(args.task);
+                updateTask(args.task);
             }
         );
 
@@ -126,19 +145,21 @@ class Downloader extends Component {
         var { removeTasks, tasks } = this.props.stores;
         var confirmed = await this.showConfirm();
 
+        tasks = Array.from(tasks.values());
+
         if (confirmed) {
             removeTasks(tasks);
             ipcRenderer.send('download-remove', { tasks: JSON.stringify(tasks) });
         }
     }
 
-    renderDetail(item) {
+    renderDetail(task) {
         var { classes, stores: { removeTasks } } = this.props;
-        var song = item.payload;
+        var song = task.payload;
         var name = song.name;
         var artists = song.artists.map((e, index) => e.name).join();
 
-        if (item.progress === 1) {
+        if (task.waiting === true) {
             return (
                 <aside>
                     <p className={classes.title}>
@@ -151,13 +172,35 @@ class Downloader extends Component {
 
                     <small>
                         {
-                            moment(item.date).fromNow()
+                            moment(task.date).fromNow()
                         }
                     </small>
+                    <div className={classes.actions}>
+                        <small>Waiting...</small>
+                    </div>
+                </aside>
+            );
+        }
 
+        if (task.progress === 1) {
+            return (
+                <aside>
+                    <p className={classes.title}>
+                        {name}
+                    </p>
+
+                    <small style={{ marginTop: -6 }}>
+                        {artists}
+                    </small>
+
+                    <small>
+                        {
+                            moment(task.date).fromNow()
+                        }
+                    </small>
                     <div className={classes.hovers}>
                         {
-                            humanSize(item.size)
+                            humanSize(task.size)
                         }
 
                         <a
@@ -165,13 +208,46 @@ class Downloader extends Component {
                             onClick={
                                 e => {
                                     e.preventDefault();
-                                    removeTasks(item);
-                                    ipcRenderer.send('download-remove', { tasks: JSON.stringify(item) });
+                                    removeTasks(task);
+                                    ipcRenderer.send('download-remove', { tasks: JSON.stringify(task) });
                                 }
                             }
                         >
                             <i className="ion-trash-b" />
                         </a>
+                    </div>
+                </aside>
+            );
+        }
+
+        if (task.success === false) {
+            return (
+                <aside>
+                    <p className={classes.title}>
+                        {name}
+                    </p>
+
+                    <small style={{ marginTop: -6 }}>
+                        {artists}
+                    </small>
+
+                    <small>
+                        {
+                            moment(task.date).fromNow()
+                        }
+                    </small>
+                    <div className={classes.actions}>
+                        <button
+                            onClick={e => ipcRenderer.send('download', { songs: JSON.stringify(song) })}
+                        >
+                            Retry
+                        </button>
+
+                        <button
+                            onClick={e => removeTasks(task)}
+                        >
+                            Remove
+                        </button>
                     </div>
                 </aside>
             );
@@ -187,7 +263,7 @@ class Downloader extends Component {
                     <div
                         className={classes.passed}
                         style={{
-                            width: `${item.progress * 100}%`,
+                            width: `${task.progress * 100}%`,
                         }}
                     />
                 </div>
@@ -198,6 +274,7 @@ class Downloader extends Component {
     render() {
         var { classes, stores: { tasks } } = this.props;
 
+        tasks = Array.from(tasks.values());
         tasks = tasks.filter(
             e => {
                 switch (this.state.selected) {
@@ -268,19 +345,31 @@ class Downloader extends Component {
                     </section>
 
                     <footer>
-                        <button
-                            onClick={e => this.openDownloads(e)}
-                        >
-                            <i className="ion-android-open" />
-                            Open Folder
-                        </button>
+                        <aside>
+                            <button
+                                onClick={e => this.openDownloads(e)}
+                            >
+                                <i className="ion-android-open" />
+                                Open Folder
+                            </button>
 
-                        <button
-                            onClick={e => this.clearAll()}
+                            <button
+                                onClick={e => this.clearAll()}
+                            >
+                                <i className="ion-ios-close" />
+                                Clear All
+                            </button>
+                        </aside>
+
+                        <Link
+                            to="/list"
+                            style={{
+                                marginRight: 10,
+                                fontSize: 18,
+                            }}
                         >
-                            <i className="ion-ios-close" />
-                            Clear All
-                        </button>
+                            <i className="ion-ios-plus-outline" />
+                        </Link>
                     </footer>
                 </main>
 
