@@ -15,15 +15,6 @@ class List extends Component {
         this.props.stores.getPlaylist();
     }
 
-    async clearAll() {
-        var { removeTasks, tasks } = this.props.stores;
-        var confirmed = await this.showConfirm();
-
-        if (confirmed) {
-            removeTasks(tasks);
-        }
-    }
-
     renderDetail(song) {
         var { classes } = this.props;
         var name = song.name;
@@ -43,11 +34,11 @@ class List extends Component {
     }
 
     toggleAll(checked) {
-        var { playlist, mapping } = this.props.stores;
+        var { playlist, isPersistence } = this.props.stores;
 
         playlist.forEach(
             e => {
-                var persistence = (mapping[e.id] || {}).success;
+                var persistence = isPersistence(e);
 
                 if (!persistence) {
                     e.checked = !checked;
@@ -58,8 +49,9 @@ class List extends Component {
 
     close() {
         var songs = this.props.stores.playlist.filter(e => e.checked);
-        ipcRenderer.send('download', { songs: JSON.stringify(songs) });
+
         window.history.back();
+        ipcRenderer.send('download', { songs: JSON.stringify(songs) });
     }
 
     addDownloadTasks() {
@@ -67,7 +59,7 @@ class List extends Component {
     }
 
     render() {
-        var { classes, stores: { playlist, mapping } } = this.props;
+        var { classes, stores: { playlist, isPersistence } } = this.props;
         var checked = playlist.filter(e => e.checked).length;
 
         return (
@@ -94,7 +86,7 @@ class List extends Component {
                                 )
                                 : playlist.map(
                                     (e, index) => {
-                                        var persistence = (mapping[e.id] || {}).success;
+                                        var persistence = isPersistence(e);
 
                                         return (
                                             <div

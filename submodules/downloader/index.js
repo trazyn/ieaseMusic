@@ -101,6 +101,11 @@ async function getDownloadLink(song) {
                         return;
                     }
 
+                    if (!data.song.src) {
+                        reject(new Error('404'));
+                        return;
+                    }
+
                     resolve(data.song.src);
                 }
             );
@@ -181,8 +186,8 @@ async function writeFile(url, filepath, cb, canceler) {
             )
             .on('progress',
                 state => {
-                    callback(state);
                     callback.size = state.size;
+                    callback(state);
                 }
             )
             .on('end',
@@ -206,6 +211,9 @@ async function writeFile(url, filepath, cb, canceler) {
 
 async function download(task) {
     await queue.waiting(task);
+
+    // Mark task as processed
+    task.waiting = false;
 
     try {
         var downloads = await getDownloads();
@@ -234,7 +242,12 @@ async function download(task) {
                 var { progress, size } = data;
 
                 task.progress = progress;
-                task.size = size.total;
+
+                if (size) {
+                    task.size = size.total;
+                } else {
+                    task.size = 0;
+                }
 
                 if (progress === 1) {
                     doneTask(task);
@@ -261,10 +274,10 @@ async function download(task) {
         }
     } catch (ex) {
         error(ex);
+        queue.done(task);
         failTask(task, ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
-        queue.done(task);
     }
 }
 
@@ -405,7 +418,6 @@ function addTasks(songs) {
             };
 
             tasks.push(task);
-            download(task);
         }
     );
 
@@ -413,6 +425,8 @@ function addTasks(songs) {
         'download-begin',
         { tasks }
     );
+
+    tasks.map(e => download(e));
 }
 
 export default {
