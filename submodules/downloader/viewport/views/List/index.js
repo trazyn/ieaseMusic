@@ -67,13 +67,9 @@ class List extends Component {
                 <main>
                     <nav>
                         <i
-                            className={classes.close}
+                            className={clazz('ion-ios-close-empty', classes.close)}
                             onClick={() => this.close()}
-                        >
-                            <img
-                                className={classes.close}
-                                src="../../../src/assets/close.png" />
-                        </i>
+                        />
                     </nav>
 
                     <section>
