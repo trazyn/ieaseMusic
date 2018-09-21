@@ -19,7 +19,12 @@ export default async(request, keyword, artists) => {
             }
         });
 
-        if (response.success !== true || response.musics.length === 0) {
+        if (
+            false
+            || response.success !== true
+            || !response.musics
+            || response.musics.length === 0
+        ) {
             error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }
