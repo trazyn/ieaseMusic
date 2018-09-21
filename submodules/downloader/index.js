@@ -392,7 +392,6 @@ function updateTask(task) {
 }
 
 function syncTask(id) {
-    syncDownloaded();
     downloader.webContents.send('download-sync', { id });
 }
 

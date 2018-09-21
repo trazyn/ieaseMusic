@@ -14,9 +14,11 @@ class Stores {
         try {
             var persistence = await storage.get(KEY);
 
-            Object.keys(persistence).map(
-                e => this.tasks.set(e, persistence[e])
-            );
+            transaction(() => {
+                Object.keys(persistence).map(
+                    e => this.tasks.set(e, persistence[e])
+                );
+            });
         } catch (ex) {
             storage.remove(KEY);
             this.tasks.clear();
