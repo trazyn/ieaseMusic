@@ -151,8 +151,10 @@ export default theme => ({
         position: 'absolute',
         right: 6,
         top: '50%',
-        height: 24,
-        transform: 'translateY(-50%)',
+        width: 32,
+        fontSize: 24,
+        textAlign: 'center',
+        transform: 'translateY(-45%)',
         cursor: 'pointer',
     },
 });
