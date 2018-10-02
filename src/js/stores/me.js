@@ -114,8 +114,9 @@ class Me {
 
             self.profile = getProfile(response.data);
             done();
-            await home.load();
             await storage.set('profile', self.profile);
+            await self.init();
+            await home.load();
             self.logining = false;
             return;
         }

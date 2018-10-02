@@ -12,14 +12,53 @@ import _debug from 'debug';
 
 import pkg from '../../package.json';
 import storage from '../../common/storage';
+import config from '../../config';
+import helper from '../../src/js/utils/helper';
 
 const KEY = 'downloaded';
-const _DOWNLOAD_DIR = path.join(app.getPath('music'), pkg.name);
+const MUSIC_DIR = app.getPath('music') || app.getPath('home');
+const DOWNLOAD_DIR = path.join(MUSIC_DIR, pkg.name);
 
 let debug = _debug('dev:submodules:downloader');
 let error = _debug('dev:submodules:downloader:error');
 let downloader;
 let cancels = {};
+let queue = createQueue(2);
+
+function createQueue(max) {
+    var waitingGroup = [];
+    var mapping = {};
+    var queue = {
+        waiting(task) {
+            return new Promise(
+                (resolve, reject) => {
+                    // Save the resolve callback
+                    mapping[task.id] = () => resolve();
+                    // Add to queue
+                    waitingGroup.push(task);
+
+                    if (waitingGroup.length <= max) {
+                        resolve();
+                    }
+                }
+            );
+        },
+        done(task) {
+            mapping[task.id]();
+            delete mapping[task.id];
+
+            waitingGroup = waitingGroup.filter(e => e.id !== task.id);
+
+            // Resolve the next task
+            let next = waitingGroup.pop();
+            if (next) {
+                mapping[next.id]();
+            }
+        }
+    };
+
+    return queue;
+}
 
 function isDev() {
     return process.mainModule.filename.indexOf('app.asar') === -1;
@@ -27,7 +66,7 @@ function isDev() {
 
 async function getDownloads() {
     var preferences = await storage.get('preferences');
-    var downloads = preferences.downloads || _DOWNLOAD_DIR;
+    var downloads = preferences.downloads || DOWNLOAD_DIR;
 
     // Make sure the download directory already exists
     if (fs.existsSync(downloads) === false) {
@@ -36,6 +75,42 @@ async function getDownloads() {
     }
 
     return downloads;
+}
+
+async function getDownloadLink(song) {
+    var downloadLink = (song.data || {}).src;
+
+    return new Promise(
+        (resolve, reject) => {
+            if (downloadLink) {
+                resolve(downloadLink);
+                return;
+            }
+
+            var url = `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/1`;
+
+            request(
+                {
+                    url: `http://localhost:${config.api.port}${url}`,
+                    json: true,
+                    timeout: 10000,
+                },
+                (err, response, data) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    if (!data.song.src) {
+                        reject(new Error('404'));
+                        return;
+                    }
+
+                    resolve(data.song.src);
+                }
+            );
+        }
+    );
 }
 
 async function syncDownloaded() {
@@ -49,10 +124,15 @@ async function syncDownloaded() {
         Object.keys(downloaded).forEach(
             e => {
                 var task = downloaded[e];
-                debug('Check task: %s:%s', task.id, task.path);
+                debug('Check task: %s => %s', task.id, task.path);
 
                 if (!task.id) {
                     throw Error('Invailid storage');
+                }
+
+                // Keep the failed tasks
+                if (task.success === false) {
+                    return;
                 }
 
                 if (
@@ -80,7 +160,7 @@ async function writeFile(url, filepath, cb, canceler) {
         if (!state) {
             callback.size.transferred = callback.size.total;
             // eslint-disable-next-line
-            return callback({ percent: 1, size: callback.size });
+            return callback({ percent: 1, size: callback.size || 0 });
         }
 
         var { percent, size } = state;
@@ -88,56 +168,57 @@ async function writeFile(url, filepath, cb, canceler) {
     };
 
     return new Promise((resolve, reject) => {
-        try {
-            var r = request({
-                url,
-                headers: {
-                    'Origin': 'http://music.163.com',
-                    'Referer': 'http://music.163.com/',
+        var r = request({
+            url,
+            headers: {
+                'Origin': 'http://music.163.com',
+                'Referer': 'http://music.163.com/',
+            },
+            timeout: 10000,
+        });
+
+        rp(r)
+            .on('error',
+                err => {
+                    delete cancels[canceler];
+                    reject(err);
                 }
-            });
+            )
+            .on('progress',
+                state => {
+                    callback.size = state.size || {};
+                    callback(state);
+                }
+            )
+            .on('end',
+                // WTF? Why no state given??
+                // eslint-disable-next-line
+                () => {
+                    callback();
+                    resolve();
 
-            rp(r)
-                .on('error',
-                    err => {
-                        delete cancels[canceler];
-                        throw err;
-                    }
-                )
-                .on('progress',
-                    state => {
-                        callback(state);
-                        callback.size = state.size;
-                    }
-                )
-                .on('end',
-                    // WTF? Why no state given??
-                    // eslint-disable-next-line
-                    () => {
-                        callback();
-                        resolve();
+                    delete cancels[canceler];
+                }
+            )
+            .pipe(fs.createWriteStream(filepath))
+        ;
 
-                        delete cancels[canceler];
-                    }
-                )
-                .pipe(fs.createWriteStream(filepath))
-            ;
-
-            if (canceler) {
-                cancels[canceler] = () => r.abort();
-            }
-        } catch (ex) {
-            syncTask();
-            reject(ex);
+        if (canceler) {
+            cancels[canceler] = () => r.abort();
         }
     });
 }
 
 async function download(task) {
+    await queue.waiting(task);
+
+    // Mark task as processed
+    task.waiting = false;
+
     try {
         var downloads = await getDownloads();
         var song = task.payload;
-        var src = song.data.src;
+        var src = await getDownloadLink(song);
         var imagefile = (await tmp.file()).path;
         var trackfile = path.join(
             downloads,
@@ -145,7 +226,6 @@ async function download(task) {
         );
 
         task.path = trackfile;
-
         // Tell the render downlaod has started
         updateTask(task);
 
@@ -182,11 +262,15 @@ async function download(task) {
         };
         let success = nodeID3.write(tags, trackfile);
 
+        queue.done(task);
+
         if (!success) {
             throw Error('Failed to write ID3 tags: \'%s\'', trackfile);
         }
     } catch (ex) {
         error(ex);
+        queue.done(task);
+        failTask(task, ex);
         fs.unlink(trackfile);
         fs.unlink(imagefile);
     }
@@ -232,9 +316,10 @@ function createDownloader() {
     // Download track
     ipcMain.on('download',
         (event, args) => {
-            var song = JSON.parse(args.song);
+            var songs = JSON.parse(args.songs);
 
-            addTask(song);
+            songs = Array.isArray(songs) ? songs : [songs];
+            addTasks(songs);
         }
     );
 
@@ -259,6 +344,7 @@ function createDownloader() {
     );
 
     syncDownloaded();
+    global.downloader = downloader;
 }
 
 function removeTasks(tasks) {
@@ -283,13 +369,15 @@ function removeTasks(tasks) {
 }
 
 function failTask(task, err) {
+    task.success = false;
     downloader.webContents.send(
-        'download-failure',
+        'download-failed',
         { task, err }
     );
 }
 
 function doneTask(task) {
+    task.success = true;
     downloader.webContents.send(
         'download-success',
         { task }
@@ -304,26 +392,35 @@ function updateTask(task) {
 }
 
 function syncTask(id) {
-    syncDownloaded();
     downloader.webContents.send('download-sync', { id });
 }
 
-function addTask(item) {
-    debug('Download song: \'%s\'', item.id);
-    var task = {
-        id: item.id,
-        progress: 0,
-        date: +new Date(),
-        size: 0,
-        path: null,
-        payload: item,
-    };
+function addTasks(songs) {
+    var tasks = [];
 
-    download(task);
+    songs.map(
+        e => {
+            debug('Download song: \'%s\'', e.id);
+            var task = {
+                id: e.id,
+                progress: 0,
+                date: +new Date(),
+                size: 0,
+                path: null,
+                waiting: true,
+                payload: e,
+            };
+
+            tasks.push(task);
+        }
+    );
+
     downloader.webContents.send(
         'download-begin',
-        { task }
+        { tasks }
     );
+
+    tasks.map(e => download(e));
 }
 
 export default {

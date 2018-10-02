@@ -10,16 +10,20 @@ import 'app/global.css';
 import theme from 'config/theme';
 import stores from './stores';
 import Downloader from './views/Downloader';
+import List from './views/List';
 
+/* eslint-disable */
 render(
     <ThemeProvider theme={theme}>
         <Provider stores={stores}>
             <HashRouter>
                 <Switch>
-                    <Route path="/" component={Downloader} />
+                    <Route exact path="/" component={Downloader} />
+                    <Route exact path="/list" component={List} />
                 </Switch>
             </HashRouter>
         </Provider>
     </ThemeProvider>,
     document.getElementById('root')
 );
+/* eslint-enable */

@@ -1,5 +1,5 @@
 
-import storage from 'electron-json-storage';
+import fs from 'fs';
 import Netease from './Netease';
 import QQ from './QQ';
 import MiGu from './MiGu';
@@ -7,13 +7,10 @@ import Kugou from './Kugou';
 import Baidu from './Baidu';
 import Xiami from './Xiami';
 import Kuwo from './Kuwo';
+import storage from '../../common/storage';
 
 async function getPreferences() {
-    return new Promise(resolve => {
-        storage.get('preferences', (err, data) => {
-            resolve(err ? {} : data);
-        });
-    });
+    return await storage.get('preferences') || {};
 }
 
 async function exe(plugins, ...args) {
@@ -51,6 +48,23 @@ async function exe(plugins, ...args) {
 
 async function getFlac(keyword, artists) {
     return exe([QQ], keyword, artists, true);
+}
+
+async function loadFromLocal(id) {
+    var downloaded = (await storage.get('downloaded')) || {};
+    var task = downloaded[id];
+
+    if (task) {
+        if (fs.existsSync(task.path) === false) {
+            delete downloaded[id];
+            await storage.set('downloaded', downloaded);
+            return;
+        }
+
+        return {
+            src: encodeURI(`file://${task.path}`)
+        };
+    }
 }
 
 async function getTrack(keyword, artists, id /** This id is only work for netease music */) {
@@ -97,6 +111,7 @@ async function getTrack(keyword, artists, id /** This id is only work for neteas
 }
 
 export {
+    loadFromLocal,
     getFlac,
     getTrack,
 };

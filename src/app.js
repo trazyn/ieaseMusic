@@ -118,6 +118,15 @@ class App extends Component {
             playing.toggle(true);
         });
 
+        // Get the playlist
+        ipcRenderer.on('request-playlist', () => {
+            let downloader = remote.getGlobal('downloader');
+
+            if (downloader) {
+                downloader.webContents.send('response-playlist', JSON.stringify(controller.playlist));
+            }
+        });
+
         // Right click menu
         window.addEventListener('contextmenu', e => {
             let logined = me.hasLogin();
@@ -173,7 +182,7 @@ class App extends Component {
                 {
                     label: 'Download 🍭',
                     click: () => {
-                        ipcRenderer.send('download', { song: JSON.stringify(controller.song) });
+                        ipcRenderer.send('download', { songs: JSON.stringify(controller.song) });
                     }
                 },
                 {

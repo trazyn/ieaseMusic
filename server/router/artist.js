@@ -1,11 +1,32 @@
 
 import express from 'express';
 import axios from 'axios';
+import crypto from 'crypto';
 import _debug from 'debug';
 
 const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
+
+// https://github.com/skyline75489/nmdown/blob/ee0f66448b6e64f8b9bdb2f7451a8d4ff63e14c4/cloudmusic/hasher.py
+function id2url(id) {
+    var key = '3go8&$8*3*3h0k(2)2';
+    var keyCodes = Array.from(key).map((e, i) => key.charCodeAt(i));
+    var fidCodes = Array.from(id).map((e, i) => id.charCodeAt(i));
+
+    var hashCodes = [];
+
+    for (let i = 0; i < fidCodes.length; i++) {
+        let code = (fidCodes[i] ^ keyCodes[i % key.length]) & 0XFF;
+        hashCodes.push(code);
+    }
+
+    var string = hashCodes.map((e, i) => String.fromCharCode(hashCodes[i])).join('');
+    var md5 = crypto.createHash('md5').update(string).digest();
+    var result = Buffer.from(md5).toString('base64').replace(/\//g, '_').replace(/\+/g, '-');
+
+    return `https://p4.music.126.net/${result}/${id}.jpg?param=y177y177`;
+}
 
 async function getArtist(id) {
     var profile = {};
@@ -43,7 +64,7 @@ async function getArtist(id) {
                     album: {
                         id: al.id.toString(),
                         name: al.name,
-                        cover: `${al.picUrl}?param=y100y100`,
+                        cover: id2url(al.pic_str),
                         link: `/player/1/${al.id}`
                     },
                     artists: ar.map(e => ({
@@ -84,7 +105,8 @@ async function getAlbums(id) {
                 id: e.id.toString(),
                 name: e.name,
                 cover: e.picUrl,
-                link: `/player/1/${e.id}`
+                link: `/player/1/${e.id}`,
+                publishTime: e.publishTime,
             }));
         }
     } catch (ex) {
