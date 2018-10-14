@@ -84,6 +84,7 @@
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
+    "@types/react-virtualized": "^9.18.7",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
@@ -155,6 +156,7 @@
     "react-jss": "^8.6.1",
     "react-router-dom": "^4.3.1",
     "react-scroll-horizontal": "1.4.0",
+    "react-virtualized": "^9.20.1",
     "request": "^2.87.0",
     "request-progress": "^3.0.0",
     "request-promise-native": "^1.0.5",
