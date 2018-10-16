@@ -4,7 +4,8 @@
         "sourceType": "module",
         "ecmaFeatures": {
             "impliedStrict": true,
-            "jsx": true
+            "jsx": true,
+            "js": true
         }
     },
     "env": {
@@ -17,7 +18,9 @@
         "semi": [2, "always"],
         "new-cap": [0],
         "prefer-promise-reject-errors": [1],
-        "indent": [2, 4, { "SwitchCase": 1 }],
+        "indent": [2, 4, {
+            "SwitchCase": 1
+        }],
         "comma-dangle": [2, "only-multiline"],
         "space-before-function-paren": [2, "never"],
         "operator-linebreak": [2, "before"],
