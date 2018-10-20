@@ -628,6 +628,10 @@ const createMainWindow = () => {
     // Quit app
     ipcMain.on('goodbye', () => goodbye());
 
+    // A javaScript error occured in the main process
+    // process.on('uncaughtException', (_error) => {
+    //     console.error('an error happened');
+    // });
     // App has suspend
     powerMonitor.on('suspend', () => {
         mainWindow.webContents.send('player-pause');
