@@ -33,16 +33,8 @@ class Offline extends Component {
             return (
                 <div className={classes.container}>
                     <h1>Opps, seems like you are offline...</h1>
-                    {/* <button onClick={e => window.location.reload()}>Reload</button> */}
                 </div>);
         }
-
-        // return (
-        //     <div className={classes.container}>
-        //         <h1>Opps, seems like you are offline...</h1>
-        //         {/* <online /> */}
-        //     </div>
-        // );
     }
 }
 
