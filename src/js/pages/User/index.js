@@ -1,8 +1,4 @@
 import React, {Component} from 'react';
-// import Scroller from 'react-scroll-horizontal';
-// import 'react-virtualized/styles.css';
-// import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-// import List from 'react-virtualized/dist/commonjs/List';
 
 import {Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
@@ -14,7 +10,6 @@ import helper from 'utils/helper';
 import ProgressImage from 'ui/ProgressImage';
 import Loader from 'ui/Loader';
 import Header from 'components/Header';
-// import FadeImage from 'ui/FadeImage';
 import Controller from 'components/Controller';
 
 @inject(stores => ({
@@ -47,9 +42,6 @@ class User extends Component {
       var {classes, playlists} = this.props;
 
       return (
-      //   <Scroller reverseScroll={!naturalScroll}>
-      //   <div>
-      //       {() =>
           playlists.map((e, index) => {
               return (
                   <Link
@@ -80,10 +72,6 @@ class User extends Component {
                   </Link>
               );
           })
-      //         }
-      //   </div>
-
-      //   </Scroller>
       );
   }
 
@@ -158,7 +146,6 @@ class User extends Component {
                                       src: profile.avatar,
                                   }}
                               />
-                              {/* <FadeImage src={profile.avatarUrl} /> */}
                               <div className={classes.info}>
                                   <p className={classes.username}>
                                       <span> {profile.name} </span>
@@ -182,7 +169,6 @@ class User extends Component {
 
                       {this.renderList()}
                   </section>
-                  {/* <div className={classes.list}> {this.renderList()} </div> */}
               </main>
               <Controller key={controller.song.id} />
 
