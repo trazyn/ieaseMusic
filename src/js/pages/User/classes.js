@@ -1,25 +1,96 @@
 
 export default theme => ({
     container: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100vw',
         height: '100vh',
         background: 'rgba(255, 255, 255, .3)',
+
+        '& main': {
+            paddingLeft: 40,
+        }
+
+    },
+
+    overlay: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        height: '100%',
+        width: '100%',
+        background: 'rgba(0, 0, 0, .3)',
+    },
+
+    avatar: {
+        position: 'absolute',
+        left: 0,
+        bottom: -200,
+        visibility: 'hidden',
+        opacity: 0,
+        transition: '.5s ease-out',
+        transitionDelay: '.8s',
+        zIndex: -1,
+    },
+
+    expose: {
+        visibility: 'visible',
+        opacity: 1,
+        transform: 'scale(1.1)',
     },
 
     hero: {
         display: 'flex',
         height: 260,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        width: 460,
+        marginTop: 100,
+        background: 'rgb(255, 103, 0)',
+        textIndent: 40,
+        fontWeight: 200,
 
-        '& figure': {
-            boxShadow: '0 0 24px 0 #000',
-        }
+        '& h3': {
+            position: 'relative',
+            padding: 0,
+            margin: 0,
+            paddingTop: 30,
+            color: 'yellow',
+            fontWeight: 200,
+        },
+
+        '& h3::before': {
+            position: 'absolute',
+            top: 14,
+            left: 0,
+            content: '"Name"',
+            textTransform: 'uppercase',
+            color: 'white',
+            fontSize: 11,
+            letterSpacing: 1,
+        },
+
+        '& p': {
+            position: 'relative',
+            padding: 0,
+            margin: 0,
+            marginTop: 20,
+            fontSize: 24,
+        },
+
+        '& p::after': {
+            content: 'attr(data-label)',
+            marginLeft: 10,
+            textTransform: 'uppercase',
+            color: 'white',
+            fontSize: 10,
+            letterSpacing: 1,
+        },
     },
 
     follow: {
         position: 'absolute',
-        right: 24,
-        top: 56,
+        right: 100,
+        top: 6,
         width: 80,
         padding: '5.5px 16px',
         border: 'none',
@@ -55,50 +126,17 @@ export default theme => ({
 
     followed: {},
 
-    info: {
-        paddingTop: 40,
-    },
-
-    username: {
-        fontSize: 14,
-        transform: 'translateX(-20px)',
-
-        '& span': {
-            display: 'inline-block',
-            padding: '8px 32px',
-            color: '#fff',
-            background: '#000',
-            textAlign: 'center',
-            minWidth: 80,
-        }
-    },
-
-    followers: {
-        transform: 'translateX(-20px)',
-
-        '& span': {
-            display: 'inline-block',
-            padding: '8px 0',
-            fontSize: 12,
-            textTransform: 'uppercase',
-            color: '#000',
-            borderBottom: '2px solid #000',
-            textIndent: 30,
-        }
-    },
-
     signature: {
-        marginTop: 34,
+        marginTop: 14,
         fontSize: 14,
-        transform: 'translate(-20px, 20px)',
+        transform: 'translate(0, 20px)',
+        textIndent: 0,
+        paddingLeft: 40,
 
         '& span': {
             display: '-webkit-box',
-            padding: '16px 30px',
-            maxWidth: 280,
-            lineHeight: '32px',
-            color: '#000',
-            border: '2px solid #000',
+            maxWidth: 150,
+            lineHeight: '20px',
             whiteSpace: 'normal',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -109,83 +147,85 @@ export default theme => ({
     },
 
     list: {
-        marginTop: 20,
+        position: 'absolute',
+        right: 0,
+        top: 100,
+        width: 280,
+        paddingLeft: 0,
+        height: 'calc(100vh - 150px)',
+        overflow: 'hidden',
+        overflowY: 'auto',
+
+        '&::before': {
+            content: '"Playlist"',
+            position: 'fixed',
+            top: 84,
+            textTransform: 'uppercase',
+            fontWeight: 200,
+            letterSpacing: 1,
+            background: 'black',
+        },
     },
 
     item: {
         position: 'relative',
-        fontSize: 14,
-        cursor: 'pointer',
-        transition: '.4s',
+        display: 'block',
+        padding: 0,
+        margin: 0,
+        fontFamily: 'Roboto',
+        fontWeight: 'lighter',
+        color: 'white',
+        overflow: 'hidden',
+        transition: 'transform .1s',
+        transform: 'scale(.8) translateX(-36px)',
 
-        '& figure': {
-            width: 120,
-            height: 120,
-            margin: '50px 30px',
-            boxShadow: '0 0 24px 0 #333',
+        '& h2': {
+            position: 'relative',
+            display: 'inline-block',
+            fontWeight: 200,
+        },
+
+        '& h2 span': {
+            display: 'block',
+            maxWidth: 280,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        },
+
+        '& h2::after': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            bottom: '-50%',
+            height: '100%',
+            width: 0,
+            background: 'yellow',
+            zIndex: 1,
+            opacity: 0,
+            visibility: 'hidden',
+            transitionDelay: '.2s',
+            transition: '.2s ease-out',
         },
 
         '& p': {
-            padding: 0,
-            margin: 0,
-            transition: '1s',
+            marginTop: -8,
         },
 
-        '& $played': {
-            width: '0%',
-            overflow: 'hidden',
+        '&:hover, &$playing': {
+            transform: 'scale(1) translateX(0)',
         },
 
-        '& p span': {
-            display: 'inline-block',
-            padding: '4px 8px',
-            background: '#000',
-            color: '#fff',
-        },
-
-        '&$playing, &:hover': {
-            transform: 'translateY(-30px)',
-        },
-
-        '&$playing p, &:hover p': {
-            visibility: 'visible',
-            opacity: 1,
-        },
-
-        '&$playing $played, &:hover $played': {
+        '&:hover h2::after, &$playing h2::after': {
             width: '100%',
+            opacity: .7,
+            visibility: 'visible',
         },
-
-        '$played': {
-            visibility: 'hidden',
-            opacity: 0,
-            whiteSpace: 'nowrap',
-        }
     },
 
-    playing: {},
-
-    meta: {
-        position: 'absolute',
-        top: 170,
-        left: 30,
-    },
-
-    name: {
-        '& span': {
-            display: '-webkit-box !important',
-            lineHeight: '18px',
-            whiteSpace: 'normal',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            '-webkit-line-clamp': 2,
-            '-webkit-box-orient': 'vertical',
-        }
-    },
-
-    played: {
-        fontFamily: 'Roboto',
-        fontSize: 12,
-        textTransform: 'uppercase',
+    playing: {
+        '& h2::after': {
+            background: 'rgba(255, 103, .0)',
+        },
     },
 });
