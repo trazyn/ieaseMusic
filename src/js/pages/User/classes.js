@@ -1,4 +1,6 @@
 
+import colors from 'utils/colors';
+
 export default theme => ({
     container: {
         position: 'absolute',
@@ -41,11 +43,12 @@ export default theme => ({
     },
 
     hero: {
+        position: 'relative',
         display: 'flex',
         height: 260,
         width: 460,
         marginTop: 100,
-        background: 'rgb(255, 103, 0)',
+        background: colors.pallet.dribbble,
         textIndent: 40,
         fontWeight: 200,
 
@@ -225,7 +228,7 @@ export default theme => ({
 
     playing: {
         '& h2::after': {
-            background: 'rgba(255, 103, .0)',
+            background: colors.pallet.dribbble,
         },
     },
 });

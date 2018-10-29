@@ -18,7 +18,6 @@ export default theme => ({
         },
 
         '& summary': {
-            display: 'flex',
             flexDirection: 'column',
             position: 'relative',
             padding: '24px',
