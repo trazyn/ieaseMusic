@@ -123,7 +123,6 @@ class Layout extends Component {
         if (this.state.offline) {
             return <Offline show={true} />;
         }
-
         // Wait for app has initialized
         if (!initialized) {
             return <Loader show={true} />;
@@ -142,7 +141,6 @@ class Layout extends Component {
                 >
                     {this.props.children}
                 </main>
-
                 <AudioPlayer />
                 <UpNext />
                 <Share />

@@ -17,8 +17,8 @@ export default theme => {
             fontFamily: 'HelveticaNeue-UltraLight',
 
             '& h1': {
-                fontSize: 24,
-                fontWeight: '100',
+                fontSize: 40,
+                fontWeight: '200',
                 color: colors.pallet.dribbble
             },
 
