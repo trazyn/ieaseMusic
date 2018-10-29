@@ -42,7 +42,7 @@ class User extends Component {
     };
 
     renderList() {
-        var {classes, playlists} = this.props;
+        var { classes, playlists } = this.props;
 
         return playlists.map(
             (e, index) => {
@@ -79,7 +79,7 @@ class User extends Component {
     }
 
     render() {
-        var {classes, loading, profile, isme, follow, controller} = this.props;
+        var { classes, loading, profile, isme, follow, controller } = this.props;
         var hovered = this.state.hovered;
         var followed = profile.followed;
 

@@ -38,6 +38,7 @@ local.properties
 
 # node.js
 #
+.vscode
 node_modules/
 npm-debug.log
 
