@@ -1,5 +1,5 @@
 
-import MinifyPlugin from 'uglifyjs-webpack-plugin';
+import MinifyPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default {
