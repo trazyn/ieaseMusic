@@ -15,6 +15,7 @@ import { updater, downloader } from './submodules';
 const _PLATFORM = process.platform;
 
 let debug = _debug('dev:main');
+let error = _debug('dev:main:error');
 let apiServer;
 let forceQuit = false;
 let quitting = false;
@@ -627,6 +628,11 @@ const createMainWindow = () => {
 
     // Quit app
     ipcMain.on('goodbye', () => goodbye());
+
+    // A javaScript error occured in the main process
+    process.on('uncaughtException', (ex) => {
+        error(ex);
+    });
 
     // App has suspend
     powerMonitor.on('suspend', () => {
