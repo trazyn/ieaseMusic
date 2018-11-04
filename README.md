@@ -48,27 +48,27 @@
 Download the last version on the [website](https://github.com/trazyn/ieaseMusic/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.1/ieaseMusic-1.3.1-mac.dmg) the `.dmg` file, Or use `homebrew`:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.2/ieaseMusic-1.3.2-mac.dmg) the `.dmg` file, Or use `homebrew`:
 ```
 brew cask install ieasemusic
 ```
 
 #### Linux
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.1/ieaseMusic-1.3.1-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.2/ieaseMusic-1.3.2-linux-amd64.deb) the `.deb` file for 'Debian / Ubuntu':
 ```
-$ sudo dpkg -i ieaseMusic-1.3.1-linux-amd64.deb
-```
-
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.1/ieaseMusic-1.3.1-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
-```
-$ sudo yum localinstall ieaseMusic-1.3.1-linux-x86_64.rpm
+$ sudo dpkg -i ieaseMusic-1.3.2-linux-amd64.deb
 ```
 
-[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.1/iease-music-1.3.1-x86_64.AppImage) the `.Appimage` file for other distribution:
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.2/ieaseMusic-1.3.2-linux-x86_64.rpm) the `.rpm` file for 'Centos/RHEL':
 ```
-$ chmod u+x iease-music-1.3.1-x86_64.AppImage
-$ ./iease-music-1.3.1-x86_64.AppImage
+$ sudo yum localinstall ieaseMusic-1.3.2-linux-x86_64.rpm
+```
+
+[Download](https://github.com/trazyn/ieaseMusic/releases/download/v1.3.2/iease-music-1.3.2-x86_64.AppImage) the `.Appimage` file for other distribution:
+```
+$ chmod u+x iease-music-1.3.2-x86_64.AppImage
+$ ./iease-music-1.3.2-x86_64.AppImage
 ```
 
 Archlinux `pacman` install:
@@ -175,7 +175,6 @@ Description            | Keys
 - [x] Download manager
 - [x] Wechat QR code login
 - [ ] Weibo QR code login
-- [ ] Remove express
 - [ ] Resize window（New UI）
 
 ## 参考列表
