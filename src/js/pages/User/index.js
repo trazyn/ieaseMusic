@@ -1,6 +1,6 @@
 
-import React, {Component} from 'react';
-import {inject, observer} from 'mobx-react';
+import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import clazz from 'classname';
@@ -56,10 +56,10 @@ class User extends Component {
                         to={e.link}
                         key={index}
                         onMouseEnter={
-                            ev => this.setState({hovered: e})
+                            ev => this.setState({ hovered: e })
                         }
                         onMouseLeave={
-                            ev => this.setState({hovered: false})
+                            ev => this.setState({ hovered: false })
                         }
                     >
                         <h2>
