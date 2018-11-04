@@ -138,6 +138,7 @@ router.get('/login/qrcode', async(req, res) => {
         })
             .then(response => {
                 let matched = response.body.match(/(\/connect\/qrcode\/[\w-_]+)/);
+                // eslint-disable-next-line
                 let q = url.parse(response.request.href, true);
 
                 if (!matched) {
