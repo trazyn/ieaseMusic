@@ -87,6 +87,10 @@ class Downloader extends Component {
                         ipcRenderer.send('download-show');
                     };
                 } else {
+                    if (songs.length === 0) {
+                        return;
+                    }
+
                     // eslint-disable-next-line
                     new window.Notification('🍭 Donwload Track', {
                         body: `${songs.length} download tasks in queue~`
