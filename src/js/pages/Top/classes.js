@@ -1,6 +1,14 @@
 
 export default theme => ({
-    container: {},
+    container: {
+        '& ul': {
+            padding: 0,
+            margin: 0,
+            whiteSpace: 'nowrap',
+            overflowY: 'hidden',
+            overflowX: 'auto',
+        },
+    },
 
     item: {
         position: 'relative',

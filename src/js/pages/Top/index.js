@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import Scroller from 'react-scroll-horizontal';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import injectSheet from 'react-jss';
@@ -69,14 +68,14 @@ class Top extends Component {
             var next = list[i * 2 + 1];
 
             columns.push(
-                <div key={i} className="clearfix">
+                <li key={i} className="clearfix">
                     {
                         this.renderItem(item)
                     }
                     {
                         this.renderItem(next)
                     }
-                </div>
+                </li>
             );
         }
 
@@ -84,7 +83,7 @@ class Top extends Component {
     }
 
     render() {
-        var { classes, loading, naturalScroll } = this.props;
+        var { classes, loading } = this.props;
 
         if (loading) {
             return <Loader show={true} />;
@@ -97,11 +96,11 @@ class Top extends Component {
                     transparent: true,
                 }} />
 
-                <Scroller reverseScroll={!naturalScroll}>
+                <ul className={classes.list}>
                     {
-                        () => this.renderList()
+                        this.renderList()
                     }
-                </Scroller>
+                </ul>
 
                 <Controller />
             </div>
