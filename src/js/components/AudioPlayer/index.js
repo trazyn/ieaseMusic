@@ -105,7 +105,7 @@ export default class AudioPlayer extends Component {
         }
 
         if (!ele || document.contains(ele) === false) {
-            this.scrollerLyrics.ele = ele = document.all.lyrics;
+            this.scrollerLyrics.ele = ele = document.getElementById('lyrics');
         }
 
         if (ele) {
@@ -120,6 +120,12 @@ export default class AudioPlayer extends Component {
 
                 if (!playing.getAttribute('playing')) {
                     playing.setAttribute('playing', true);
+
+                    if (ele.querySelector('section').getAttribute('scrolling')) {
+                        // Enhancement #317
+                        return;
+                    }
+
                     playing.scrollIntoViewIfNeeded();
                 }
             }

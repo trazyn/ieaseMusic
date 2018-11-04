@@ -87,7 +87,18 @@ class Lyrics extends Component {
                         }}
                     />
 
-                    <section>
+                    <section
+                        onScroll={
+                            e => {
+                                e.target.setAttribute('scrolling', true);
+                            }
+                        }
+                        onMouseLeave={
+                            e => {
+                                e.currentTarget.removeAttribute('scrolling');
+                            }
+                        }
+                    >
                         <div
                             style={{
                                 position: 'relative',
