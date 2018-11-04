@@ -28,6 +28,7 @@ async function getUser(id) {
                 avatar: user.avatarUrl,
                 followed: user.followed,
                 followers: user.followeds,
+                following: user.follows,
             };
         }
     } catch (ex) {
