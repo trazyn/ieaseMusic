@@ -95,11 +95,7 @@ export default theme => ({
         }
     },
 
-    info: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-    },
+    info: {},
 
     username: {
         padding: 0,
