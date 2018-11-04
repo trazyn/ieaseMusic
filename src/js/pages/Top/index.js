@@ -16,7 +16,6 @@ import Controller from 'components/Controller';
     loading: stores.top.loading,
     list: stores.top.list,
     getList: stores.top.getList,
-    naturalScroll: stores.preferences.naturalScroll,
 }))
 @observer
 class Top extends Component {

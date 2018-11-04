@@ -19,7 +19,6 @@ class Preferences {
     @observable alwaysOnTop = false;
     @observable showNotification = true;
     @observable autoPlay = true;
-    @observable naturalScroll = true;
     @observable volume = 1;
     @observable port = config.api.port;
     @observable highquality = 0;
@@ -50,7 +49,6 @@ class Preferences {
             alwaysOnTop = self.alwaysOnTop,
             showNotification = self.showNotification,
             autoPlay = self.autoPlay,
-            naturalScroll = self.naturalScroll,
             port = self.port,
             volume = self.volume,
             highquality = self.highquality,
@@ -69,7 +67,6 @@ class Preferences {
         self.alwaysOnTop = !!alwaysOnTop;
         self.showNotification = !!showNotification;
         self.autoPlay = !!autoPlay;
-        self.naturalScroll = !!naturalScroll;
         self.port = port || config.api.port;
         self.volume = +volume || 1;
         self.highquality = +highquality || 0;
@@ -89,7 +86,7 @@ class Preferences {
     }
 
     @action async save() {
-        var { showTray, showMenuBarOnLinux, revertTrayIcon, alwaysOnTop, showNotification, autoPlay, naturalScroll, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
+        var { showTray, showMenuBarOnLinux, revertTrayIcon, alwaysOnTop, showNotification, autoPlay, port, volume, highquality, backgrounds, autoupdate, scrobble, lastfm, enginers, proxy, downloads } = self;
 
         await storage.set('preferences', {
             showTray,
@@ -98,7 +95,6 @@ class Preferences {
             alwaysOnTop,
             showNotification,
             autoPlay,
-            naturalScroll,
             port,
             volume,
             highquality,
@@ -147,11 +143,6 @@ class Preferences {
 
     @action setAutoPlay(autoPlay) {
         self.autoPlay = autoPlay;
-        self.save();
-    }
-
-    @action setNaturalScroll(naturalScroll) {
-        self.naturalScroll = naturalScroll;
         self.save();
     }
 

@@ -64,8 +64,6 @@ class Preferences extends Component {
             setAlwaysOnTop,
             autoPlay,
             setAutoPlay,
-            naturalScroll,
-            setNaturalScroll,
             showNotification,
             setShowNotification,
             port,
@@ -154,18 +152,6 @@ class Preferences extends Component {
                                 defaultChecked={showNotification}
                                 id="showNotification"
                                 onChange={e => setShowNotification(e.target.checked)} />
-                        </label>
-
-                        <label htmlFor="naturalScroll">
-                            <div>
-                                <h4>Scroll direction: Natural</h4>
-                                <p>Content tracks finger movement.</p>
-                            </div>
-
-                            <Switch
-                                defaultChecked={naturalScroll}
-                                id="naturalScroll"
-                                onChange={e => setNaturalScroll(e.target.checked)} />
                         </label>
 
                         <label htmlFor="highquality">

@@ -25,7 +25,6 @@ import Controller from 'components/Controller';
 
         return controller.playing && controller.playlist.id === id;
     },
-    naturalScroll: stores.preferences.naturalScroll,
 }))
 @observer
 class User extends Component {
