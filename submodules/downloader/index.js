@@ -54,7 +54,11 @@ function createQueue(max) {
             if (next) {
                 mapping[next.id]();
             }
-        }
+        },
+        flush() {
+            // Reset the waiting group
+            waitingGroup = [];
+        },
     };
 
     return queue;
@@ -181,7 +185,13 @@ async function writeFile(url, filepath, cb, canceler) {
             .on('error',
                 err => {
                     delete cancels[canceler];
-                    reject(err);
+
+                    // https://github.com/request/request/blob/a92e138d897d78ce19dd70bd1ad271c7f9c6a23d/request.js#L1167
+                    if (r._aborted) {
+                        reject(new Error('_aborted'));
+                    } else {
+                        reject(err);
+                    }
                 }
             )
             .on('progress',
@@ -269,6 +279,12 @@ async function download(task) {
         }
     } catch (ex) {
         error(ex);
+
+        if (ex.message === '_aborted') {
+            // Download task has been canceled
+            return;
+        }
+
         queue.done(task);
         failTask(task, ex);
         fs.unlink(trackfile);
@@ -349,6 +365,8 @@ function createDownloader() {
 
 function removeTasks(tasks) {
     tasks = Array.isArray(tasks) ? tasks : [tasks];
+
+    queue.flush();
 
     tasks.forEach(
         e => {
