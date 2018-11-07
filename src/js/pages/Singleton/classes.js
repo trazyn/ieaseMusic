@@ -12,8 +12,6 @@ export default theme => {
             width: '100vw',
 
             '& summary': {
-                display: 'flex',
-                flexDirection: 'column',
                 position: 'relative',
                 padding: '24px',
                 paddingTop: 64,
