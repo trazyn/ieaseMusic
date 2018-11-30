@@ -7,20 +7,31 @@ const debug = _debug('dev:api');
 const error = _debug('dev:error');
 const router = express();
 
+async function getPlaylist() {
+    let response = await axios.get(`/personal_fm`);
+    let data = response.data;
+    var songs = [];
+
+    if (data.code !== 200) {
+        throw data;
+    }
+
+    songs = data.data || [];
+
+    if (songs.length === 0) {
+        return getPlaylist();
+    }
+
+    return songs;
+}
+
 router.get('/', async(req, res) => {
     debug('Handle request for /fm');
 
-    var songs = [];
+    let songs = [];
 
     try {
-        let response = await axios.get(`/personal_fm`);
-        let data = response.data;
-
-        if (data.code !== 200) {
-            throw data;
-        }
-
-        songs = data.data || [];
+        songs = await getPlaylist();
     } catch (ex) {
         error('Failed to get FM: %O', ex);
     }
