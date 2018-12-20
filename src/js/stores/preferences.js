@@ -192,7 +192,7 @@ class Preferences {
     }
 
     @action setProxy(proxy) {
-        if (!/^http(s)?:\/\/\w+/i.test(proxy)) {
+        if (!/^(http(s)?|socks5|socks4):\/\/\w+/i.test(proxy)) {
             proxy = '';
         }
 
