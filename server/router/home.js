@@ -11,7 +11,7 @@ async function getNewest() {
     var list = [];
 
     try {
-        let response = await axios.get('/hot/album');
+        let response = await axios.get('/album/newest');
 
         if (response.data.code !== 200) {
             throw response.data;
