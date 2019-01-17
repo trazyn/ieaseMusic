@@ -28,16 +28,16 @@ export default async(request, keyword, artists, id) => {
 
         song = response.data[0];
 
+        if (!song.url) {
+            return Promise.reject(Error(404));
+        }
+
         song = {
             id: song.id.toString(),
-            src: song.url,
+            src: `https://music.163.com/song/media/outer/url?id=${song.id.toString()}.mp3`,
             md5: song.md5,
             bitRate: song.br,
         };
-
-        if (!song.src) {
-            return Promise.reject(Error(404));
-        }
 
         debug(chalk.black.bgGreen('🚚  Result >>>'));
         debug(song);
