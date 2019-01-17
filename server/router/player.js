@@ -126,7 +126,12 @@ router.get('/subscribe/:id', async(req, res) => {
     debug('Params \'id\': %s', id);
 
     try {
-        let response = await axios.get(`/subscribe/?id=${id}`);
+        let response = await axios.get(`/playlist/subscribe`, {
+            params: {
+                id,
+                t: 1,
+            }
+        });
         let data = response.data;
 
         success = data.code === 200;
@@ -152,7 +157,12 @@ router.get('/unsubscribe/:id', async(req, res) => {
     debug('Params \'id\': %s', id);
 
     try {
-        let response = await axios.get(`/unsubscribe/?id=${id}`);
+        let response = await axios.get(`/playlist/subscribe`, {
+            params: {
+                id,
+                t: 0,
+            }
+        });
         let data = response.data;
 
         success = data.code === 200;
