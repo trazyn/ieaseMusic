@@ -74,14 +74,14 @@ class Header extends Component {
         if (subscribed) {
             return (
                 <i
-                    className={clazz('ion-ios-star', this.props.classes.subscribed)}
+                    className={clazz('ion-android-star', this.props.classes.subscribed)}
                     onClick={e => subscribe(false)} />
             );
         }
 
         return (
             <i
-                className="ion-ios-star"
+                className="ion-android-star"
                 onClick={e => subscribe(true)}
             />
         );

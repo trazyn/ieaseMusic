@@ -55,6 +55,6 @@ export default theme => ({
     },
 
     subscribed: {
-        color: colors.pallet.sunflower,
+        color: `${colors.pallet.sunflower} !important`
     },
 });
