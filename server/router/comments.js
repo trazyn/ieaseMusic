@@ -20,11 +20,12 @@ router.get('/like/:id/:songid/:like', async(req, res) => {
     debug('Params \'liked\': %s', like);
 
     try {
-        var response = await axios.get(`/thumbsup`, {
+        var response = await axios.get('/comment/like', {
             params: {
+                id: songid,
                 cid: id,
-                tid: `R_SO_4_${songid}`,
-                like: like,
+                type: 0,
+                t: +like,
             }
         });
         var data = response.data;

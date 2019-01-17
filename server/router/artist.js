@@ -151,7 +151,7 @@ router.get('/unfollow/:id', async(req, res) => {
     debug('Params \'id\': %s', id);
 
     try {
-        let response = await axios.get(`/unsub/?id=${id}`);
+        let response = await axios.get(`/artist/sub/?id=${id}&&t=0`);
         let data = response.data;
 
         success = data.code === 200;
@@ -177,7 +177,7 @@ router.get('/follow/:id', async(req, res) => {
     debug('Params \'id\': %s', id);
 
     try {
-        let response = await axios.get(`/sub/?id=${id}`);
+        let response = await axios.get(`/artist/sub/?id=${id}&&t=1`);
         let data = response.data;
 
         success = data.code === 200;
