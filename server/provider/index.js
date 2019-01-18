@@ -1,5 +1,6 @@
 
 import fs from 'fs';
+import PacProxyAgent from 'pac-proxy-agent';
 import Netease from './Netease';
 import QQ from './QQ';
 import MiGu from './MiGu';
@@ -20,14 +21,25 @@ async function exe(plugins, ...args) {
         json: true,
         jar: true,
     };
+    var proxy = preferences.proxy;
 
-    if (preferences.proxy) {
-        Object.assign(
-            rpOptions,
-            {
-                proxy: preferences.proxy,
-            }
-        );
+    if (proxy) {
+        if (proxy.endsWith('.pac')) {
+            console.log('Use pac: %s', proxy);
+            Object.assign(
+                rpOptions,
+                {
+                    agent: new PacProxyAgent(proxy)
+                }
+            );
+        } else {
+            Object.assign(
+                rpOptions,
+                {
+                    proxy,
+                }
+            );
+        }
     }
     var rp = require('request-promise-native').defaults(rpOptions);
 
