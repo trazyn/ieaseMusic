@@ -88,9 +88,9 @@ class Lyrics extends Component {
                     />
 
                     <section
-                        onScroll={
+                        onWheel={
                             e => {
-                                e.target.setAttribute('scrolling', true);
+                                e.currentTarget.setAttribute('scrolling', true);
                             }
                         }
                         onMouseLeave={
