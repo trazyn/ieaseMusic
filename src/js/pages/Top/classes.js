@@ -23,7 +23,10 @@ export default theme => ({
         overflow: 'hidden',
 
         '& p': {
+            maxWidth: 210,
+            lineHeight: '32px',
             fontSize: 24,
+            whiteSpace: 'normal',
         },
 
         '& img:first-of-type': {
