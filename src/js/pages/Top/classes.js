@@ -7,6 +7,7 @@ export default theme => ({
             whiteSpace: 'nowrap',
             overflowY: 'hidden',
             overflowX: 'auto',
+            scrollBehavior: 'smooth',
         },
     },
 

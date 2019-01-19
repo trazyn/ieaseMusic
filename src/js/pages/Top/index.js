@@ -99,7 +99,7 @@ class Top extends Component {
                     className={classes.list}
                     onWheel={
                         e => {
-                            e.currentTarget.scrollLeft -= (e.deltaY * 30);
+                            e.currentTarget.scrollLeft -= (e.deltaY * 5);
                             e.preventDefault();
                         }
                     }
