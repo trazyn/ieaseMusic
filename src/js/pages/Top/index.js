@@ -95,7 +95,15 @@ class Top extends Component {
                     transparent: true,
                 }} />
 
-                <ul className={classes.list}>
+                <ul
+                    className={classes.list}
+                    onWheel={
+                        e => {
+                            e.currentTarget.scrollLeft -= (e.deltaY * 30);
+                            e.preventDefault();
+                        }
+                    }
+                >
                     {
                         this.renderList()
                     }
