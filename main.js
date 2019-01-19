@@ -689,32 +689,31 @@ app.on('before-quit', e => {
     app.exit(0);
     process.exit(0);
 });
-app.on('ready', () => {
-    storage.get('preferences', (err, data) => {
-        debug(data);
-        if (!err && data) {
-            showMenuBarOnLinux = data.showMenuBarOnLinux;
-            revertTrayIcon = data.revertTrayIcon;
+app.on('ready', async() => {
+    storage.get('preferences', (err, preferences = {}) => {
+        if (err) {
+            throw err;
         }
-    });
 
-    createMainWindow();
+        console.log(preferences);
 
-    storage.get('preferences', (err, data) => {
-        var port = config.api.port;
+        var port = config.api.port || preferences.port;
 
-        if (!err) {
-            port = data.port || port;
+        showMenuBarOnLinux = preferences.showMenuBarOnLinux;
+        revertTrayIcon = preferences.revertTrayIcon;
 
-            updater.checkForUpdates(data.autoupdate);
-        }
+        createMainWindow();
+        updater.checkForUpdates(preferences.autoupdate);
 
         axios.defaults.baseURL = `http://localhost:${port}`;
 
-        apiServer = api.listen(port, (err) => {
-            if (err) throw err;
-
-            debug(`API server is running with port ${port} 👊`);
-        });
+        apiServer = api(
+            port,
+            preferences.proxy,
+            err => {
+                if (err) throw err;
+                debug(`API server is running with port ${port} 👊`);
+            }
+        );
     });
 });
