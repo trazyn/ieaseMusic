@@ -32,7 +32,6 @@ export default async(request, keyword, artists) => {
 
         if (response.state !== 0
             || data.songs.length === 0) {
-            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }
 
@@ -52,15 +51,12 @@ export default async(request, keyword, artists) => {
             if (!song.src) {
                 return Promise.reject(Error(404));
             } else {
-                debug(chalk.black.bgGreen('🚚  Result >>>'));
-                debug(e);
-                debug(chalk.black.bgGreen('🚚  <<<'));
-
+                debug(song);
                 return song;
             }
         }
     } catch (ex) {
-        error('Failed to get song: %O', ex);
+        error(ex);
         return Promise.reject(ex);
     }
 

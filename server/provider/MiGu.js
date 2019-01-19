@@ -25,7 +25,6 @@ export default async(request, keyword, artists) => {
             || !response.musics
             || response.musics.length === 0
         ) {
-            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }
 
@@ -35,15 +34,13 @@ export default async(request, keyword, artists) => {
                     artist => e.singerName.indexOf(artist) !== -1
                 )
             ) {
-                debug(chalk.black.bgGreen('🚚  Result >>>'));
                 debug(e);
-                debug(chalk.black.bgGreen('🚚  <<<'));
 
                 return Object.assign({}, e, { src: e.mp3 });
             }
         }
     } catch (ex) {
-        error('Failed to get song: %O', ex);
+        error(ex);
         return Promise.reject(ex);
     }
 

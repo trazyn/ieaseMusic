@@ -17,7 +17,6 @@ async function getURL(hash) {
 
     if (response.error
         || +response.status !== 1) {
-        error(chalk.black.bgRed('🚧  Nothing.'));
         return false;
     } else {
         return response;
@@ -45,7 +44,6 @@ export default async(request, keyword, artists) => {
 
         if (response.status !== 1
             || data.info.length === 0) {
-            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }
 
@@ -58,19 +56,16 @@ export default async(request, keyword, artists) => {
                 continue;
             }
 
-            debug(chalk.black.bgGreen('🚚  Result >>>'));
-            debug(e);
-            debug(chalk.black.bgGreen('🚚  <<<'));
-
             let song = await getURL(e['320hash'] || e['hash']);
 
             if (song) {
+                debug(song);
                 song.src = song.url;
                 return song;
             }
         }
     } catch (ex) {
-        error('Failed to get song: %O', ex);
+        error(ex);
         return Promise.reject(ex);
     }
 

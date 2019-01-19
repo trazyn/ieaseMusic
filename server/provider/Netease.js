@@ -39,9 +39,7 @@ export default async(request, keyword, artists, id) => {
             bitRate: song.br,
         };
 
-        debug(chalk.black.bgGreen('🚚  Result >>>'));
         debug(song);
-        debug(chalk.black.bgGreen('🚚  <<<'));
     } catch (ex) {
         error('Failed to get song: %O', ex);
         return Promise.reject(ex);
