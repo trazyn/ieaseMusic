@@ -56,9 +56,14 @@ export default theme => ({
             position: 'relative',
             padding: 0,
             margin: 0,
+            maxWidth: 200,
             paddingTop: 30,
             color: 'yellow',
             fontWeight: 200,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+
         },
 
         '& h3::before': {
