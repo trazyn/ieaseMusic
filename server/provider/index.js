@@ -25,7 +25,6 @@ async function exe(plugins, ...args) {
 
     if (proxy) {
         if (proxy.endsWith('.pac')) {
-            console.log('Use pac: %s', proxy);
             Object.assign(
                 rpOptions,
                 {
@@ -59,7 +58,12 @@ async function exe(plugins, ...args) {
 }
 
 async function getFlac(keyword, artists) {
-    return exe([QQ], keyword, artists, true);
+    try {
+        var song = await exe([QQ], keyword, artists, true);
+        return song;
+    } catch (ex) {
+        // 404
+    }
 }
 
 async function loadFromLocal(id) {

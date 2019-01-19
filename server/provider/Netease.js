@@ -11,7 +11,7 @@ export default async(request, keyword, artists, id) => {
 
     try {
         var response = await request({
-            uri: `http://127.0.0.1:${config.api.port}/music/url`,
+            uri: `http://127.0.0.1:${config.api.port}/song/url`,
             qs: {
                 id,
             }

@@ -185,7 +185,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
     var id = req.params.id;
     var name = req.params.name;
     var artists = req.params.artists;
-    var flac = req.params.flac || 0;
+    var flac = +req.params.flac || 0;
     var song = {};
 
     debug('Params \'id\': %s, \'name\': %s, \'artists\': %s, \'flac\': %s', id, name, artists, flac);
@@ -198,19 +198,24 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             debug(chalk.underline.black.bgYellow(`🔎  ${name} - ${artists}`));
 
             try {
-                // Get the highquality track
-                song = await selector.loadFromLocal(id) || await selector.getFlac(name, artists, true);
+                if (flac) {
+                    debug('Get highquality: %s - %s', name, artists);
+                    song = await selector.getFlac(name, artists, true);
+                }
+
+                if (!song || !song.src) {
+                    // Get the highquality track
+                    debug('Load local: %s - %s', name, artists);
+                    song = await selector.loadFromLocal(id);
+                }
             } catch (ex) {
                 error(ex);
             }
 
-            if (!song.src) {
-                if (flac === 1) {
-                    // Only accept highquality
-                } else {
-                    // Try to get the normal quality track
-                    song = await selector.getTrack(name, artists, id);
-                }
+            if (!song || !song.src) {
+                // Try to get the normal quality track
+                debug('Get normal track: %s - %s', name, artists);
+                song = await selector.getTrack(name, artists, id);
             }
         }
     } catch (ex) {
