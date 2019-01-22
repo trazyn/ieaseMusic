@@ -23,41 +23,46 @@ app.use((req, res, next) => {
     next();
 });
 
+function isDev() {
+    return process.mainModule.filename.indexOf('app.asar') === -1;
+}
+
 function mount(proxy) {
-    let apisDir = '../NeteaseCloudMusicApi/module';
     let special = {
         'daily_signin.js': '/daily_signin',
         'fm_trash.js': '/fm_trash',
         'personal_fm.js': '/personal_fm'
     };
 
-    fs.readdirSync(path.join(__dirname, apisDir)).reverse().forEach(file => {
+    fs.readdirSync(path.join(__dirname, `${isDev() ? '..' : '.'}/NeteaseCloudMusicApi/module`)).reverse().forEach(file => {
         if (!/\.js$/i.test(file)) {
             return;
         }
-        let route = (file in special) ? special[file] : '/' + file.replace(/\.js$/i, '').replace(/_/g, '/');
-        let question = require(path.join(__dirname, apisDir, file));
-        let request = require(`../NeteaseCloudMusicApi/util/request`);
 
-        console.log('Mount: ', route);
+        try {
+            // https://stackoverflow.com/questions/42797313/webpack-dynamic-module-loader-by-require
+            let route = (file in special) ? special[file] : '/' + file.replace(/\.js$/i, '').replace(/_/g, '/');
+            let question = require('../NeteaseCloudMusicApi/module/' + file);
+            let request = require('../NeteaseCloudMusicApi/util/request');
 
-        app.use(route, (req, res) => {
-            let query = Object.assign({}, req.query, req.body, { cookie: req.cookies }, { proxy });
-            question(query, request)
-                .then(answer => {
-                    console.log('[OK]', decodeURIComponent(req.originalUrl));
-                    res.append('Set-Cookie', answer.cookie);
-                    res.status(answer.status).send(answer.body);
-                })
-                .catch(answer => {
-                    console.log('[ERR]', decodeURIComponent(req.originalUrl));
-                    if (answer.body.code === 301) {
-                        answer.status = 200;
-                    }
-                    res.append('Set-Cookie', answer.cookie);
-                    res.status(answer.status).send(answer.body);
-                });
-        });
+            app.use(route, (req, res) => {
+                let query = Object.assign({}, req.query, req.body, { cookie: req.cookies }, { proxy });
+                question(query, request)
+                    .then(answer => {
+                        res.append('Set-Cookie', answer.cookie);
+                        res.status(answer.status).send(answer.body);
+                    })
+                    .catch(answer => {
+                        if (answer.body.code === 301) {
+                            answer.status = 200;
+                        }
+                        res.append('Set-Cookie', answer.cookie);
+                        res.status(answer.status).send(answer.body);
+                    });
+            });
+        } catch (ex) {
+            console.error(ex);
+        }
     });
 
     app.use('/api/home', require('./router/home'));

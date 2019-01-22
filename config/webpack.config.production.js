@@ -46,6 +46,14 @@ export default {
                 to: `${config.dist}`,
             },
             {
+                from: `${path.resolve(__dirname, '../NeteaseCloudMusicApi')}/module/*`,
+                to: config.dist,
+            },
+            {
+                from: `${path.resolve(__dirname, '../NeteaseCloudMusicApi')}/util/*`,
+                to: config.dist,
+            },
+            {
                 from: path.resolve(__dirname, '../package.json'),
                 to: config.dist,
             },
