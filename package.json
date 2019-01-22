@@ -1,7 +1,7 @@
 {
   "name": "iease-music",
-  "version": "1.3.2",
-  "description": "这应该是最好的网易云音乐播放器了，没有之一，如果有请打醒 🤘",
+  "version": "1.3.3",
+  "description": "网易云音乐第三方 ✨",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

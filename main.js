@@ -695,8 +695,6 @@ app.on('ready', async() => {
             throw err;
         }
 
-        console.log(preferences);
-
         var port = config.api.port || preferences.port;
 
         showMenuBarOnLinux = preferences.showMenuBarOnLinux;
