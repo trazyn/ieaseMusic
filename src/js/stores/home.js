@@ -1,6 +1,7 @@
 
 import { observable, action } from 'mobx';
 import axios from 'axios';
+import { CronJob } from 'cron';
 
 import helper from 'utils/helper';
 import me from './me';
@@ -10,6 +11,14 @@ import controller from './controller';
 class Home {
     @observable loading = true;
     @observable list = [];
+
+    constructor() {
+        // eslint-disable-next-line
+        new CronJob('00 05 06 * * *', () => {
+            // Every 6:05 refresh daily playlist, #331
+            self.load();
+        }).start();
+    }
 
     @action async load() {
         var res;
