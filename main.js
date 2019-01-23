@@ -648,7 +648,6 @@ const createMainWindow = () => {
             credits: `With the invaluable help of: \n github.com/Binaryify/NeteaseCloudMusicApi`,
             version: pkg.version
         });
-        app.dock.setIcon(`${__dirname}/src/assets/dock.png`);
         app.dock.setMenu(Menu.buildFromTemplate(dockMenu));
     }
 
