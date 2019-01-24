@@ -36,10 +36,9 @@ async function getSong(mid, isFlac) {
         return {};
     }
 
-    const key = response.data.items[0].vkey;
-
+    var key = response.data.items[0].vkey || await rp('https://public.nondanee.tk/qq/ticket', { agent: null });
     if (!key) {
-        throw Error('Invalid Key');
+        throw Error('Invalid key');
     }
 
     if (isFlac) {
