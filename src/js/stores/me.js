@@ -30,7 +30,7 @@ class Me {
     @observable initialized = false;
     @observable logining = false;
     @observable profile = {};
-    @observable scaner = {};
+    @observable scanner = {};
 
     // Store the liked song
     @observable likes = new Map();
@@ -58,7 +58,7 @@ class Me {
     @action async qrcode() {
         cancelWaitQRCodeScan && cancelWaitQRCodeScan();
         cancelWaitQRCodeConfirm && cancelWaitQRCodeConfirm();
-        self.scaner = {};
+        self.scanner = {};
 
         var response = await axios.get('/api/user/login/qrcode');
 
@@ -67,12 +67,12 @@ class Me {
             return;
         }
 
-        self.scaner = response.data;
+        self.scanner = response.data;
     }
 
     async waitQRCodeConfirm(done) {
         var response = await axios.get(
-            `${self.scaner.polling}&last=404&_${+new Date()}`,
+            `${self.scanner.polling}&last=404&_${+new Date()}`,
             {
                 cancelToken: new CancelToken(c => {
                     cancelWaitQRCodeConfirm = c;
@@ -85,7 +85,7 @@ class Me {
 
         // Waiting
         if (window.wx_errcode === 408) {
-            self.waitQRCodeConfirm();
+            self.waitQRCodeConfirm(done);
             return;
         }
 
@@ -99,7 +99,7 @@ class Me {
         if (window.wx_errcode === 405) {
             self.logining = true;
             let response = await axios.get(
-                `/api/user/login/qrcode/${window.wx_code}/${self.scaner.state}`,
+                `/api/user/login/qrcode/${window.wx_code}/${self.scanner.state}`,
                 {
                     cancelToken: new CancelToken(c => {
                         cancelWaitQRCodeConfirm = c;
@@ -126,7 +126,7 @@ class Me {
 
     async waitQRCodeScan(done) {
         var response = await axios.get(
-            `${self.scaner.polling}&_${+new Date()}`,
+            `${self.scanner.polling}&_${+new Date()}`,
             {
                 cancelToken: new CancelToken(c => {
                     cancelWaitQRCodeScan = c;
@@ -139,7 +139,8 @@ class Me {
 
         // Waiting user scan
         if (window.wx_errcode === 408) {
-            self.waitQRCodeScan();
+            // Retry
+            self.waitQRCodeScan(done);
             return;
         }
 

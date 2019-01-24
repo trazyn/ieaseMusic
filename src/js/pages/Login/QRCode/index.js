@@ -40,7 +40,7 @@ class QRCode extends Component {
     componentWillUnmount = () => clearInterval(this.timer);
 
     render() {
-        var { classes, me: { scaner } } = this.props;
+        var { classes, me: { scanner } } = this.props;
 
         return (
             <div className={classes.container}>
@@ -60,11 +60,11 @@ class QRCode extends Component {
                 <figure>
                     <div className={classes.wraped}>
                         {
-                            scaner.qrcode
+                            scanner.qrcode
                                 ? (
                                     <FadeImage
                                         className={classes.qrcode}
-                                        src={scaner.qrcode}
+                                        src={scanner.qrcode}
                                     />
                                 )
                                 : (
