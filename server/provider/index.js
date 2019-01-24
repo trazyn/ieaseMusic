@@ -9,6 +9,7 @@ import Baidu from './Baidu';
 import Xiami from './Xiami';
 import Kuwo from './Kuwo';
 import storage from '../../common/storage';
+import cache from '../../common/cache';
 
 async function getPreferences() {
     return await storage.get('preferences') || {};
@@ -57,9 +58,16 @@ async function exe(plugins, ...args) {
     );
 }
 
-async function getFlac(keyword, artists) {
+async function getFlac(keyword, artists, id) {
     try {
-        var song = await exe([QQ], keyword, artists, true);
+        var song = cache.get(id);
+        if (!song) {
+            song = (await exe([QQ], keyword, artists, true)) || {};
+            if (song.src) {
+                cache.set(id, song);
+            }
+        }
+
         return song;
     } catch (ex) {
         // 404
@@ -99,31 +107,41 @@ async function getTrack(keyword, artists, id /** This id is only work for neteas
         };
     }
 
-    if (enginers['QQ']) {
-        plugins.push(QQ);
+    var key = Object.keys(enginers).sort().map(e => enginers[e] ? e.toUpperCase() : '').join('') + '#' + id;
+    var song = cache.get(key);
+    if (!song) {
+        if (enginers['QQ']) {
+            plugins.push(QQ);
+        }
+
+        if (enginers['MiGu']) {
+            plugins.push(MiGu);
+        }
+
+        if (enginers['Xiami']) {
+            plugins.push(Xiami);
+        }
+
+        if (enginers['Kugou']) {
+            plugins.push(Kugou);
+        }
+
+        if (enginers['Baidu']) {
+            plugins.push(Baidu);
+        }
+
+        if (enginers['Kuwo']) {
+            plugins.push(Kuwo);
+        }
+
+        song = (await exe(plugins, keyword, artists, id)) || {};
+        // Cache the search result
+        if (song.src) {
+            cache.set(key, song);
+        }
     }
 
-    if (enginers['MiGu']) {
-        plugins.push(MiGu);
-    }
-
-    if (enginers['Xiami']) {
-        plugins.push(Xiami);
-    }
-
-    if (enginers['Kugou']) {
-        plugins.push(Kugou);
-    }
-
-    if (enginers['Baidu']) {
-        plugins.push(Baidu);
-    }
-
-    if (enginers['Kuwo']) {
-        plugins.push(Kuwo);
-    }
-
-    return exe(plugins, keyword, artists, id);
+    return song;
 }
 
 export {

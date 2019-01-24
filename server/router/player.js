@@ -179,7 +179,7 @@ router.get('/unsubscribe/:id', async(req, res) => {
     });
 });
 
-router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200), async(req, res) => {
+router.get('/song/:id/:name/:artists/:flac?', async(req, res) => {
     debug('Handle request for /player/song');
 
     var id = req.params.id;
@@ -200,7 +200,7 @@ router.get('/song/:id/:name/:artists/:flac?', cache('3 minutes', onlyStatus200),
             try {
                 if (flac) {
                     debug('Get highquality: %s - %s', name, artists);
-                    song = await selector.getFlac(name, artists, true);
+                    song = await selector.getFlac(name, artists, id);
                 }
 
                 if (!song || !song.src) {
