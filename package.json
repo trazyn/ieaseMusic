@@ -139,7 +139,7 @@
     "electron-window-state": "^5.0.3",
     "han": "0.0.7",
     "ionicons201": "^1.0.0",
-    "libphonenumber-js": "^1.6.1",
+    "libphonenumber-js": "^1.7.7",
     "md5": "^2.2.1",
     "mkdirp": "^0.5.1",
     "mobx": "^5.8.0",

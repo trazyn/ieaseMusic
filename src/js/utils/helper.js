@@ -1,6 +1,6 @@
 
 import uuid from 'uuid';
-import { asYouType } from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const helper = {
     pad(number) {
@@ -49,11 +49,15 @@ const helper = {
             };
         }
 
-        var formatter = new asYouType();
-        formatter.input(phone);
+        var parsed = parsePhoneNumberFromString(phone);
+
+        if (!parsed) {
+            return;
+        }
+
         return {
-            code: formatter.country_phone_code,
-            phone: formatter.national_number,
+            code: parsed.countryCallingCode,
+            phone: parsed.nationalNumber,
         };
     },
 
