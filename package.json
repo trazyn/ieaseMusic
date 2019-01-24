@@ -120,6 +120,7 @@
     "terser-webpack-plugin": "^1.2.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
     "webpack-dev-middleware": "^3.5.0",
     "webpack-hot-middleware": "^2.22.3",
     "webpack-sources": "^1.1.0"
@@ -127,7 +128,6 @@
   "dependencies": {
     "apicache": "^1.2.3",
     "axios": "^0.18.0",
-    "big-integer": "^1.6.40",
     "classname": "0.0.0",
     "cookie-parser": "^1.4.3",
     "cron": "^1.6.0",
@@ -160,7 +160,6 @@
     "request-progress": "^3.0.0",
     "request-promise-native": "^1.0.5",
     "simple-lastfm": "^1.0.5",
-    "tmp-promise": "^1.0.5",
-    "webpack-cli": "^3.2.1"
+    "tmp-promise": "^1.0.5"
   }
 }
