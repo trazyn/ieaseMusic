@@ -59,8 +59,6 @@ export default async(request, keyword, artists) => {
             src: response,
             isFlac: response.endsWith('.aac')
         };
-
-        debug(song);
     } catch (ex) {
         error(ex);
         return Promise.reject(ex);

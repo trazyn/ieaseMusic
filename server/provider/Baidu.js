@@ -46,8 +46,6 @@ export default async(request, keyword, artists) => {
 
         if (!song.src) {
             return Promise.reject(Error(404));
-        } else {
-            debug(response.data.songList[0]);
         }
     } catch (ex) {
         // Anti-warnning

@@ -38,10 +38,8 @@ export default async(request, keyword, artists, id) => {
             md5: song.md5,
             bitRate: song.br,
         };
-
-        debug(song);
     } catch (ex) {
-        error('Failed to get song: %O', ex);
+        error(ex);
         return Promise.reject(ex);
     }
 

@@ -59,7 +59,6 @@ export default async(request, keyword, artists) => {
             let song = await getURL(e['320hash'] || e['hash']);
 
             if (song) {
-                debug(song);
                 song.src = song.url;
                 return song;
             }
@@ -69,6 +68,5 @@ export default async(request, keyword, artists) => {
         return Promise.reject(ex);
     }
 
-    error(chalk.black.bgRed('🈚  Not Matched'));
     return Promise.reject(Error(405));
 };

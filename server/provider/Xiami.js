@@ -51,7 +51,6 @@ export default async(request, keyword, artists) => {
             if (!song.src) {
                 return Promise.reject(Error(404));
             } else {
-                debug(song);
                 return song;
             }
         }
@@ -60,6 +59,5 @@ export default async(request, keyword, artists) => {
         return Promise.reject(ex);
     }
 
-    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject(Error(405));
 };

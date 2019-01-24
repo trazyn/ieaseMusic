@@ -34,8 +34,6 @@ export default async(request, keyword, artists) => {
                     artist => e.singerName.indexOf(artist) !== -1
                 )
             ) {
-                debug(e);
-
                 return Object.assign({}, e, { src: e.mp3 });
             }
         }
@@ -44,6 +42,5 @@ export default async(request, keyword, artists) => {
         return Promise.reject(ex);
     }
 
-    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject(Error(405));
 };
