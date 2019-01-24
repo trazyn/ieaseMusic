@@ -217,12 +217,24 @@ class Me {
     }
 
     async exeLike(song, truefalse) {
-        var response = await axios.get('/like', {
-            params: {
-                id: song.id,
-                like: truefalse,
-            }
-        });
+        var response;
+
+        if (truefalse) {
+            response = await axios.get('/like', {
+                params: {
+                    id: song.id,
+                    like: truefalse,
+                }
+            });
+        } else {
+            response = await axios.get('/playlist/tracks', {
+                params: {
+                    op: 'del',
+                    pid: home.list[0].id,
+                    tracks: song.id,
+                }
+            });
+        }
 
         // Update the playlist of player screen
         if (self.likes.get('id') === player.meta.id) {
