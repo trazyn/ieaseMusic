@@ -601,7 +601,6 @@ const createMainWindow = () => {
         );
 
         revertTrayIcon = args.revertTrayIcon;
-        debug(revertTrayIcon);
 
         if (!args.showTray) {
             if (tray) {
