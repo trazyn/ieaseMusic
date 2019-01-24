@@ -36,7 +36,7 @@ export default theme => ({
         },
 
         '& nav': {
-            height: 32,
+            height: 35,
             borderBottom: '1px solid #fff',
             fontSize: 14,
             fontFamily: 'Roboto',
@@ -57,7 +57,7 @@ export default theme => ({
                 left: 0,
                 bottom: -1,
                 width: '100%',
-                height: 3,
+                height: 8,
                 background: 'transparent',
                 transition: '.2s',
             },
