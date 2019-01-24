@@ -91,7 +91,7 @@ async function getDownloadLink(song) {
                 return;
             }
 
-            var url = `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/0`;
+            var url = `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/1`;
 
             request(
                 {
