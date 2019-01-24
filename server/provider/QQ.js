@@ -39,17 +39,17 @@ async function getSong(mid, isFlac) {
     const key = response.data.items[0].vkey;
 
     if (!key) {
-        throw Error('Invalid Key.');
+        throw Error('Invalid Key');
     }
 
-    if (file.size_flac) {
-        return {
-            isFlac: true,
-            src: getURL(`F000${mid}.flac`, key, guid),
-        };
-    }
+    if (isFlac) {
+        if (file.size_flac) {
+            return {
+                isFlac: true,
+                src: getURL(`F000${mid}.flac`, key, guid),
+            };
+        }
 
-    if (isFlac === true) {
         // Not found flac track
         return {};
     }
@@ -108,7 +108,7 @@ async function genKey(mid) {
 }
 
 function getURL(filename, key, guid) {
-    return `http://dl.stream.qqmusic.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
+    return `http://streamoc.music.tc.qq.com/${filename}?vkey=${key}&guid=${guid}&fromtag=53`;
 }
 
 export default async(request, keyword, artists, isFlac) => {
@@ -136,7 +136,6 @@ export default async(request, keyword, artists, isFlac) => {
 
         if (response.code !== 0
             || data.song.list.length === 0) {
-            error(chalk.black.bgRed('🚧  Nothing.'));
             return Promise.reject(Error(404));
         }
 
@@ -151,21 +150,15 @@ export default async(request, keyword, artists, isFlac) => {
             song = await getSong(e.media_mid, isFlac);
 
             if (!song.src) {
-                error(chalk.black.bgRed('🚧  Nothing.'));
                 return Promise.reject(Error(404));
             }
-
-            debug(chalk.black.bgGreen('🚚  Result >>>'));
-            debug(e);
-            debug(chalk.black.bgGreen('🚚  <<<'));
 
             return song;
         }
     } catch (ex) {
-        error('Failed to get song: %O', ex);
+        error(ex);
         return Promise.reject(ex);
     }
 
-    error(chalk.black.bgRed('🈚  Not Matched.'));
     return Promise.reject(Error(405));
 };
