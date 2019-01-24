@@ -108,7 +108,8 @@ class Controller {
             var response = await axios.get(
                 `/api/player/song/${song.id}/${encodeURIComponent(helper.clearWith(song.name, ['（', '(']))}/${encodeURIComponent(song.artists.map(e => e.name).join(','))}/${preferences.highquality}?` + +new Date(),
                 {
-                    timeout: 10000,
+                    // Wait 60 secinds before timing out
+                    timeout: 60000,
                     cancelToken: new CancelToken(c => {
                         // An executor function receives a cancel function as a parameter
                         cancel = c;
