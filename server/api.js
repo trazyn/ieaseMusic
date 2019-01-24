@@ -53,7 +53,11 @@ function mount(proxy) {
                         res.status(answer.status).send(answer.body);
                     })
                     .catch(answer => {
-                        if (answer.body.code === 301) {
+                        if (1
+                            && answer.body
+                            && answer.body.code
+                            && answer.status !== 200
+                        ) {
                             answer.status = 200;
                         }
                         res.append('Set-Cookie', answer.cookie);

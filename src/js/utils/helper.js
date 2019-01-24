@@ -52,7 +52,7 @@ const helper = {
         var parsed = parsePhoneNumberFromString(phone);
 
         if (!parsed) {
-            return;
+            return {};
         }
 
         return {
