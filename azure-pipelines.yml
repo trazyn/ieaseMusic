@@ -10,7 +10,7 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- task: Build
+- task: Build@0
   inputs:
     versionSpec: '8.x'
   displayName: 'Install Node.js'
