@@ -231,7 +231,6 @@ router.get('/:id?', async(req, res) => {
         let personalized = await getPersonalized();
 
         personalized[0].songs = await getSongs(personalized[0].id);
-        debug('%O', personalized[0].songs);
         list = [
             ...personalized,
             ...(await getNewest()),
