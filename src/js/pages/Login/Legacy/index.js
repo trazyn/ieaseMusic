@@ -112,12 +112,21 @@ class Legacy extends Component {
                         </span>
                     </button>
 
-                    <Link
-                        to={`/login/qrcode/${+this.props.match.params.fm}`}
-                        className={classes.wechat}
-                    >
-                        Login with WeChat
-                    </Link>
+                    <div className={classes.sns}>
+                        <Link
+                            to={`/login/qrcode/10/${+this.props.match.params.fm}`}
+                            className={classes.link}
+                        >
+                            Login with WeChat
+                        </Link>
+
+                        <Link
+                            to={`/login/qrcode/2/${+this.props.match.params.fm}`}
+                            className={classes.link}
+                        >
+                            Login with Weibo
+                        </Link>
+                    </div>
                 </footer>
             </div>
         );

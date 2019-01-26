@@ -47,3 +47,4 @@ buck-out/
 \.buckd/
 android/app/libs
 *.keystore
+/Requests.paw

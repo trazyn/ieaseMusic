@@ -8,29 +8,21 @@ import storage from 'common/storage';
 import helper from 'utils/helper';
 import lastfm from 'utils/lastfm';
 
+async function getProfile() {
+    var response = await axios('/login/status');
+    return response.data.profile;
+}
+
 const CancelToken = axios.CancelToken;
 
-// Only one canceler will be hit
-let cancelWaitQRCodeScan;
-let cancelWaitQRCodeConfirm;
-
-function getProfile(data) {
-    var ele = document.createElement('div');
-    var script = document.createElement('script');
-
-    ele.innerHTML = data;
-    // Remove the code of close window
-    script.text = ele.firstChild.innerText.replace(/try{.+/, '');
-    document.body.append(script);
-
-    return window._data.profile;
-}
+let canceledGenerate;
+let canceledWaiting;
 
 class Me {
     @observable initialized = false;
     @observable logining = false;
     @observable profile = {};
-    @observable scanner = {};
+    @observable qrcode = {};
 
     // Store the liked song
     @observable likes = new Map();
@@ -55,102 +47,53 @@ class Me {
         self.initialized = true;
     }
 
-    @action async qrcode() {
-        cancelWaitQRCodeScan && cancelWaitQRCodeScan();
-        cancelWaitQRCodeConfirm && cancelWaitQRCodeConfirm();
-        self.scanner = {};
+    @action async generate(type) {
+        canceledGenerate && canceledGenerate();
+        canceledWaiting && canceledWaiting();
 
-        var response = await axios.get('/api/user/login/qrcode');
+        var response = await axios.get(
+            `/api/qrcode/generate/${type}`,
+            {
+                cancelToken: new CancelToken(c => {
+                    canceledGenerate = c;
+                })
+            }
+        );
 
         if (response.data.success === false) {
             window.alert('Failed to login with QRCode, Please check your console(Press ⌘+⌥+I) and report it.');
             return;
         }
 
-        self.scanner = response.data;
+        self.qrcode = response.data;
     }
 
-    async waitQRCodeConfirm(done) {
-        var response = await axios.get(
-            `${self.scanner.polling}&last=404&_${+new Date()}`,
+    async waiting(done) {
+        var response = await axios.post(
+            '/api/qrcode/polling',
+            {
+                ticket: self.qrcode.ticket,
+                state: self.qrcode.state,
+                type: self.qrcode.type,
+            },
             {
                 cancelToken: new CancelToken(c => {
-                    cancelWaitQRCodeConfirm = c;
+                    canceledWaiting = c;
                 })
             }
         );
 
-        // eslint-disable-next-line
-        eval(response.data);
-
-        // Waiting
-        if (window.wx_errcode === 408) {
-            self.waitQRCodeConfirm(done);
+        if (response.data.success === false) {
+            window.alert('Failed to login with QRCode, Please check your console(Press ⌘+⌥+I) and report it.');
             return;
         }
 
-        // Canceled by user
-        if (window.wx_errcode === 403) {
-            self.qrcode();
-            return;
-        }
-
-        // User press ok
-        if (window.wx_errcode === 405) {
-            self.logining = true;
-            let response = await axios.get(
-                `/api/user/login/qrcode/${window.wx_code}/${self.scanner.state}`,
-                {
-                    cancelToken: new CancelToken(c => {
-                        cancelWaitQRCodeConfirm = c;
-                    })
-                }
-            );
-
-            if (response.data.success === false) {
-                window.alert('Failed to login with QRCode, Please check your console(Press ⌘+⌥+I) and report it.');
-                return;
-            }
-
-            self.profile = getProfile(response.data);
-            done();
-            await storage.set('profile', self.profile);
-            await self.init();
-            await home.load();
-            self.logining = false;
-            return;
-        }
-
-        console.error(response);
-    }
-
-    async waitQRCodeScan(done) {
-        var response = await axios.get(
-            `${self.scanner.polling}&_${+new Date()}`,
-            {
-                cancelToken: new CancelToken(c => {
-                    cancelWaitQRCodeScan = c;
-                })
-            }
-        );
-
-        // eslint-disable-next-line
-        eval(response.data);
-
-        // Waiting user scan
-        if (window.wx_errcode === 408) {
-            // Retry
-            self.waitQRCodeScan(done);
-            return;
-        }
-
-        // Wait user cofnirm
-        if (window.wx_errcode === 404) {
-            self.waitQRCodeConfirm(done);
-            return;
-        }
-
-        console.error(response);
+        self.profile = await getProfile();
+        await storage.set('profile', self.profile);
+        await self.init();
+        await home.load();
+        done();
+        self.logining = false;
     }
 
     @action async login(phone, password) {
