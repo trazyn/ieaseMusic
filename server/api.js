@@ -5,6 +5,7 @@ import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import apicache from 'apicache'
+import bodyParser from 'body-parser';
 import axios from 'axios';
 /* eslint-enable */
 
@@ -13,6 +14,8 @@ const cache = apicache.middleware;
 const onlyStatus200 = (req, res) => res.statusCode === 200;
 const port = process.env.API_PORT || 8000;
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 axios.defaults.baseURL = `http://localhost:${port}`;
@@ -79,11 +82,11 @@ function mount(proxy) {
     app.use('/api/search', require('./router/search'));
     app.use('/api/comments', require('./router/comments'));
     app.use('/api/lyrics', cache('360 minutes'), require('./router/lyrics'));
+    app.use('/api/qrcode', require('./router/qrcode'));
 }
 
 if (process.env.APIONLY) {
     mount();
-    app.listen(port);
     console.log(`API Server run with port: ${port}`);
 }
 

@@ -128,6 +128,7 @@
   "dependencies": {
     "apicache": "^1.2.3",
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "classname": "0.0.0",
     "cookie-parser": "^1.4.3",
     "cron": "^1.6.0",
@@ -159,6 +160,7 @@
     "request": "^2.88.0",
     "request-progress": "^3.0.0",
     "request-promise-native": "^1.0.5",
+    "set-cookie-parser": "^2.2.1",
     "simple-lastfm": "^1.0.5",
     "tmp-promise": "^1.0.5"
   }

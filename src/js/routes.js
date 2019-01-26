@@ -41,7 +41,7 @@ export default () => {
             <Switch>
                 <Route exact path="/" component={Welcome} />
                 <Route exact path="/login/:fm" component={LoginByLegacy} />
-                <Route exact path="/login/qrcode/:fm" component={LoginByQrCode} />
+                <Route exact path="/login/qrcode/:type/:fm" component={LoginByQrCode} />
                 <Route exact path="/player/:type/:id" component={Player} />
                 <Route exact path="/user/:id" component={User} />
                 <Route exact path="/artist/:id" component={Artist} />

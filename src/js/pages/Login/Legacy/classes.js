@@ -164,7 +164,13 @@ export default theme => ({
         opacity: .5,
     },
 
-    wechat: {
+    sns: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+
+    link: {
+        margin: '0 10px',
         display: 'block',
         paddingBottom: 4,
         marginTop: 20,
