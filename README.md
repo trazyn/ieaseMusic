@@ -174,7 +174,7 @@ Description            | Keys
 - [x] Alfred supports
 - [x] Download manager
 - [x] Wechat QR code login
-- [ ] Weibo QR code login
+- [x] Weibo QR code login
 - [ ] Resize window（New UI）
 
 ## 参考列表
