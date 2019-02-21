@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import config from '../../config';
 
 const debug = _debug('dev:plugin:Netease');
-const error = _debug('dev:plugin:Netease:error');
 
 export default async(request, keyword, artists, id) => {
     debug(chalk.black.bgGreen('💊  Loaded Netease music.'));
@@ -39,7 +38,6 @@ export default async(request, keyword, artists, id) => {
             bitRate: song.br,
         };
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 

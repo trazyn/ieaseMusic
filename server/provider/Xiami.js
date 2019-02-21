@@ -3,7 +3,6 @@ import _debug from 'debug';
 import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:Xiami');
-const error = _debug('dev:plugin:Xiami:error');
 const headers = {
     cookie: 'user_from=2;XMPLAYER_addSongsToggler=0;XMPLAYER_isOpen=0;_xiamitoken=cb8bfadfe130abdbf5e2282c30f0b39a;',
     referer: 'http://h.xiami.com/',
@@ -55,7 +54,6 @@ export default async(request, keyword, artists) => {
             }
         }
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 

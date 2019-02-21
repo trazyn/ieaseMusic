@@ -3,7 +3,6 @@ import _debug from 'debug';
 import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:MiGu');
-const error = _debug('dev:plugin:MiGu:error');
 
 export default async(request, keyword, artists) => {
     debug(chalk.black.bgGreen('💊  Loaded MiGu music.'));
@@ -38,7 +37,6 @@ export default async(request, keyword, artists) => {
             }
         }
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 

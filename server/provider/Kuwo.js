@@ -3,7 +3,6 @@ import _debug from 'debug';
 import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:Kuwo');
-const error = _debug('dev:plugin:Kuwo:error');
 
 export default async(request, keyword, artists) => {
     debug(chalk.black.bgGreen('💊  Loaded Kuwo music.'));
@@ -60,7 +59,6 @@ export default async(request, keyword, artists) => {
             isFlac: response.endsWith('.aac')
         };
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 

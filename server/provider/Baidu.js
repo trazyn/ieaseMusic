@@ -3,7 +3,6 @@ import _debug from 'debug';
 import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:Baidu');
-const error = _debug('dev:plugin:Baidu:error');
 
 export default async(request, keyword, artists) => {
     debug(chalk.black.bgGreen('💊  Loaded Baidu music.'));
@@ -15,6 +14,7 @@ export default async(request, keyword, artists) => {
                 word: [keyword].concat(artists.split(',')).join('+'),
                 version: 2,
                 from: 0,
+                _: +new Date(),
             },
         });
         var songs = (response.data || {}).song;
@@ -23,6 +23,8 @@ export default async(request, keyword, artists) => {
         if (!song) {
             return Promise.reject(Error(404));
         }
+
+        console.log('done');
 
         response = await request({
             uri: 'http://music.taihe.com/data/music/fmlink',
@@ -49,7 +51,6 @@ export default async(request, keyword, artists) => {
         }
     } catch (ex) {
         // Anti-warnning
-        error(ex);
         return Promise.reject(ex);
     }
 

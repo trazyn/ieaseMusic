@@ -23,31 +23,30 @@ async function exe(plugins, ...args) {
         jar: true,
     };
     var proxy = preferences.proxy;
-
-    if (proxy) {
-        if (proxy.endsWith('.pac')) {
-            Object.assign(
-                rpOptions,
-                {
-                    agent: new PacProxyAgent(proxy)
-                }
-            );
-        } else {
-            Object.assign(
-                rpOptions,
-                {
-                    proxy,
-                }
-            );
-        }
-    }
     var rp = require('request-promise-native').defaults(rpOptions);
 
     return Promise.all(
         plugins.map(e => {
+            if (proxy && e.proxy) {
+                if (proxy.endsWith('.pac')) {
+                    Object.assign(
+                        rpOptions,
+                        {
+                            agent: new PacProxyAgent(proxy)
+                        }
+                    );
+                } else {
+                    Object.assign(
+                        rpOptions,
+                        {
+                            proxy,
+                        }
+                    );
+                }
+            }
             // If a request failed will keep waiting for other possible successes, if a request successed,
             // treat it as a rejection so Promise.all immediate break.
-            return e(rp, ...args).then(
+            return e.enginner(rp, ...args).then(
                 val => Promise.reject(val),
                 err => Promise.resolve(err)
             );
@@ -94,7 +93,10 @@ async function loadFromLocal(id) {
 async function getTrack(keyword, artists, id /** This id is only work for netease music */) {
     var preferences = await getPreferences();
     var enginers = preferences.enginers;
-    var plugins = [Netease];
+    var plugins = [{
+        enginner: Netease,
+        proxy: false,
+    }];
 
     if (!enginers) {
         enginers = {
@@ -111,27 +113,45 @@ async function getTrack(keyword, artists, id /** This id is only work for neteas
     var song = cache.get(key);
     if (!song) {
         if (enginers['QQ']) {
-            plugins.push(QQ);
+            plugins.push({
+                enginner: QQ,
+                proxy: true,
+            });
         }
 
         if (enginers['MiGu']) {
-            plugins.push(MiGu);
+            plugins.push({
+                enginner: MiGu,
+                proxy: true,
+            });
         }
 
         if (enginers['Xiami']) {
-            plugins.push(Xiami);
+            plugins.push({
+                enginner: Xiami,
+                proxy: true,
+            });
         }
 
         if (enginers['Kugou']) {
-            plugins.push(Kugou);
+            plugins.push({
+                enginner: Kugou,
+                proxy: true,
+            });
         }
 
         if (enginers['Baidu']) {
-            plugins.push(Baidu);
+            plugins.push({
+                enginner: Baidu,
+                proxy: true,
+            });
         }
 
         if (enginers['Kuwo']) {
-            plugins.push(Kuwo);
+            plugins.push({
+                enginner: Kuwo,
+                proxy: true,
+            });
         }
 
         song = (await exe(plugins, keyword, artists, id)) || {};

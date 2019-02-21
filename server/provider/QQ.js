@@ -3,7 +3,6 @@ import _debug from 'debug';
 import chalk from 'chalk';
 
 const debug = _debug('dev:plugin:QQ');
-const error = _debug('dev:plugin:QQ:error');
 
 let rp;
 
@@ -155,7 +154,6 @@ export default async(request, keyword, artists, isFlac) => {
             return song;
         }
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 

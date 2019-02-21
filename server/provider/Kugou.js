@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import md5 from 'md5';
 
 const debug = _debug('dev:plugin:Kugou');
-const error = _debug('dev:plugin:Kugou:error');
 
 let rp;
 
@@ -64,7 +63,6 @@ export default async(request, keyword, artists) => {
             }
         }
     } catch (ex) {
-        error(ex);
         return Promise.reject(ex);
     }
 
