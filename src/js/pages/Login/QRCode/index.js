@@ -79,7 +79,7 @@ class QRCode extends Component {
                     </div>
 
                     <figcaption>
-                        <p>Please use weChat to scan QR code to log in.</p>
+                        <p>Please use WeChat or Weibo to scan QR code to log in.</p>
                     </figcaption>
 
                     <a
